@@ -1,16 +1,14 @@
 name: "기능 추가"
 description: "새로운 기능을 생성합니다."
 labels: [feature]
-title: " 이슈 제목"
-assignees:
-  - octocat
+title: "[FEAT] 이슈 제목"
+
 body:
   - type: textarea
     id: abstract
     attributes:
       label: "✨ 어떤 기능인가요?"
       description: "추가하려는 기능에 대해 간결하게 설명해주세요."
-      placeholder: ""
     validations:
       required: true
 
@@ -28,6 +26,5 @@ body:
     attributes:
       label: "📝 참고 자료"
       description: "참고했던 자료를 작성해주세요. (선택)"
-      placeholder: "- [ ] Task1"
     validations:
       required: false
