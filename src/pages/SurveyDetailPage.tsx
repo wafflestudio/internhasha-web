@@ -24,8 +24,19 @@ export const SurveyDetailPage = () => {
       <NavigationHeader title="설문조사 상세 페이지" to={toSurveyList} />
       <p>{mockSurvey.title}</p>
       <p>{mockSurvey.writer}</p>
-      <p>{mockSurvey.contents}</p>
-      <a href={mockSurvey.link} target="_blank" rel="noreferrer">
+      <p>
+        {mockSurvey.contents.split('\n').map((line, index) => (
+          <span key={index}>
+            {line}
+            <br />
+          </span>
+        ))}
+      </p>
+      <a
+        href="https://forms.gle/64UkrJpRHHLdJQwi9"
+        target="_blank"
+        rel="noreferrer"
+      >
         설문조사 이동하기
       </a>
     </div>
