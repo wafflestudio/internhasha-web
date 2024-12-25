@@ -4,8 +4,8 @@ type TitleHeaderProps = {
 
 export const TitleHeader = ({ title }: TitleHeaderProps) => {
   return (
-    <div>
-      <span>{title}</span>
+    <div className="flex position sticky top-0 p-5 bg-white shadow-md">
+      <span className="text-lg font-bold">{title}</span>
     </div>
   );
 };

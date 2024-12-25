@@ -7,7 +7,7 @@ type NavigationHeaderProps = {
 
 export const NavigationHeader = ({ to, title }: NavigationHeaderProps) => {
   return (
-    <div>
+    <div className=''>
       <h1>{title}</h1>
       <Button onClick={to}>뒤로</Button>
     </div>
