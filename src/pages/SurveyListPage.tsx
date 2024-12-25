@@ -30,16 +30,20 @@ export const SurveyListPage = () => {
         className="flex flex-col gap-2 p-4 rounded border-b hover:bg-gray-200"
       >
         <div className="flex gap-2">
-          <span className="text-xs p-1 rounded bg-red text-white ">종료</span>
-          <span>{survey.title}</span>
+          <span className="text-xs p-1 rounded bg-red text-white">종료</span>
+          <span className="flex-1 overflow-hidden whitespace-nowrap text-ellipsis">
+            {survey.title}
+          </span>
         </div>
         <div className="flex flex-col gap-1 text-sm text-gray-400">
           <span>{survey.reward}</span>
-          <div className="flex gap-2 text-sm">
+          <div className="flex flex-wrap gap-x-2 text-sm">
             <span className="text-sm">당첨자: </span>
             {survey.winners.map((item, index) => {
               const displayEmail = item.substring(0, 4);
-              return <p key={`${survey.id}-${index}`}>{displayEmail}****</p>;
+              return (
+                <span key={`${survey.id}-${index}`}>{displayEmail}****</span>
+              );
             })}
           </div>
         </div>

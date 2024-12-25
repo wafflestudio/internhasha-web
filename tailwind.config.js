@@ -35,7 +35,11 @@ module.exports = {
         'sans-serif',
       ],
     },
-    extend: {},
+    extend: {
+      boxShadow: {
+        bottom: '0 5px 5px -5px rgb(0 0 0 / 0.2)',
+      },
+    },
   },
   plugins: [],
 };

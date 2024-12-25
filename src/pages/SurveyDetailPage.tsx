@@ -27,13 +27,13 @@ export const SurveyDetailPage = () => {
       <NavigationHeader title="🔍 설문조사 상세 페이지" to={toSurveyList} />
       <MainLayout>
         <div className="flex flex-col py-2 gap-3 border-b">
-          <div className="flex gap-2 items-center">
+          <div className="flex flex-col gap-2">
             {mockSurvey.winners.length === 0 ? (
-              <span className="text-xs p-1 rounded bg-green text-white font-bold">
+              <span className="text-xs w-fit p-1 rounded bg-green text-white font-bold">
                 진행 중
               </span>
             ) : (
-              <span className="text-xs p-1 rounded bg-red text-white ">
+              <span className="text-xs w-fit p-1 rounded bg-red text-white ">
                 종료
               </span>
             )}
