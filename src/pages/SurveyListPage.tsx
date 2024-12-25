@@ -14,7 +14,7 @@ type Survey = {
 
 export const SurveyListPage = () => {
   const navigation = useRouteNavigation();
-  const { toSurveyDetail, toMain } = navigation;
+  const { toSurveyDetail, toSurveyList } = navigation;
   const onClickSurvey = ({ surveyId }: { surveyId: string }) => {
     toSurveyDetail({ surveyId });
   };
@@ -71,7 +71,7 @@ export const SurveyListPage = () => {
 
   return (
     <div>
-      <NavigationHeader title="설문조사 목록" to={toMain} />
+      <NavigationHeader title="설문조사 목록" to={toSurveyList} />
       {mockSurveys.map((item) => {
         if (item.winners.length === 0) {
           return <UnfinishedSurvey key={item.id} survey={item} />;
