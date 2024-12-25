@@ -1,3 +1,5 @@
+import './index.css';
+
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { PATH } from './entities/routes';
