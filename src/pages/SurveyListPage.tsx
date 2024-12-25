@@ -1,4 +1,4 @@
-import { NavigationHeader } from '../components/header/NavigationHeader';
+import { TitleHeader } from '../components/header';
 import { useRouteNavigation } from '../hooks/useRouteNavigation';
 import { mockSurveys } from '../mocks/surveys';
 
@@ -14,7 +14,7 @@ type Survey = {
 
 export const SurveyListPage = () => {
   const navigation = useRouteNavigation();
-  const { toSurveyDetail, toSurveyList } = navigation;
+  const { toSurveyDetail } = navigation;
   const onClickSurvey = ({ surveyId }: { surveyId: string }) => {
     toSurveyDetail({ surveyId });
   };
@@ -71,7 +71,7 @@ export const SurveyListPage = () => {
 
   return (
     <div>
-      <NavigationHeader title="설문조사 목록" to={toSurveyList} />
+      <TitleHeader title="설문조사 목록" />
       {mockSurveys.map((item) => {
         if (item.winners.length === 0) {
           return <UnfinishedSurvey key={item.id} survey={item} />;

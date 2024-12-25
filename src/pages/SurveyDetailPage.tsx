@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 
-import { NavigationHeader } from '../components/header/NavigationHeader';
+import { NavigationHeader } from '../components/header';
 import { useRouteNavigation } from '../hooks/useRouteNavigation';
 import { mockSurveys } from '../mocks/surveys';
 
