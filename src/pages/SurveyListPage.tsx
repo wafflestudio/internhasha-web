@@ -1,4 +1,5 @@
 import { TitleHeader } from '../components/header';
+import { Layout, MainLayout } from '../components/layout';
 import { useRouteNavigation } from '../hooks/useRouteNavigation';
 import { mockSurveys } from '../mocks/surveys';
 
@@ -26,21 +27,22 @@ export const SurveyListPage = () => {
         onClick={() => {
           onClickSurvey({ surveyId: survey.id });
         }}
-        style={{
-          border: '1px solid #ccc',
-          borderRadius: '8px',
-          padding: '10px',
-          margin: '10px 0',
-          cursor: 'pointer',
-        }}
+        className="flex flex-col gap-2 p-4 rounded border-b hover:bg-gray-200"
       >
-        <p>{survey.title}</p>
-        <p>{survey.writer}</p>
-        <p>{survey.reward}</p>
-        <p>종료</p>
-        {survey.winners.map((item, index) => (
-          <p key={`${survey.id}-${index}`}>{item}</p>
-        ))}
+        <div className="flex gap-2">
+          <span className="text-xs p-1 rounded bg-red text-white ">종료</span>
+          <span>{survey.title}</span>
+        </div>
+        <div className="flex flex-col gap-1 text-sm text-gray-400">
+          <span>{survey.reward}</span>
+          <div className="flex gap-2 text-sm">
+            <span className="text-sm">당첨자: </span>
+            {survey.winners.map((item, index) => {
+              const displayEmail = item.substring(0, 4);
+              return <p key={`${survey.id}-${index}`}>{displayEmail}****</p>;
+            })}
+          </div>
+        </div>
       </div>
     );
   };
@@ -52,33 +54,34 @@ export const SurveyListPage = () => {
         onClick={() => {
           onClickSurvey({ surveyId: survey.id });
         }}
-        style={{
-          border: '1px solid #ccc',
-          borderRadius: '8px',
-          padding: '10px',
-          margin: '10px 0',
-          cursor: 'pointer',
-        }}
+        className="flex flex-col gap-2 p-4 rounded border-b hover:bg-gray-200"
       >
-        <p>{survey.title}</p>
-        <p>{survey.writer}</p>
-        <p>{survey.reward}</p>
-        <p>진행 중</p>
-        <p>예상 소요 시간: {survey.time}</p>
+        <div className="flex gap-2">
+          <span className="text-xs p-1 rounded bg-green text-white font-bold">
+            진행 중
+          </span>
+          <span>{survey.title}</span>
+        </div>
+        <div className="flex flex-col gap-1 text-sm text-gray-400">
+          <span>{survey.reward}</span>
+          <span>예상 소요 시간: {survey.time}</span>
+        </div>
       </div>
     );
   };
 
   return (
-    <div>
-      <TitleHeader title="설문조사 목록" />
-      {mockSurveys.map((item) => {
-        if (item.winners.length === 0) {
-          return <UnfinishedSurvey key={item.id} survey={item} />;
-        }
+    <Layout>
+      <TitleHeader title="📝 설문조사 목록" />
+      <MainLayout>
+        {mockSurveys.map((item) => {
+          if (item.winners.length === 0) {
+            return <UnfinishedSurvey key={item.id} survey={item} />;
+          }
 
-        return <FinishedSurvey key={item.id} survey={item} />;
-      })}
-    </div>
+          return <FinishedSurvey key={item.id} survey={item} />;
+        })}
+      </MainLayout>
+    </Layout>
   );
 };
