@@ -30,9 +30,7 @@ export const SurveyListPage = () => {
         className="flex flex-col gap-2 p-4 rounded border-b hover:bg-gray-200"
       >
         <div className="flex gap-2">
-          <span className="text-xs p-1 rounded bg-red text-white font-bold">
-            종료
-          </span>
+          <span className="text-xs p-1 rounded bg-red text-white ">종료</span>
           <span>{survey.title}</span>
         </div>
         <div className="flex flex-col gap-1 text-sm text-gray-400">
