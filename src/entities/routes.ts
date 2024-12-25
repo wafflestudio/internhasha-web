@@ -1,8 +1,6 @@
 export const PATH = {
-  INDEX: '/',
-  SURVEY_LIST: '/survey',
+  SURVEY_LIST: '/',
   SURVEY_DETAIL: '/survey/:surveyId',
-  ADMIN: '/admin',
   CREATE: {
     SURVEY_DETAIL: ({ surveyId }: { surveyId: string }) =>
       `/survey/${surveyId}`,
