@@ -1,9 +1,32 @@
-import './reset.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { useReducer } from 'react';
+import { PATH } from './entities/routes';
+import { AdminPage } from './pages/AdminPage';
+import { LandingPage } from './pages/LandingPage';
+import { SurveyDetailPage } from './pages/SurveyDetailPage';
+import { SurveyListPage } from './pages/SurveyListPage';
+
+const publicRoutes = [
+  {
+    path: PATH.INDEX,
+    element: <LandingPage />,
+  },
+  {
+    path: PATH.SURVEY_LIST,
+    element: <SurveyListPage />,
+  },
+  {
+    path: PATH.SURVEY_DETAIL,
+    element: <SurveyDetailPage />,
+  },
+  {
+    path: PATH.ADMIN,
+    element: <AdminPage />,
+  },
+];
+
+const routers = createBrowserRouter([...publicRoutes]);
 
 export const App = () => {
-  const [count, increment] = useReducer((c: number) => c + 1, 0);
-
-  return <button onClick={increment}>{count}</button>;
+  return <RouterProvider router={routers} />;
 };
