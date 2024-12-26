@@ -31,4 +31,4 @@ jobs:
           AWS_REGION: ap-northeast-2
         run: |
           aws s3 sync ./dist s3://wafflestudio-22.5-project-dev --delete
-          aws cloudfront create-invalidation --distribution-id d1vq7k80ej9gk7 --paths "/*"
+          aws cloudfront create-invalidation --distribution-id E477F9UMW3O88 --paths "/*"
