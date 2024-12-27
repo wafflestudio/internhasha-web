@@ -6,7 +6,9 @@ export const App = () => {
 
   const handleButtonClick = async () => {
     try {
-      const res = await fetch(`http://43.201.27.77:8080/api/echo/${message}`);
+      const res = await fetch(
+        `https://www.survey-josha.site/api/echo/${message}`,
+      );
       const data = await res.text();
       setResponse(data);
     } catch (error) {
