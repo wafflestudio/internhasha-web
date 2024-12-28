@@ -35,7 +35,6 @@ export const App = () => {
     API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
   };
 
-  
   const externalCall = async (content: ExternalCallParams) => {
     const response = await fetch(`${ENV.API_BASE_URL}/${content.path}`, {
       method: content.method,
