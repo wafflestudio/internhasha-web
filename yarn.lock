@@ -619,6 +619,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.62.9":
+  version: 5.62.9
+  resolution: "@tanstack/query-core@npm:5.62.9"
+  checksum: 10c0/3d0708ec761563bbb5c5efa97160d10ed891b63a61cc24ebc04c24d8196e7fa5cde89ea220e70546fc94066fa1034c1a368138dab3f353c82846cc5f9595a7fc
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:5.62.11":
+  version: 5.62.11
+  resolution: "@tanstack/react-query@npm:5.62.11"
+  dependencies:
+    "@tanstack/query-core": "npm:5.62.9"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10c0/358ffb3d80aba9e1dec51205b318ff9d162c5ba54a79e44ddcf3986fcf6529a4b2cb9504dbabd39cdfc164f6215e3fcd59e5e174f8b4c670e164d13ad9ba3034
+  languageName: node
+  linkType: hard
+
 "@types/cookie@npm:^0.6.0":
   version: 0.6.0
   resolution: "@types/cookie@npm:0.6.0"
@@ -3338,6 +3356,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "seminar-2024-frontend-template@workspace:."
   dependencies:
+    "@tanstack/react-query": "npm:5.62.11"
     "@types/node": "npm:22.7.5"
     "@types/react": "npm:18.3.11"
     "@types/react-dom": "npm:18.3.1"

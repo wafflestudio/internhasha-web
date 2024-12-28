@@ -1,5 +1,5 @@
+import type { EchoMessage } from '@/entities/echo';
 import type { ServiceResponse } from '@/entities/response';
-import type { EchoMessage } from '@/feature/echo/entities';
 import type { Apis } from '@/shared/api';
 
 export type EchoService = {

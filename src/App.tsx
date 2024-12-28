@@ -1,48 +1,66 @@
-import { useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import { PATH } from '@/entities/route';
+import { implEchoService } from '@/feature/echo';
+import { EchoPage } from '@/pages/EchoPage';
+import { LandingPage } from '@/pages/LandingPage';
+import { type ExternalCallParams, implApi } from '@/shared/api';
+import { ServiceContext } from '@/shared/context/ServiceContext';
+
+const publicRoutes = [
+  {
+    path: PATH.INDEX,
+    element: <LandingPage />,
+  },
+  {
+    path: PATH.ECHO,
+    element: <EchoPage />,
+  },
+];
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+});
+
+const routers = createBrowserRouter([...publicRoutes]);
 
 export const App = () => {
-  const [message, setMessage] = useState('');
-  const [response, setResponse] = useState('');
+  const ENV = {
+    API_BASE_URL: 'https://www.survey-josha.site',
+  };
+  const externalCall = async (content: ExternalCallParams) => {
+    const response = await fetch(`${ENV.API_BASE_URL}/${content.path}`, {
+      method: content.method,
+      headers: content.headers,
+      ...(content.body !== undefined
+        ? { body: JSON.stringify(content.body) }
+        : {}),
+    });
 
-  const handleButtonClick = async () => {
-    try {
-      const res = await fetch(
-        `https://www.survey-josha.site/api/echo/${message}`,
-      );
-      const data = await res.text();
-      setResponse(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      setResponse('Error fetching data. Please try again.');
-    }
+    const responseBody = (await response.json().catch(() => null)) as unknown;
+
+    return {
+      status: response.status,
+      data: responseBody,
+    };
+  };
+
+  const apis = implApi({ externalCall });
+  const services = {
+    echoService: implEchoService({ apis }),
   };
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Echo Message</h1>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => {
-          setMessage(e.target.value);
-        }}
-        placeholder="Type your message"
-        style={{ padding: '10px', width: '300px', fontSize: '16px' }}
-      />
-      <button
-        onClick={() => void handleButtonClick()}
-        style={{
-          padding: '10px 20px',
-          marginLeft: '10px',
-          fontSize: '16px',
-          cursor: 'pointer',
-        }}
-      >
-        Send
-      </button>
-      <div style={{ marginTop: '20px', fontSize: '18px', color: '#333' }}>
-        <strong>Response:</strong> {response}
-      </div>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <ServiceContext.Provider value={services}>
+        <RouterProvider router={routers} />
+      </ServiceContext.Provider>
+    </QueryClientProvider>
   );
 };
