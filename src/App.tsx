@@ -32,8 +32,10 @@ const routers = createBrowserRouter([...publicRoutes]);
 
 export const App = () => {
   const ENV = {
-    API_BASE_URL: 'https://www.survey-josha.site',
+    API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
   };
+
+  
   const externalCall = async (content: ExternalCallParams) => {
     const response = await fetch(`${ENV.API_BASE_URL}/${content.path}`, {
       method: content.method,
