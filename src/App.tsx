@@ -44,6 +44,20 @@ export const App = () => {
         : {}),
     });
 
+    const echoRegex = /^echo\/.*$/;
+
+    if (echoRegex.test(content.path)) {
+      const responseText = (await response.text().catch(() => null)) as string;
+      const responseBody = {
+        message: responseText,
+      };
+
+      return {
+        status: response.status,
+        data: responseBody,
+      };
+    }
+
     const responseBody = (await response.json().catch(() => null)) as unknown;
 
     return {

@@ -12,7 +12,7 @@ export type ErrorResponse<Status extends number = 400 | 401 | 403 | 404 | 500> =
   {
     status: Status;
     data: {
-      message: string;
+      error: string;
     };
   };
 

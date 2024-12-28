@@ -4,7 +4,11 @@ import type {
   ResponseNecessary,
   SuccessResponse,
 } from '@/shared/api/entities/params';
-import type { EchoParams } from '@/shared/api/entities/schemas';
+import type {
+  EchoParams,
+  PretotypeUserSubmitDto,
+  PretotypeUserSubmitRequest,
+} from '@/shared/api/entities/schemas';
 
 type GetApisProps = {
   callWithToken: <R extends ResponseNecessary>(
@@ -27,12 +31,18 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
     'GET /echo/:message': ({ params }: { params: EchoParams }) =>
       callWithoutToken<SuccessResponse<never>>({
         method: 'GET',
-        path: `echo/${params.message}/`,
+        path: `echo/${params.message}`,
       }),
-    'GET /echo': ({ token }: { token: string }) =>
-      callWithToken({
+    'POST /pretotype': ({ body }: { body: PretotypeUserSubmitRequest }) =>
+      callWithoutToken<SuccessResponse<PretotypeUserSubmitDto>>({
+        method: 'POST',
+        path: 'pretotype',
+        body,
+      }),
+    'GET /pretotype/mock': ({ token }: { token: string }) =>
+      callWithToken<SuccessResponse<PretotypeUserSubmitDto[]>>({
         method: 'GET',
-        path: 'echo',
+        path: 'pretotype/list',
         token,
       }),
   }) satisfies Record<string, Api>;
