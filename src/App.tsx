@@ -32,6 +32,7 @@ const routers = createBrowserRouter([...publicRoutes]);
 
 export const App = () => {
   const ENV = {
+    APP_ENV: import.meta.env.MODE as 'prod' | 'dev',
     API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
   };
 
