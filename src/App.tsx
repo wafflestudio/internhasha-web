@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Route, Routes } from 'react-router';
 
 import { PATH } from '@/entities/route';
 import { implEchoService } from '@/feature/echo';
@@ -8,16 +8,14 @@ import { LandingPage } from '@/pages/LandingPage';
 import { type ExternalCallParams, implApi } from '@/shared/api';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 
-const publicRoutes = [
-  {
-    path: PATH.INDEX,
-    element: <LandingPage />,
-  },
-  {
-    path: PATH.ECHO,
-    element: <EchoPage />,
-  },
-];
+const RouterProvider = () => {
+  return (
+    <Routes>
+      <Route path={PATH.INDEX} element={<LandingPage />} />
+      <Route path={PATH.ECHO} element={<EchoPage />} />
+    </Routes>
+  );
+};
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,8 +25,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-const routers = createBrowserRouter([...publicRoutes]);
 
 export const App = () => {
   const ENV = {
@@ -75,7 +71,7 @@ export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ServiceContext.Provider value={services}>
-        <RouterProvider router={routers} />
+        <RouterProvider />
       </ServiceContext.Provider>
     </QueryClientProvider>
   );

@@ -1,4 +1,4 @@
-import { useRouteNavigation } from '@/shared/navigate/hooks';
+import { useRouteNavigation } from '@/shared/route/hooks';
 
 export const LandingPage = () => {
   const { toEcho } = useRouteNavigation();

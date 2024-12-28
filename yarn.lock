@@ -3128,18 +3128,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:7.1.1":
-  version: 7.1.1
-  resolution: "react-router-dom@npm:7.1.1"
-  dependencies:
-    react-router: "npm:7.1.1"
-  peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
-  checksum: 10c0/2dc5b231dd21aab21378c615b1e373149007d173e90db984e6f708b5ee4b28923b3cf88ce7d6f727be927829b37ba37c01436f9f7abeb84ba3d1bfc9ecd4bc72
-  languageName: node
-  linkType: hard
-
 "react-router@npm:7.1.1":
   version: 7.1.1
   resolution: "react-router@npm:7.1.1"
@@ -3367,7 +3355,7 @@ __metadata:
     prettier: "npm:3.3.3"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-    react-router-dom: "npm:7.1.1"
+    react-router: "npm:7.1.1"
     typescript: "npm:5.6.3"
     vite: "npm:5.4.9"
   languageName: unknown

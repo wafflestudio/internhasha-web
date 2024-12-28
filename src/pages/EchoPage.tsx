@@ -1,5 +1,5 @@
 import { MessageUppercaseConverter, SendSubmit } from '@/feature/echo';
-import { useRouteNavigation } from '@/shared/navigate/hooks';
+import { useRouteNavigation } from '@/shared/route/hooks';
 
 export const EchoPage = () => {
   const { toMain } = useRouteNavigation();
