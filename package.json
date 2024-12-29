@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode dev",
+    "mock": "vite --mode mock",
     "build": "tsc -b && vite build --mode prod",
     "types:check": "tsc",
     "format:check": "prettier --check .",
@@ -33,5 +34,10 @@
     "typescript": "5.6.3",
     "vite": "5.4.9"
   },
-  "packageManager": "yarn@4.4.1"
+  "packageManager": "yarn@4.4.1",
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
 }
