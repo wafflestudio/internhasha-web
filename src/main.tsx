@@ -2,7 +2,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 
-import { App } from './App';
+import { App } from '@/App';
+import { EnvContext } from '@/shared/context/EnvContext';
 
 const root = document.getElementById('root');
 
@@ -15,9 +16,11 @@ const ENV = {
 
 async function enableMocking() {
   if (ENV.APP_ENV === 'mock') {
-    const { worker } = await import('@/shared/mocks');
+    const { worker } = await import('@/mocks');
 
-    return worker.start();
+    return worker.start({
+      onUnhandledRequest: 'bypass',
+    });
   }
   return;
 }
@@ -25,9 +28,11 @@ async function enableMocking() {
 void enableMocking().then(() => {
   createRoot(root).render(
     <StrictMode>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <EnvContext.Provider value={ENV}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </EnvContext.Provider>
     </StrictMode>,
   );
 });

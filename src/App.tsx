@@ -6,6 +6,8 @@ import { EchoPage } from '@/pages/EchoPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { implEchoService } from '@/service/echoService';
 import { type ExternalCallParams, implApi } from '@/shared/api';
+import { EnvContext } from '@/shared/context/EnvContext';
+import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 
 const RouterProvider = () => {
@@ -27,10 +29,7 @@ const queryClient = new QueryClient({
 });
 
 export const App = () => {
-  const ENV = {
-    APP_ENV: import.meta.env.MODE as 'prod' | 'dev' | 'mock',
-    API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
-  };
+  const ENV = useGuardContext(EnvContext);
 
   const externalCall = async (content: ExternalCallParams) => {
     const response = await fetch(`${ENV.API_BASE_URL}/${content.path}`, {
