@@ -1,7 +1,3 @@
-import { http } from 'msw';
+import { echoHandlers } from '@/shared/mocks/echo/handlers';
 
-import { echoResolver } from '@/shared/mocks/resolvers/echoResolvers';
-
-export const handlers = [
-  http.post('/api/pretotype', echoResolver.pretotypeAddUser),
-];
+export const handlers = [...echoHandlers];
