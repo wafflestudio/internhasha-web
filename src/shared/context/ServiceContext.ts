@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import type { EchoService } from '@/feature/echo';
+import type { EchoService } from '@/service/echoService';
 
 export type ServiceContext = {
   echoService: EchoService;

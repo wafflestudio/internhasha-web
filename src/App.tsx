@@ -2,9 +2,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Route, Routes } from 'react-router';
 
 import { PATH } from '@/entities/route';
-import { implEchoService } from '@/feature/echo';
 import { EchoPage } from '@/pages/EchoPage';
 import { LandingPage } from '@/pages/LandingPage';
+import { implEchoService } from '@/service/echoService';
 import { type ExternalCallParams, implApi } from '@/shared/api';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 
