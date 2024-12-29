@@ -1,48 +1,78 @@
-import { useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Route, Routes } from 'react-router';
+
+import { PATH } from '@/entities/route';
+import { EchoPage } from '@/pages/EchoPage';
+import { LandingPage } from '@/pages/LandingPage';
+import { implEchoService } from '@/service/echoService';
+import { type ExternalCallParams, implApi } from '@/shared/api';
+import { ServiceContext } from '@/shared/context/ServiceContext';
+
+const RouterProvider = () => {
+  return (
+    <Routes>
+      <Route path={PATH.INDEX} element={<LandingPage />} />
+      <Route path={PATH.ECHO} element={<EchoPage />} />
+    </Routes>
+  );
+};
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+});
 
 export const App = () => {
-  const [message, setMessage] = useState('');
-  const [response, setResponse] = useState('');
+  const ENV = {
+    APP_ENV: import.meta.env.MODE as 'prod' | 'dev',
+    API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
+  };
 
-  const handleButtonClick = async () => {
-    try {
-      const res = await fetch(
-        `https://www.survey-josha.site/api/echo/${message}`,
-      );
-      const data = await res.text();
-      setResponse(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      setResponse('Error fetching data. Please try again.');
+  const externalCall = async (content: ExternalCallParams) => {
+    const response = await fetch(`${ENV.API_BASE_URL}/${content.path}`, {
+      method: content.method,
+      headers: content.headers,
+      ...(content.body !== undefined
+        ? { body: JSON.stringify(content.body) }
+        : {}),
+    });
+
+    const echoRegex = /^echo\/.*$/;
+
+    if (echoRegex.test(content.path)) {
+      const responseText = (await response.text().catch(() => null)) as string;
+      const responseBody = {
+        message: responseText,
+      };
+
+      return {
+        status: response.status,
+        data: responseBody,
+      };
     }
+
+    const responseBody = (await response.json().catch(() => null)) as unknown;
+
+    return {
+      status: response.status,
+      data: responseBody,
+    };
+  };
+
+  const apis = implApi({ externalCall });
+  const services = {
+    echoService: implEchoService({ apis }),
   };
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Echo Message</h1>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => {
-          setMessage(e.target.value);
-        }}
-        placeholder="Type your message"
-        style={{ padding: '10px', width: '300px', fontSize: '16px' }}
-      />
-      <button
-        onClick={() => void handleButtonClick()}
-        style={{
-          padding: '10px 20px',
-          marginLeft: '10px',
-          fontSize: '16px',
-          cursor: 'pointer',
-        }}
-      >
-        Send
-      </button>
-      <div style={{ marginTop: '20px', fontSize: '18px', color: '#333' }}>
-        <strong>Response:</strong> {response}
-      </div>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <ServiceContext.Provider value={services}>
+        <RouterProvider />
+      </ServiceContext.Provider>
+    </QueryClientProvider>
   );
 };
