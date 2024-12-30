@@ -5,6 +5,7 @@ import { PATH } from '@/entities/route';
 import { EchoPage } from '@/pages/EchoPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { SignUpPage } from '@/pages/SignUpPage';
+import { implAuthService } from '@/service/authService';
 import { implEchoService } from '@/service/echoService';
 import { type ExternalCallParams, implApi } from '@/shared/api';
 import { EnvContext } from '@/shared/context/EnvContext';
@@ -67,6 +68,7 @@ export const App = () => {
   const apis = implApi({ externalCall });
   const services = {
     echoService: implEchoService({ apis }),
+    authService: implAuthService({ apis }),
   };
 
   return (

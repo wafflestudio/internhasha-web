@@ -6,7 +6,7 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 
 export const SendSubmit = () => {
   const [email, setEmail] = useState('');
-  const { sendMessage, date, isPending } = useSendSubmit();
+  const { sendMessage, message, isPending } = useSendSubmit();
 
   const handleButtonClick = () => {
     sendMessage({ email });
@@ -38,7 +38,7 @@ export const SendSubmit = () => {
         {isPending ? 'Sending...' : 'Send'}
       </button>
       <div style={{ marginTop: '20px', fontSize: '18px', color: '#333' }}>
-        <strong>등록 시간:</strong> {date}
+        <strong>등록 시간:</strong> {message}
       </div>
     </div>
   );
@@ -46,7 +46,7 @@ export const SendSubmit = () => {
 
 const useSendSubmit = () => {
   const { echoService } = useGuardContext(ServiceContext);
-  const [date, setDate] = useState('');
+  const [message, setMessage] = useState('');
 
   const { mutate: sendMessage, isPending } = useMutation({
     mutationFn: async ({ email }: { email: string }) => {
@@ -56,15 +56,15 @@ const useSendSubmit = () => {
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        setDate(response.data.createdAt); // Convert to uppercase
+        setMessage(response.data.createdAt); // Convert to uppercase
       } else {
-        setDate('오류가 발생했습니다. 잠시 후에 다시 시도해주세요.');
+        setMessage(response.message);
       }
     },
     onError: () => {
-      setDate('오류가 발생했습니다. 잠시 후에 다시 시도해주세요.');
+      setMessage('오류가 발생했습니다. 잠시 후에 다시 시도해주세요.');
     },
   });
 
-  return { sendMessage, date, isPending };
+  return { sendMessage, message, isPending };
 };

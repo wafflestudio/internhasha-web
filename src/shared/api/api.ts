@@ -6,8 +6,10 @@ import type {
 } from '@/shared/api/entities/params';
 import type {
   EchoParams,
+  LocalSignUpRequest,
   PretotypeUserSubmitDto,
   PretotypeUserSubmitRequest,
+  SignUpResponse,
 } from '@/shared/api/entities/schemas';
 
 type GetApisProps = {
@@ -37,6 +39,12 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
       callWithoutToken<SuccessResponse<PretotypeUserSubmitDto>>({
         method: 'POST',
         path: 'pretotype',
+        body,
+      }),
+    'POST /signup': ({ body }: { body: LocalSignUpRequest }) =>
+      callWithoutToken<SuccessResponse<SignUpResponse>>({
+        method: 'POST',
+        path: 'signup',
         body,
       }),
     'GET /pretotype/mock': ({ token }: { token: string }) =>

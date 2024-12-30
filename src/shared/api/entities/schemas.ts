@@ -7,8 +7,20 @@ export type PretotypeUserSubmitRequest = {
   isSubscribed: boolean;
 };
 
+export type LocalSignUpRequest = {
+  id: string;
+  password: string;
+};
+
 export type PretotypeUserSubmitDto = {
   email: string;
   isSubscribed: boolean;
   createdAt: string;
+};
+
+export type SignUpResponse = {
+  id: string;
+  username: string;
+  refreshToken: string;
+  accessToken: string;
 };
