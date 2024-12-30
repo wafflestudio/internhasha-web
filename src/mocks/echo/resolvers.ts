@@ -1,13 +1,12 @@
-import { HttpResponse } from 'msw';
+import { HttpResponse, type HttpResponseResolver } from 'msw';
 
 import type {
   PretotypeAddUserRequest,
   PretotypeAddUserResponse,
 } from '@/mocks/echo/schemas';
-import type { Resolver } from '@/mocks/entities/resolver';
 
 type echoResolver = {
-  pretotypeAddUser: Resolver<PretotypeAddUserRequest, PretotypeAddUserResponse>;
+  pretotypeAddUser: HttpResponseResolver<never, PretotypeAddUserRequest, PretotypeAddUserResponse>;
 };
 
 export const echoResolver: echoResolver = {
