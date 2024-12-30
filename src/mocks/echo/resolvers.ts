@@ -6,7 +6,11 @@ import type {
 } from '@/mocks/echo/schemas';
 
 type echoResolver = {
-  pretotypeAddUser: HttpResponseResolver<never, PretotypeAddUserRequest, PretotypeAddUserResponse>;
+  pretotypeAddUser: HttpResponseResolver<
+    never,
+    PretotypeAddUserRequest,
+    PretotypeAddUserResponse
+  >;
 };
 
 export const echoResolver: echoResolver = {
