@@ -27,6 +27,7 @@ export const implApi = ({ externalCall }: ImplApiProps) => {
           ? { 'x-access-token': content.token }
           : {}),
       },
+      credentials: 'include',
     });
 
     return response as R;

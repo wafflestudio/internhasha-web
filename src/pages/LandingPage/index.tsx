@@ -1,5 +1,5 @@
 import { LogInForm } from '@/pages/LandingPage/LogInForm';
-import { useRouteNavigation } from '@/shared/route/hooks';
+import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LandingPage = () => {
   const { toEcho, toSignUp } = useRouteNavigation();

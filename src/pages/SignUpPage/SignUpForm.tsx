@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { authPresentation } from '@/presentation/authPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
-import { useRouteNavigation } from '@/shared/route/hooks';
+import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const SignUpForm = () => {
   const { LocalSignUp, responseMessage, isPending } = useSignUp();
@@ -16,6 +16,7 @@ export const SignUpForm = () => {
       LocalSignUp({ id: id.value, password: password.value });
     }
   };
+
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <h1>회원가입하기</h1>
@@ -96,7 +97,6 @@ const useSignUp = () => {
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        // TODO: 토큰 저장
         toMain();
       } else {
         setResponseMessage(response.message);

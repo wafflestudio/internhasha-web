@@ -10,7 +10,7 @@ type EchoPresentation = {
   useMessageValidator(): { input: StringInput };
 };
 
-export const MESSAGE_MAX_LENGTH = 500;
+const MESSAGE_MAX_LENGTH = 500;
 
 export const echoPresentation: EchoPresentation = {
   useMessageValidator: () => {
