@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router';
 import { PATH } from '@/entities/route';
 import { EchoPage } from '@/pages/EchoPage';
 import { LandingPage } from '@/pages/LandingPage';
+import { SignUpPage } from '@/pages/SignUpPage';
 import { implEchoService } from '@/service/echoService';
 import { type ExternalCallParams, implApi } from '@/shared/api';
 import { EnvContext } from '@/shared/context/EnvContext';
@@ -15,6 +16,7 @@ const RouterProvider = () => {
     <Routes>
       <Route path={PATH.INDEX} element={<LandingPage />} />
       <Route path={PATH.ECHO} element={<EchoPage />} />
+      <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
     </Routes>
   );
 };
