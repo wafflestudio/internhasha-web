@@ -1,18 +1,19 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { authPresentation } from '@/presentation/authPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/hooks';
 
 export const SignUpForm = () => {
-  const [id, setId] = useState('');
-  const [password, setPassword] = useState('');
   const { LocalSignUp, responseMessage, isPending } = useSignUp();
+  const { input: id } = authPresentation.useIdValidator();
+  const { input: password } = authPresentation.usePasswordValidator();
 
   const onSubmit = () => {
-    if (password !== '' && id !== '') {
-      LocalSignUp({ id, password });
+    if (!id.isError && !password.isError) {
+      LocalSignUp({ id: id.value, password: password.value });
     }
   };
   return (
@@ -28,25 +29,41 @@ export const SignUpForm = () => {
         <input
           id="id"
           type="text"
-          value={id}
+          value={id.value}
           onChange={(e) => {
-            setId(e.target.value);
+            id.onChange(e.target.value);
           }}
           placeholder="아이디를 입력하세요"
           disabled={isPending}
           style={{ padding: '10px', width: '300px', fontSize: '16px' }}
         />
+        {id.isError && (
+          <div style={{ marginTop: '20px', fontSize: '12px', color: 'black' }}>
+            <strong>
+              아이디는 4~20자리이며 영문 대소문자 또는 숫자 또는 -, _를 사용할
+              수 있습니다.
+            </strong>
+          </div>
+        )}
         <input
           id="password"
           type="password"
-          value={password}
+          value={password.value}
           onChange={(e) => {
-            setPassword(e.target.value);
+            password.onChange(e.target.value);
           }}
           placeholder="비밀번호를 입력하세요"
           disabled={isPending}
           style={{ padding: '10px', width: '300px', fontSize: '16px' }}
         />
+        {password.isError && (
+          <div style={{ marginTop: '20px', fontSize: '12px', color: 'black' }}>
+            <strong>
+              비밀번호는 8~20자리이며 영문 대소문자, 숫자, 특수문자(@#$!^*) 중
+              하나를 반드시 포함해야 합니다.
+            </strong>
+          </div>
+        )}
         <button
           type="submit"
           form="signInForm"

@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-import { MESSAGE_MAX_LENGTH } from '@/entities/echo';
-
 type StringInput = {
   isError: boolean;
   value: string;
@@ -11,6 +9,8 @@ type StringInput = {
 type EchoPresentation = {
   useMessageValidator(): { input: StringInput };
 };
+
+export const MESSAGE_MAX_LENGTH = 500;
 
 export const echoPresentation: EchoPresentation = {
   useMessageValidator: () => {
