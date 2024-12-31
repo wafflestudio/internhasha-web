@@ -40,13 +40,16 @@ export const App = () => {
   const ENV = useGuardContext(EnvContext);
 
   const externalCall = async (content: ExternalCallParams) => {
-    const response = await fetch(`${ENV.API_BASE_URL}/${content.path}`, {
-      method: content.method,
-      headers: content.headers,
-      ...(content.body !== undefined
-        ? { body: JSON.stringify(content.body) }
-        : {}),
-    });
+    const response = await fetch(
+      `${ENV.APP_ENV === 'prod' ? ENV.API_BASE_URL : '/api'}/${content.path}`,
+      {
+        method: content.method,
+        headers: content.headers,
+        ...(content.body !== undefined
+          ? { body: JSON.stringify(content.body) }
+          : {}),
+      },
+    );
 
     const echoRegex = /^echo\/.*$/;
 

@@ -61,7 +61,7 @@ export const authPresentation: AuthPresentation = {
         onChange: handleNameChange,
       },
       phoneNumber: {
-        isError: !PHONE_NUMBER_REGEX.test(name),
+        isError: !PHONE_NUMBER_REGEX.test(phoneNumber),
         value: phoneNumber,
         onChange: handlePhoneNumberChange,
       },

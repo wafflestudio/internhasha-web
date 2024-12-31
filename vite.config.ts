@@ -5,4 +5,13 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [react()],
   resolve: { alias: { '@': '/src' } },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://www.survey-josha.site',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });
