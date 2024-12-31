@@ -7,42 +7,63 @@ type StringInput = {
 };
 
 type AuthPresentation = {
-  useIdValidator(): { input: StringInput };
-  usePasswordValidator(): { input: StringInput };
+  useValidator(): {
+    email: StringInput;
+    password: StringInput;
+    name: StringInput;
+    phoneNumber: StringInput;
+  };
 };
 
-const ID_REGEX = /^[a-zA-Z][a-zA-Z0-9_-]{4,19}$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@snu\.ac\.kr$/;
 const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!^*])[A-Za-z\d@#$!^*]{8,20}$/;
+const NAME_REGEX = /^[a-zA-Z][a-zA-Z0-9_-]{4,19}$/;
+const PHONE_NUMBER_REGEX = /^(0\d{1,2})-?\d{3,4}-?\d{4}$/;
 
 export const authPresentation: AuthPresentation = {
-  useIdValidator: () => {
-    const [id, setId] = useState('');
-
-    const handleChange = (input: string) => {
-      setId(input);
-    };
-
-    return {
-      input: {
-        isError: !ID_REGEX.test(id),
-        value: id,
-        onChange: handleChange,
-      },
-    };
-  },
-  usePasswordValidator: () => {
+  useValidator: () => {
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
 
-    const handleChange = (input: string) => {
+    const handleEmailChange = (input: string) => {
+      setEmail(input);
+    };
+
+    const handlePasswordChange = (input: string) => {
       setPassword(input);
     };
 
+    const handleNameChange = (input: string) => {
+      setName(input);
+    };
+
+    const handlePhoneNumberChange = (input: string) => {
+      setPhoneNumber(input);
+    };
+
     return {
-      input: {
+      email: {
+        isError: !EMAIL_REGEX.test(email),
+        value: email,
+        onChange: handleEmailChange,
+      },
+      password: {
         isError: !PASSWORD_REGEX.test(password),
         value: password,
-        onChange: handleChange,
+        onChange: handlePasswordChange,
+      },
+      name: {
+        isError: !NAME_REGEX.test(name),
+        value: name,
+        onChange: handleNameChange,
+      },
+      phoneNumber: {
+        isError: !PHONE_NUMBER_REGEX.test(name),
+        value: phoneNumber,
+        onChange: handlePhoneNumberChange,
       },
     };
   },

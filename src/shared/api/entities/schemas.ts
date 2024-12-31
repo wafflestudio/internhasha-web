@@ -8,8 +8,17 @@ export type PretotypeUserSubmitRequest = {
 };
 
 export type LocalSignUpRequest = {
-  id: string;
+  name: string;
+  email: string;
+  phoneNumber: string;
   password: string;
+  authProvider: string;
+};
+
+export type LocalSignInRequest = {
+  email: string;
+  password: string;
+  authProvider: string;
 };
 
 export type PretotypeUserSubmitDto = {
@@ -19,8 +28,19 @@ export type PretotypeUserSubmitDto = {
 };
 
 export type SignUpResponse = {
-  id: string;
-  username: string;
-  refreshToken: string;
+  id: BigInteger;
+  name: string;
+  email: string;
+  phoneNumber: string;
+};
+
+export type SignInResponse = {
+  userResponse: {
+    id: BigInteger;
+    name: string;
+    email: string;
+    phoneNumber: string;
+  };
   accessToken: string;
+  refreshToken: string;
 };

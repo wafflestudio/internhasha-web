@@ -8,12 +8,22 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const SignUpForm = () => {
   const { LocalSignUp, responseMessage, isPending } = useSignUp();
-  const { input: id } = authPresentation.useIdValidator();
-  const { input: password } = authPresentation.usePasswordValidator();
+  const { email, password, name, phoneNumber } =
+    authPresentation.useValidator();
 
   const onSubmit = () => {
-    if (!id.isError && !password.isError) {
-      LocalSignUp({ id: id.value, password: password.value });
+    if (
+      !email.isError &&
+      !password.isError &&
+      !name.isError &&
+      !phoneNumber.isError
+    ) {
+      LocalSignUp({
+        name: name.value,
+        email: email.value,
+        phoneNumber: phoneNumber.value,
+        password: password.value,
+      });
     }
   };
 
@@ -21,29 +31,26 @@ export const SignUpForm = () => {
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <h1>회원가입하기</h1>
       <form
-        id="signInForm"
+        id="signUpForm"
         onSubmit={(event) => {
           event.preventDefault();
           onSubmit();
         }}
       >
         <input
-          id="id"
+          id="email"
           type="text"
-          value={id.value}
+          value={email.value}
           onChange={(e) => {
-            id.onChange(e.target.value);
+            email.onChange(e.target.value);
           }}
-          placeholder="아이디를 입력하세요"
+          placeholder="스누 메일을 입력하세요"
           disabled={isPending}
           style={{ padding: '10px', width: '300px', fontSize: '16px' }}
         />
-        {id.isError && (
+        {email.isError && (
           <div style={{ marginTop: '20px', fontSize: '12px', color: 'black' }}>
-            <strong>
-              아이디는 4~20자리이며 영문 대소문자 또는 숫자 또는 -, _를 사용할
-              수 있습니다.
-            </strong>
+            <strong>snu.ac.kr로 끝나는 메일을 작성해주세요.</strong>
           </div>
         )}
         <input
@@ -65,9 +72,44 @@ export const SignUpForm = () => {
             </strong>
           </div>
         )}
+        <input
+          id="name"
+          type="text"
+          value={name.value}
+          onChange={(e) => {
+            name.onChange(e.target.value);
+          }}
+          placeholder="아이디를 입력하세요"
+          disabled={isPending}
+          style={{ padding: '10px', width: '300px', fontSize: '16px' }}
+        />
+        {name.isError && (
+          <div style={{ marginTop: '20px', fontSize: '12px', color: 'black' }}>
+            <strong>
+              아이디는 4~20자리이며 영문 대소문자 또는 숫자 또는 -, _를 사용할
+              수 있습니다.
+            </strong>
+          </div>
+        )}
+        <input
+          id="phoneNumber"
+          type="text"
+          value={phoneNumber.value}
+          onChange={(e) => {
+            phoneNumber.onChange(e.target.value);
+          }}
+          placeholder="전화번호를 입력하세요"
+          disabled={isPending}
+          style={{ padding: '10px', width: '300px', fontSize: '16px' }}
+        />
+        {phoneNumber.isError && (
+          <div style={{ marginTop: '20px', fontSize: '12px', color: 'black' }}>
+            <strong>전화번호는 010-1111-1111의 형태로 작성해주세요.</strong>
+          </div>
+        )}
         <button
           type="submit"
-          form="signInForm"
+          form="signUpForm"
           style={{
             padding: '10px 20px',
             marginLeft: '10px',
@@ -92,8 +134,18 @@ const useSignUp = () => {
   const { toMain } = useRouteNavigation();
 
   const { mutate: LocalSignUp, isPending } = useMutation({
-    mutationFn: ({ id, password }: { id: string; password: string }) => {
-      return authService.localSignIn({ id, password });
+    mutationFn: ({
+      name,
+      email,
+      phoneNumber,
+      password,
+    }: {
+      name: string;
+      email: string;
+      password: string;
+      phoneNumber: string;
+    }) => {
+      return authService.localSignUp({ name, email, phoneNumber, password });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {

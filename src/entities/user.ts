@@ -1,4 +1,7 @@
 export type User = {
-  id: string;
-  username: string;
+  id: BigInteger;
+  name: string;
+  email: string;
+  password: string;
+  phoneNumber: string;
 };
