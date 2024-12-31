@@ -4,7 +4,7 @@ import { PATH } from '@/entities/route';
 
 export const useRouteNavigation = () => {
   const navigate = useNavigate();
-  const { INDEX, ECHO } = PATH;
+  const { INDEX, ECHO, SIGN_UP } = PATH;
 
   return {
     toMain: () => {
@@ -12,6 +12,9 @@ export const useRouteNavigation = () => {
     },
     toEcho: () => {
       void navigate(ECHO);
+    },
+    toSignUp: () => {
+      void navigate(SIGN_UP);
     },
   };
 };

@@ -21,6 +21,7 @@ export type ExternalCallParams = {
   path: string;
   body?: Record<string, unknown>;
   headers?: Record<string, string>;
+  credentials?: string;
 };
 
 export type InternalCallParams = {
