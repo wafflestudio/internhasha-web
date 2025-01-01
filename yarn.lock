@@ -473,6 +473,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-oauth/google@npm:0.12.1":
+  version: 0.12.1
+  resolution: "@react-oauth/google@npm:0.12.1"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 10c0/fe23e3c0a4d0b9999fcd7b932b1a42bf94fdab526473931d780d08742455b8861fc647857b3b491e258ecef4a407dbf7321440c0d00890e23059d487795f92fb
+  languageName: node
+  linkType: hard
+
 "@rollup/rollup-android-arm-eabi@npm:4.21.2":
   version: 4.21.2
   resolution: "@rollup/rollup-android-arm-eabi@npm:4.21.2"
@@ -3629,6 +3639,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "seminar-2024-frontend-template@workspace:."
   dependencies:
+    "@react-oauth/google": "npm:0.12.1"
     "@tanstack/react-query": "npm:5.62.11"
     "@types/node": "npm:22.7.5"
     "@types/react": "npm:18.3.11"
