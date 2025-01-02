@@ -18,6 +18,7 @@ export const TextInput = ({
       onChange={onChange}
       onKeyDown={onKeyDown}
       placeholder={placeholder}
+      style={{ padding: '10px', width: '300px', fontSize: '16px' }}
     />
   );
 };
