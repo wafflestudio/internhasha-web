@@ -32,12 +32,7 @@ export const LogInForm = () => {
         response={responseMessage}
         buttonDescription="로그인"
       >
-        <LabelContainer
-          label="이메일"
-          id="email"
-          isError={email.isError}
-          description="아이디는 4~20자리이며 영문 대소문자 또는 숫자 또는 -, _를 사용할 수 있습니다."
-        >
+        <LabelContainer label="이메일" id="email">
           <TextInput
             id="email"
             value={email.value}
@@ -48,12 +43,7 @@ export const LogInForm = () => {
             disabled={isPending}
           />
         </LabelContainer>
-        <LabelContainer
-          label="비밀번호"
-          id="password"
-          isError={password.isError}
-          description="비밀번호는 8~20자리이며 영문 대소문자, 숫자, 특수문자(@#$!^*) 중 하나를 반드시 포함해야 합니다."
-        >
+        <LabelContainer label="비밀번호" id="password">
           <TextInput
             id="password"
             type="password"
