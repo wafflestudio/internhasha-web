@@ -1,3 +1,4 @@
+import { Button } from '@/components/button';
 import { SignUpForm } from '@/pages/SignUpPage/SignUpForm';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
@@ -8,7 +9,7 @@ export const SignUpPage = () => {
     <div>
       <p>회원가입 페이지입니다.</p>
       <SignUpForm />
-      <button onClick={toMain}>메인으로 이동</button>
+      <Button onClick={toMain}>메인으로 이동</Button>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 
+import { Button } from '@/components/button';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const GoogleSocialSignUpForm = () => {
@@ -24,9 +25,9 @@ export const GoogleSocialSignUpForm = () => {
 
   return (
     <div>
-      <button onClick={handleClickGoogleSignUpButton}>
+      <Button onClick={handleClickGoogleSignUpButton}>
         구글 계정으로 가입하기 🚀
-      </button>
+      </Button>
       {error !== undefined && (
         <div>
           <span>{error}</span>

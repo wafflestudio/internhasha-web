@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useLocation } from 'react-router';
 
+import { Button } from '@/components/button';
 import { FormContainer } from '@/components/form';
 import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
@@ -57,7 +58,7 @@ export const EmailVerifyPage = () => {
             placeholder="스누 메일을 입력하세요"
             disabled={isPending}
           />
-          <button
+          <Button
             onClick={(event) => {
               event.preventDefault();
               handleClickEmailVerifyButton();
@@ -65,7 +66,7 @@ export const EmailVerifyPage = () => {
             disabled={isPending}
           >
             이메일 인증하기
-          </button>
+          </Button>
         </LabelContainer>
         <LabelContainer
           label="인증 코드"

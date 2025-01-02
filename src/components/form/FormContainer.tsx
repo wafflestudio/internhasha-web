@@ -5,6 +5,8 @@ interface FormContainerProps extends React.FormHTMLAttributes<HTMLFormElement> {
   buttonDescription: string;
 }
 
+import { SubmitButton } from '@/components/button';
+
 export const FormContainer = ({
   id,
   handleSubmit,
@@ -23,19 +25,9 @@ export const FormContainer = ({
         }}
       >
         {children}
-        <button
-          type="submit"
-          form={id}
-          style={{
-            padding: '10px 20px',
-            marginLeft: '10px',
-            fontSize: '16px',
-            cursor: 'pointer',
-          }}
-          disabled={disabled}
-        >
+        <SubmitButton form={id} disabled={disabled}>
           {buttonDescription}
-        </button>
+        </SubmitButton>
       </form>
       {response !== '' && (
         <div style={{ marginTop: '20px', fontSize: '18px', color: '#333' }}>
