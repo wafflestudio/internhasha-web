@@ -1,6 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { FormContainer } from '@/components/form';
+import { TextInput } from '@/components/input';
+import { LabelContainer } from '@/components/input/LabelContainer';
 import { authPresentation } from '@/presentation/authPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -22,68 +25,37 @@ export const LogInForm = () => {
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <h1>로그인하기</h1>
-      <form
-        id="signInForm"
-        onSubmit={(event) => {
-          event.preventDefault();
-          onSubmit();
-        }}
+      <FormContainer
+        id="SignInForm"
+        handleSubmit={onSubmit}
+        disabled={isPending}
+        response={responseMessage}
+        buttonDescription="로그인"
       >
-        <input
-          id="email"
-          type="text"
-          value={email.value}
-          onChange={(e) => {
-            email.onChange(e.target.value);
-          }}
-          placeholder="아이디를 입력하세요"
-          disabled={isPending}
-          style={{ padding: '10px', width: '300px', fontSize: '16px' }}
-        />
-        {email.isError && (
-          <div style={{ marginTop: '20px', fontSize: '12px', color: 'black' }}>
-            <strong>
-              아이디는 4~20자리이며 영문 대소문자 또는 숫자 또는 -, _를 사용할
-              수 있습니다.
-            </strong>
-          </div>
-        )}
-        <input
-          id="password"
-          type="password"
-          value={password.value}
-          onChange={(e) => {
-            password.onChange(e.target.value);
-          }}
-          placeholder="비밀번호를 입력하세요"
-          disabled={isPending}
-          style={{ padding: '10px', width: '300px', fontSize: '16px' }}
-        />
-        {password.isError && (
-          <div style={{ marginTop: '20px', fontSize: '12px', color: 'black' }}>
-            <strong>
-              비밀번호는 8~20자리이며 영문 대소문자, 숫자, 특수문자(@#$!^*) 중
-              하나를 반드시 포함해야 합니다.
-            </strong>
-          </div>
-        )}
-        <button
-          type="submit"
-          form="signInForm"
-          style={{
-            padding: '10px 20px',
-            marginLeft: '10px',
-            fontSize: '16px',
-            cursor: 'pointer',
-          }}
-          disabled={isPending}
-        >
-          Send
-        </button>
-      </form>
-      <div style={{ marginTop: '20px', fontSize: '18px', color: '#333' }}>
-        <strong>Response:</strong> {responseMessage}
-      </div>
+        <LabelContainer label="이메일" id="email">
+          <TextInput
+            id="email"
+            value={email.value}
+            onChange={(e) => {
+              email.onChange(e.target.value);
+            }}
+            placeholder="아이디를 입력하세요"
+            disabled={isPending}
+          />
+        </LabelContainer>
+        <LabelContainer label="비밀번호" id="password">
+          <TextInput
+            id="password"
+            type="password"
+            value={password.value}
+            onChange={(e) => {
+              password.onChange(e.target.value);
+            }}
+            placeholder="비밀번호를 입력하세요"
+            disabled={isPending}
+          />
+        </LabelContainer>
+      </FormContainer>
     </div>
   );
 };

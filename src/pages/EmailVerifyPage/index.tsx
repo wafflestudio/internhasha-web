@@ -2,6 +2,9 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useLocation } from 'react-router';
 
+import { FormContainer } from '@/components/form';
+import { TextInput } from '@/components/input';
+import { LabelContainer } from '@/components/input/LabelContainer';
 import { authPresentation } from '@/presentation/authPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -32,71 +35,57 @@ export const EmailVerifyPage = () => {
   return (
     <div>
       <h1>이메일 인증</h1>
-      <form
+      <FormContainer
         id="EmailVerifyForm"
-        onSubmit={(event) => {
-          event.preventDefault();
-          onSubmit();
-        }}
+        handleSubmit={onSubmit}
+        disabled={isPending}
+        response={responseMessage}
+        buttonDescription="회원가입 완료하기"
       >
-        <input
+        <LabelContainer
+          label="이메일"
           id="email"
-          type="text"
-          value={email.value}
-          onChange={(e) => {
-            email.onChange(e.target.value);
-          }}
-          placeholder="스누 메일을 입력하세요"
-          disabled={isPending}
-          style={{ padding: '10px', width: '300px', fontSize: '16px' }}
-        />
-        {email.isError && (
-          <div style={{ marginTop: '20px', fontSize: '12px', color: 'black' }}>
-            <strong>snu.ac.kr로 끝나는 메일을 작성해주세요.</strong>
-          </div>
-        )}
-        <button
-          onClick={(event) => {
-            event.preventDefault();
-            handleClickEmailVerifyButton();
-          }}
-          disabled={isPending}
+          isError={email.isError}
+          description="snu.ac.kr로 끝나는 메일을 작성해주세요."
         >
-          이메일 인증하기
-        </button>
-        {showCodeInput && (
-          <input
-            id="code"
-            type="text"
-            value={code.value}
+          <TextInput
+            id="email"
+            value={email.value}
             onChange={(e) => {
-              code.onChange(e.target.value);
+              email.onChange(e.target.value);
             }}
-            placeholder="인증 코드를 입력하세요"
+            placeholder="스누 메일을 입력하세요"
             disabled={isPending}
-            style={{ padding: '10px', width: '300px', fontSize: '16px' }}
           />
-        )}
-        <button
-          type="submit"
-          form="EmailVerifyForm"
-          style={{
-            padding: '10px 20px',
-            marginLeft: '10px',
-            fontSize: '16px',
-            cursor: 'pointer',
-          }}
-          disabled={isPending}
+          <button
+            onClick={(event) => {
+              event.preventDefault();
+              handleClickEmailVerifyButton();
+            }}
+            disabled={isPending}
+          >
+            이메일 인증하기
+          </button>
+        </LabelContainer>
+        <LabelContainer
+          label="인증 코드"
+          id="code"
+          isError={code.isError}
+          description="유효하지 않은 인증코드입니다."
         >
-          회원 가입하기
-        </button>
-      </form>
-
-      {responseMessage !== '' && (
-        <div style={{ marginTop: '20px', fontSize: '18px', color: '#333' }}>
-          <strong>Response:</strong> {responseMessage}
-        </div>
-      )}
+          {showCodeInput && (
+            <TextInput
+              id="code"
+              value={code.value}
+              onChange={(e) => {
+                code.onChange(e.target.value);
+              }}
+              placeholder="이메일 인증 코드를 입력하세요"
+              disabled={isPending}
+            />
+          )}
+        </LabelContainer>
+      </FormContainer>
     </div>
   );
 };
