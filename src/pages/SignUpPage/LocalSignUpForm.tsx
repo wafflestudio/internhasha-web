@@ -116,7 +116,7 @@ export const LocalSignUpForm = () => {
           }}
           disabled={isPending}
         >
-          Send
+          회원가입하기
         </button>
       </form>
       <div style={{ marginTop: '20px', fontSize: '18px', color: '#333' }}>

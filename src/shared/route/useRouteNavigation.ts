@@ -16,8 +16,8 @@ export const useRouteNavigation = () => {
     toSignUp: () => {
       void navigate(SIGN_UP);
     },
-    toVerifyEmail: () => {
-      void navigate(VERIFY_EMAIL, )
-    }
+    toVerifyEmail: ({ token }: { token: string }) => {
+      void navigate(VERIFY_EMAIL, { state: { token } });
+    },
   };
 };

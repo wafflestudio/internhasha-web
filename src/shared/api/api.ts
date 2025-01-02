@@ -8,10 +8,10 @@ import type {
   EchoParams,
   LocalSignInRequest,
   LocalSignUpRequest,
-  PretotypeUserSubmitDto,
   PretotypeUserSubmitRequest,
-  SignInResponse,
-  SignUpResponse,
+  PretotypeUserSubmitResponse,
+  SocialSignUpRequest,
+  UserWithTokenResponse,
 } from '@/shared/api/entities/schemas';
 
 type GetApisProps = {
@@ -38,25 +38,31 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         path: `echo/${params.message}`,
       }),
     'POST /pretotype': ({ body }: { body: PretotypeUserSubmitRequest }) =>
-      callWithoutToken<SuccessResponse<PretotypeUserSubmitDto>>({
+      callWithoutToken<SuccessResponse<PretotypeUserSubmitResponse>>({
         method: 'POST',
         path: 'pretotype',
         body,
       }),
     'POST /signup': ({ body }: { body: LocalSignUpRequest }) =>
-      callWithoutToken<SuccessResponse<SignUpResponse>>({
+      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
         method: 'POST',
         path: 'signup',
         body,
       }),
+    'POST /signup/google': ({ body }: { body: SocialSignUpRequest }) =>
+      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
+        method: 'POST',
+        path: 'signin',
+        body,
+      }),
     'POST /signin': ({ body }: { body: LocalSignInRequest }) =>
-      callWithoutToken<SuccessResponse<SignInResponse>>({
+      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
         method: 'POST',
         path: 'signin',
         body,
       }),
     'GET /pretotype/mock': ({ token }: { token: string }) =>
-      callWithToken<SuccessResponse<PretotypeUserSubmitDto[]>>({
+      callWithToken<SuccessResponse<PretotypeUserSubmitResponse[]>>({
         method: 'GET',
         path: 'pretotype/list',
         token,

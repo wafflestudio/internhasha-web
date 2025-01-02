@@ -1,13 +1,17 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 
+import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+
 export const GoogleSocialSignUpForm = () => {
-  const [token, setToken] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
+
+  const { toVerifyEmail } = useRouteNavigation();
 
   const popupGoogle = useGoogleLogin({
     onSuccess: (credentialResponse) => {
-      setToken(credentialResponse.access_token);
+      const token = credentialResponse.access_token;
+      toVerifyEmail({ token });
     },
     onError: (errorResponse) => {
       setError(errorResponse.error_description);
