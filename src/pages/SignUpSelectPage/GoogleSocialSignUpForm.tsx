@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/button';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
-export const GoogleSocialSignUpForm = () => {
+export const GoogleSocialSignUpButton = () => {
   const [error, setError] = useState<string | undefined>(undefined);
 
   const { toVerifyEmail } = useRouteNavigation();

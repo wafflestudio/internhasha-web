@@ -7,7 +7,9 @@ import { PATH } from '@/entities/route';
 import { EchoPage } from '@/pages/EchoPage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
-import { SignUpPage } from '@/pages/SignUpPage';
+import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
+import { SignInPage } from '@/pages/SignInPage';
+import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
 import { implAuthService } from '@/service/authService';
 import { implEchoService } from '@/service/echoService';
 import { type ExternalCallParams, implApi } from '@/shared/api';
@@ -23,7 +25,9 @@ const RouterProvider = () => {
     <Routes>
       <Route path={PATH.INDEX} element={<LandingPage />} />
       <Route path={PATH.ECHO} element={<EchoPage />} />
-      <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
+      <Route path={PATH.SIGN_IN} element={<SignInPage />} />
+      <Route path={PATH.SIGN_UP_SELECT} element={<SignUpSelectPage />} />
+      <Route path={PATH.SIGN_UP_LOCAL} element={<LocalSignUpPage />} />
       <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
     </Routes>
   );
