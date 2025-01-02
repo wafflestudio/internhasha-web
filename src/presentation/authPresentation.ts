@@ -12,6 +12,7 @@ type AuthPresentation = {
     password: StringInput;
     name: StringInput;
     phoneNumber: StringInput;
+    code: StringInput;
   };
 };
 
@@ -20,6 +21,7 @@ const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!^*])[A-Za-z\d@#$!^*]{8,20}$/;
 const NAME_REGEX = /^[a-zA-Z][a-zA-Z0-9_-]{4,19}$/;
 const PHONE_NUMBER_REGEX = /^(0\d{1,2})-?\d{3,4}-?\d{4}$/;
+const CODE_REGEX = /^\d{6}$/;
 
 export const authPresentation: AuthPresentation = {
   useValidator: () => {
@@ -27,6 +29,7 @@ export const authPresentation: AuthPresentation = {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [code, setCode] = useState('');
 
     const handleEmailChange = (input: string) => {
       setEmail(input);
@@ -42,6 +45,10 @@ export const authPresentation: AuthPresentation = {
 
     const handlePhoneNumberChange = (input: string) => {
       setPhoneNumber(input);
+    };
+
+    const handleCodeChange = (input: string) => {
+      setCode(input);
     };
 
     return {
@@ -64,6 +71,11 @@ export const authPresentation: AuthPresentation = {
         isError: !PHONE_NUMBER_REGEX.test(phoneNumber),
         value: phoneNumber,
         onChange: handlePhoneNumberChange,
+      },
+      code: {
+        isError: !CODE_REGEX.test(code),
+        value: code,
+        onChange: handleCodeChange,
       },
     };
   },

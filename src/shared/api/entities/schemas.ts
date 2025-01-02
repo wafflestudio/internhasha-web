@@ -21,20 +21,19 @@ export type LocalSignInRequest = {
   authProvider: string;
 };
 
-export type PretotypeUserSubmitDto = {
+export type SocialSignUpRequest = {
+  email: string;
+  token: string;
+  authProvider: string;
+};
+
+export type PretotypeUserSubmitResponse = {
   email: string;
   isSubscribed: boolean;
   createdAt: string;
 };
 
-export type SignUpResponse = {
-  id: BigInteger;
-  name: string;
-  email: string;
-  phoneNumber: string;
-};
-
-export type SignInResponse = {
+export type UserWithTokenResponse = {
   userResponse: {
     id: BigInteger;
     name: string;

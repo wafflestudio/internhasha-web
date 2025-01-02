@@ -15,13 +15,29 @@ export type AuthService = {
     email: string;
     phoneNumber: string;
     password: string;
-  }): ServiceResponse<Omit<User, 'password'>>;
+  }): ServiceResponse<{
+    userResponse: Omit<User, 'password'>;
+    accessToken: string;
+    refreshToken: string;
+  }>;
   localSignIn({
     email,
     password,
   }: {
     email: string;
     password: string;
+  }): ServiceResponse<{
+    userResponse: Omit<User, 'password'>;
+    accessToken: string;
+    refreshToken: string;
+  }>;
+  socialSignUp({
+    email,
+    token,
+  }: {
+    email: string;
+    token: string;
+    authProvider: string;
   }): ServiceResponse<{
     userResponse: Omit<User, 'password'>;
     accessToken: string;
@@ -43,6 +59,11 @@ export const implAuthService = ({
     const { status, data } = await apis['POST /signup']({ body });
 
     if (status === 200) {
+      const token = data.accessToken;
+
+      tokenLocalStorage.setToken({ token });
+      tokenState.setToken({ token });
+
       return {
         type: 'success',
         data,
@@ -65,6 +86,23 @@ export const implAuthService = ({
 
       tokenLocalStorage.setToken({ token });
       tokenState.setToken({ token });
+
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', message: data.error };
+  },
+  socialSignUp: async ({ email, token, authProvider }) => {
+    const body = { email, token, authProvider };
+    const { status, data } = await apis['POST /signup/google']({ body });
+
+    if (status === 200) {
+      const accessToken = data.accessToken;
+
+      tokenLocalStorage.setToken({ token: accessToken });
+      tokenState.setToken({ token: accessToken });
 
       return {
         type: 'success',

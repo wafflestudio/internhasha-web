@@ -1,9 +1,11 @@
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Route, Routes } from 'react-router';
 
 import { PATH } from '@/entities/route';
 import { EchoPage } from '@/pages/EchoPage';
+import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { SignUpPage } from '@/pages/SignUpPage';
 import { implAuthService } from '@/service/authService';
@@ -22,6 +24,7 @@ const RouterProvider = () => {
       <Route path={PATH.INDEX} element={<LandingPage />} />
       <Route path={PATH.ECHO} element={<EchoPage />} />
       <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
+      <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
     </Routes>
   );
 };
@@ -85,7 +88,9 @@ export const App = () => {
     <QueryClientProvider client={queryClient}>
       <ServiceContext.Provider value={services}>
         <TokenContext.Provider value={{ token }}>
-          <RouterProvider />
+          <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID}>
+            <RouterProvider />
+          </GoogleOAuthProvider>
         </TokenContext.Provider>
       </ServiceContext.Provider>
     </QueryClientProvider>
