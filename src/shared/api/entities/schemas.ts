@@ -27,6 +27,11 @@ export type SocialSignUpRequest = {
   authProvider: string;
 };
 
+export type SocialSignInRequest = {
+  token: string;
+  authProvider: string;
+};
+
 export type PretotypeUserSubmitResponse = {
   email: string;
   isSubscribed: boolean;

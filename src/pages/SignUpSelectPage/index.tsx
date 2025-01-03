@@ -1,5 +1,5 @@
 import { Button } from '@/components/button';
-import { GoogleSocialSignUpButton } from '@/pages/SignUpSelectPage/GoogleSocialSignUpForm';
+import { GoogleSocialSignUpButton } from '@/pages/SignUpSelectPage/GoogleSocialSignUpButton';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const SignUpSelectPage = () => {

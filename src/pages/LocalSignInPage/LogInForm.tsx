@@ -10,12 +10,12 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LogInForm = () => {
-  const { LocalSignIn, responseMessage, isPending } = useSignIn();
+  const { localSignIn, responseMessage, isPending } = useLocalSignIn();
   const { email, password } = authPresentation.useValidator();
 
   const onSubmit = () => {
     if (!email.isError && !password.isError) {
-      LocalSignIn({
+      localSignIn({
         email: email.value,
         password: password.value,
       });
@@ -60,12 +60,12 @@ export const LogInForm = () => {
   );
 };
 
-const useSignIn = () => {
+const useLocalSignIn = () => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
   const { toMain } = useRouteNavigation();
 
-  const { mutate: LocalSignIn, isPending } = useMutation({
+  const { mutate: localSignIn, isPending } = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) => {
       return authService.localSignIn({ email, password });
     },
@@ -83,5 +83,5 @@ const useSignIn = () => {
     },
   });
 
-  return { LocalSignIn, responseMessage, isPending };
+  return { localSignIn, responseMessage, isPending };
 };
