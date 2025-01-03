@@ -10,6 +10,7 @@ import type {
   LocalSignUpRequest,
   PretotypeUserSubmitRequest,
   PretotypeUserSubmitResponse,
+  SocialSignInRequest,
   SocialSignUpRequest,
   UserWithTokenResponse,
 } from '@/shared/api/entities/schemas';
@@ -56,6 +57,12 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         body,
       }),
     'POST /signin': ({ body }: { body: LocalSignInRequest }) =>
+      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
+        method: 'POST',
+        path: 'signin',
+        body,
+      }),
+    'POST /signin/google': ({ body }: { body: SocialSignInRequest }) =>
       callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
         method: 'POST',
         path: 'signin',
