@@ -48,3 +48,9 @@ export type UserWithTokenResponse = {
   accessToken: string;
   refreshToken: string;
 };
+
+export type CompanyListResponse = {
+  id: string;
+  name: string;
+  description: string;
+};

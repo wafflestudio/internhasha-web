@@ -3,11 +3,7 @@ import { HttpResponse, type HttpResponseResolver } from 'msw';
 import type { CompanyListResponse } from '@/mocks/company/schemas.ts';
 
 type companyResolver = {
-  companyList: HttpResponseResolver<
-    never,
-    never,
-    CompanyListResponse[]
-  >;
+  companyList: HttpResponseResolver<never, never, CompanyListResponse[]>;
 };
 
 export const companyResolver: companyResolver = {
