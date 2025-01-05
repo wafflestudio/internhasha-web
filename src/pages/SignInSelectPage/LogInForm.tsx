@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { SubmitButton } from '@/components/button';
 import { FormContainer } from '@/components/form';
 import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
@@ -28,9 +29,7 @@ export const LocalLogInForm = () => {
       <FormContainer
         id="SignInForm"
         handleSubmit={onSubmit}
-        disabled={isPending}
         response={responseMessage}
-        buttonDescription="로그인"
       >
         <LabelContainer label="아이디" id="localId">
           <TextInput
@@ -55,6 +54,9 @@ export const LocalLogInForm = () => {
             disabled={isPending}
           />
         </LabelContainer>
+        <SubmitButton form="SignInForm" disabled={isPending}>
+          로그인
+        </SubmitButton>
       </FormContainer>
     </div>
   );

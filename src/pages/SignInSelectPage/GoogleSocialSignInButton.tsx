@@ -29,7 +29,7 @@ export const GoogleSocialSignInButton = () => {
   return (
     <div>
       <Button onClick={handleClickGoogleSignUpButton} disabled={isPending}>
-        구글 계정으로 로그인하기 🚀
+        구글 계정으로 로그인하기
       </Button>
       {error !== undefined && (
         <div>

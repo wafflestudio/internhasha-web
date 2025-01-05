@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useLocation } from 'react-router';
 
 import { Button } from '@/components/button';
+import { SubmitButton } from '@/components/button';
 import { FormContainer } from '@/components/form';
 import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
@@ -24,9 +25,11 @@ export const EmailVerifyPage = () => {
   const { email, code } = authPresentation.useValidator();
   const { emailVerify, responseMessage, isPending } = useEmailVerify();
 
-  const handleClickEmailVerifyButton = () => {
+  const handleClickSendEmailCodeButton = () => {
     setShowCodeInput(true);
   };
+
+  const handleClickEmailVerifyButton = () => {};
 
   const onSubmit = () => {
     if (email.isError || code.isError) return;
@@ -35,57 +38,57 @@ export const EmailVerifyPage = () => {
 
   return (
     <div>
-      <h1>이메일 인증</h1>
+      <h1>이메일 인증하기</h1>
       <FormContainer
         id="EmailVerifyForm"
         handleSubmit={onSubmit}
-        disabled={isPending}
         response={responseMessage}
-        buttonDescription="회원가입 완료하기"
       >
-        <LabelContainer
-          label="이메일"
-          id="email"
-          isError={email.isError}
-          description="snu.ac.kr로 끝나는 메일을 작성해주세요."
-        >
+        <LabelContainer label="이메일" id="email" isError={email.isError}>
           <TextInput
             id="email"
             value={email.value}
             onChange={(e) => {
               email.onChange(e.target.value);
             }}
-            placeholder="스누 메일을 입력하세요"
             disabled={isPending}
           />
           <Button
             onClick={(event) => {
               event.preventDefault();
-              handleClickEmailVerifyButton();
+              handleClickSendEmailCodeButton();
             }}
             disabled={isPending}
           >
-            이메일 인증하기
+            인증코드 받기
           </Button>
         </LabelContainer>
-        <LabelContainer
-          label="인증 코드"
-          id="code"
-          isError={code.isError}
-          description="유효하지 않은 인증코드입니다."
-        >
-          {showCodeInput && (
-            <TextInput
-              id="code"
-              value={code.value}
-              onChange={(e) => {
-                code.onChange(e.target.value);
+        {showCodeInput && (
+          <>
+            <LabelContainer label="인증 코드" id="code" isError={code.isError}>
+              <TextInput
+                id="code"
+                value={code.value}
+                onChange={(e) => {
+                  code.onChange(e.target.value);
+                }}
+                disabled={isPending}
+              />
+            </LabelContainer>
+            <Button
+              onClick={(event) => {
+                event.preventDefault();
+                handleClickEmailVerifyButton();
               }}
-              placeholder="이메일 인증 코드를 입력하세요"
               disabled={isPending}
-            />
-          )}
-        </LabelContainer>
+            >
+              인증코드 확인
+            </Button>
+          </>
+        )}
+        <SubmitButton form="EmailVerifyForm" disabled={isPending}>
+          회원가입 완료
+        </SubmitButton>
       </FormContainer>
     </div>
   );
@@ -98,7 +101,11 @@ const useEmailVerify = () => {
 
   const { mutate: emailVerify, isPending } = useMutation({
     mutationFn: ({ email, token }: { email: string; token: string }) => {
-      return authService.socialSignUp({ email, token, authProvider: 'GOOGLE' });
+      return authService.socialSignUp({
+        email: `${email}@snu.ac.kr`,
+        token,
+        authProvider: 'GOOGLE',
+      });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
