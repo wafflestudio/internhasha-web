@@ -5,6 +5,7 @@ import type {
   SuccessResponse,
 } from '@/shared/api/entities/params';
 import type {
+  CompanyListResponse,
   EchoParams,
   LocalSignInRequest,
   LocalSignUpRequest,
@@ -73,5 +74,10 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         method: 'GET',
         path: 'pretotype/list',
         token,
+      }),
+    'GET /company-list': () =>
+      callWithoutToken<SuccessResponse<CompanyListResponse[]>>({
+        method: 'GET',
+        path: 'company-list',
       }),
   }) satisfies Record<string, Api>;
