@@ -6,11 +6,11 @@ import type {
 } from '@/shared/api/entities/params';
 import type {
   EchoParams,
+  GoogleSignInRequest,
   LocalSignInRequest,
   LocalSignUpRequest,
   PretotypeUserSubmitRequest,
   PretotypeUserSubmitResponse,
-  SocialSignInRequest,
   SocialSignUpRequest,
   UserWithTokenResponse,
 } from '@/shared/api/entities/schemas';
@@ -62,7 +62,7 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         path: 'signin',
         body,
       }),
-    'POST /signin/google': ({ body }: { body: SocialSignInRequest }) =>
+    'POST /signin/google': ({ body }: { body: GoogleSignInRequest }) =>
       callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
         method: 'POST',
         path: 'signin',

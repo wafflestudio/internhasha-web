@@ -16,9 +16,8 @@ export type LocalSignUpRequest = {
 };
 
 export type LocalSignInRequest = {
-  email: string;
+  localId: string;
   password: string;
-  authProvider: string;
 };
 
 export type SocialSignUpRequest = {
@@ -27,9 +26,8 @@ export type SocialSignUpRequest = {
   authProvider: string;
 };
 
-export type SocialSignInRequest = {
-  token: string;
-  authProvider: string;
+export type GoogleSignInRequest = {
+  googleAccessToken: string;
 };
 
 export type PretotypeUserSubmitResponse = {

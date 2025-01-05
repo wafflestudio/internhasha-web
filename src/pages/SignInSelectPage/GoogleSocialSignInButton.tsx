@@ -53,10 +53,9 @@ const useGoogleSignIn = () => {
   const { mutate: googleSignIn, isPending } = useMutation({
     mutationFn: ({ token }: { token: string }) => {
       const body = {
-        token,
-        authProvider: 'GOOGLE',
+        googleAccessToken: token,
       };
-      return authService.socialSignIn(body);
+      return authService.googleSignIn(body);
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
