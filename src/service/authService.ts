@@ -16,9 +16,8 @@ export type AuthService = {
     phoneNumber: string;
     password: string;
   }): ServiceResponse<{
-    userResponse: Omit<User, 'password'>;
+    user: Pick<User, 'id' | 'username' | 'isAdmin'>;
     accessToken: string;
-    refreshToken: string;
   }>;
   localSignIn({
     localId,
@@ -27,11 +26,10 @@ export type AuthService = {
     localId: string;
     password: string;
   }): ServiceResponse<{
-    userResponse: Omit<User, 'password'>;
+    user: Pick<User, 'id' | 'username' | 'isAdmin'>;
     accessToken: string;
-    refreshToken: string;
   }>;
-  socialSignUp({
+  googleSignUp({
     email,
     token,
     authProvider,
@@ -40,18 +38,16 @@ export type AuthService = {
     token: string;
     authProvider: string;
   }): ServiceResponse<{
-    userResponse: Omit<User, 'password'>;
+    user: Pick<User, 'id' | 'username' | 'isAdmin'>;
     accessToken: string;
-    refreshToken: string;
   }>;
   googleSignIn({
     googleAccessToken,
   }: {
     googleAccessToken: string;
   }): ServiceResponse<{
-    userResponse: Omit<User, 'password'>;
+    user: Pick<User, 'id' | 'username' | 'isAdmin'>;
     accessToken: string;
-    refreshToken: string;
   }>;
 };
 
@@ -66,7 +62,7 @@ export const implAuthService = ({
 }): AuthService => ({
   localSignUp: async ({ name, email, phoneNumber, password }) => {
     const body = { name, email, phoneNumber, password, authProvider: 'LOCAL' };
-    const { status, data } = await apis['POST /signup']({ body });
+    const { status, data } = await apis['POST /user/signup/local']({ body });
 
     if (status === 200) {
       const token = data.accessToken;
@@ -83,7 +79,7 @@ export const implAuthService = ({
   },
   localSignIn: async ({ localId, password }) => {
     const body = { localId, password };
-    const { status, data } = await apis['POST /signin']({ body });
+    const { status, data } = await apis['POST /user/signin/local']({ body });
 
     if (status === 200) {
       const token = data.accessToken;
@@ -98,9 +94,9 @@ export const implAuthService = ({
     }
     return { type: 'error', message: data.error };
   },
-  socialSignUp: async ({ email, token, authProvider }) => {
+  googleSignUp: async ({ email, token, authProvider }) => {
     const body = { email, token, authProvider };
-    const { status, data } = await apis['POST /signup/google']({ body });
+    const { status, data } = await apis['POST /user/signup/google']({ body });
 
     if (status === 200) {
       const accessToken = data.accessToken;
@@ -117,7 +113,7 @@ export const implAuthService = ({
   },
   googleSignIn: async ({ googleAccessToken }) => {
     const body = { googleAccessToken };
-    const { status, data } = await apis['POST /signin/google']({ body });
+    const { status, data } = await apis['POST /user/signin/google']({ body });
 
     if (status === 200) {
       const accessToken = data.accessToken;

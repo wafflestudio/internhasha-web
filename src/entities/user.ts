@@ -1,7 +1,8 @@
 export type User = {
-  id: BigInteger;
-  name: string;
-  email: string;
-  password: string;
+  id: string;
+  snuMail: string;
+  username: string;
+  localId: string;
   phoneNumber: string;
+  isAdmin: boolean;
 };
