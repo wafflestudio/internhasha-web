@@ -29,10 +29,9 @@ export type LocalSignInRequest = {
   password: string;
 };
 
-export type SocialSignUpRequest = {
-  email: string;
-  token: string;
-  authProvider: string;
+export type GoogleSignUpRequest = {
+  snuMail: string;
+  googleAccessToken: string;
 };
 
 export type SendEmailCodeRequest = {

@@ -21,28 +21,55 @@ export const EmailVerifyForm = () => {
   const state = location.state as EmailVerifyLocationState;
   const token = state.token;
 
-  const [showCodeInput, setShowCodeInput] = useState(false);
   const { email, code } = authPresentation.useValidator();
-  const { emailVerify, responseMessage, isPending } = useEmailVerify();
+  const {
+    sendCode,
+    showCodeInput,
+    timeLeft,
+    responseMessage: codeResponseMessage,
+    isPending: isPendingSend,
+  } = useSendCode();
+  const {
+    emailVerify,
+    verifySuccess,
+    responseMessage: emailResponseMessage,
+    isPending: isPendingVerify,
+  } = useEmailVerify();
+  const {
+    googleSignUp,
+    responseMessage: signUpResponseMessage,
+    isPending: isPendingSignup,
+  } = useGoogleSignUp();
+
+  const isPending = isPendingSend || isPendingVerify || isPendingSignup;
 
   const handleClickSendEmailCodeButton = () => {
-    setShowCodeInput(true);
+    if (email.isError) return;
+    sendCode({ snuMail: email.value });
   };
 
-  const handleClickEmailVerifyButton = () => {};
+  const handleClickVerifyEmailButton = () => {
+    if (email.isError || code.isError) return;
+    emailVerify({ snuMail: email.value, code: code.value });
+  };
 
   const onSubmit = () => {
-    if (email.isError || code.isError) return;
-    emailVerify({ email: email.value, token });
+    if (email.isError || code.isError || !verifySuccess) return;
+    googleSignUp({ snuMail: email.value, token });
   };
 
   return (
     <FormContainer
       id="EmailVerifyForm"
       handleSubmit={onSubmit}
-      response={responseMessage}
+      response={signUpResponseMessage}
     >
-      <LabelContainer label="이메일" id="email" isError={email.isError}>
+      <LabelContainer
+        label="이메일"
+        id="email"
+        isError={email.isError}
+        description={codeResponseMessage}
+      >
         <TextInput
           id="email"
           value={email.value}
@@ -51,19 +78,18 @@ export const EmailVerifyForm = () => {
           }}
           disabled={isPending}
         />
-        <Button
-          onClick={(event) => {
-            event.preventDefault();
-            handleClickSendEmailCodeButton();
-          }}
-          disabled={isPending}
-        >
+        <Button onClick={handleClickSendEmailCodeButton} disabled={isPending}>
           인증코드 받기
         </Button>
       </LabelContainer>
       {showCodeInput && (
         <>
-          <LabelContainer label="인증 코드" id="code" isError={code.isError}>
+          <LabelContainer
+            label="인증 코드"
+            id="code"
+            isError={code.isError}
+            description={emailResponseMessage}
+          >
             <TextInput
               id="code"
               value={code.value}
@@ -72,36 +98,128 @@ export const EmailVerifyForm = () => {
               }}
               disabled={isPending}
             />
+            <div>{timeLeft}</div>
+            <Button onClick={handleClickVerifyEmailButton} disabled={isPending}>
+              인증코드 확인
+            </Button>
           </LabelContainer>
-          <Button
-            onClick={(event) => {
-              event.preventDefault();
-              handleClickEmailVerifyButton();
-            }}
-            disabled={isPending}
-          >
-            인증코드 확인
-          </Button>
         </>
       )}
-      <SubmitButton form="EmailVerifyForm" disabled={isPending}>
+      <SubmitButton
+        form="EmailVerifyForm"
+        disabled={isPending}
+        onSubmit={onSubmit}
+      >
         회원가입 완료
       </SubmitButton>
     </FormContainer>
   );
 };
 
+const useSendCode = () => {
+  const { authService } = useGuardContext(ServiceContext);
+  const [responseMessage, setResponseMessage] = useState('');
+  const [showCodeInput, setShowCodeInput] = useState(false);
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+
+  let timer: NodeJS.Timeout | null = null;
+
+  const startTimer = () => {
+    setTimeLeft(300);
+
+    timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev === null || prev <= 1) {
+          if (timer !== null) {
+            clearInterval(timer);
+          }
+          timer = null;
+          return null;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const stopTimer = () => {
+    if (timer !== null) {
+      clearInterval(timer);
+      timer = null;
+    }
+    setTimeLeft(null);
+  };
+
+  const { mutate: sendCode, isPending } = useMutation({
+    mutationFn: ({ snuMail }: { snuMail: string }) => {
+      return authService.sendEmailCode({
+        snuMail,
+      });
+    },
+    onSuccess: (response) => {
+      if (response.type === 'success') {
+        setShowCodeInput(true);
+        stopTimer();
+        startTimer();
+      } else {
+        console.log(response);
+        setResponseMessage(response.message);
+        setShowCodeInput(false);
+        stopTimer();
+      }
+    },
+    onError: () => {
+      setResponseMessage(
+        '코드 전송에 실패했습니다. 잠시 후에 다시 실행해주세요.',
+      );
+      setShowCodeInput(false);
+      stopTimer();
+    },
+  });
+
+  return { sendCode, showCodeInput, timeLeft, responseMessage, isPending };
+};
+
 const useEmailVerify = () => {
+  const { authService } = useGuardContext(ServiceContext);
+  const [responseMessage, setResponseMessage] = useState('');
+  const [verifySuccess, setVerifySuccess] = useState(false);
+
+  const { mutate: emailVerify, isPending } = useMutation({
+    mutationFn: ({ snuMail, code }: { snuMail: string; code: string }) => {
+      return authService.verifyCode({
+        snuMail,
+        code,
+      });
+    },
+    onSuccess: (response) => {
+      if (response.type === 'success') {
+        setVerifySuccess(true);
+      } else {
+        setResponseMessage(response.message);
+        setVerifySuccess(false);
+      }
+    },
+    onError: () => {
+      setResponseMessage(
+        '이메일 인증에 실패했습니다. 잠시 후에 다시 실행해주세요.',
+      );
+      setVerifySuccess(false);
+    },
+  });
+
+  return { emailVerify, verifySuccess, responseMessage, isPending };
+};
+
+const useGoogleSignUp = () => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
   const { toMain } = useRouteNavigation();
 
-  const { mutate: emailVerify, isPending } = useMutation({
-    mutationFn: ({ email, token }: { email: string; token: string }) => {
+  const { mutate: googleSignUp, isPending } = useMutation({
+    mutationFn: ({ snuMail, token }: { snuMail: string; token: string }) => {
       return authService.googleSignUp({
-        email: `${email}@snu.ac.kr`,
-        token,
-        authProvider: 'GOOGLE',
+        snuMail,
+        googleAccessToken: token,
       });
     },
     onSuccess: (response) => {
@@ -118,5 +236,5 @@ const useEmailVerify = () => {
     },
   });
 
-  return { emailVerify, responseMessage, isPending };
+  return { googleSignUp, responseMessage, isPending };
 };

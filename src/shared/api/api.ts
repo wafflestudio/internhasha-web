@@ -8,12 +8,12 @@ import type {
   EchoParams,
   EmailVerifyRequest,
   GoogleSignInRequest,
+  GoogleSignUpRequest,
   LocalSignInRequest,
   LocalSignUpRequest,
   PretotypeUserSubmitRequest,
   PretotypeUserSubmitResponse,
   SendEmailCodeRequest,
-  SocialSignUpRequest,
   UserWithTokenResponse,
 } from '@/shared/api/entities/schemas';
 
@@ -52,7 +52,7 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         path: 'user/signup/local',
         body,
       }),
-    'POST /user/signup/google': ({ body }: { body: SocialSignUpRequest }) =>
+    'POST /user/signup/google': ({ body }: { body: GoogleSignUpRequest }) =>
       callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
         method: 'POST',
         path: 'user/signup/google',
@@ -71,7 +71,7 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         body,
       }),
     'POST /user/signup/send-code': ({ body }: { body: SendEmailCodeRequest }) =>
-      callWithoutToken<SuccessResponse<never>>({
+      callWithoutToken<SuccessResponse<void>>({
         method: 'POST',
         path: 'user/signup/send-code',
         body,
@@ -81,7 +81,7 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
     }: {
       body: EmailVerifyRequest;
     }) =>
-      callWithoutToken<SuccessResponse<never>>({
+      callWithoutToken<SuccessResponse<void>>({
         method: 'POST',
         path: 'user/signup/verify-email',
         body,
