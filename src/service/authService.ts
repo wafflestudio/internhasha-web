@@ -21,10 +21,10 @@ export type AuthService = {
     refreshToken: string;
   }>;
   localSignIn({
-    email,
+    localId,
     password,
   }: {
-    email: string;
+    localId: string;
     password: string;
   }): ServiceResponse<{
     userResponse: Omit<User, 'password'>;
@@ -44,12 +44,10 @@ export type AuthService = {
     accessToken: string;
     refreshToken: string;
   }>;
-  socialSignIn({
-    token,
-    authProvider,
+  googleSignIn({
+    googleAccessToken,
   }: {
-    token: string;
-    authProvider: string;
+    googleAccessToken: string;
   }): ServiceResponse<{
     userResponse: Omit<User, 'password'>;
     accessToken: string;
@@ -83,14 +81,8 @@ export const implAuthService = ({
     }
     return { type: 'error', message: data.error };
   },
-  localSignIn: async ({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }) => {
-    const body = { email, password, authProvider: 'LOCAL' };
+  localSignIn: async ({ localId, password }) => {
+    const body = { localId, password };
     const { status, data } = await apis['POST /signin']({ body });
 
     if (status === 200) {
@@ -123,8 +115,8 @@ export const implAuthService = ({
     }
     return { type: 'error', message: data.error };
   },
-  socialSignIn: async ({ token, authProvider }) => {
-    const body = { token, authProvider };
+  googleSignIn: async ({ googleAccessToken }) => {
+    const body = { googleAccessToken };
     const { status, data } = await apis['POST /signin/google']({ body });
 
     if (status === 200) {

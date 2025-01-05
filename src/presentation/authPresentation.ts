@@ -10,7 +10,7 @@ type AuthPresentation = {
   useValidator(): {
     email: StringInput;
     password: StringInput;
-    name: StringInput;
+    localId: StringInput;
     phoneNumber: StringInput;
     code: StringInput;
   };
@@ -19,7 +19,7 @@ type AuthPresentation = {
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@snu\.ac\.kr$/;
 const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!^*])[A-Za-z\d@#$!^*]{8,20}$/;
-const NAME_REGEX = /^[a-zA-Z][a-zA-Z0-9_-]{4,19}$/;
+const LOCAL_ID_REGEX = /^[a-zA-Z][a-zA-Z0-9_-]{4,19}$/;
 const PHONE_NUMBER_REGEX = /^(0\d{1,2})-?\d{3,4}-?\d{4}$/;
 const CODE_REGEX = /^\d{6}$/;
 
@@ -27,7 +27,7 @@ export const authPresentation: AuthPresentation = {
   useValidator: () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
+    const [localId, setLocalId] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [code, setCode] = useState('');
 
@@ -39,8 +39,8 @@ export const authPresentation: AuthPresentation = {
       setPassword(input);
     };
 
-    const handleNameChange = (input: string) => {
-      setName(input);
+    const handleLocalIdChange = (input: string) => {
+      setLocalId(input);
     };
 
     const handlePhoneNumberChange = (input: string) => {
@@ -62,10 +62,10 @@ export const authPresentation: AuthPresentation = {
         value: password,
         onChange: handlePasswordChange,
       },
-      name: {
-        isError: !NAME_REGEX.test(name),
-        value: name,
-        onChange: handleNameChange,
+      localId: {
+        isError: !LOCAL_ID_REGEX.test(localId),
+        value: localId,
+        onChange: handleLocalIdChange,
       },
       phoneNumber: {
         isError: !PHONE_NUMBER_REGEX.test(phoneNumber),
