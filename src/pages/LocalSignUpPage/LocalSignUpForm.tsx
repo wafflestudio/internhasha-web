@@ -11,18 +11,18 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LocalSignUpForm = () => {
   const { LocalSignUp, responseMessage, isPending } = useSignUp();
-  const { email, password, name, phoneNumber } =
+  const { email, password, localId, phoneNumber } =
     authPresentation.useValidator();
 
   const onSubmit = () => {
     if (
       !email.isError &&
       !password.isError &&
-      !name.isError &&
+      !localId.isError &&
       !phoneNumber.isError
     ) {
       LocalSignUp({
-        name: name.value,
+        name: localId.value,
         email: email.value,
         phoneNumber: phoneNumber.value,
         password: password.value,
@@ -74,14 +74,14 @@ export const LocalSignUpForm = () => {
         <LabelContainer
           label="아이디"
           id="name"
-          isError={name.isError}
+          isError={localId.isError}
           description="아이디는 4~20자리이며 영문 대소문자 또는 숫자 또는 -, _를 사용할 수 있습니다."
         >
           <TextInput
             id="name"
-            value={name.value}
+            value={localId.value}
             onChange={(e) => {
-              name.onChange(e.target.value);
+              localId.onChange(e.target.value);
             }}
             placeholder="아이디를 입력하세요"
             disabled={isPending}
