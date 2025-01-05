@@ -8,7 +8,6 @@ export const useRouteNavigation = () => {
     INDEX,
     ECHO,
     SIGN_IN_SELECT,
-    SIGN_IN_LOCAL,
     SIGN_UP_SELECT,
     VERIFY_EMAIL,
     SIGN_UP_LOCAL,
@@ -23,9 +22,6 @@ export const useRouteNavigation = () => {
     },
     toSignInSelect: () => {
       void navigate(SIGN_IN_SELECT);
-    },
-    toLocalSignIn: () => {
-      void navigate(SIGN_IN_LOCAL);
     },
     toSignUpSelect: () => {
       void navigate(SIGN_UP_SELECT);

@@ -9,7 +9,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
-export const LogInForm = () => {
+export const LocalLogInForm = () => {
   const { localSignIn, responseMessage, isPending } = useLocalSignIn();
   const { email, password } = authPresentation.useValidator();
 
