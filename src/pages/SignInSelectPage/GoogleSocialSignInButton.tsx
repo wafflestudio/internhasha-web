@@ -29,7 +29,7 @@ export const GoogleSocialSignInButton = () => {
   return (
     <div>
       <Button onClick={handleClickGoogleSignUpButton} disabled={isPending}>
-        구글 계정으로 로그인하기 🚀
+        구글 계정으로 로그인하기
       </Button>
       {error !== undefined && (
         <div>
@@ -53,10 +53,9 @@ const useGoogleSignIn = () => {
   const { mutate: googleSignIn, isPending } = useMutation({
     mutationFn: ({ token }: { token: string }) => {
       const body = {
-        token,
-        authProvider: 'GOOGLE',
+        googleAccessToken: token,
       };
-      return authService.socialSignIn(body);
+      return authService.googleSignIn(body);
     },
     onSuccess: (response) => {
       if (response.type === 'success') {

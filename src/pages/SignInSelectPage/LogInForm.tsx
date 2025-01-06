@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { SubmitButton } from '@/components/button';
 import { FormContainer } from '@/components/form';
 import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
@@ -9,14 +10,14 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
-export const LogInForm = () => {
+export const LocalLogInForm = () => {
   const { localSignIn, responseMessage, isPending } = useLocalSignIn();
-  const { email, password } = authPresentation.useValidator();
+  const { localId, password } = authPresentation.useValidator();
 
   const onSubmit = () => {
-    if (!email.isError && !password.isError) {
+    if (!localId.isError && !password.isError) {
       localSignIn({
-        email: email.value,
+        localId: localId.value,
         password: password.value,
       });
     }
@@ -28,16 +29,14 @@ export const LogInForm = () => {
       <FormContainer
         id="SignInForm"
         handleSubmit={onSubmit}
-        disabled={isPending}
         response={responseMessage}
-        buttonDescription="로그인"
       >
-        <LabelContainer label="이메일" id="email">
+        <LabelContainer label="아이디" id="localId">
           <TextInput
-            id="email"
-            value={email.value}
+            id="localId"
+            value={localId.value}
             onChange={(e) => {
-              email.onChange(e.target.value);
+              localId.onChange(e.target.value);
             }}
             placeholder="아이디를 입력하세요"
             disabled={isPending}
@@ -55,6 +54,9 @@ export const LogInForm = () => {
             disabled={isPending}
           />
         </LabelContainer>
+        <SubmitButton form="SignInForm" disabled={isPending}>
+          로그인
+        </SubmitButton>
       </FormContainer>
     </div>
   );
@@ -66,8 +68,14 @@ const useLocalSignIn = () => {
   const { toMain } = useRouteNavigation();
 
   const { mutate: localSignIn, isPending } = useMutation({
-    mutationFn: ({ email, password }: { email: string; password: string }) => {
-      return authService.localSignIn({ email, password });
+    mutationFn: ({
+      localId,
+      password,
+    }: {
+      localId: string;
+      password: string;
+    }) => {
+      return authService.localSignIn({ localId, password });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
