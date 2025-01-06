@@ -49,7 +49,7 @@ export type UserWithTokenResponse = {
   refreshToken: string;
 };
 
-export type CompanyListResponse = {
+export type PostsResponse = {
   id: string;
   name: string;
   description: string;

@@ -8,7 +8,7 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 export const LandingPage = () => {
   const { toEcho, toSignUpSelect, toSignInSelect } = useRouteNavigation();
 
-  const { data: companyListData, isLoading, isError } = useGetCompanyList();
+  const { data: PostsData, isLoading, isError } = useGetPosts();
 
   return (
     <div>
@@ -17,9 +17,9 @@ export const LandingPage = () => {
       <Button onClick={toSignInSelect}>로그인 페이지로 이동</Button>
       <Button onClick={toEcho}>에코 페이지로 이동</Button>
 
-      {!isLoading && !isError && companyListData != null && (
+      {!isLoading && !isError && PostsData != null && (
         <ul>
-          {companyListData.map((company) => (
+          {PostsData.map((company) => (
             <li key={company.id}>{company.name}</li>
           ))}
         </ul>
@@ -28,13 +28,13 @@ export const LandingPage = () => {
   );
 };
 
-const useGetCompanyList = () => {
-  const { companyListService } = useGuardContext(ServiceContext);
+const useGetPosts = () => {
+  const { postService } = useGuardContext(ServiceContext);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['companyList'],
+    queryKey: ['postService', 'getPosts'],
     queryFn: async () => {
-      const response = await companyListService.getCompanyList();
+      const response = await postService.getPosts();
       if (response.type === 'success') {
         return response.data;
       }

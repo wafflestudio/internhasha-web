@@ -12,8 +12,8 @@ import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
 import { SignInSelectPage } from '@/pages/SignInSelectPage';
 import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
 import { implAuthService } from '@/service/authService';
-import { implCompanyListService } from '@/service/companyListService.ts';
 import { implEchoService } from '@/service/echoService';
+import { implPostService } from '@/service/postService.ts';
 import { type ExternalCallParams, implApi } from '@/shared/api';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
@@ -89,7 +89,7 @@ export const App = () => {
   const services = {
     echoService: implEchoService({ apis }),
     authService: implAuthService({ apis, tokenState, tokenLocalStorage }),
-    companyListService: implCompanyListService({ apis }),
+    postService: implPostService({ apis }),
   };
 
   return (

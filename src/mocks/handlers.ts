@@ -1,4 +1,4 @@
-import { companyHandlers } from '@/mocks/company/handlers.ts';
 import { echoHandlers } from '@/mocks/echo/handlers';
+import { postsHandlers } from '@/mocks/post/handlers.ts';
 
-export const handlers = [...echoHandlers, ...companyHandlers];
+export const handlers = [...echoHandlers, ...postsHandlers];
