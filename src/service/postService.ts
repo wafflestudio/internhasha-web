@@ -8,7 +8,7 @@ export type PostService = {
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
   getPosts: async () => {
-    const { status, data } = await apis['GET /post']();
+    const { status, data } = await apis['GET /post?']();
 
     if (status === 200) {
       return {
