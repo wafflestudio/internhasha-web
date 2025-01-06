@@ -26,7 +26,7 @@ export const LandingPage = () => {
       {(
         <div className="">
           {posts.map((post) => (
-            <p key={post.id}>{post.name}</p>
+            <p key={post.id}>{post.name}, {post.author.id}</p>
           ))}
         </div>
       )}

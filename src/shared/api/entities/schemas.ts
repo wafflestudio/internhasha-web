@@ -10,6 +10,10 @@ export type EchoParams = {
   message: string;
 };
 
+export type PostIdParams = {
+  postId: string;
+}
+
 // Request
 export type PretotypeUserSubmitRequest = {
   email: string;
@@ -85,3 +89,41 @@ export type Post = {
 export type PostsResponse = {
   posts: Post[];
 };
+
+export type PostDetailResponse = {
+  id: string,
+  name: string,
+  title: string,
+  email: string,
+  author: {
+    id: string,
+    username: string,
+    profileImageLink?: string
+  },
+  explanation: string,
+  tags: [
+    string,
+    string,
+    string
+  ],
+  roles: [{
+    id: string,
+    category: string,
+    detail: string
+    headcount: number
+  },
+    {
+      id: string,
+      category: string,
+      detail: string
+      headcount: number
+    }
+  ],
+  imageLink: string,
+  investAmount: number,
+  investCompany: string[];
+  IRDeckLink: string;
+  landingPageLink: string;
+  externalDescriptionLink: string[];
+  isActive: boolean;
+}
