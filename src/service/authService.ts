@@ -16,9 +16,8 @@ export type AuthService = {
     phoneNumber: string;
     password: string;
   }): ServiceResponse<{
-    userResponse: Omit<User, 'password'>;
+    user: Pick<User, 'id' | 'username' | 'isAdmin'>;
     accessToken: string;
-    refreshToken: string;
   }>;
   localSignIn({
     localId,
@@ -27,32 +26,35 @@ export type AuthService = {
     localId: string;
     password: string;
   }): ServiceResponse<{
-    userResponse: Omit<User, 'password'>;
+    user: Pick<User, 'id' | 'username' | 'isAdmin'>;
     accessToken: string;
-    refreshToken: string;
   }>;
-  socialSignUp({
-    email,
-    token,
-    authProvider,
+  googleSignUp({
+    snuMail,
+    googleAccessToken,
   }: {
-    email: string;
-    token: string;
-    authProvider: string;
+    snuMail: string;
+    googleAccessToken: string;
   }): ServiceResponse<{
-    userResponse: Omit<User, 'password'>;
+    user: Pick<User, 'id' | 'username' | 'isAdmin'>;
     accessToken: string;
-    refreshToken: string;
   }>;
   googleSignIn({
     googleAccessToken,
   }: {
     googleAccessToken: string;
   }): ServiceResponse<{
-    userResponse: Omit<User, 'password'>;
+    user: Pick<User, 'id' | 'username' | 'isAdmin'>;
     accessToken: string;
-    refreshToken: string;
   }>;
+  sendEmailCode({ snuMail }: { snuMail: string }): ServiceResponse<void>;
+  verifyCode({
+    snuMail,
+    code,
+  }: {
+    snuMail: string;
+    code: string;
+  }): ServiceResponse<void>;
 };
 
 export const implAuthService = ({
@@ -66,7 +68,7 @@ export const implAuthService = ({
 }): AuthService => ({
   localSignUp: async ({ name, email, phoneNumber, password }) => {
     const body = { name, email, phoneNumber, password, authProvider: 'LOCAL' };
-    const { status, data } = await apis['POST /signup']({ body });
+    const { status, data } = await apis['POST /user/signup/local']({ body });
 
     if (status === 200) {
       const token = data.accessToken;
@@ -79,11 +81,11 @@ export const implAuthService = ({
         data,
       };
     }
-    return { type: 'error', message: data.error };
+    return { type: 'error', status, message: data.error };
   },
   localSignIn: async ({ localId, password }) => {
     const body = { localId, password };
-    const { status, data } = await apis['POST /signin']({ body });
+    const { status, data } = await apis['POST /user/signin/local']({ body });
 
     if (status === 200) {
       const token = data.accessToken;
@@ -96,11 +98,11 @@ export const implAuthService = ({
         data,
       };
     }
-    return { type: 'error', message: data.error };
+    return { type: 'error', status, message: data.error };
   },
-  socialSignUp: async ({ email, token, authProvider }) => {
-    const body = { email, token, authProvider };
-    const { status, data } = await apis['POST /signup/google']({ body });
+  googleSignUp: async ({ snuMail, googleAccessToken }) => {
+    const body = { snuMail, googleAccessToken };
+    const { status, data } = await apis['POST /user/signup/google']({ body });
 
     if (status === 200) {
       const accessToken = data.accessToken;
@@ -113,11 +115,11 @@ export const implAuthService = ({
         data,
       };
     }
-    return { type: 'error', message: data.error };
+    return { type: 'error', status, message: data.error };
   },
   googleSignIn: async ({ googleAccessToken }) => {
     const body = { googleAccessToken };
-    const { status, data } = await apis['POST /signin/google']({ body });
+    const { status, data } = await apis['POST /user/signin/google']({ body });
 
     if (status === 200) {
       const accessToken = data.accessToken;
@@ -130,6 +132,34 @@ export const implAuthService = ({
         data,
       };
     }
-    return { type: 'error', message: data.error };
+    return { type: 'error', status, message: data.error };
+  },
+  sendEmailCode: async ({ snuMail }) => {
+    const body = { snuMail };
+    const { status, data } = await apis['POST /user/signup/send-code']({
+      body,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', status, message: data.error };
+  },
+  verifyCode: async ({ code, snuMail }) => {
+    const body = { snuMail, code };
+    const { status, data } = await apis['POST /user/signup/verify-email']({
+      body,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', status, message: data.error };
   },
 });
