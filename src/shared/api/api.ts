@@ -75,9 +75,9 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         path: 'pretotype/list',
         token,
       }),
-    'GET /posts': () =>
+    'GET /post': () =>
       callWithoutToken<SuccessResponse<PostsResponse[]>>({
         method: 'GET',
-        path: 'posts',
+        path: 'post',
       }),
   }) satisfies Record<string, Api>;
