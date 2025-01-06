@@ -1,11 +1,16 @@
 import type { ServiceResponse } from '@/entities/response.ts';
 import type { Apis } from '@/shared/api';
+import type { CompanyListResponse } from '@/shared/api/entities';
 
 export type CompanyListService = {
-  getCompanyList(): ServiceResponse<CompanyListService[]>;
+  getCompanyList(): ServiceResponse<CompanyListResponse[]>;
 };
 
-export const implCompanyListService = ({ apis }: { apis: Apis }) => ({
+export const implCompanyListService = ({
+  apis,
+}: {
+  apis: Apis;
+}): CompanyListService => ({
   getCompanyList: async () => {
     const { status, data } = await apis['GET /company-list']();
 

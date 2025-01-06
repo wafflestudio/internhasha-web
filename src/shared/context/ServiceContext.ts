@@ -1,11 +1,13 @@
 import { createContext } from 'react';
 
 import type { AuthService } from '@/service/authService';
+import type { CompanyListService } from '@/service/companyListService';
 import type { EchoService } from '@/service/echoService';
 
 export type ServiceContext = {
   echoService: EchoService;
   authService: AuthService;
+  companyListService: CompanyListService;
 };
 
 export const ServiceContext = createContext<ServiceContext | null>(null);
