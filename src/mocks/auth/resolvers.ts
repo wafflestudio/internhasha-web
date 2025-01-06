@@ -4,6 +4,7 @@ import { mockUser } from '@/mocks/auth/data';
 import type {
   EmailVerifyRequest,
   GoogleSignUpRequest,
+  LocalIdRequest,
   SendEmailCodeRequest,
   UserWithTokenResponse,
 } from '@/mocks/auth/schemas';
@@ -16,6 +17,7 @@ type AuthResolver = {
     GoogleSignUpRequest,
     UserWithTokenResponse
   >;
+  checkLocalIdDuplicate: HttpResponseResolver<never, LocalIdRequest, never>;
 };
 
 export const authResolver: AuthResolver = {
@@ -31,5 +33,8 @@ export const authResolver: AuthResolver = {
     const { id, username, isAdmin } = mockUser;
     const body = { user: { id, username, isAdmin }, accessToken: 'asdf' };
     return HttpResponse.json(body, { status: 200 });
+  },
+  checkLocalIdDuplicate: () => {
+    return HttpResponse.json(null, { status: 200 });
   },
 };

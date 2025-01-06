@@ -27,6 +27,10 @@ export type LocalSignUpRequest = {
   snuMail: string;
 };
 
+export type LocalIdRequest = {
+  localId: string;
+}
+
 // Response
 export type UserWithTokenResponse = {
   user: UserBriefDTO;

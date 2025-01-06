@@ -12,20 +12,40 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LocalSignUpForm = () => {
-  const { LocalSignUp, responseMessage, isPending } = useSignUp();
+  const {
+    localSignUp,
+    responseMessage: responseMessageSignUp,
+    isPending: isPendingSignUp,
+  } = useSignUp();
   const { snuMail, password, localId, code, username } =
     authPresentation.useValidator();
-
   const [showCodeInput, setShowCodeInput] = useState(false);
+  const [localIdCheckSuccess, setLocalIdCheckSuccess] = useState(false);
+
+  const changeLocalIdCheckSuccess = (input: boolean) => {
+    setLocalIdCheckSuccess(input);
+  };
+
+  const {
+    checkLocalId,
+    responseMessage: responseMessageLocalId,
+    isPending: isPendingLocalId,
+  } = useCheckLocalId({ changeLocalIdCheckSuccess });
+
+  const isPending = isPendingLocalId || isPendingSignUp;
+
   const handleClickSendEmailCodeButton = () => {
     setShowCodeInput(true);
   };
 
-  const handleClickEmailVerifyButton = () => {};
+  const handleClickUsernameDuplicateCheck = () => {
+    if (localId.isError || localIdCheckSuccess) return;
+    checkLocalId({ localId: localId.value });
+  };
 
   const onSubmit = () => {
     if (!snuMail.isError && !password.isError && !localId.isError) {
-      LocalSignUp({
+      localSignUp({
         localId: localId.value,
         snuMail: snuMail.value,
         username: username.value,
@@ -38,7 +58,7 @@ export const LocalSignUpForm = () => {
       <FormContainer
         id="SignUpForm"
         handleSubmit={onSubmit}
-        response={responseMessage}
+        response={responseMessageSignUp}
       >
         <LabelContainer
           label="이름"
@@ -59,19 +79,26 @@ export const LocalSignUpForm = () => {
         <LabelContainer
           label="아이디"
           id="localId"
-          isError={localId.isError}
-          description="아이디는 4~20자리이며 영문 대소문자 또는 숫자 또는 -, _를 사용할 수 있습니다."
+          isError={localId.isError || !localIdCheckSuccess}
+          description={responseMessageLocalId}
         >
           <TextInput
             id="localId"
             value={localId.value}
             onChange={(e) => {
+              setLocalIdCheckSuccess(false);
               localId.onChange(e.target.value);
             }}
             placeholder="아이디를 입력하세요"
             disabled={isPending}
           />
-          <Button>중복확인</Button>
+          {localIdCheckSuccess ? (
+            <div>중복 인증 완료</div>
+          ) : (
+            <Button onClick={handleClickUsernameDuplicateCheck}>
+              중복확인
+            </Button>
+          )}
         </LabelContainer>
         <LabelContainer
           label="비밀번호"
@@ -147,7 +174,6 @@ export const LocalSignUpForm = () => {
             <Button
               onClick={(event) => {
                 event.preventDefault();
-                handleClickEmailVerifyButton();
               }}
               disabled={isPending}
             >
@@ -163,12 +189,47 @@ export const LocalSignUpForm = () => {
   );
 };
 
+const useCheckLocalId = ({
+  changeLocalIdCheckSuccess,
+}: {
+  changeLocalIdCheckSuccess(input: boolean): void;
+}) => {
+  const { authService } = useGuardContext(ServiceContext);
+  const [responseMessage, setResponseMessage] = useState('');
+
+  const { mutate: checkLocalId, isPending } = useMutation({
+    mutationFn: ({ localId }: { localId: string }) => {
+      return authService.checkLocalIdDuplicate({ localId });
+    },
+    onSuccess: (response) => {
+      if (response.type === 'success') {
+        changeLocalIdCheckSuccess(true);
+      } else {
+        changeLocalIdCheckSuccess(false);
+        setResponseMessage(response.message);
+      }
+    },
+    onError: () => {
+      changeLocalIdCheckSuccess(false);
+      setResponseMessage(
+        '회원가입에 실패했습니다. 잠시 후에 다시 실행해주세요.',
+      );
+    },
+  });
+
+  return {
+    checkLocalId,
+    responseMessage,
+    isPending,
+  };
+};
+
 const useSignUp = () => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
   const { toMain } = useRouteNavigation();
 
-  const { mutate: LocalSignUp, isPending } = useMutation({
+  const { mutate: localSignUp, isPending } = useMutation({
     mutationFn: ({
       username,
       snuMail,
@@ -196,5 +257,5 @@ const useSignUp = () => {
     },
   });
 
-  return { LocalSignUp, responseMessage, isPending };
+  return { localSignUp, responseMessage, isPending };
 };

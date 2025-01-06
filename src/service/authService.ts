@@ -55,6 +55,11 @@ export type AuthService = {
     snuMail: string;
     code: string;
   }): ServiceResponse<void>;
+  checkLocalIdDuplicate({
+    localId,
+  }: {
+    localId: string;
+  }): ServiceResponse<void>;
 };
 
 export const implAuthService = ({
@@ -151,6 +156,20 @@ export const implAuthService = ({
   verifyCode: async ({ code, snuMail }) => {
     const body = { snuMail, code };
     const { status, data } = await apis['POST /user/signup/verify-email']({
+      body,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', status, message: data.error };
+  },
+  checkLocalIdDuplicate: async ({ localId }) => {
+    const body = { localId };
+    const { status, data } = await apis['POST /user/signup/id-duplicate']({
       body,
     });
 

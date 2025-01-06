@@ -46,6 +46,10 @@ export type GoogleSignInRequest = {
   googleAccessToken: string;
 };
 
+export type CheckLocalIdDuplicateRequest = {
+  localId: string;
+};
+
 // Response
 export type PretotypeUserSubmitResponse = {
   email: string;
