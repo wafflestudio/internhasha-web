@@ -94,7 +94,7 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         token,
       }),
     'GET /post?': () =>
-      callWithoutToken<SuccessResponse<PostsResponse[]>>({
+      callWithoutToken<SuccessResponse<PostsResponse>>({
         method: 'GET',
         path: 'post?',
       }),

@@ -3,7 +3,7 @@ import type { Apis } from '@/shared/api';
 import type { PostsResponse } from '@/shared/api/entities';
 
 export type PostService = {
-  getPosts(): ServiceResponse<PostsResponse[]>;
+  getPosts(): ServiceResponse<PostsResponse>;
 };
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
