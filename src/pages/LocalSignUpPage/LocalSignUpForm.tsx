@@ -17,7 +17,7 @@ export const LocalSignUpForm = () => {
     responseMessage: responseMessageSignUp,
     isPending: isPendingSignUp,
   } = useSignUp();
-  const { snuMail, password, localId, code, username } =
+  const { snuMail, password, passwordConfirm, localId, code, username} =
     authPresentation.useValidator();
   const [showCodeInput, setShowCodeInput] = useState(false);
   const [localIdCheckSuccess, setLocalIdCheckSuccess] = useState(false);
@@ -119,18 +119,17 @@ export const LocalSignUpForm = () => {
         </LabelContainer>
         <LabelContainer
           label="비밀번호 확인"
-          id="passwordCheck"
-          isError={password.isError}
-          description="비밀번호는 8~20자리이며 영문 대소문자, 숫자, 특수문자(@#$!^*) 중 하나를 반드시 포함해야 합니다."
+          id="passwordConfirm"
+          isError={passwordConfirm.isError}
+          description="비밀번호가 일치하지 않습니다."
         >
           <TextInput
             id="passwordCheck"
             type="password"
-            value={password.value}
+            value={passwordConfirm.value}
             onChange={(e) => {
-              password.onChange(e.target.value);
+              passwordConfirm.onChange(e.target.value);
             }}
-            placeholder="비밀번호를 다시 입력해주세요"
             disabled={isPending}
           />
         </LabelContainer>

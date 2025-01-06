@@ -10,6 +10,7 @@ type AuthPresentation = {
   useValidator(): {
     snuMail: StringInput;
     password: StringInput;
+    passwordConfirm: StringInput;
     localId: StringInput;
     phoneNumber: StringInput;
     code: StringInput;
@@ -29,6 +30,7 @@ export const authPresentation: AuthPresentation = {
   useValidator: () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordConfirm, setPasswordConfirm] = useState('');
     const [localId, setLocalId] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [code, setCode] = useState('');
@@ -40,6 +42,10 @@ export const authPresentation: AuthPresentation = {
 
     const handlePasswordChange = (input: string) => {
       setPassword(input);
+    };
+
+    const handlePasswordConfirmChange = (input: string) => {
+      setPasswordConfirm(input);
     };
 
     const handleLocalIdChange = (input: string) => {
@@ -68,6 +74,11 @@ export const authPresentation: AuthPresentation = {
         isError: !PASSWORD_REGEX.test(password),
         value: password,
         onChange: handlePasswordChange,
+      },
+      passwordConfirm: {
+        isError: password !== passwordConfirm,
+        value: passwordConfirm,
+        onChange: handlePasswordConfirmChange,
       },
       localId: {
         isError: !LOCAL_ID_REGEX.test(localId),
