@@ -6,13 +6,15 @@ import type {
 } from '@/shared/api/entities/params';
 import type {
   EchoParams,
+  EmailVerifyRequest,
+  GoogleSignInRequest,
+  GoogleSignUpRequest,
   LocalSignInRequest,
   LocalSignUpRequest,
   PostsResponse,
   PretotypeUserSubmitRequest,
   PretotypeUserSubmitResponse,
-  SocialSignInRequest,
-  SocialSignUpRequest,
+  SendEmailCodeRequest,
   UserWithTokenResponse,
 } from '@/shared/api/entities/schemas';
 
@@ -45,28 +47,44 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         path: 'pretotype',
         body,
       }),
-    'POST /signup': ({ body }: { body: LocalSignUpRequest }) =>
+    'POST /user/signup/local': ({ body }: { body: LocalSignUpRequest }) =>
       callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
         method: 'POST',
-        path: 'signup',
+        path: 'user/signup/local',
         body,
       }),
-    'POST /signup/google': ({ body }: { body: SocialSignUpRequest }) =>
+    'POST /user/signup/google': ({ body }: { body: GoogleSignUpRequest }) =>
       callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
         method: 'POST',
-        path: 'signin',
+        path: 'user/signup/google',
         body,
       }),
-    'POST /signin': ({ body }: { body: LocalSignInRequest }) =>
+    'POST /user/signin/local': ({ body }: { body: LocalSignInRequest }) =>
       callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
         method: 'POST',
-        path: 'signin',
+        path: 'user/signin/local',
         body,
       }),
-    'POST /signin/google': ({ body }: { body: SocialSignInRequest }) =>
+    'POST /user/signin/google': ({ body }: { body: GoogleSignInRequest }) =>
       callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
         method: 'POST',
-        path: 'signin',
+        path: 'user/signin/google',
+        body,
+      }),
+    'POST /user/signup/send-code': ({ body }: { body: SendEmailCodeRequest }) =>
+      callWithoutToken<SuccessResponse<void>>({
+        method: 'POST',
+        path: 'user/signup/send-code',
+        body,
+      }),
+    'POST /user/signup/verify-email': ({
+      body,
+    }: {
+      body: EmailVerifyRequest;
+    }) =>
+      callWithoutToken<SuccessResponse<void>>({
+        method: 'POST',
+        path: 'user/signup/verify-email',
         body,
       }),
     'GET /pretotype/mock': ({ token }: { token: string }) =>
