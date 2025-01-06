@@ -6,14 +6,14 @@ import type { TokenState } from '@/shared/token/state';
 
 export type AuthService = {
   localSignUp({
-    name,
-    email,
-    phoneNumber,
+    username,
+    localId,
     password,
+    snuMail,
   }: {
-    name: string;
-    email: string;
-    phoneNumber: string;
+    username: string;
+    snuMail: string;
+    localId: string;
     password: string;
   }): ServiceResponse<{
     user: Pick<User, 'id' | 'username' | 'isAdmin'>;
@@ -66,8 +66,8 @@ export const implAuthService = ({
   tokenLocalStorage: TokenLocalStorage;
   tokenState: TokenState;
 }): AuthService => ({
-  localSignUp: async ({ name, email, phoneNumber, password }) => {
-    const body = { name, email, phoneNumber, password, authProvider: 'LOCAL' };
+  localSignUp: async ({ username, localId, password, snuMail }) => {
+    const body = { username, localId, password, snuMail };
     const { status, data } = await apis['POST /user/signup/local']({ body });
 
     if (status === 200) {

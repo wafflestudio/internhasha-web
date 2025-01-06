@@ -13,7 +13,7 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LocalSignUpForm = () => {
   const { LocalSignUp, responseMessage, isPending } = useSignUp();
-  const { email, password, localId, phoneNumber, code } =
+  const { snuMail, password, localId, code, username } =
     authPresentation.useValidator();
 
   const [showCodeInput, setShowCodeInput] = useState(false);
@@ -24,16 +24,11 @@ export const LocalSignUpForm = () => {
   const handleClickEmailVerifyButton = () => {};
 
   const onSubmit = () => {
-    if (
-      !email.isError &&
-      !password.isError &&
-      !localId.isError &&
-      !phoneNumber.isError
-    ) {
+    if (!snuMail.isError && !password.isError && !localId.isError) {
       LocalSignUp({
-        name: localId.value,
-        email: email.value,
-        phoneNumber: phoneNumber.value,
+        localId: localId.value,
+        snuMail: snuMail.value,
+        username: username.value,
         password: password.value,
       });
     }
@@ -46,13 +41,29 @@ export const LocalSignUpForm = () => {
         response={responseMessage}
       >
         <LabelContainer
+          label="이름"
+          id="username"
+          isError={username.isError}
+          description="실명을 작성해주세요"
+        >
+          <TextInput
+            id="username"
+            value={username.value}
+            onChange={(e) => {
+              username.onChange(e.target.value);
+            }}
+            placeholder="홍길동"
+            disabled={isPending}
+          />
+        </LabelContainer>
+        <LabelContainer
           label="아이디"
-          id="name"
+          id="localId"
           isError={localId.isError}
           description="아이디는 4~20자리이며 영문 대소문자 또는 숫자 또는 -, _를 사용할 수 있습니다."
         >
           <TextInput
-            id="name"
+            id="localId"
             value={localId.value}
             onChange={(e) => {
               localId.onChange(e.target.value);
@@ -60,6 +71,7 @@ export const LocalSignUpForm = () => {
             placeholder="아이디를 입력하세요"
             disabled={isPending}
           />
+          <Button>중복확인</Button>
         </LabelContainer>
         <LabelContainer
           label="비밀번호"
@@ -98,14 +110,14 @@ export const LocalSignUpForm = () => {
         <LabelContainer
           label="이메일"
           id="email"
-          isError={email.isError}
+          isError={snuMail.isError}
           description="snu.ac.kr로 끝나는 메일을 작성해주세요."
         >
           <TextInput
             id="email"
-            value={email.value}
+            value={snuMail.value}
             onChange={(e) => {
-              email.onChange(e.target.value);
+              snuMail.onChange(e.target.value);
             }}
             placeholder="스누 메일을 입력하세요"
             disabled={isPending}
@@ -158,17 +170,17 @@ const useSignUp = () => {
 
   const { mutate: LocalSignUp, isPending } = useMutation({
     mutationFn: ({
-      name,
-      email,
-      phoneNumber,
+      username,
+      snuMail,
+      localId,
       password,
     }: {
-      name: string;
-      email: string;
+      username: string;
+      snuMail: string;
+      localId: string;
       password: string;
-      phoneNumber: string;
     }) => {
-      return authService.localSignUp({ name, email, phoneNumber, password });
+      return authService.localSignUp({ username, snuMail, localId, password });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {

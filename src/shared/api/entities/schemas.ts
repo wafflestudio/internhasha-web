@@ -17,11 +17,10 @@ export type PretotypeUserSubmitRequest = {
 };
 
 export type LocalSignUpRequest = {
-  name: string;
-  email: string;
-  phoneNumber: string;
+  username: string;
+  localId: string;
   password: string;
-  authProvider: string;
+  snuMail: string;
 };
 
 export type LocalSignInRequest = {

@@ -20,6 +20,13 @@ export type GoogleSignUpRequest = {
   googleAccesToken: string;
 };
 
+export type LocalSignUpRequest = {
+  username: string;
+  localId: string;
+  password: string;
+  snuMail: string;
+};
+
 // Response
 export type UserWithTokenResponse = {
   user: UserBriefDTO;

@@ -22,7 +22,7 @@ export const EmailVerifyForm = () => {
   const state = location.state as EmailVerifyLocationState;
   const token = state.token;
 
-  const { email, code } = authPresentation.useValidator();
+  const { snuMail, code } = authPresentation.useValidator();
   const {
     sendCode,
     sendSuccess,
@@ -46,19 +46,19 @@ export const EmailVerifyForm = () => {
   const isPending = isPendingSend || isPendingVerify || isPendingSignup;
 
   const handleClickSendEmailCodeButton = () => {
-    if (email.isError) return;
-    sendCode({ snuMail: email.value });
+    if (snuMail.isError) return;
+    sendCode({ snuMail: snuMail.value });
   };
 
   const handleClickVerifyEmailButton = () => {
-    if (email.isError || code.isError) return;
-    emailVerify({ snuMail: email.value, code: code.value });
+    if (snuMail.isError || code.isError) return;
+    emailVerify({ snuMail: snuMail.value, code: code.value });
   };
 
   const onSubmit = () => {
-    if (email.isError || code.isError || !verifySuccess || isCodeExpired)
+    if (snuMail.isError || code.isError || !verifySuccess || isCodeExpired)
       return;
-    googleSignUp({ snuMail: email.value, token });
+    googleSignUp({ snuMail: snuMail.value, token });
   };
 
   return (
@@ -70,14 +70,14 @@ export const EmailVerifyForm = () => {
       <LabelContainer
         label="이메일"
         id="email"
-        isError={email.isError || !sendSuccess}
+        isError={snuMail.isError || !sendSuccess}
         description={codeResponseMessage}
       >
         <TextInput
           id="email"
-          value={email.value}
+          value={snuMail.value}
           onChange={(e) => {
-            email.onChange(e.target.value);
+            snuMail.onChange(e.target.value);
           }}
           disabled={isPending}
         />
