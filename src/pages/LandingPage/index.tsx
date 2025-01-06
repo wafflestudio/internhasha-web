@@ -20,7 +20,7 @@ export const LandingPage = () => {
       {!isLoading && !isError && companyListData != null && (
         <ul>
           {companyListData.map((company) => (
-            <li key={company.id}>{company.name}</li> // Adjust keys and fields as per your API response
+            <li key={company.id}>{company.name}</li>
           ))}
         </ul>
       )}
