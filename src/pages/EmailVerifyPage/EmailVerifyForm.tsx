@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 
 import { Button } from '@/components/button';
@@ -11,6 +11,7 @@ import { authPresentation } from '@/presentation/authPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+import { formatNumberToTime } from '@/util/format';
 
 type EmailVerifyLocationState = {
   token: string;
@@ -24,7 +25,8 @@ export const EmailVerifyForm = () => {
   const { email, code } = authPresentation.useValidator();
   const {
     sendCode,
-    showCodeInput,
+    sendSuccess,
+    isCodeExpired,
     timeLeft,
     responseMessage: codeResponseMessage,
     isPending: isPendingSend,
@@ -54,7 +56,8 @@ export const EmailVerifyForm = () => {
   };
 
   const onSubmit = () => {
-    if (email.isError || code.isError || !verifySuccess) return;
+    if (email.isError || code.isError || !verifySuccess || isCodeExpired)
+      return;
     googleSignUp({ snuMail: email.value, token });
   };
 
@@ -67,7 +70,7 @@ export const EmailVerifyForm = () => {
       <LabelContainer
         label="이메일"
         id="email"
-        isError={email.isError}
+        isError={email.isError || !sendSuccess}
         description={codeResponseMessage}
       >
         <TextInput
@@ -78,16 +81,19 @@ export const EmailVerifyForm = () => {
           }}
           disabled={isPending}
         />
-        <Button onClick={handleClickSendEmailCodeButton} disabled={isPending}>
-          인증코드 받기
-        </Button>
+        <ShowSendEmailCodeButton
+          sendSuccess={sendSuccess}
+          verifySuccess={verifySuccess}
+          handleClickSendEmailCodeButton={handleClickSendEmailCodeButton}
+          isPending={isPending}
+        />
       </LabelContainer>
-      {showCodeInput && (
+      {sendSuccess && (
         <>
           <LabelContainer
             label="인증 코드"
             id="code"
-            isError={code.isError}
+            isError={code.isError || verifySuccess}
             description={emailResponseMessage}
           >
             <TextInput
@@ -98,10 +104,13 @@ export const EmailVerifyForm = () => {
               }}
               disabled={isPending}
             />
-            <div>{timeLeft}</div>
-            <Button onClick={handleClickVerifyEmailButton} disabled={isPending}>
-              인증코드 확인
-            </Button>
+            <ShowVerifyEmailButton
+              timeLeft={timeLeft}
+              verifySuccess={verifySuccess}
+              isCodeExpired={isCodeExpired}
+              handleClickVerifyEmailButton={handleClickVerifyEmailButton}
+              isPending={isPending}
+            />
           </LabelContainer>
         </>
       )}
@@ -116,24 +125,85 @@ export const EmailVerifyForm = () => {
   );
 };
 
+const ShowSendEmailCodeButton = ({
+  sendSuccess,
+  verifySuccess,
+  handleClickSendEmailCodeButton,
+  isPending,
+}: {
+  sendSuccess: boolean;
+  verifySuccess: boolean;
+  handleClickSendEmailCodeButton(): void;
+  isPending: boolean;
+}) => {
+  if (verifySuccess) {
+    return <div>인증 성공</div>;
+  } else if (sendSuccess) {
+    return (
+      <Button onClick={handleClickSendEmailCodeButton} disabled={isPending}>
+        인증코드 재발송
+      </Button>
+    );
+  } else {
+    return (
+      <Button onClick={handleClickSendEmailCodeButton} disabled={isPending}>
+        인증코드 받기
+      </Button>
+    );
+  }
+};
+
+const ShowVerifyEmailButton = ({
+  timeLeft,
+  verifySuccess,
+  isCodeExpired,
+  handleClickVerifyEmailButton,
+  isPending,
+}: {
+  timeLeft: number | null;
+  verifySuccess: boolean;
+  isCodeExpired: boolean;
+  handleClickVerifyEmailButton(): void;
+  isPending: boolean;
+}) => {
+  if (verifySuccess) {
+    return <div>인증 성공</div>;
+  } else if (isCodeExpired) {
+    return <div>인증코드가 만료되었습니다.</div>;
+  } else {
+    return (
+      <>
+        {timeLeft !== null && (
+          <div>{formatNumberToTime({ time: timeLeft })}</div>
+        )}
+        <Button onClick={handleClickVerifyEmailButton} disabled={isPending}>
+          인증코드 확인
+        </Button>
+      </>
+    );
+  }
+};
+
 const useSendCode = () => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
-  const [showCodeInput, setShowCodeInput] = useState(false);
+  const [sendSuccess, setSendSuccess] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  const [isCodeExpired, setIsCodeExpired] = useState(false);
 
-  let timer: NodeJS.Timeout | null = null;
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const TIME_OUT = 180;
 
   const startTimer = () => {
-    setTimeLeft(300);
+    stopTimer();
+    setTimeLeft(TIME_OUT);
+    setIsCodeExpired(false);
 
-    timer = setInterval(() => {
+    timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev === null || prev <= 1) {
-          if (timer !== null) {
-            clearInterval(timer);
-          }
-          timer = null;
+          stopTimer();
+          setIsCodeExpired(true);
           return null;
         }
         return prev - 1;
@@ -142,9 +212,9 @@ const useSendCode = () => {
   };
 
   const stopTimer = () => {
-    if (timer !== null) {
-      clearInterval(timer);
-      timer = null;
+    if (timerRef.current !== null) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
     }
     setTimeLeft(null);
   };
@@ -157,13 +227,11 @@ const useSendCode = () => {
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        setShowCodeInput(true);
-        stopTimer();
+        setSendSuccess(true);
         startTimer();
       } else {
         console.log(response);
         setResponseMessage(response.message);
-        setShowCodeInput(false);
         stopTimer();
       }
     },
@@ -171,12 +239,19 @@ const useSendCode = () => {
       setResponseMessage(
         '코드 전송에 실패했습니다. 잠시 후에 다시 실행해주세요.',
       );
-      setShowCodeInput(false);
+      setSendSuccess(false);
       stopTimer();
     },
   });
 
-  return { sendCode, showCodeInput, timeLeft, responseMessage, isPending };
+  return {
+    sendCode,
+    sendSuccess,
+    isCodeExpired,
+    timeLeft,
+    responseMessage,
+    isPending,
+  };
 };
 
 const useEmailVerify = () => {
