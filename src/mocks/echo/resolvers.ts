@@ -5,7 +5,7 @@ import type {
   PretotypeAddUserResponse,
 } from '@/mocks/echo/schemas';
 
-type echoResolver = {
+type EchoResolver = {
   pretotypeAddUser: HttpResponseResolver<
     never,
     PretotypeAddUserRequest,
@@ -13,7 +13,7 @@ type echoResolver = {
   >;
 };
 
-export const echoResolver: echoResolver = {
+export const echoResolver: EchoResolver = {
   pretotypeAddUser: async ({ request }) => {
     const { email, isSubscribed } = await request.json();
     const date = new Date();

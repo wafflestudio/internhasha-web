@@ -11,6 +11,7 @@ import type {
   GoogleSignUpRequest,
   LocalSignInRequest,
   LocalSignUpRequest,
+  PostsResponse,
   PretotypeUserSubmitRequest,
   PretotypeUserSubmitResponse,
   SendEmailCodeRequest,
@@ -91,5 +92,10 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         method: 'GET',
         path: 'pretotype/list',
         token,
+      }),
+    'GET /post': () =>
+      callWithoutToken<SuccessResponse<PostsResponse[]>>({
+        method: 'GET',
+        path: 'post',
       }),
   }) satisfies Record<string, Api>;

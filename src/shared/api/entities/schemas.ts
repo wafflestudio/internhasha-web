@@ -58,3 +58,9 @@ export type UserWithTokenResponse = {
   user: UserBriefDTO;
   accessToken: string;
 };
+
+export type PostsResponse = {
+  id: string;
+  name: string;
+  description: string;
+};
