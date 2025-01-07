@@ -95,7 +95,12 @@ export const LocalSignUpForm = () => {
               placeholder="아이디를 입력해주세요."
               disabled={isPending}
             />
-            <Button onClick={handleClickUsernameDuplicateCheck}>
+            <Button
+              onClick={(event) => {
+                event.preventDefault();
+                handleClickUsernameDuplicateCheck();
+              }}
+            >
               중복확인
             </Button>
             {localIdCheckSuccess && <div>사용할 수 있는 아이디예요.</div>}
