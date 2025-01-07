@@ -29,7 +29,7 @@ export const LocalSignUpForm = () => {
 
   const { toVerifyEmail } = useRouteNavigation();
   const { password, passwordConfirm, localId, username } =
-    authPresentation.useValidator(state);
+    authPresentation.useValidator({ initialState: state });
   const [localIdCheckSuccess, setLocalIdCheckSuccess] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordConfirmFocused, setIsPasswordConfirmFocused] =

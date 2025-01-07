@@ -8,7 +8,7 @@ type StringInput = {
 };
 
 type AuthPresentation = {
-  useValidator(initialState?: { body?: PreviousForm }): {
+  useValidator({ initialState }: { initialState?: { body?: PreviousForm } }): {
     snuMail: StringInput;
     password: StringInput;
     passwordConfirm: StringInput;
@@ -41,7 +41,7 @@ const CODE_REGEX = /^\d{6}$/;
 const USERNAME_REGEX = /^([가-힣]{2,6}|[A-Za-z]{2,20})$/;
 
 export const authPresentation: AuthPresentation = {
-  useValidator: (initialState = {}) => {
+  useValidator: ({ initialState = {} }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState(
       initialState.body !== undefined ? initialState.body.password : '',
