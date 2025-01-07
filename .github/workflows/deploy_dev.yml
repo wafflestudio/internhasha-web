@@ -21,7 +21,10 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env.local
+          echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}" >> .env.local
+
+      - name: Debug .env.local
+        run: cat .env.local
 
       - name: Debug .env.local
         run: cat .env.local
