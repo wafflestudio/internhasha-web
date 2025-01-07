@@ -7,8 +7,18 @@ type StringInput = {
   onChange: (e: string) => void;
 };
 
+type InitialState = {
+  snuMail?: string;
+  password?: string;
+  passwordConfirm?: string;
+  localId?: string;
+  phoneNumber?: string;
+  code?: string;
+  username?: string;
+};
+
 type AuthPresentation = {
-  useValidator({ initialState }: { initialState?: { body?: PreviousForm } }): {
+  useValidator({ initialState }: { initialState?: InitialState }): {
     snuMail: StringInput;
     password: StringInput;
     passwordConfirm: StringInput;
@@ -17,13 +27,6 @@ type AuthPresentation = {
     code: StringInput;
     username: StringInput;
   };
-};
-
-type PreviousForm = {
-  authProvider: 'LOCAL';
-  localId: string;
-  password: string;
-  username: string;
 };
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@snu\.ac\.kr$/;
@@ -42,18 +45,28 @@ const USERNAME_REGEX = /^([가-힣]{2,6}|[A-Za-z]{2,20})$/;
 
 export const authPresentation: AuthPresentation = {
   useValidator: ({ initialState = {} }) => {
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState(
+      initialState.snuMail !== undefined ? initialState.snuMail : '',
+    );
     const [password, setPassword] = useState(
-      initialState.body !== undefined ? initialState.body.password : '',
+      initialState.password !== undefined ? initialState.password : '',
     );
-    const [passwordConfirm, setPasswordConfirm] = useState('');
+    const [passwordConfirm, setPasswordConfirm] = useState(
+      initialState.passwordConfirm !== undefined
+        ? initialState.passwordConfirm
+        : '',
+    );
     const [localId, setLocalId] = useState(
-      initialState.body !== undefined ? initialState.body.localId : '',
+      initialState.localId !== undefined ? initialState.localId : '',
     );
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [code, setCode] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState(
+      initialState.phoneNumber !== undefined ? initialState.phoneNumber : '',
+    );
+    const [code, setCode] = useState(
+      initialState.code !== undefined ? initialState.code : '',
+    );
     const [username, setUsername] = useState(
-      initialState.body !== undefined ? initialState.body.username : '',
+      initialState.username !== undefined ? initialState.username : '',
     );
 
     const handleEmailChange = (input: string) => {
