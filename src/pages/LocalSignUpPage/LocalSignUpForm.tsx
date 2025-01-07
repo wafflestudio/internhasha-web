@@ -103,7 +103,11 @@ export const LocalSignUpForm = () => {
             >
               중복확인
             </Button>
-            {localIdCheckSuccess && <div>사용할 수 있는 아이디예요.</div>}
+            {localIdCheckSuccess ? (
+              <div>사용할 수 있는 아이디입니다.</div>
+            ) : (
+              <div>사용할 수 없는 아이디입니다. 다시 입력해주세요.</div>
+            )}
           </LabelContainer>
           <LabelContainer label="비밀번호" id="password">
             <TextInput
