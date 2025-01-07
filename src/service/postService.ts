@@ -1,9 +1,10 @@
 import type { ServiceResponse } from '@/entities/response.ts';
 import type { Apis } from '@/shared/api';
-import type { PostsResponse } from '@/shared/api/entities';
+import type { PostDetailResponse, PostsResponse } from '@/shared/api/entities';
 
 export type PostService = {
-  getPosts(): ServiceResponse<PostsResponse>;
+  getPosts: () => ServiceResponse<PostsResponse>;
+  getPostDetail: ({ postId }: { postId: string }) => ServiceResponse<PostDetailResponse>;
 };
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
@@ -18,4 +19,18 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     }
     return { type: 'error', message: data.error };
   },
+
+  getPostDetail: async ( { postId } : { postId: string }) => {
+    const params = { postId }
+    const { status, data } = await apis['GET /post/:postId']({ params });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', message: data.error };
+  },
+
 });
