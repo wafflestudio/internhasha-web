@@ -23,12 +23,6 @@ jobs:
         run: |
           echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}" >> .env.local
 
-      - name: Debug .env.local
-        run: cat .env.local
-
-      - name: Debug .env.local
-        run: cat .env.local
-
       - name: Build & Export
         run: |
           yarn install
