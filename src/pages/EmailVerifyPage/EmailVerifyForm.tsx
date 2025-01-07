@@ -13,14 +13,25 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatNumberToTime } from '@/util/format';
 
+type VerifyMailBody =
+  | {
+      authProvider: 'GOOGLE';
+      token: string;
+    }
+  | {
+      authProvider: 'LOCAL';
+      localId: string;
+      password: string;
+      username: string;
+    };
+
 type EmailVerifyLocationState = {
-  token: string;
+  body: VerifyMailBody;
 };
 
 export const EmailVerifyForm = () => {
   const location = useLocation();
-  const state = location.state as EmailVerifyLocationState;
-  const token = state.token;
+  const state = location.state as EmailVerifyLocationState | undefined;
 
   const { snuMail, code } = authPresentation.useValidator();
   const {
@@ -39,11 +50,25 @@ export const EmailVerifyForm = () => {
   } = useEmailVerify();
   const {
     googleSignUp,
-    responseMessage: signUpResponseMessage,
-    isPending: isPendingSignup,
+    responseMessage: googleSignUpResponseMessage,
+    isPending: isPendingGoogleSignup,
   } = useGoogleSignUp();
+  const {
+    localSignUp,
+    responseMessage: localSignUpResponseMessage,
+    isPending: isPendingLocalSignUp,
+  } = useLocalSignUp();
 
-  const isPending = isPendingSend || isPendingVerify || isPendingSignup;
+  const isPending =
+    isPendingSend ||
+    isPendingVerify ||
+    isPendingGoogleSignup ||
+    isPendingLocalSignUp;
+
+  if (state === undefined) {
+    return <div>유효하지 않은 접근입니다.</div>;
+  }
+  const { body } = state;
 
   const handleClickSendEmailCodeButton = () => {
     if (snuMail.isError) return;
@@ -58,14 +83,28 @@ export const EmailVerifyForm = () => {
   const onSubmit = () => {
     if (snuMail.isError || code.isError || !verifySuccess || isCodeExpired)
       return;
-    googleSignUp({ snuMail: snuMail.value, token });
+    if (body.authProvider === 'GOOGLE') {
+      googleSignUp({ snuMail: snuMail.value, token: body.token });
+    }
+    if (body.authProvider === 'LOCAL') {
+      localSignUp({
+        snuMail: snuMail.value,
+        localId: body.localId,
+        password: body.password,
+        username: body.username,
+      });
+    }
   };
 
   return (
     <FormContainer
       id="EmailVerifyForm"
       handleSubmit={onSubmit}
-      response={signUpResponseMessage}
+      response={
+        body.authProvider === 'LOCAL'
+          ? localSignUpResponseMessage
+          : googleSignUpResponseMessage
+      }
     >
       <LabelContainer
         label="이메일"
@@ -312,4 +351,40 @@ const useGoogleSignUp = () => {
   });
 
   return { googleSignUp, responseMessage, isPending };
+};
+
+const useLocalSignUp = () => {
+  const { authService } = useGuardContext(ServiceContext);
+  const [responseMessage, setResponseMessage] = useState('');
+  const { toMain } = useRouteNavigation();
+
+  const { mutate: localSignUp, isPending } = useMutation({
+    mutationFn: ({
+      snuMail,
+      username,
+      localId,
+      password,
+    }: {
+      snuMail: string;
+      username: string;
+      localId: string;
+      password: string;
+    }) => {
+      return authService.localSignUp({ username, snuMail, localId, password });
+    },
+    onSuccess: (response) => {
+      if (response.type === 'success') {
+        toMain();
+      } else {
+        setResponseMessage(response.message);
+      }
+    },
+    onError: () => {
+      setResponseMessage(
+        '회원가입에 실패했습니다. 잠시 후에 다시 실행해주세요.',
+      );
+    },
+  });
+
+  return { localSignUp, responseMessage, isPending };
 };

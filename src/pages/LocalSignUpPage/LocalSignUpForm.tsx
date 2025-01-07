@@ -12,31 +12,18 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LocalSignUpForm = () => {
-  const {
-    localSignUp,
-    responseMessage: responseMessageSignUp,
-    isPending: isPendingSignUp,
-  } = useSignUp();
-  const { snuMail, password, passwordConfirm, localId, code, username} =
+  const { toVerifyEmail } = useRouteNavigation();
+  const { password, passwordConfirm, localId, username } =
     authPresentation.useValidator();
-  const [showCodeInput, setShowCodeInput] = useState(false);
   const [localIdCheckSuccess, setLocalIdCheckSuccess] = useState(false);
 
   const changeLocalIdCheckSuccess = (input: boolean) => {
     setLocalIdCheckSuccess(input);
   };
 
-  const {
-    checkLocalId,
-    responseMessage: responseMessageLocalId,
-    isPending: isPendingLocalId,
-  } = useCheckLocalId({ changeLocalIdCheckSuccess });
-
-  const isPending = isPendingLocalId || isPendingSignUp;
-
-  const handleClickSendEmailCodeButton = () => {
-    setShowCodeInput(true);
-  };
+  const { checkLocalId, responseMessage, isPending } = useCheckLocalId({
+    changeLocalIdCheckSuccess,
+  });
 
   const handleClickUsernameDuplicateCheck = () => {
     if (localId.isError || localIdCheckSuccess) return;
@@ -44,21 +31,28 @@ export const LocalSignUpForm = () => {
   };
 
   const onSubmit = () => {
-    if (!snuMail.isError && !password.isError && !localId.isError) {
-      localSignUp({
-        localId: localId.value,
-        snuMail: snuMail.value,
-        username: username.value,
-        password: password.value,
-      });
-    }
+    if (
+      localId.isError ||
+      password.isError ||
+      passwordConfirm.isError ||
+      username.isError ||
+      !localIdCheckSuccess
+    )
+      return;
+    toVerifyEmail({
+      authProvider: 'LOCAL',
+      localId: localId.value,
+      password: password.value,
+      username: username.value,
+    });
   };
+
   return (
     <div>
       <FormContainer
         id="SignUpForm"
         handleSubmit={onSubmit}
-        response={responseMessageSignUp}
+        response={responseMessage}
       >
         <LabelContainer
           label="이름"
@@ -80,7 +74,7 @@ export const LocalSignUpForm = () => {
           label="아이디"
           id="localId"
           isError={localId.isError || !localIdCheckSuccess}
-          description={responseMessageLocalId}
+          description={responseMessage}
         >
           <TextInput
             id="localId"
@@ -133,55 +127,8 @@ export const LocalSignUpForm = () => {
             disabled={isPending}
           />
         </LabelContainer>
-        <LabelContainer
-          label="이메일"
-          id="email"
-          isError={snuMail.isError}
-          description="snu.ac.kr로 끝나는 메일을 작성해주세요."
-        >
-          <TextInput
-            id="email"
-            value={snuMail.value}
-            onChange={(e) => {
-              snuMail.onChange(e.target.value);
-            }}
-            placeholder="스누 메일을 입력하세요"
-            disabled={isPending}
-          />
-          <Button
-            onClick={(event) => {
-              event.preventDefault();
-              handleClickSendEmailCodeButton();
-            }}
-            disabled={isPending}
-          >
-            인증코드 받기
-          </Button>
-        </LabelContainer>
-        {showCodeInput && (
-          <>
-            <LabelContainer label="인증 코드" id="code" isError={code.isError}>
-              <TextInput
-                id="code"
-                value={code.value}
-                onChange={(e) => {
-                  code.onChange(e.target.value);
-                }}
-                disabled={isPending}
-              />
-            </LabelContainer>
-            <Button
-              onClick={(event) => {
-                event.preventDefault();
-              }}
-              disabled={isPending}
-            >
-              인증코드 확인
-            </Button>
-          </>
-        )}
         <SubmitButton form="SignUpForm" disabled={isPending}>
-          회원가입 완료
+          다음
         </SubmitButton>
       </FormContainer>
     </div>
@@ -221,40 +168,4 @@ const useCheckLocalId = ({
     responseMessage,
     isPending,
   };
-};
-
-const useSignUp = () => {
-  const { authService } = useGuardContext(ServiceContext);
-  const [responseMessage, setResponseMessage] = useState('');
-  const { toMain } = useRouteNavigation();
-
-  const { mutate: localSignUp, isPending } = useMutation({
-    mutationFn: ({
-      username,
-      snuMail,
-      localId,
-      password,
-    }: {
-      username: string;
-      snuMail: string;
-      localId: string;
-      password: string;
-    }) => {
-      return authService.localSignUp({ username, snuMail, localId, password });
-    },
-    onSuccess: (response) => {
-      if (response.type === 'success') {
-        toMain();
-      } else {
-        setResponseMessage(response.message);
-      }
-    },
-    onError: () => {
-      setResponseMessage(
-        '회원가입에 실패했습니다. 잠시 후에 다시 실행해주세요.',
-      );
-    },
-  });
-
-  return { localSignUp, responseMessage, isPending };
 };
