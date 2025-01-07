@@ -12,7 +12,7 @@ export const GoogleSocialSignUpButton = () => {
   const popupGoogle = useGoogleLogin({
     onSuccess: (credentialResponse) => {
       const token = credentialResponse.access_token;
-      toVerifyEmail({ token });
+      toVerifyEmail({ token, authProvider: 'GOOGLE' });
     },
     onError: (errorResponse) => {
       setError(errorResponse.error_description);

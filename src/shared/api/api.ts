@@ -5,6 +5,7 @@ import type {
   SuccessResponse,
 } from '@/shared/api/entities/params';
 import type {
+  CheckLocalIdDuplicateRequest,
   EchoParams,
   EmailVerifyRequest,
   GoogleSignInRequest,
@@ -85,6 +86,16 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
       callWithoutToken<SuccessResponse<void>>({
         method: 'POST',
         path: 'user/signup/verify-email',
+        body,
+      }),
+    'POST /user/signup/id-duplicate': ({
+      body,
+    }: {
+      body: CheckLocalIdDuplicateRequest;
+    }) =>
+      callWithoutToken<SuccessResponse<void>>({
+        method: 'POST',
+        path: 'user/signup/id-duplicate',
         body,
       }),
     'GET /pretotype/mock': ({ token }: { token: string }) =>

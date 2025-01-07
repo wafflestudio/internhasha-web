@@ -17,11 +17,10 @@ export type PretotypeUserSubmitRequest = {
 };
 
 export type LocalSignUpRequest = {
-  name: string;
-  email: string;
-  phoneNumber: string;
+  username: string;
+  localId: string;
   password: string;
-  authProvider: string;
+  snuMail: string;
 };
 
 export type LocalSignInRequest = {
@@ -45,6 +44,10 @@ export type EmailVerifyRequest = {
 
 export type GoogleSignInRequest = {
   googleAccessToken: string;
+};
+
+export type CheckLocalIdDuplicateRequest = {
+  localId: string;
 };
 
 // Response
