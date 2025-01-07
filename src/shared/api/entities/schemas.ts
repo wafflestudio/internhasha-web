@@ -5,6 +5,52 @@ type UserBriefDTO = {
   isAdmin: boolean;
 };
 
+export type AuthorBriefDTO = {
+  id: string;
+  name: string;
+  profileImageLink?: string;
+}
+
+export type RoleDTO = {
+  id: string;
+  category: string;
+  detail: string;
+  headcount: string;
+}
+
+export type PostDTO = {
+  id: string;
+  companyName: string,
+  email: string,
+  author: AuthorBriefDTO,
+  explanation: string,
+  tags: string[],
+  roles: RoleDTO[],
+  imageLink: string,
+  investAmount: number,
+  investCompany: string[],
+  IRDeckLink: string,
+  landingPageLink: string,
+  externalDescriptionLink: string[],
+  isActive: boolean,
+  employmentEndDate: Date,
+};
+
+export type PostBriefDTO = {
+  id: string;
+  companyName: string,
+  email: string,
+  author: AuthorBriefDTO,
+  explanation: string,
+  tags: string[],
+  roles: RoleDTO[],
+  imageLink: string,
+  investAmount: number,
+  investCompany: string[],
+  isActive: boolean,
+  employmentEndDate: Date,
+};
+
 // Params
 export type EchoParams = {
   message: string;
@@ -63,64 +109,6 @@ export type UserWithTokenResponse = {
   accessToken: string;
 };
 
-export type Post = {
-  id: string;
-  name: string;
-  title: string;
-  email: string;
-  author: {
-    id: string;
-    username: string;
-    profileImageLink?: string;
-  };
-  tags: string[];
-  roles: {
-    id: string;
-    category: string;
-    detail: string;
-    headcount: number;
-  }[];
-  imageLink: string;
-  investAmount: string;
-  investCompany: string;
-  isActive: boolean;
-};
+export type PostsResponse = PostBriefDTO[]
 
-export type PostsResponse = {
-  posts: Post[];
-};
-
-export type PostDetailResponse = {
-  id: string;
-  name: string;
-  title: string;
-  email: string;
-  author: {
-    id: string;
-    username: string;
-    profileImageLink?: string;
-  };
-  explanation: string;
-  tags: [string, string, string];
-  roles: [
-    {
-      id: string;
-      category: string;
-      detail: string;
-      headcount: number;
-    },
-    {
-      id: string;
-      category: string;
-      detail: string;
-      headcount: number;
-    },
-  ];
-  imageLink: string;
-  investAmount: number;
-  investCompany: string[];
-  IRDeckLink: string;
-  landingPageLink: string;
-  externalDescriptionLink: string[];
-  isActive: boolean;
-};
+export type PostDetailResponse = PostDTO
