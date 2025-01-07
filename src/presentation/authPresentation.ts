@@ -8,7 +8,7 @@ type StringInput = {
 };
 
 type AuthPresentation = {
-  useValidator(): {
+  useValidator(initialState?: { body?: PreviousForm }): {
     snuMail: StringInput;
     password: StringInput;
     passwordConfirm: StringInput;
@@ -17,6 +17,13 @@ type AuthPresentation = {
     code: StringInput;
     username: StringInput;
   };
+};
+
+type PreviousForm = {
+  authProvider: 'LOCAL';
+  localId: string;
+  password: string;
+  username: string;
 };
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@snu\.ac\.kr$/;
@@ -34,14 +41,20 @@ const CODE_REGEX = /^\d{6}$/;
 const USERNAME_REGEX = /^([가-힣]{2,6}|[A-Za-z]{2,20})$/;
 
 export const authPresentation: AuthPresentation = {
-  useValidator: () => {
+  useValidator: (initialState = {}) => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useState(
+      initialState.body !== undefined ? initialState.body.password : '',
+    );
     const [passwordConfirm, setPasswordConfirm] = useState('');
-    const [localId, setLocalId] = useState('');
+    const [localId, setLocalId] = useState(
+      initialState.body !== undefined ? initialState.body.localId : '',
+    );
     const [phoneNumber, setPhoneNumber] = useState('');
     const [code, setCode] = useState('');
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState(
+      initialState.body !== undefined ? initialState.body.username : '',
+    );
 
     const handleEmailChange = (input: string) => {
       setEmail(input);

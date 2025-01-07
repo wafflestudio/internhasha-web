@@ -14,6 +14,13 @@ type VerifyMailBody =
       username: string;
     };
 
+type PreviousForm = {
+  authProvider: 'LOCAL';
+  localId: string;
+  password: string;
+  username: string;
+};
+
 export const useRouteNavigation = () => {
   const navigate = useNavigate();
   const {
@@ -41,8 +48,8 @@ export const useRouteNavigation = () => {
     toVerifyEmail: (body: VerifyMailBody) => {
       void navigate(VERIFY_EMAIL, { state: { body } });
     },
-    toSignUpLocal: () => {
-      void navigate(SIGN_UP_LOCAL);
+    toSignUpLocal: (body?: PreviousForm) => {
+      void navigate(SIGN_UP_LOCAL, { state: { body } });
     },
   };
 };
