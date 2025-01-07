@@ -12,7 +12,7 @@ export type EchoParams = {
 
 export type PostIdParams = {
   postId: string;
-}
+};
 
 // Request
 export type PretotypeUserSubmitRequest = {
@@ -69,21 +69,21 @@ export type Post = {
   title: string;
   email: string;
   author: {
-    id: string,
-    username: string,
-    profileImageLink?: string
-  },
-  tags: string[],
+    id: string;
+    username: string;
+    profileImageLink?: string;
+  };
+  tags: string[];
   roles: {
-    id: string,
-    category: string,
-    detail: string,
-    headcount: number
-  }[],
-  imageLink: string,
-  investAmount: string,
-  investCompany: string,
-  isActive: boolean,
+    id: string;
+    category: string;
+    detail: string;
+    headcount: number;
+  }[];
+  imageLink: string;
+  investAmount: string;
+  investCompany: string;
+  isActive: boolean;
 };
 
 export type PostsResponse = {
@@ -91,39 +91,36 @@ export type PostsResponse = {
 };
 
 export type PostDetailResponse = {
-  id: string,
-  name: string,
-  title: string,
-  email: string,
+  id: string;
+  name: string;
+  title: string;
+  email: string;
   author: {
-    id: string,
-    username: string,
-    profileImageLink?: string
-  },
-  explanation: string,
-  tags: [
-    string,
-    string,
-    string
-  ],
-  roles: [{
-    id: string,
-    category: string,
-    detail: string
-    headcount: number
-  },
+    id: string;
+    username: string;
+    profileImageLink?: string;
+  };
+  explanation: string;
+  tags: [string, string, string];
+  roles: [
     {
-      id: string,
-      category: string,
-      detail: string
-      headcount: number
-    }
-  ],
-  imageLink: string,
-  investAmount: number,
+      id: string;
+      category: string;
+      detail: string;
+      headcount: number;
+    },
+    {
+      id: string;
+      category: string;
+      detail: string;
+      headcount: number;
+    },
+  ];
+  imageLink: string;
+  investAmount: number;
   investCompany: string[];
   IRDeckLink: string;
   landingPageLink: string;
   externalDescriptionLink: string[];
   isActive: boolean;
-}
+};

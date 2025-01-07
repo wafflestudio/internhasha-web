@@ -12,7 +12,7 @@ export const LandingPage = () => {
 
   if (isLoading) return <p>로딩 중...</p>;
   if (isError) return <p>데이터를 가져오는 중 에러가 발생했습니다.</p>;
-  if (implPosts === undefined) return <p>받아온 데이터에 이상이 생겼습니다.</p>
+  if (implPosts === undefined) return <p>받아온 데이터에 이상이 생겼습니다.</p>;
 
   const posts = implPosts.posts;
 
@@ -23,13 +23,15 @@ export const LandingPage = () => {
       <Button onClick={toSignInSelect}>로그인 페이지로 이동</Button>
       <Button onClick={toEcho}>에코 페이지로 이동</Button>
 
-      {(
+      {
         <div className="">
           {posts.map((post) => (
-            <p key={post.id}>{post.name}, {post.author.id}</p>
+            <p key={post.id}>
+              {post.name}, {post.author.id}
+            </p>
           ))}
         </div>
-      )}
+      }
     </div>
   );
 };
