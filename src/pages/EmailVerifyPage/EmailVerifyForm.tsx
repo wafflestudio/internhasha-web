@@ -33,7 +33,7 @@ export const EmailVerifyForm = () => {
   const location = useLocation();
   const state = location.state as EmailVerifyLocationState | undefined;
 
-  const { toSignUpLocal, toMain } = useRouteNavigation();
+  const { toSignUpLocal, toSignUpSelect } = useRouteNavigation();
   const [showSendCodeError, setShowSendCodeError] = useState(false);
   const { snuMail, code } = authPresentation.useValidator({});
   const {
@@ -107,7 +107,7 @@ export const EmailVerifyForm = () => {
       toSignUpLocal(body);
       return;
     }
-    toMain();
+    toSignUpSelect();
   };
 
   return (
