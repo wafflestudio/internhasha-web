@@ -29,7 +29,7 @@ export type LocalSignUpRequest = {
 
 export type LocalIdRequest = {
   localId: string;
-}
+};
 
 // Response
 export type UserWithTokenResponse = {
