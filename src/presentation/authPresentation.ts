@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 type StringInput = {
   isError: boolean;
+  detailedError?: Record<string, boolean>;
   value: string;
   onChange: (e: string) => void;
 };
@@ -21,6 +22,12 @@ type AuthPresentation = {
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@snu\.ac\.kr$/;
 const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!^*])[A-Za-z\d@#$!^*]{8,20}$/;
+const PASSWORD_DETAIL_REGEX = {
+  ENGLISH_REGEX: /(?=.*[A-Z])(?=.*[a-z])/,
+  NUMBER_REGEX: /\d/,
+  SPECIAL_CHAR_REGEX: /[@#$!^*]/,
+  LENGTH_REGEX: /^.{8,20}$/,
+};
 const LOCAL_ID_REGEX = /^[a-zA-Z][a-zA-Z0-9_-]{4,19}$/;
 const PHONE_NUMBER_REGEX = /^(0\d{1,2})-?\d{3,4}-?\d{4}$/;
 const CODE_REGEX = /^\d{6}$/;
@@ -73,6 +80,13 @@ export const authPresentation: AuthPresentation = {
       password: {
         isError: !PASSWORD_REGEX.test(password),
         value: password,
+        detailedError: {
+          englishError: !PASSWORD_DETAIL_REGEX.ENGLISH_REGEX.test(password),
+          numberError: !PASSWORD_DETAIL_REGEX.NUMBER_REGEX.test(password),
+          specialCharError:
+            !PASSWORD_DETAIL_REGEX.SPECIAL_CHAR_REGEX.test(password),
+          lengthError: !PASSWORD_DETAIL_REGEX.LENGTH_REGEX.test(password),
+        },
         onChange: handlePasswordChange,
       },
       passwordConfirm: {

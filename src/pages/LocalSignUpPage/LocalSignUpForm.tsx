@@ -16,13 +16,14 @@ export const LocalSignUpForm = () => {
   const { password, passwordConfirm, localId, username } =
     authPresentation.useValidator();
   const [localIdCheckSuccess, setLocalIdCheckSuccess] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [isPasswordConfirmFocused, setIsPasswordConfirmFocused] =
+    useState(false);
+  const [responseMessage, setResponseMessage] = useState('');
 
-  const changeLocalIdCheckSuccess = (input: boolean) => {
-    setLocalIdCheckSuccess(input);
-  };
-
-  const { checkLocalId, responseMessage, isPending } = useCheckLocalId({
-    changeLocalIdCheckSuccess,
+  const { checkLocalId, isPending } = useCheckLocalId({
+    setLocalIdCheckSuccess,
+    setResponseMessage,
   });
 
   const handleClickUsernameDuplicateCheck = () => {
@@ -31,14 +32,31 @@ export const LocalSignUpForm = () => {
   };
 
   const onSubmit = () => {
-    if (
-      localId.isError ||
-      password.isError ||
-      passwordConfirm.isError ||
-      username.isError ||
-      !localIdCheckSuccess
-    )
+    if (username.isError) {
+      setResponseMessage(
+        '실명은 한글명 2~6자 이내, 영문명 2~20자 이내로 구성되어야 합니다.',
+      );
       return;
+    }
+    if (localId.isError) {
+      setResponseMessage(
+        '아이디는 3~20자 이내의 영어 대소문자 또는 숫자 또는 -, _로 구성되어야 합니다.',
+      );
+      return;
+    }
+    if (!localIdCheckSuccess) {
+      setResponseMessage('아이디 중복확인이 완료되지 않았습니다.');
+      return;
+    }
+    if (password.isError) {
+      setResponseMessage('비밀번호가 유효하지 않습니다.');
+      return;
+    }
+    if (passwordConfirm.isError) {
+      setResponseMessage('비밀번호가 일치하지 않습니다');
+      return;
+    }
+
     toVerifyEmail({
       authProvider: 'LOCAL',
       localId: localId.value,
@@ -54,79 +72,97 @@ export const LocalSignUpForm = () => {
         handleSubmit={onSubmit}
         response={responseMessage}
       >
-        <LabelContainer
-          label="이름"
-          id="username"
-          isError={username.isError}
-          description="실명을 작성해주세요"
-        >
-          <TextInput
-            id="username"
-            value={username.value}
-            onChange={(e) => {
-              username.onChange(e.target.value);
-            }}
-            placeholder="홍길동"
-            disabled={isPending}
-          />
-        </LabelContainer>
-        <LabelContainer
-          label="아이디"
-          id="localId"
-          isError={localId.isError || !localIdCheckSuccess}
-          description={responseMessage}
-        >
-          <TextInput
-            id="localId"
-            value={localId.value}
-            onChange={(e) => {
-              setLocalIdCheckSuccess(false);
-              localId.onChange(e.target.value);
-            }}
-            placeholder="아이디를 입력하세요"
-            disabled={isPending}
-          />
-          {localIdCheckSuccess ? (
-            <div>중복 인증 완료</div>
-          ) : (
+        <div>
+          <LabelContainer label="이름" id="username">
+            <TextInput
+              id="username"
+              value={username.value}
+              onChange={(e) => {
+                username.onChange(e.target.value);
+              }}
+              placeholder="홍길동"
+              disabled={isPending}
+            />
+          </LabelContainer>
+          <LabelContainer label="아이디" id="localId">
+            <TextInput
+              id="localId"
+              value={localId.value}
+              onChange={(e) => {
+                setLocalIdCheckSuccess(false);
+                localId.onChange(e.target.value);
+              }}
+              placeholder="아이디를 입력해주세요."
+              disabled={isPending}
+            />
             <Button onClick={handleClickUsernameDuplicateCheck}>
               중복확인
             </Button>
-          )}
-        </LabelContainer>
-        <LabelContainer
-          label="비밀번호"
-          id="password"
-          isError={password.isError}
-          description="비밀번호는 8~20자리이며 영문 대소문자, 숫자, 특수문자(@#$!^*) 중 하나를 반드시 포함해야 합니다."
-        >
-          <TextInput
-            id="password"
-            type="password"
-            value={password.value}
-            onChange={(e) => {
-              password.onChange(e.target.value);
-            }}
-            placeholder="비밀번호를 입력해주세요"
-            disabled={isPending}
-          />
-        </LabelContainer>
-        <LabelContainer
-          label="비밀번호 확인"
-          id="passwordConfirm"
-          isError={passwordConfirm.isError}
-          description="비밀번호가 일치하지 않습니다."
-        >
-          <TextInput
-            id="passwordCheck"
-            type="password"
-            value={passwordConfirm.value}
-            onChange={(e) => {
-              passwordConfirm.onChange(e.target.value);
-            }}
-            disabled={isPending}
-          />
-        </LabelContainer>
+            {localIdCheckSuccess && <div>사용할 수 있는 아이디예요.</div>}
+          </LabelContainer>
+          <LabelContainer label="비밀번호" id="password">
+            <TextInput
+              id="password"
+              type="password"
+              value={password.value}
+              onChange={(e) => {
+                password.onChange(e.target.value);
+              }}
+              onFocus={() => {
+                setIsPasswordFocused(true);
+              }}
+              onBlur={() => {
+                setIsPasswordFocused(false);
+              }}
+              placeholder="비밀번호를 입력해주세요."
+              disabled={isPending}
+            />
+            {isPasswordFocused && password.isError && (
+              <div>
+                <p>
+                  {password.detailedError?.englishError === false ? '✅' : '❌'}{' '}
+                  영문 대소문자 각각 1개 이상
+                </p>
+                <p>
+                  {password.detailedError?.numberError === false ? '✅' : '❌'}{' '}
+                  숫자 1개 이상
+                </p>
+                <p>
+                  {password.detailedError?.specialCharError === false
+                    ? '✅'
+                    : '❌'}{' '}
+                  특수문자(@, #, $, !, ^, *) 1개 이상
+                </p>
+                <p>
+                  {password.detailedError?.lengthError === false ? '✅' : '❌'}{' '}
+                  길이는 8~20자리
+                </p>
+              </div>
+            )}
+          </LabelContainer>
+          <LabelContainer label="비밀번호 확인" id="passwordConfirm">
+            <TextInput
+              id="passwordCheck"
+              type="password"
+              value={passwordConfirm.value}
+              onChange={(e) => {
+                if (e.target.value === '') {
+                  setIsPasswordConfirmFocused(false);
+                } else {
+                  setIsPasswordConfirmFocused(true);
+                }
+                passwordConfirm.onChange(e.target.value);
+              }}
+              onFocus={() => {}}
+              placeholder="비밀번호를 한번 더 입력해주세요."
+              disabled={isPending}
+            />
+            {isPasswordConfirmFocused && passwordConfirm.isError && (
+              <div>비밀번호가 일치하지 않습니다.</div>
+            )}
+          </LabelContainer>
+          {responseMessage !== '' && <div></div>}
+        </div>
         <SubmitButton form="SignUpForm" disabled={isPending}>
           다음
         </SubmitButton>
@@ -136,12 +172,13 @@ export const LocalSignUpForm = () => {
 };
 
 const useCheckLocalId = ({
-  changeLocalIdCheckSuccess,
+  setLocalIdCheckSuccess,
+  setResponseMessage,
 }: {
-  changeLocalIdCheckSuccess(input: boolean): void;
+  setLocalIdCheckSuccess(input: boolean): void;
+  setResponseMessage(input: string): void;
 }) => {
   const { authService } = useGuardContext(ServiceContext);
-  const [responseMessage, setResponseMessage] = useState('');
 
   const { mutate: checkLocalId, isPending } = useMutation({
     mutationFn: ({ localId }: { localId: string }) => {
@@ -149,14 +186,14 @@ const useCheckLocalId = ({
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        changeLocalIdCheckSuccess(true);
+        setLocalIdCheckSuccess(true);
       } else {
-        changeLocalIdCheckSuccess(false);
+        setLocalIdCheckSuccess(false);
         setResponseMessage(response.message);
       }
     },
     onError: () => {
-      changeLocalIdCheckSuccess(false);
+      setLocalIdCheckSuccess(false);
       setResponseMessage(
         '회원가입에 실패했습니다. 잠시 후에 다시 실행해주세요.',
       );
@@ -165,7 +202,6 @@ const useCheckLocalId = ({
 
   return {
     checkLocalId,
-    responseMessage,
     isPending,
   };
 };

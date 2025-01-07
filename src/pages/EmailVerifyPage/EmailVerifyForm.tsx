@@ -106,12 +106,7 @@ export const EmailVerifyForm = () => {
           : googleSignUpResponseMessage
       }
     >
-      <LabelContainer
-        label="이메일"
-        id="email"
-        isError={snuMail.isError || !sendSuccess}
-        description={codeResponseMessage}
-      >
+      <LabelContainer label="이메일" id="email">
         <TextInput
           id="email"
           value={snuMail.value}
@@ -126,15 +121,11 @@ export const EmailVerifyForm = () => {
           handleClickSendEmailCodeButton={handleClickSendEmailCodeButton}
           isPending={isPending}
         />
+        <div>{codeResponseMessage}</div>
       </LabelContainer>
       {sendSuccess && (
         <>
-          <LabelContainer
-            label="인증 코드"
-            id="code"
-            isError={code.isError || verifySuccess}
-            description={emailResponseMessage}
-          >
+          <LabelContainer label="인증 코드" id="code">
             <TextInput
               id="code"
               value={code.value}
@@ -150,6 +141,7 @@ export const EmailVerifyForm = () => {
               handleClickVerifyEmailButton={handleClickVerifyEmailButton}
               isPending={isPending}
             />
+            <div>{emailResponseMessage}</div>
           </LabelContainer>
         </>
       )}
