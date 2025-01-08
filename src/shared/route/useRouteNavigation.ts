@@ -33,9 +33,7 @@ export const useRouteNavigation = () => {
     SIGN_UP_COMPLETE,
   } = PATH;
 
-  const {
-    POST,
-  } = HREF;
+  const { POST } = HREF;
 
   return {
     toMain: () => {
