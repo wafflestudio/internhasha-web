@@ -9,46 +9,46 @@ export type AuthorBriefDTO = {
   id: string;
   name: string;
   profileImageLink?: string;
-}
+};
 
 export type RoleDTO = {
   id: string;
   category: string;
   detail: string;
   headcount: string;
-}
-
-export type PostDTO = {
-  id: string;
-  companyName: string,
-  email: string,
-  author: AuthorBriefDTO,
-  explanation: string,
-  tags: string[],
-  roles: RoleDTO[],
-  imageLink: string,
-  investAmount: number,
-  investCompany: string[],
-  IRDeckLink: string,
-  landingPageLink: string,
-  externalDescriptionLink: string[],
-  isActive: boolean,
-  employmentEndDate: Date,
 };
 
-export type PostBriefDTO = {
+type PostDTO = {
   id: string;
-  companyName: string,
-  email: string,
-  author: AuthorBriefDTO,
-  explanation: string,
-  tags: string[],
-  roles: RoleDTO[],
-  imageLink: string,
-  investAmount: number,
-  investCompany: string[],
-  isActive: boolean,
-  employmentEndDate: Date,
+  companyName: string;
+  email: string;
+  author: AuthorBriefDTO;
+  explanation: string;
+  tags: string[];
+  roles: RoleDTO[];
+  imageLink: string;
+  investAmount: number;
+  investCompany: string[];
+  IRDeckLink: string;
+  landingPageLink: string;
+  externalDescriptionLink: string[];
+  isActive: boolean;
+  employmentEndDate: Date;
+};
+
+type PostBriefDTO = {
+  id: string;
+  companyName: string;
+  email: string;
+  author: AuthorBriefDTO;
+  explanation: string;
+  tags: string[];
+  roles: RoleDTO[];
+  imageLink: string;
+  investAmount: number;
+  investCompany: string[];
+  isActive: boolean;
+  employmentEndDate: Date;
 };
 
 // Params
@@ -109,6 +109,6 @@ export type UserWithTokenResponse = {
   accessToken: string;
 };
 
-export type PostsResponse = PostBriefDTO[]
+export type PostsResponse = PostBriefDTO[];
 
-export type PostDetailResponse = PostDTO
+export type PostDetailResponse = PostDTO;

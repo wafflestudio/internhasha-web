@@ -14,7 +14,6 @@ export const LandingPage = () => {
   if (isError) return <p>데이터를 가져오는 중 에러가 발생했습니다.</p>;
   if (posts === undefined) return <p>받아온 데이터에 이상이 생겼습니다.</p>;
 
-
   return (
     <div>
       <p>랜딩페이지</p>

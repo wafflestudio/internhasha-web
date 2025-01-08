@@ -26,7 +26,13 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     return { type: 'error', message: data.error };
   },
 
-  getPostDetail: async ({ token, postId }: { token: string, postId: string }) => {
+  getPostDetail: async ({
+    token,
+    postId,
+  }: {
+    token: string;
+    postId: string;
+  }) => {
     const params = { postId };
     const { status, data } = await apis['GET /post/:postId']({ token, params });
 
