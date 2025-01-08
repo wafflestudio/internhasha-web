@@ -62,6 +62,12 @@ export const EmailVerifyForm = () => {
     isPending: isPendingLocalSignUp,
   } = useLocalSignUp();
 
+  const sendCodeDisable = snuMail.isError || (sendSuccess && !isCodeExpired);
+  const verifyEmailDisable =
+    snuMail.isError || !sendSuccess || code.isError || verifySuccess;
+  const signUpDisable =
+    snuMail.isError || code.isError || !verifySuccess || isCodeExpired;
+
   const isPending =
     isPendingSend ||
     isPendingVerify ||
@@ -74,7 +80,7 @@ export const EmailVerifyForm = () => {
   const { body } = state;
 
   const handleClickSendEmailCodeButton = () => {
-    if (snuMail.isError) {
+    if (sendCodeDisable) {
       setShowSendCodeError(true);
       return;
     }
@@ -83,13 +89,12 @@ export const EmailVerifyForm = () => {
   };
 
   const handleClickVerifyEmailButton = () => {
-    if (snuMail.isError || code.isError) return;
+    if (verifyEmailDisable) return;
     emailVerify({ snuMail: snuMail.value, code: code.value });
   };
 
   const onSubmit = () => {
-    if (snuMail.isError || code.isError || !verifySuccess || isCodeExpired)
-      return;
+    if (signUpDisable) return;
     if (body.authProvider === 'GOOGLE') {
       googleSignUp({ snuMail: snuMail.value, token: body.token });
     }
@@ -134,7 +139,10 @@ export const EmailVerifyForm = () => {
           disabled={isPending}
         />
         {!verifySuccess && (
-          <Button onClick={handleClickSendEmailCodeButton} disabled={isPending}>
+          <Button
+            onClick={handleClickSendEmailCodeButton}
+            disabled={isPending || sendCodeDisable}
+          >
             인증코드 받기
           </Button>
         )}
@@ -160,6 +168,7 @@ export const EmailVerifyForm = () => {
               isCodeExpired={isCodeExpired}
               handleClickVerifyEmailButton={handleClickVerifyEmailButton}
               isPending={isPending}
+              disabled={verifyEmailDisable}
             />
             <div>{emailResponseMessage}</div>
           </LabelContainer>
@@ -197,12 +206,14 @@ const ShowVerifyEmailButton = ({
   isCodeExpired,
   handleClickVerifyEmailButton,
   isPending,
+  disabled,
 }: {
   timeLeft: number | null;
   verifySuccess: boolean;
   isCodeExpired: boolean;
   handleClickVerifyEmailButton(): void;
   isPending: boolean;
+  disabled: boolean;
 }) => {
   if (verifySuccess) {
     return <div>인증 성공</div>;
@@ -214,7 +225,10 @@ const ShowVerifyEmailButton = ({
         {timeLeft !== null && (
           <div>{formatNumberToTime({ time: timeLeft })}</div>
         )}
-        <Button onClick={handleClickVerifyEmailButton} disabled={isPending}>
+        <Button
+          onClick={handleClickVerifyEmailButton}
+          disabled={isPending || disabled}
+        >
           인증코드 확인
         </Button>
       </>

@@ -50,7 +50,6 @@ export const LocalSignUpForm = () => {
   const signUpDisable =
     username.isError ||
     localId.isError ||
-    !localIdCheckSuccess ||
     password.isError ||
     passwordConfirm.isError;
 
