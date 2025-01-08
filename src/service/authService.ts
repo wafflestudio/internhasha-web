@@ -29,6 +29,11 @@ export type AuthService = {
     user: Pick<User, 'id' | 'username' | 'isAdmin'>;
     accessToken: string;
   }>;
+  checkGoogleEmail({
+    token,
+  }: {
+    token: string;
+  }): ServiceResponse<{ googleEmail: string }>;
   googleSignUp({
     snuMail,
     googleAccessToken,
@@ -192,6 +197,20 @@ export const implAuthService = ({
       tokenLocalStorage.setToken({ token: accessToken });
       tokenState.setToken({ token: accessToken });
 
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', status, message: data.error };
+  },
+  checkGoogleEmail: async ({ token }) => {
+    const body = { googleAccessToken: token };
+    const { status, data } = await apis['POST /user/signup/google-email']({
+      body,
+    });
+
+    if (status === 200) {
       return {
         type: 'success',
         data,

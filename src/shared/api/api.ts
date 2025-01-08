@@ -8,6 +8,7 @@ import type {
   CheckLocalIdDuplicateRequest,
   EchoParams,
   EmailVerifyRequest,
+  GoogleEmailResponse,
   GoogleSignInRequest,
   GoogleSignUpRequest,
   LocalSignInRequest,
@@ -98,6 +99,16 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
       callWithoutToken<SuccessResponse<void>>({
         method: 'POST',
         path: 'user/signup/id-duplicate',
+        body,
+      }),
+    'POST /user/signup/google-email': ({
+      body,
+    }: {
+      body: GoogleSignInRequest;
+    }) =>
+      callWithoutToken<SuccessResponse<GoogleEmailResponse>>({
+        method: 'POST',
+        path: 'user/signup/google-email',
         body,
       }),
     'POST /user/token/refresh': () =>
