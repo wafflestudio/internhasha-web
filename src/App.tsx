@@ -56,6 +56,9 @@ export const App = () => {
   const [isTokenError, setIsTokenError] = useState(false);
   const ENV = useGuardContext(EnvContext);
 
+  const tokenState = implTokenState({ setToken });
+  const tokenLocalStorage = implTokenLocalStorage();
+
   const externalCall = async (content: ExternalCallParams) => {
     const response = await fetch(
       `${ENV.APP_ENV === 'prod' ? ENV.API_BASE_URL : '/api'}/${content.path}`,
@@ -86,7 +89,8 @@ export const App = () => {
 
     if (!response.ok) {
       if (response.status === 401) {
-        setIsTokenError(true);
+        tokenState.removeToken();
+        tokenLocalStorage.removeToken();
       }
     }
     return {
@@ -96,8 +100,7 @@ export const App = () => {
   };
 
   const apis = implApi({ externalCall });
-  const tokenState = implTokenState({ setToken });
-  const tokenLocalStorage = implTokenLocalStorage();
+
   const services = {
     echoService: implEchoService({ apis }),
     authService: implAuthService({ apis, tokenState, tokenLocalStorage }),

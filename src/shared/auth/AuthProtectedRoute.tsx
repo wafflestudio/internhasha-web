@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useRef } from 'react';
 import { Outlet } from 'react-router';
 
 import { ReSignInModal } from '@/components/modal/ReSignInModal';
@@ -7,14 +7,18 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ReSignInModalContext } from '@/shared/context/ReSignInModalContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 
+import { TokenContext } from '../context/TokenContext';
+
 export const AuthProtectedRoute = () => {
-  const [isRefreshed, setIsRefreshed] = useState(false);
+  const hasReissued = useRef(false);
+  const { token } = useGuardContext(TokenContext);
   const { isOpen, setModalOpen } = useGuardContext(ReSignInModalContext);
   const { reissueToken, isPending } = useRefreshToken({ setModalOpen });
 
-  if (isOpen && !isPending && !isRefreshed) {
+  console.log(token);
+  if (token === null && !isPending && !hasReissued.current) {
     reissueToken();
-    setIsRefreshed(true);
+    hasReissued.current = true;
   }
 
   return isOpen ? <ReSignInModal /> : <Outlet />;
