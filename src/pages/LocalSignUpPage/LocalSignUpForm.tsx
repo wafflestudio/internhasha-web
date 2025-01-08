@@ -154,21 +154,21 @@ export const LocalSignUpForm = () => {
             {isPasswordFocused && password.isError && (
               <div>
                 <p>
-                  {password.detailedError?.englishError === false ? '✅' : '❌'}{' '}
+                  {password.detailedError.englishError === false ? '✅' : '❌'}{' '}
                   영문 대소문자 각각 1개 이상
                 </p>
                 <p>
-                  {password.detailedError?.numberError === false ? '✅' : '❌'}{' '}
+                  {password.detailedError.numberError === false ? '✅' : '❌'}{' '}
                   숫자 1개 이상
                 </p>
                 <p>
-                  {password.detailedError?.specialCharError === false
+                  {password.detailedError.specialCharError === false
                     ? '✅'
                     : '❌'}{' '}
                   특수문자(@, #, $, !, ^, *) 1개 이상
                 </p>
                 <p>
-                  {password.detailedError?.lengthError === false ? '✅' : '❌'}{' '}
+                  {password.detailedError.lengthError === false ? '✅' : '❌'}{' '}
                   길이는 8~20자리
                 </p>
               </div>

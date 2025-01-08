@@ -2,9 +2,16 @@ import { useState } from 'react';
 
 type StringInput = {
   isError: boolean;
-  detailedError?: Record<string, boolean>;
   value: string;
   onChange: (e: string) => void;
+};
+
+type StringInputWithDetailedError = StringInput & {
+  detailedError: Record<string, boolean>;
+};
+
+type StringInputWithPostfix = StringInput & {
+  postfix: string;
 };
 
 type InitialState = {
@@ -19,8 +26,8 @@ type InitialState = {
 
 type AuthPresentation = {
   useValidator({ initialState }: { initialState?: InitialState }): {
-    snuMail: StringInput;
-    password: StringInput;
+    snuMail: StringInputWithPostfix;
+    password: StringInputWithDetailedError;
     passwordConfirm: StringInput;
     localId: StringInput;
     phoneNumber: StringInput;
@@ -29,7 +36,7 @@ type AuthPresentation = {
   };
 };
 
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@snu\.ac\.kr$/;
+const EMAIL_PREFIX_REGEX = /^[a-zA-Z0-9._%+-]+$/;
 const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!^*])[A-Za-z\d@#$!^*]{8,20}$/;
 const PASSWORD_DETAIL_REGEX = {
@@ -70,7 +77,8 @@ export const authPresentation: AuthPresentation = {
     );
 
     const handleEmailChange = (input: string) => {
-      setEmail(input);
+      const sanitizedInput = input.replace(/@snu\.ac\.kr$/, '');
+      setEmail(sanitizedInput);
     };
 
     const handlePasswordChange = (input: string) => {
@@ -99,9 +107,10 @@ export const authPresentation: AuthPresentation = {
 
     return {
       snuMail: {
-        isError: !EMAIL_REGEX.test(email),
+        isError: !EMAIL_PREFIX_REGEX.test(email),
         value: email,
         onChange: handleEmailChange,
+        postfix: email + '@snu.ac.kr',
       },
       password: {
         isError: !PASSWORD_REGEX.test(password),
