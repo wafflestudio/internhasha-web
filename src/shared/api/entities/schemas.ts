@@ -79,3 +79,7 @@ export type PostsResponse = {
 export type TokenResponse = {
   accessToken: string;
 };
+
+export type GoogleEmailResponse = {
+  googleEmail: string;
+};
