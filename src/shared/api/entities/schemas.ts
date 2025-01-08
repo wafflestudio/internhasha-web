@@ -67,3 +67,7 @@ export type PostsResponse = {
   name: string;
   description: string;
 };
+
+export type TokenResponse = {
+  accessToken: string;
+};

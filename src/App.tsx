@@ -8,6 +8,7 @@ import { EchoPage } from '@/pages/EchoPage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
+import { MyPage } from '@/pages/MyPage';
 import { SignInSelectPage } from '@/pages/SignInSelectPage';
 import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
 import { implAuthService } from '@/service/authService';
@@ -32,7 +33,9 @@ const RouterProvider = () => {
       <Route path={PATH.SIGN_UP_SELECT} element={<SignUpSelectPage />} />
       <Route path={PATH.SIGN_UP_LOCAL} element={<LocalSignUpPage />} />
       <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
-      <Route element={<AuthProtectedRoute />}></Route>
+      <Route element={<AuthProtectedRoute />}>
+        <Route path={PATH.MY_PAGE} element={<MyPage />} />
+      </Route>
     </Routes>
   );
 };
