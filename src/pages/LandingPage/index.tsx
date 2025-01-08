@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { Button } from '@/components/button';
 import { useGuardContext } from '@/shared/context/hooks.ts';
@@ -9,6 +9,11 @@ export const LandingPage = () => {
   const { toEcho, toSignUpSelect, toSignInSelect } = useRouteNavigation();
 
   const { data: PostsData, isLoading, isError } = useGetPosts();
+  const { logout, isPending } = useLogout();
+
+  const hanldeClickLogoutButton = () => {
+    logout();
+  };
 
   return (
     <div>
@@ -16,6 +21,9 @@ export const LandingPage = () => {
       <Button onClick={toSignUpSelect}>회원가입 페이지로 이동</Button>
       <Button onClick={toSignInSelect}>로그인 페이지로 이동</Button>
       <Button onClick={toEcho}>에코 페이지로 이동</Button>
+      <Button onClick={hanldeClickLogoutButton} disabled={isPending}>
+        로그아웃
+      </Button>
 
       {!isLoading && !isError && PostsData != null && (
         <ul>
@@ -43,4 +51,16 @@ const useGetPosts = () => {
   });
 
   return { data, isLoading, isError };
+};
+
+const useLogout = () => {
+  const { authService } = useGuardContext(ServiceContext);
+
+  const { mutate: logout, isPending } = useMutation({
+    mutationFn: () => {
+      return authService.logout();
+    },
+  });
+
+  return { logout, isPending };
 };

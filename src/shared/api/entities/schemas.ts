@@ -57,6 +57,14 @@ export type PretotypeUserSubmitResponse = {
   createdAt: string;
 };
 
+export type UserResponse = {
+  id: string;
+  snuMail: string;
+  username: string;
+  phoneNumber?: string;
+  isAdmin: boolean;
+};
+
 export type UserWithTokenResponse = {
   user: UserBriefDTO;
   accessToken: string;
@@ -66,4 +74,8 @@ export type PostsResponse = {
   id: string;
   name: string;
   description: string;
+};
+
+export type TokenResponse = {
+  accessToken: string;
 };

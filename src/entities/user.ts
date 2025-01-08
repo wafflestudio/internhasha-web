@@ -3,6 +3,6 @@ export type User = {
   snuMail: string;
   username: string;
   localId: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   isAdmin: boolean;
 };

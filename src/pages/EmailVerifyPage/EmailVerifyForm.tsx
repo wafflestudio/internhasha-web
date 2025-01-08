@@ -261,7 +261,6 @@ const useSendCode = () => {
         setSendSuccess(true);
         startTimer();
       } else {
-        console.log(response);
         setResponseMessage(response.message);
         stopTimer();
       }
