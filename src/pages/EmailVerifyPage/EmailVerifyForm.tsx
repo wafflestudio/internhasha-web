@@ -85,25 +85,25 @@ export const EmailVerifyForm = () => {
       return;
     }
 
-    sendCode({ snuMail: snuMail.value });
+    sendCode({ snuMail: snuMail.postfix });
   };
 
   const handleClickVerifyEmailButton = () => {
     if (verifyEmailDisable) return;
-    emailVerify({ snuMail: snuMail.value, code: code.value });
+    emailVerify({ snuMail: snuMail.postfix, code: code.value });
   };
 
   const onSubmit = () => {
     if (signUpDisable) return;
     if (body.authProvider === 'GOOGLE') {
       googleSignUp({
-        snuMail: snuMail.value,
+        snuMail: snuMail.postfix,
         token: body.token,
       });
     }
     if (body.authProvider === 'LOCAL') {
       localSignUp({
-        snuMail: snuMail.value,
+        snuMail: snuMail.postfix,
         localId: body.localId,
         password: body.password,
         username: body.username,

@@ -2,9 +2,16 @@ import { useState } from 'react';
 
 type StringInput = {
   isError: boolean;
-  detailedError?: Record<string, boolean>;
   value: string;
   onChange: (e: string) => void;
+};
+
+type StringInputWithDetailedError = StringInput & {
+  detailedError: Record<string, boolean>;
+};
+
+type StringInputWithPostfix = StringInput & {
+  postfix: string;
 };
 
 type InitialState = {
@@ -19,8 +26,8 @@ type InitialState = {
 
 type AuthPresentation = {
   useValidator({ initialState }: { initialState?: InitialState }): {
-    snuMail: StringInput;
-    password: StringInput;
+    snuMail: StringInputWithPostfix;
+    password: StringInputWithDetailedError;
     passwordConfirm: StringInput;
     localId: StringInput;
     phoneNumber: StringInput;
@@ -103,6 +110,7 @@ export const authPresentation: AuthPresentation = {
         isError: !EMAIL_PREFIX_REGEX.test(email),
         value: email,
         onChange: handleEmailChange,
+        postfix: email + '@snu.ac.kr',
       },
       password: {
         isError: !PASSWORD_REGEX.test(password),
