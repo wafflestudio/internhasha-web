@@ -1,13 +1,9 @@
-import { useGuardContext } from '@/shared/context/hooks';
-import { ReSignInModalContext } from '@/shared/context/ReSignInModalContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const ReSignInModal = () => {
   const { toSignInSelect } = useRouteNavigation();
-  const { setModalOpen } = useGuardContext(ReSignInModalContext);
 
   const onClickButton = () => {
-    setModalOpen(false);
     toSignInSelect();
   };
 

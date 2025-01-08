@@ -2,7 +2,7 @@ const LOCAL_STORAGE_TOKEN_KEY = 'waffle-token';
 
 export type TokenLocalStorage = {
   setToken({ token }: { token: string }): void;
-  getToken(): string;
+  getToken(): string | null;
   removeToken(): void;
 };
 
@@ -12,10 +12,7 @@ export const implTokenLocalStorage = (): TokenLocalStorage => ({
   },
   getToken: () => {
     const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
-    if (token === null) {
-      throw new Error('토큰 값이 존재하지 않습니다.');
-    }
-    return token satisfies string;
+    return token satisfies string | null;
   },
   removeToken: () => {
     localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
