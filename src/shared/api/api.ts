@@ -113,7 +113,7 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
     'GET /user/info': ({ token }: { token: string }) =>
       callWithToken<SuccessResponse<UserResponse>>({
         method: 'GET',
-        path: 'pretotype/list',
+        path: 'user/info',
         token,
       }),
     'GET /post': () =>
