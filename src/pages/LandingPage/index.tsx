@@ -8,13 +8,12 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 export const LandingPage = () => {
   const { toEcho, toSignUpSelect, toSignInSelect } = useRouteNavigation();
 
-  const { data: implPosts, isLoading, isError } = useGetPosts();
+  const { data: posts, isLoading, isError } = useGetPosts();
 
   if (isLoading) return <p>로딩 중...</p>;
   if (isError) return <p>데이터를 가져오는 중 에러가 발생했습니다.</p>;
-  if (implPosts === undefined) return <p>받아온 데이터에 이상이 생겼습니다.</p>;
+  if (posts === undefined) return <p>받아온 데이터에 이상이 생겼습니다.</p>;
 
-  const posts = implPosts.posts;
 
   return (
     <div>
@@ -27,7 +26,8 @@ export const LandingPage = () => {
         <div className="">
           {posts.map((post) => (
             <p key={post.id}>
-              {post.name}, {post.author.id}
+              {post.companyName}
+              <div>자세히 보기</div>
             </p>
           ))}
         </div>

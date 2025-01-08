@@ -100,9 +100,10 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         method: 'GET',
         path: 'post',
       }),
-    'GET /post/:postId': ({ params }: { params: PostIdParams }) =>
-      callWithoutToken<SuccessResponse<PostDetailResponse>>({
+    'GET /post/:postId': ({ token, params }: { token: string, params: PostIdParams }) =>
+      callWithToken<SuccessResponse<PostDetailResponse>>({
         method: 'GET',
         path: `post/${params.postId}`,
+        token,
       }),
   }) satisfies Record<string, Api>;

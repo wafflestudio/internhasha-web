@@ -6,8 +6,10 @@ export type PostService = {
   getPosts: () => ServiceResponse<PostsResponse>;
   getPostDetail: ({
     postId,
+    token,
   }: {
     postId: string;
+    token: string;
   }) => ServiceResponse<PostDetailResponse>;
 };
 
@@ -24,9 +26,9 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     return { type: 'error', message: data.error };
   },
 
-  getPostDetail: async ({ postId }: { postId: string }) => {
+  getPostDetail: async ({ token, postId }: { token: string, postId: string }) => {
     const params = { postId };
-    const { status, data } = await apis['GET /post/:postId']({ params });
+    const { status, data } = await apis['GET /post/:postId']({ token, params });
 
     if (status === 200) {
       return {
