@@ -5,8 +5,10 @@ import type {
   SuccessResponse,
 } from '@/shared/api/entities/params';
 import type {
+  CheckLocalIdDuplicateRequest,
   EchoParams,
   EmailVerifyRequest,
+  GoogleEmailResponse,
   GoogleSignInRequest,
   GoogleSignUpRequest,
   LocalSignInRequest,
@@ -17,6 +19,8 @@ import type {
   PretotypeUserSubmitRequest,
   PretotypeUserSubmitResponse,
   SendEmailCodeRequest,
+  TokenResponse,
+  UserResponse,
   UserWithTokenResponse,
 } from '@/shared/api/entities/schemas';
 
@@ -89,10 +93,40 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         path: 'user/signup/verify-email',
         body,
       }),
-    'GET /pretotype/mock': ({ token }: { token: string }) =>
-      callWithToken<SuccessResponse<PretotypeUserSubmitResponse[]>>({
+    'POST /user/signup/id-duplicate': ({
+      body,
+    }: {
+      body: CheckLocalIdDuplicateRequest;
+    }) =>
+      callWithoutToken<SuccessResponse<void>>({
+        method: 'POST',
+        path: 'user/signup/id-duplicate',
+        body,
+      }),
+    'POST /user/signup/google-email': ({
+      body,
+    }: {
+      body: GoogleSignInRequest;
+    }) =>
+      callWithoutToken<SuccessResponse<GoogleEmailResponse>>({
+        method: 'POST',
+        path: 'user/signup/google-email',
+        body,
+      }),
+    'POST /user/token/refresh': () =>
+      callWithoutToken<SuccessResponse<TokenResponse>>({
+        method: 'POST',
+        path: 'user/token/refresh',
+      }),
+    'POST /user/logout': () =>
+      callWithoutToken<SuccessResponse<void>>({
+        method: 'POST',
+        path: 'user/logout',
+      }),
+    'GET /user/info': ({ token }: { token: string }) =>
+      callWithToken<SuccessResponse<UserResponse>>({
         method: 'GET',
-        path: 'pretotype/list',
+        path: 'user/info',
         token,
       }),
     'GET /post': () =>

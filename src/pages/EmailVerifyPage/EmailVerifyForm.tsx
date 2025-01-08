@@ -7,22 +7,36 @@ import { SubmitButton } from '@/components/button';
 import { FormContainer } from '@/components/form';
 import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
+import { ProgressBar } from '@/components/progressBar/ProgressBar';
 import { authPresentation } from '@/presentation/authPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatNumberToTime } from '@/util/format';
 
+type VerifyMailBody =
+  | {
+      authProvider: 'GOOGLE';
+      token: string;
+    }
+  | {
+      authProvider: 'LOCAL';
+      localId: string;
+      password: string;
+      username: string;
+    };
+
 type EmailVerifyLocationState = {
-  token: string;
+  body: VerifyMailBody;
 };
 
 export const EmailVerifyForm = () => {
   const location = useLocation();
-  const state = location.state as EmailVerifyLocationState;
-  const token = state.token;
+  const state = location.state as EmailVerifyLocationState | undefined;
 
-  const { email, code } = authPresentation.useValidator();
+  const { toSignUpLocal, toSignUpSelect } = useRouteNavigation();
+  const [showSendCodeError, setShowSendCodeError] = useState(false);
+  const { snuMail, code } = authPresentation.useValidator({});
   const {
     sendCode,
     sendSuccess,
@@ -39,63 +53,111 @@ export const EmailVerifyForm = () => {
   } = useEmailVerify();
   const {
     googleSignUp,
-    responseMessage: signUpResponseMessage,
-    isPending: isPendingSignup,
+    responseMessage: googleSignUpResponseMessage,
+    isPending: isPendingGoogleSignup,
   } = useGoogleSignUp();
+  const {
+    localSignUp,
+    responseMessage: localSignUpResponseMessage,
+    isPending: isPendingLocalSignUp,
+  } = useLocalSignUp();
 
-  const isPending = isPendingSend || isPendingVerify || isPendingSignup;
+  const sendCodeDisable = snuMail.isError || (sendSuccess && !isCodeExpired);
+  const verifyEmailDisable =
+    snuMail.isError || !sendSuccess || code.isError || verifySuccess;
+  const signUpDisable =
+    snuMail.isError || code.isError || !verifySuccess || isCodeExpired;
+
+  const isPending =
+    isPendingSend ||
+    isPendingVerify ||
+    isPendingGoogleSignup ||
+    isPendingLocalSignUp;
+
+  if (state === undefined) {
+    return <div>유효하지 않은 접근입니다.</div>;
+  }
+  const { body } = state;
 
   const handleClickSendEmailCodeButton = () => {
-    if (email.isError) return;
-    sendCode({ snuMail: email.value });
+    if (sendCodeDisable) {
+      setShowSendCodeError(true);
+      return;
+    }
+
+    sendCode({ snuMail: snuMail.postfix });
   };
 
   const handleClickVerifyEmailButton = () => {
-    if (email.isError || code.isError) return;
-    emailVerify({ snuMail: email.value, code: code.value });
+    if (verifyEmailDisable) return;
+    emailVerify({ snuMail: snuMail.postfix, code: code.value });
   };
 
   const onSubmit = () => {
-    if (email.isError || code.isError || !verifySuccess || isCodeExpired)
+    if (signUpDisable) return;
+    if (body.authProvider === 'GOOGLE') {
+      googleSignUp({
+        snuMail: snuMail.postfix,
+        token: body.token,
+      });
+    }
+    if (body.authProvider === 'LOCAL') {
+      localSignUp({
+        snuMail: snuMail.postfix,
+        localId: body.localId,
+        password: body.password,
+        username: body.username,
+      });
+    }
+  };
+
+  const hanldeClickPreviousButton = () => {
+    if (body.authProvider === 'LOCAL') {
+      toSignUpLocal(body);
       return;
-    googleSignUp({ snuMail: email.value, token });
+    }
+    toSignUpSelect();
   };
 
   return (
     <FormContainer
       id="EmailVerifyForm"
       handleSubmit={onSubmit}
-      response={signUpResponseMessage}
+      response={
+        body.authProvider === 'LOCAL'
+          ? localSignUpResponseMessage
+          : googleSignUpResponseMessage
+      }
     >
-      <LabelContainer
-        label="이메일"
-        id="email"
-        isError={email.isError || !sendSuccess}
-        description={codeResponseMessage}
-      >
+      {body.authProvider === 'LOCAL' && (
+        <ProgressBar totalProgress={2} present={2} />
+      )}
+      <LabelContainer label="이메일" id="email">
         <TextInput
           id="email"
-          value={email.value}
+          value={snuMail.value}
           onChange={(e) => {
-            email.onChange(e.target.value);
+            snuMail.onChange(e.target.value);
           }}
           disabled={isPending}
         />
-        <ShowSendEmailCodeButton
-          sendSuccess={sendSuccess}
-          verifySuccess={verifySuccess}
-          handleClickSendEmailCodeButton={handleClickSendEmailCodeButton}
-          isPending={isPending}
-        />
+        <span>@snu.ac.kr</span>
+        {!verifySuccess && (
+          <Button
+            onClick={handleClickSendEmailCodeButton}
+            disabled={isPending || sendCodeDisable}
+          >
+            인증코드 받기
+          </Button>
+        )}
+        {showSendCodeError && snuMail.isError && (
+          <div>유효하지 않은 스누메일입니다.</div>
+        )}
+        <div>{codeResponseMessage}</div>
       </LabelContainer>
       {sendSuccess && (
         <>
-          <LabelContainer
-            label="인증 코드"
-            id="code"
-            isError={code.isError || verifySuccess}
-            description={emailResponseMessage}
-          >
+          <LabelContainer label="인증 코드" id="code">
             <TextInput
               id="code"
               value={code.value}
@@ -110,47 +172,36 @@ export const EmailVerifyForm = () => {
               isCodeExpired={isCodeExpired}
               handleClickVerifyEmailButton={handleClickVerifyEmailButton}
               isPending={isPending}
+              disabled={verifyEmailDisable}
             />
+            <div>{emailResponseMessage}</div>
           </LabelContainer>
         </>
       )}
-      <SubmitButton
-        form="EmailVerifyForm"
-        disabled={isPending}
-        onSubmit={onSubmit}
-      >
-        회원가입 완료
-      </SubmitButton>
+      <p>
+        인증코드가 오지 않았다면?{' '}
+        <a
+          onClick={handleClickSendEmailCodeButton}
+          style={{
+            textDecoration: 'underline',
+            cursor: 'pointer',
+          }}
+        >
+          재발송
+        </a>
+      </p>
+      <div>
+        <Button onClick={hanldeClickPreviousButton}>이전</Button>
+        <SubmitButton
+          form="EmailVerifyForm"
+          disabled={isPending}
+          onSubmit={onSubmit}
+        >
+          회원가입 완료
+        </SubmitButton>
+      </div>
     </FormContainer>
   );
-};
-
-const ShowSendEmailCodeButton = ({
-  sendSuccess,
-  verifySuccess,
-  handleClickSendEmailCodeButton,
-  isPending,
-}: {
-  sendSuccess: boolean;
-  verifySuccess: boolean;
-  handleClickSendEmailCodeButton(): void;
-  isPending: boolean;
-}) => {
-  if (verifySuccess) {
-    return <div>인증 성공</div>;
-  } else if (sendSuccess) {
-    return (
-      <Button onClick={handleClickSendEmailCodeButton} disabled={isPending}>
-        인증코드 재발송
-      </Button>
-    );
-  } else {
-    return (
-      <Button onClick={handleClickSendEmailCodeButton} disabled={isPending}>
-        인증코드 받기
-      </Button>
-    );
-  }
 };
 
 const ShowVerifyEmailButton = ({
@@ -159,12 +210,14 @@ const ShowVerifyEmailButton = ({
   isCodeExpired,
   handleClickVerifyEmailButton,
   isPending,
+  disabled,
 }: {
   timeLeft: number | null;
   verifySuccess: boolean;
   isCodeExpired: boolean;
   handleClickVerifyEmailButton(): void;
   isPending: boolean;
+  disabled: boolean;
 }) => {
   if (verifySuccess) {
     return <div>인증 성공</div>;
@@ -176,7 +229,10 @@ const ShowVerifyEmailButton = ({
         {timeLeft !== null && (
           <div>{formatNumberToTime({ time: timeLeft })}</div>
         )}
-        <Button onClick={handleClickVerifyEmailButton} disabled={isPending}>
+        <Button
+          onClick={handleClickVerifyEmailButton}
+          disabled={isPending || disabled}
+        >
           인증코드 확인
         </Button>
       </>
@@ -230,7 +286,6 @@ const useSendCode = () => {
         setSendSuccess(true);
         startTimer();
       } else {
-        console.log(response);
         setResponseMessage(response.message);
         stopTimer();
       }
@@ -288,7 +343,7 @@ const useEmailVerify = () => {
 const useGoogleSignUp = () => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
-  const { toMain } = useRouteNavigation();
+  const { toSignUpComplete } = useRouteNavigation();
 
   const { mutate: googleSignUp, isPending } = useMutation({
     mutationFn: ({ snuMail, token }: { snuMail: string; token: string }) => {
@@ -299,7 +354,7 @@ const useGoogleSignUp = () => {
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        toMain();
+        toSignUpComplete();
       } else {
         setResponseMessage(response.message);
       }
@@ -312,4 +367,40 @@ const useGoogleSignUp = () => {
   });
 
   return { googleSignUp, responseMessage, isPending };
+};
+
+const useLocalSignUp = () => {
+  const { authService } = useGuardContext(ServiceContext);
+  const [responseMessage, setResponseMessage] = useState('');
+  const { toSignUpComplete } = useRouteNavigation();
+
+  const { mutate: localSignUp, isPending } = useMutation({
+    mutationFn: ({
+      snuMail,
+      username,
+      localId,
+      password,
+    }: {
+      snuMail: string;
+      username: string;
+      localId: string;
+      password: string;
+    }) => {
+      return authService.localSignUp({ username, snuMail, localId, password });
+    },
+    onSuccess: (response) => {
+      if (response.type === 'success') {
+        toSignUpComplete();
+      } else {
+        setResponseMessage(response.message);
+      }
+    },
+    onError: () => {
+      setResponseMessage(
+        '회원가입에 실패했습니다. 잠시 후에 다시 실행해주세요.',
+      );
+    },
+  });
+
+  return { localSignUp, responseMessage, isPending };
 };

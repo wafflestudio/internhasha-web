@@ -67,11 +67,10 @@ export type PretotypeUserSubmitRequest = {
 };
 
 export type LocalSignUpRequest = {
-  name: string;
-  email: string;
-  phoneNumber: string;
+  username: string;
+  localId: string;
   password: string;
-  authProvider: string;
+  snuMail: string;
 };
 
 export type LocalSignInRequest = {
@@ -97,11 +96,23 @@ export type GoogleSignInRequest = {
   googleAccessToken: string;
 };
 
+export type CheckLocalIdDuplicateRequest = {
+  localId: string;
+};
+
 // Response
 export type PretotypeUserSubmitResponse = {
   email: string;
   isSubscribed: boolean;
   createdAt: string;
+};
+
+export type UserResponse = {
+  id: string;
+  snuMail: string;
+  username: string;
+  phoneNumber?: string;
+  isAdmin: boolean;
 };
 
 export type UserWithTokenResponse = {
@@ -112,3 +123,11 @@ export type UserWithTokenResponse = {
 export type PostsResponse = PostBriefDTO[];
 
 export type PostDetailResponse = PostDTO;
+
+export type TokenResponse = {
+  accessToken: string;
+};
+
+export type GoogleEmailResponse = {
+  googleEmail: string;
+};

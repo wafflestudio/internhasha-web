@@ -8,6 +8,8 @@ export const TextInput = ({
   id,
   onChange,
   onKeyDown,
+  onFocus,
+  onBlur,
   placeholder,
 }: TextInputProps) => {
   return (
@@ -17,8 +19,10 @@ export const TextInput = ({
       value={value}
       onChange={onChange}
       onKeyDown={onKeyDown}
+      onFocus={onFocus}
+      onBlur={onBlur}
       placeholder={placeholder}
       style={{ padding: '10px', width: '300px', fontSize: '16px' }}
-    />
+    ></input>
   );
 };

@@ -19,6 +19,10 @@ jobs:
         with:
           node-version: '20.11.1'
 
+      - name: Set environment variables
+        run: |
+          echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}" >> .env.local
+
       - name: Build & Export
         run: |
           yarn install

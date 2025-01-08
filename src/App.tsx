@@ -8,12 +8,16 @@ import { EchoPage } from '@/pages/EchoPage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
+import { MyPage } from '@/pages/MyPage';
 import { SignInSelectPage } from '@/pages/SignInSelectPage';
+import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
 import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
 import { implAuthService } from '@/service/authService';
 import { implEchoService } from '@/service/echoService';
 import { implPostService } from '@/service/postService.ts';
+import { implUserService } from '@/service/userService';
 import { type ExternalCallParams, implApi } from '@/shared/api';
+import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -30,6 +34,10 @@ const RouterProvider = () => {
       <Route path={PATH.SIGN_UP_SELECT} element={<SignUpSelectPage />} />
       <Route path={PATH.SIGN_UP_LOCAL} element={<LocalSignUpPage />} />
       <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
+      <Route path={PATH.SIGN_UP_COMPLETE} element={<SignUpCompletePage />} />
+      <Route element={<AuthProtectedRoute />}>
+        <Route path={PATH.MY_PAGE} element={<MyPage />} />
+      </Route>
     </Routes>
   );
 };
@@ -44,8 +52,12 @@ const queryClient = new QueryClient({
 });
 
 export const App = () => {
-  const [token, setToken] = useState<string | null>(null);
+  const tokenLocalStorage = implTokenLocalStorage();
+  const [token, setToken] = useState<string | null>(
+    tokenLocalStorage.getToken(),
+  );
   const ENV = useGuardContext(EnvContext);
+  const tokenState = implTokenState({ setToken });
 
   const externalCall = async (content: ExternalCallParams) => {
     const response = await fetch(
@@ -75,6 +87,12 @@ export const App = () => {
 
     const responseBody = (await response.json().catch(() => null)) as unknown;
 
+    if (!response.ok) {
+      if (response.status === 401) {
+        tokenState.removeToken();
+        tokenLocalStorage.removeToken();
+      }
+    }
     return {
       status: response.status,
       data: responseBody,
@@ -82,12 +100,12 @@ export const App = () => {
   };
 
   const apis = implApi({ externalCall });
-  const tokenState = implTokenState({ setToken });
-  const tokenLocalStorage = implTokenLocalStorage();
+
   const services = {
     echoService: implEchoService({ apis }),
     authService: implAuthService({ apis, tokenState, tokenLocalStorage }),
     postService: implPostService({ apis }),
+    userService: implUserService({ apis }),
   };
 
   return (
