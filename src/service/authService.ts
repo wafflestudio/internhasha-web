@@ -202,10 +202,10 @@ export const implAuthService = ({
   logout: async () => {
     const { status, data } = await apis['POST /user/logout']();
 
-    if (status === 200) {
-      tokenLocalStorage.removeToken();
-      tokenState.removeToken();
+    tokenLocalStorage.removeToken();
+    tokenState.removeToken();
 
+    if (status === 200) {
       return {
         type: 'success',
         data,
