@@ -5,13 +5,13 @@ type UserBriefDTO = {
   isAdmin: boolean;
 };
 
-export type AuthorBriefDTO = {
+type AuthorBriefDTO = {
   id: string;
   name: string;
   profileImageLink?: string;
 };
 
-export type RoleDTO = {
+type RoleDTO = {
   id: string;
   category: string;
   detail: string;

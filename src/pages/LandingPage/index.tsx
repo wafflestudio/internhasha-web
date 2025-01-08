@@ -16,7 +16,7 @@ export const LandingPage = () => {
   };
 
   if (posts === undefined) {
-    throw new Error("포스트 로딩 중")
+    throw new Error('포스트 로딩 중');
   }
 
   return (
@@ -36,7 +36,8 @@ export const LandingPage = () => {
               {post.companyName}
               <div>자세히 보기</div>
             </p>
-          ))})
+          ))}
+          )
         </div>
       }
     </div>
