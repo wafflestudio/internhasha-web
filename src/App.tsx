@@ -24,11 +24,13 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { implTokenLocalStorage } from '@/shared/token/localstorage';
 import { implTokenState } from '@/shared/token/state';
+import { PostPage } from '@/pages/LandingPage/PostPage';
 
 const RouterProvider = () => {
   return (
     <Routes>
       <Route path={PATH.INDEX} element={<LandingPage />} />
+      <Route path={PATH.POST_ID} element={<PostPage />} />
       <Route path={PATH.ECHO} element={<EchoPage />} />
       <Route path={PATH.SIGN_IN_SELECT} element={<SignInSelectPage />} />
       <Route path={PATH.SIGN_UP_SELECT} element={<SignUpSelectPage />} />

@@ -1,5 +1,6 @@
 export const PATH = {
   INDEX: '/',
+  POST_ID: '/:postId',
   ECHO: '/echo',
   SIGN_IN_SELECT: '/signin',
   SIGN_UP_SELECT: '/signup',
