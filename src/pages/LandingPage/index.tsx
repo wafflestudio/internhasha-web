@@ -6,7 +6,7 @@ import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LandingPage = () => {
-  const { toEcho, toSignUpSelect, toSignInSelect } = useRouteNavigation();
+  const { toEcho, toSignUpSelect, toSignInSelect, toPost } = useRouteNavigation();
 
   const { data: posts } = useGetPosts();
   const { logout, isPending } = useLogout();
@@ -34,7 +34,7 @@ export const LandingPage = () => {
           {posts.map((post) => (
             <p key={post.id}>
               {post.companyName}
-              <div>자세히 보기</div>
+              <Button onClick={toPost}>자세히 보기</Button>
             </p>
           ))}
           )
