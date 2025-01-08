@@ -7,6 +7,7 @@ import { Button } from '@/components/button';
 import { FormContainer } from '@/components/form';
 import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
+import { ProgressBar } from '@/components/progressBar/ProgressBar';
 import { authPresentation } from '@/presentation/authPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -91,6 +92,7 @@ export const LocalSignUpForm = () => {
         handleSubmit={onSubmit}
         response={responseMessage}
       >
+        <ProgressBar totalProgress={2} present={1} />
         <div>
           <LabelContainer label="이름" id="username">
             <TextInput
