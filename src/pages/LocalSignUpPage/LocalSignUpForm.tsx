@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useLocation } from 'react-router';
 
 import { SubmitButton } from '@/components/button';
 import { Button } from '@/components/button';
@@ -11,10 +12,24 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
+type PreviousForm = {
+  authProvider: 'LOCAL';
+  localId: string;
+  password: string;
+  username: string;
+};
+
+type LocalSignUpInitialBody = {
+  body: PreviousForm | undefined;
+};
+
 export const LocalSignUpForm = () => {
+  const location = useLocation();
+  const state = location.state as LocalSignUpInitialBody | undefined;
+
   const { toVerifyEmail } = useRouteNavigation();
   const { password, passwordConfirm, localId, username } =
-    authPresentation.useValidator();
+    authPresentation.useValidator({ initialState: state?.body });
   const [localIdCheckSuccess, setLocalIdCheckSuccess] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordConfirmFocused, setIsPasswordConfirmFocused] =
@@ -25,6 +40,10 @@ export const LocalSignUpForm = () => {
     setLocalIdCheckSuccess,
     setResponseMessage,
   });
+
+  if (state === undefined) {
+    return <div>유효하지 않은 접근입니다.</div>;
+  }
 
   const handleClickUsernameDuplicateCheck = () => {
     if (localId.isError || localIdCheckSuccess) return;
@@ -103,11 +122,7 @@ export const LocalSignUpForm = () => {
             >
               중복확인
             </Button>
-            {localIdCheckSuccess ? (
-              <div>사용할 수 있는 아이디입니다.</div>
-            ) : (
-              <div>사용할 수 없는 아이디입니다. 다시 입력해주세요.</div>
-            )}
+            {localIdCheckSuccess && <div>사용할 수 있는 아이디입니다.</div>}
           </LabelContainer>
           <LabelContainer label="비밀번호" id="password">
             <TextInput
@@ -162,7 +177,6 @@ export const LocalSignUpForm = () => {
                 }
                 passwordConfirm.onChange(e.target.value);
               }}
-              onFocus={() => {}}
               placeholder="비밀번호를 한번 더 입력해주세요."
               disabled={isPending}
             />

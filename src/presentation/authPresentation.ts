@@ -7,8 +7,18 @@ type StringInput = {
   onChange: (e: string) => void;
 };
 
+type InitialState = {
+  snuMail?: string;
+  password?: string;
+  passwordConfirm?: string;
+  localId?: string;
+  phoneNumber?: string;
+  code?: string;
+  username?: string;
+};
+
 type AuthPresentation = {
-  useValidator(): {
+  useValidator({ initialState }: { initialState?: InitialState }): {
     snuMail: StringInput;
     password: StringInput;
     passwordConfirm: StringInput;
@@ -34,14 +44,30 @@ const CODE_REGEX = /^\d{6}$/;
 const USERNAME_REGEX = /^([가-힣]{2,6}|[A-Za-z]{2,20})$/;
 
 export const authPresentation: AuthPresentation = {
-  useValidator: () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordConfirm, setPasswordConfirm] = useState('');
-    const [localId, setLocalId] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [code, setCode] = useState('');
-    const [username, setUsername] = useState('');
+  useValidator: ({ initialState = {} }) => {
+    const [email, setEmail] = useState(
+      initialState.snuMail !== undefined ? initialState.snuMail : '',
+    );
+    const [password, setPassword] = useState(
+      initialState.password !== undefined ? initialState.password : '',
+    );
+    const [passwordConfirm, setPasswordConfirm] = useState(
+      initialState.passwordConfirm !== undefined
+        ? initialState.passwordConfirm
+        : '',
+    );
+    const [localId, setLocalId] = useState(
+      initialState.localId !== undefined ? initialState.localId : '',
+    );
+    const [phoneNumber, setPhoneNumber] = useState(
+      initialState.phoneNumber !== undefined ? initialState.phoneNumber : '',
+    );
+    const [code, setCode] = useState(
+      initialState.code !== undefined ? initialState.code : '',
+    );
+    const [username, setUsername] = useState(
+      initialState.username !== undefined ? initialState.username : '',
+    );
 
     const handleEmailChange = (input: string) => {
       setEmail(input);

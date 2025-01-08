@@ -9,7 +9,13 @@ export const SignUpSelectPage = () => {
     <div>
       <p>회원가입 페이지입니다.</p>
       <GoogleSocialSignUpButton />
-      <Button onClick={toSignUpLocal}>일반 회원가입</Button>
+      <Button
+        onClick={() => {
+          toSignUpLocal();
+        }}
+      >
+        일반 회원가입
+      </Button>
       <Button onClick={toMain}>메인으로 이동</Button>
     </div>
   );

@@ -33,7 +33,9 @@ export const EmailVerifyForm = () => {
   const location = useLocation();
   const state = location.state as EmailVerifyLocationState | undefined;
 
-  const { snuMail, code } = authPresentation.useValidator();
+  const { toSignUpLocal, toSignUpSelect } = useRouteNavigation();
+  const [showSendCodeError, setShowSendCodeError] = useState(false);
+  const { snuMail, code } = authPresentation.useValidator({});
   const {
     sendCode,
     sendSuccess,
@@ -71,7 +73,11 @@ export const EmailVerifyForm = () => {
   const { body } = state;
 
   const handleClickSendEmailCodeButton = () => {
-    if (snuMail.isError) return;
+    if (snuMail.isError) {
+      setShowSendCodeError(true);
+      return;
+    }
+
     sendCode({ snuMail: snuMail.value });
   };
 
@@ -96,6 +102,14 @@ export const EmailVerifyForm = () => {
     }
   };
 
+  const hanldeClickPreviousButton = () => {
+    if (body.authProvider === 'LOCAL') {
+      toSignUpLocal(body);
+      return;
+    }
+    toSignUpSelect();
+  };
+
   return (
     <FormContainer
       id="EmailVerifyForm"
@@ -115,12 +129,14 @@ export const EmailVerifyForm = () => {
           }}
           disabled={isPending}
         />
-        <ShowSendEmailCodeButton
-          sendSuccess={sendSuccess}
-          verifySuccess={verifySuccess}
-          handleClickSendEmailCodeButton={handleClickSendEmailCodeButton}
-          isPending={isPending}
-        />
+        {!verifySuccess && (
+          <Button onClick={handleClickSendEmailCodeButton} disabled={isPending}>
+            인증코드 받기
+          </Button>
+        )}
+        {showSendCodeError && snuMail.isError && (
+          <div>유효하지 않은 스누메일입니다.</div>
+        )}
         <div>{codeResponseMessage}</div>
       </LabelContainer>
       {sendSuccess && (
@@ -145,43 +161,30 @@ export const EmailVerifyForm = () => {
           </LabelContainer>
         </>
       )}
-      <SubmitButton
-        form="EmailVerifyForm"
-        disabled={isPending}
-        onSubmit={onSubmit}
-      >
-        회원가입 완료
-      </SubmitButton>
+      <p>
+        인증코드가 오지 않았다면?{' '}
+        <a
+          onClick={handleClickSendEmailCodeButton}
+          style={{
+            textDecoration: 'underline',
+            cursor: 'pointer',
+          }}
+        >
+          재발송
+        </a>
+      </p>
+      <div>
+        <Button onClick={hanldeClickPreviousButton}>이전</Button>
+        <SubmitButton
+          form="EmailVerifyForm"
+          disabled={isPending}
+          onSubmit={onSubmit}
+        >
+          회원가입 완료
+        </SubmitButton>
+      </div>
     </FormContainer>
   );
-};
-
-const ShowSendEmailCodeButton = ({
-  sendSuccess,
-  verifySuccess,
-  handleClickSendEmailCodeButton,
-  isPending,
-}: {
-  sendSuccess: boolean;
-  verifySuccess: boolean;
-  handleClickSendEmailCodeButton(): void;
-  isPending: boolean;
-}) => {
-  if (verifySuccess) {
-    return <div>인증 성공</div>;
-  } else if (sendSuccess) {
-    return (
-      <Button onClick={handleClickSendEmailCodeButton} disabled={isPending}>
-        인증코드 재발송
-      </Button>
-    );
-  } else {
-    return (
-      <Button onClick={handleClickSendEmailCodeButton} disabled={isPending}>
-        인증코드 받기
-      </Button>
-    );
-  }
 };
 
 const ShowVerifyEmailButton = ({

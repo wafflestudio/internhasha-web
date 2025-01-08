@@ -12,7 +12,7 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LocalLogInForm = () => {
   const { localSignIn, responseMessage, isPending } = useLocalSignIn();
-  const { localId, password } = authPresentation.useValidator();
+  const { localId, password } = authPresentation.useValidator({});
 
   const onSubmit = () => {
     if (!localId.isError && !password.isError) {
