@@ -26,7 +26,7 @@ const useRefreshToken = () => {
 
   const { mutate: reissueToken, isPending } = useMutation({
     mutationFn: () => {
-      return authService.ReissueAccessToken();
+      return authService.reissueAccessToken();
     },
   });
 

@@ -60,7 +60,7 @@ export type AuthService = {
   }: {
     localId: string;
   }): ServiceResponse<void>;
-  ReissueAccessToken(): ServiceResponse<{ accessToken: string }>;
+  reissueAccessToken(): ServiceResponse<{ accessToken: string }>;
   logout(): ServiceResponse<void>;
 };
 
@@ -183,7 +183,7 @@ export const implAuthService = ({
     }
     return { type: 'error', status, message: data.error };
   },
-  ReissueAccessToken: async () => {
+  reissueAccessToken: async () => {
     const { status, data } = await apis['POST /user/token/refresh']();
 
     if (status === 200) {
