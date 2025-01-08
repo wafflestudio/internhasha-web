@@ -46,8 +46,15 @@ export const LocalSignUpForm = () => {
     return <div>유효하지 않은 접근입니다.</div>;
   }
 
+  const checkLocalIdDisable = localId.isError || localIdCheckSuccess;
+  const signUpDisable =
+    username.isError ||
+    localId.isError ||
+    password.isError ||
+    passwordConfirm.isError;
+
   const handleClickUsernameDuplicateCheck = () => {
-    if (localId.isError || localIdCheckSuccess) return;
+    if (checkLocalIdDisable) return;
     checkLocalId({ localId: localId.value });
   };
 
@@ -121,6 +128,7 @@ export const LocalSignUpForm = () => {
                 event.preventDefault();
                 handleClickUsernameDuplicateCheck();
               }}
+              disabled={isPending || checkLocalIdDisable}
             >
               중복확인
             </Button>
@@ -188,7 +196,7 @@ export const LocalSignUpForm = () => {
           </LabelContainer>
           {responseMessage !== '' && <div></div>}
         </div>
-        <SubmitButton form="SignUpForm" disabled={isPending}>
+        <SubmitButton form="SignUpForm" disabled={isPending || signUpDisable}>
           다음
         </SubmitButton>
       </FormContainer>
