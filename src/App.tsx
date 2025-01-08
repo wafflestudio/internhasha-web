@@ -14,8 +14,10 @@ import { implAuthService } from '@/service/authService';
 import { implEchoService } from '@/service/echoService';
 import { implPostService } from '@/service/postService.ts';
 import { type ExternalCallParams, implApi } from '@/shared/api';
+import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
+import { ReSignInModalContext } from '@/shared/context/ReSignInModalContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { implTokenLocalStorage } from '@/shared/token/localstorage';
@@ -30,6 +32,7 @@ const RouterProvider = () => {
       <Route path={PATH.SIGN_UP_SELECT} element={<SignUpSelectPage />} />
       <Route path={PATH.SIGN_UP_LOCAL} element={<LocalSignUpPage />} />
       <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
+      <Route element={<AuthProtectedRoute />}></Route>
     </Routes>
   );
 };
@@ -45,6 +48,7 @@ const queryClient = new QueryClient({
 
 export const App = () => {
   const [token, setToken] = useState<string | null>(null);
+  const [isTokenError, setIsTokenError] = useState(false);
   const ENV = useGuardContext(EnvContext);
 
   const externalCall = async (content: ExternalCallParams) => {
@@ -75,6 +79,11 @@ export const App = () => {
 
     const responseBody = (await response.json().catch(() => null)) as unknown;
 
+    if (!response.ok) {
+      if (response.status === 401) {
+        setIsTokenError(true);
+      }
+    }
     return {
       status: response.status,
       data: responseBody,
@@ -94,9 +103,18 @@ export const App = () => {
     <QueryClientProvider client={queryClient}>
       <ServiceContext.Provider value={services}>
         <TokenContext.Provider value={{ token }}>
-          <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID}>
-            <RouterProvider />
-          </GoogleOAuthProvider>
+          <ReSignInModalContext.Provider
+            value={{
+              isOpen: isTokenError,
+              setModalOpen: (input: boolean) => {
+                setIsTokenError(input);
+              },
+            }}
+          >
+            <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID}>
+              <RouterProvider />
+            </GoogleOAuthProvider>
+          </ReSignInModalContext.Provider>
         </TokenContext.Provider>
       </ServiceContext.Provider>
     </QueryClientProvider>
