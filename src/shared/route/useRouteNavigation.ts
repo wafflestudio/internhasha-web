@@ -30,6 +30,7 @@ export const useRouteNavigation = () => {
     SIGN_UP_SELECT,
     VERIFY_EMAIL,
     SIGN_UP_LOCAL,
+    SIGN_UP_COMPLETE,
   } = PATH;
 
   return {
@@ -50,6 +51,9 @@ export const useRouteNavigation = () => {
     },
     toSignUpLocal: (body?: PreviousForm) => {
       void navigate(SIGN_UP_LOCAL, { state: { body } });
+    },
+    toSignUpComplete: () => {
+      void navigate(SIGN_UP_COMPLETE);
     },
   };
 };

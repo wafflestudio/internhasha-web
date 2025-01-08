@@ -325,7 +325,7 @@ const useEmailVerify = () => {
 const useGoogleSignUp = () => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
-  const { toMain } = useRouteNavigation();
+  const { toSignUpComplete } = useRouteNavigation();
 
   const { mutate: googleSignUp, isPending } = useMutation({
     mutationFn: ({ snuMail, token }: { snuMail: string; token: string }) => {
@@ -336,7 +336,7 @@ const useGoogleSignUp = () => {
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        toMain();
+        toSignUpComplete();
       } else {
         setResponseMessage(response.message);
       }
@@ -354,7 +354,7 @@ const useGoogleSignUp = () => {
 const useLocalSignUp = () => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
-  const { toMain } = useRouteNavigation();
+  const { toSignUpComplete } = useRouteNavigation();
 
   const { mutate: localSignUp, isPending } = useMutation({
     mutationFn: ({
@@ -372,7 +372,7 @@ const useLocalSignUp = () => {
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        toMain();
+        toSignUpComplete();
       } else {
         setResponseMessage(response.message);
       }

@@ -10,10 +10,12 @@ import { LandingPage } from '@/pages/LandingPage';
 import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
 import { MyPage } from '@/pages/MyPage';
 import { SignInSelectPage } from '@/pages/SignInSelectPage';
+import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
 import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
 import { implAuthService } from '@/service/authService';
 import { implEchoService } from '@/service/echoService';
 import { implPostService } from '@/service/postService.ts';
+import { implUserService } from '@/service/userService';
 import { type ExternalCallParams, implApi } from '@/shared/api';
 import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
@@ -22,8 +24,6 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { implTokenLocalStorage } from '@/shared/token/localstorage';
 import { implTokenState } from '@/shared/token/state';
-
-import { implUserService } from './service/userService';
 
 const RouterProvider = () => {
   return (
@@ -34,6 +34,7 @@ const RouterProvider = () => {
       <Route path={PATH.SIGN_UP_SELECT} element={<SignUpSelectPage />} />
       <Route path={PATH.SIGN_UP_LOCAL} element={<LocalSignUpPage />} />
       <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
+      <Route path={PATH.SIGN_UP_COMPLETE} element={<SignUpCompletePage />} />
       <Route element={<AuthProtectedRoute />}>
         <Route path={PATH.MY_PAGE} element={<MyPage />} />
       </Route>

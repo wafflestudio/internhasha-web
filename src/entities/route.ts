@@ -4,6 +4,7 @@ export const PATH = {
   SIGN_IN_SELECT: '/signin',
   SIGN_UP_SELECT: '/signup',
   SIGN_UP_LOCAL: '/signup/local',
+  SIGN_UP_COMPLETE: '/signup/complete',
   VERIFY_EMAIL: '/verify-email',
   MY_PAGE: '/mypage',
 };
