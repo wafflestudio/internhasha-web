@@ -17,6 +17,7 @@ import type {
   PretotypeUserSubmitResponse,
   SendEmailCodeRequest,
   TokenResponse,
+  UserResponse,
   UserWithTokenResponse,
 } from '@/shared/api/entities/schemas';
 
@@ -109,8 +110,8 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         method: 'POST',
         path: 'user/logout',
       }),
-    'GET /pretotype/mock': ({ token }: { token: string }) =>
-      callWithToken<SuccessResponse<PretotypeUserSubmitResponse[]>>({
+    'GET /user/info': ({ token }: { token: string }) =>
+      callWithToken<SuccessResponse<UserResponse>>({
         method: 'GET',
         path: 'pretotype/list',
         token,

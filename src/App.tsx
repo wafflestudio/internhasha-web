@@ -24,6 +24,8 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { implTokenLocalStorage } from '@/shared/token/localstorage';
 import { implTokenState } from '@/shared/token/state';
 
+import { implUserService } from './service/userService';
+
 const RouterProvider = () => {
   return (
     <Routes>
@@ -100,6 +102,7 @@ export const App = () => {
     echoService: implEchoService({ apis }),
     authService: implAuthService({ apis, tokenState, tokenLocalStorage }),
     postService: implPostService({ apis }),
+    userService: implUserService({ apis }),
   };
 
   return (
