@@ -96,7 +96,10 @@ export const EmailVerifyForm = () => {
   const onSubmit = () => {
     if (signUpDisable) return;
     if (body.authProvider === 'GOOGLE') {
-      googleSignUp({ snuMail: snuMail.value, token: body.token });
+      googleSignUp({
+        snuMail: snuMail.value,
+        token: body.token,
+      });
     }
     if (body.authProvider === 'LOCAL') {
       localSignUp({
@@ -138,6 +141,7 @@ export const EmailVerifyForm = () => {
           }}
           disabled={isPending}
         />
+        <span>@snu.ac.kr</span>
         {!verifySuccess && (
           <Button
             onClick={handleClickSendEmailCodeButton}

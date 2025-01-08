@@ -23,6 +23,6 @@ export const TextInput = ({
       onBlur={onBlur}
       placeholder={placeholder}
       style={{ padding: '10px', width: '300px', fontSize: '16px' }}
-    />
+    ></input>
   );
 };
