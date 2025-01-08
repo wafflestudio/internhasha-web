@@ -12,7 +12,6 @@ export const AuthProtectedRoute = () => {
   const { token } = useGuardContext(TokenContext);
   const { reissueToken, isPending } = useRefreshToken();
 
-  console.log(token);
   if (token === null && !isPending && !hasReissued.current) {
     reissueToken();
     hasReissued.current = true;
