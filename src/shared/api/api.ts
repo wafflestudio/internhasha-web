@@ -113,6 +113,18 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         path: 'user/signup/google-email',
         body,
       }),
+    'POST /user/google': ({ body }: { body: GoogleSignUpRequest }) =>
+      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
+        method: 'POST',
+        path: 'user/google',
+        body,
+      }),
+    'POST /user/local': ({ body }: { body: LocalSignInRequest }) =>
+      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
+        method: 'POST',
+        path: 'user/local',
+        body,
+      }),
     'POST /user/token/refresh': () =>
       callWithoutToken<SuccessResponse<TokenResponse>>({
         method: 'POST',

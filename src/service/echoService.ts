@@ -22,7 +22,7 @@ export const implEchoService = ({ apis }: { apis: Apis }): EchoService => ({
         data,
       };
     }
-    return { type: 'error', message: data.error };
+    return { type: 'error', status, message: data.error };
   },
   sendSubmit: async ({ body }) => {
     const { status, data } = await apis['POST /pretotype']({ body });
@@ -33,6 +33,6 @@ export const implEchoService = ({ apis }: { apis: Apis }): EchoService => ({
         data,
       };
     }
-    return { type: 'error', message: data.error };
+    return { type: 'error', status, message: data.error };
   },
 });

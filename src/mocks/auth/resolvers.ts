@@ -6,6 +6,7 @@ import type {
   GoogleSignUpRequest,
   LocalIdRequest,
   LocalSignUpRequest,
+  MockResponse,
   SendEmailCodeRequest,
   UserWithTokenResponse,
 } from '@/mocks/auth/schemas';
@@ -16,7 +17,7 @@ type AuthResolver = {
   signupGoogle: HttpResponseResolver<
     never,
     GoogleSignUpRequest,
-    UserWithTokenResponse
+    MockResponse<UserWithTokenResponse>
   >;
   signUpLocal: HttpResponseResolver<
     never,
@@ -35,7 +36,16 @@ export const authResolver: AuthResolver = {
   verfiyEmail: () => {
     return HttpResponse.json(null, { status: 200 });
   },
-  signupGoogle: () => {
+  signupGoogle: async ({ request }) => {
+    const { snuMail } = await request.json();
+
+    if (snuMail === 'ywk0524@snu.ac.kr') {
+      return HttpResponse.json(
+        { error: '동일한 스누메일로 등록된 계정이 존재합니다.' },
+        { status: 409 },
+      );
+    }
+
     const { id, username, isAdmin } = mockUser;
     const body = { user: { id, username, isAdmin }, accessToken: 'asdf' };
     return HttpResponse.json(body, { status: 200 });

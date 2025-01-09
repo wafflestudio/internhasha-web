@@ -23,7 +23,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
         data,
       };
     }
-    return { type: 'error', message: data.error };
+    return { type: 'error', status, message: data.error };
   },
 
   getPostDetail: async ({
@@ -42,6 +42,6 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
         data,
       };
     }
-    return { type: 'error', message: data.error };
+    return { type: 'error', status, message: data.error };
   },
 });
