@@ -17,7 +17,7 @@ export const LandingPage = () => {
   };
 
   if (posts === undefined) {
-    throw new Error('포스트 로딩 중');
+    return <p>로딩 중...</p>;
   }
 
   return (
@@ -34,7 +34,7 @@ export const LandingPage = () => {
         <div className="">
           {posts.map((post) => (
             <p key={post.id}>
-              {post.companyName}
+              {post.id}: {post.companyName}
               <Button
                 onClick={() => {
                   toPost({ postId: post.id });
@@ -44,7 +44,6 @@ export const LandingPage = () => {
               </Button>
             </p>
           ))}
-          )
         </div>
       }
     </div>
