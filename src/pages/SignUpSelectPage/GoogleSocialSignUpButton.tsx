@@ -29,13 +29,12 @@ export const GoogleSocialSignUpButton = () => {
 
   const popupGoogle = useGoogleLogin({
     onSuccess: (credentialResponse) => {
-      const token = credentialResponse.code;
+      const token = credentialResponse.access_token;
       checkGoogleMail({ token });
     },
     onError: (errorResponse) => {
       setResponseMessage(errorResponse.error_description);
     },
-    flow: 'auth-code',
   });
 
   const handleClickGoogleSignUpButton = () => {
