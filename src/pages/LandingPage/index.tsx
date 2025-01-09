@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Button } from '@/components/button';
 import { useGuardContext } from '@/shared/context/hooks.ts';
@@ -14,7 +14,7 @@ export const LandingPage = () => {
   const [currentGroup, setCurrentGroup] = useState(0);
 
   const totalPages = 20; // 총 페이지 수 (예시)
-  const pagesPerGroup = 5; // 한 그룹당 표시할 페이지 수
+  const pagesPerGroup = 12; // 한 그룹당 표시할 페이지 수
 
   const startPage = currentGroup * pagesPerGroup;
   const endPage = Math.min(startPage + pagesPerGroup, totalPages);
@@ -36,11 +36,6 @@ export const LandingPage = () => {
   const hanldeClickLogoutButton = () => {
     logout();
   };
-
-  useEffect(() => {
-    console.log(currentPage);
-    console.log(currentGroup);
-  }, [currentPage, currentGroup]);
 
   if (posts === undefined) {
     return <p>로딩 중...</p>;

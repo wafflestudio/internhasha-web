@@ -27,7 +27,7 @@ export type PostService = {
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
   getPosts: async ({
-    page = 0,
+    page,
     roles,
     investment,
     investor,
@@ -40,8 +40,8 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     pathStatus?: number;
   }) => {
     const postPath = new URLSearchParams();
-    postPath.append('page', page.toString());
 
+    if (page !== undefined) postPath.append('page', page.toString());
     if (roles !== undefined) postPath.append('roles', roles.join(','));
     if (investment !== undefined)
       postPath.append('investment', investment.toString());
