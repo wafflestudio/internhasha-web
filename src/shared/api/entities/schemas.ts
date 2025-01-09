@@ -56,6 +56,10 @@ export type EchoParams = {
   message: string;
 };
 
+export type PostPathParams = {
+  postPath: string;
+};
+
 export type PostIdParams = {
   postId: string;
 };

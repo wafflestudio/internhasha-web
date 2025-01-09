@@ -15,6 +15,7 @@ import type {
   LocalSignUpRequest,
   PostDetailResponse,
   PostIdParams,
+  PostPathParams,
   PostsResponse,
   PretotypeUserSubmitRequest,
   PretotypeUserSubmitResponse,
@@ -142,10 +143,10 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         path: 'user/info',
         token,
       }),
-    'GET /post': () =>
+    'GET /post': ({ params }: { params: PostPathParams }) =>
       callWithoutToken<SuccessResponse<PostsResponse>>({
         method: 'GET',
-        path: 'post',
+        path: `post?${params.postPath}`,
       }),
     'GET /post/:postId': ({
       token,
