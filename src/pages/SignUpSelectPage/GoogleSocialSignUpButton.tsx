@@ -11,11 +11,9 @@ export const GoogleSocialSignUpButton = () => {
   const [responseMessage, setResponseMessage] = useState<string | undefined>(
     undefined,
   );
-  const [googleMail, setGoogleMail] = useState<string | null>(null);
 
   const { checkGoogleMail, isPending: isPendingCheckMail } = useCheckGoogleMail(
     {
-      setGoogleMail,
       setResponseMessage,
       onSnuEmailSuccess: (email, token) => {
         googleSignUp({ snuMail: email, token });
@@ -31,12 +29,13 @@ export const GoogleSocialSignUpButton = () => {
 
   const popupGoogle = useGoogleLogin({
     onSuccess: (credentialResponse) => {
-      const token = credentialResponse.access_token;
+      const token = credentialResponse.code;
       checkGoogleMail({ token });
     },
     onError: (errorResponse) => {
       setResponseMessage(errorResponse.error_description);
     },
+    flow: 'auth-code',
   });
 
   const handleClickGoogleSignUpButton = () => {
@@ -53,21 +52,14 @@ export const GoogleSocialSignUpButton = () => {
           <span>{responseMessage}</span>
         </div>
       )}
-      {googleMail !== null && (
-        <div>
-          <span>확인된 이메일: {googleMail}</span>
-        </div>
-      )}
     </div>
   );
 };
 
 const useCheckGoogleMail = ({
-  setGoogleMail,
   setResponseMessage,
   onSnuEmailSuccess,
 }: {
-  setGoogleMail(input: string | null): void;
   setResponseMessage(input: string): void;
   onSnuEmailSuccess(email: string, token: string): void;
 }) => {
@@ -83,7 +75,6 @@ const useCheckGoogleMail = ({
     onSuccess: (response, variables) => {
       if (response.type === 'success') {
         const email = response.data.googleEmail;
-        setGoogleMail(email);
 
         if (EMAIL_REGEX.test(email)) {
           onSnuEmailSuccess(email, variables.token);
@@ -91,12 +82,10 @@ const useCheckGoogleMail = ({
           toVerifyEmail({ token: variables.token, authProvider: 'GOOGLE' });
         }
       } else {
-        setGoogleMail(null);
         setResponseMessage(response.message);
       }
     },
     onError: () => {
-      setGoogleMail(null);
       setResponseMessage(
         '회원가입에 실패했습니다. 잠시 후에 다시 실행해주세요.',
       );
