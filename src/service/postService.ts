@@ -3,7 +3,19 @@ import type { Apis } from '@/shared/api';
 import type { PostDetailResponse, PostsResponse } from '@/shared/api/entities';
 
 export type PostService = {
-  getPosts: () => ServiceResponse<PostsResponse>;
+  getPosts: ({
+    page,
+    roles,
+    investment,
+    investor,
+    pathStatus,
+  }: {
+    page?: number;
+    roles?: string[];
+    investment?: number;
+    investor?: string;
+    pathStatus?: number;
+  }) => ServiceResponse<PostsResponse>;
   getPostDetail: ({
     postId,
     token,
@@ -14,8 +26,34 @@ export type PostService = {
 };
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
-  getPosts: async () => {
-    const { status, data } = await apis['GET /post']();
+  getPosts: async ({
+    page = 0,
+    roles,
+    investment,
+    investor,
+    pathStatus,
+  }: {
+    page?: number;
+    roles?: string[];
+    investment?: number;
+    investor?: string;
+    pathStatus?: number;
+  }) => {
+    const postPath = new URLSearchParams();
+    postPath.append('page', page.toString());
+
+    if (roles !== undefined) postPath.append('roles', roles.join(','));
+    if (investment !== undefined)
+      postPath.append('investment', investment.toString());
+    if (investor !== undefined) postPath.append('investor', investor);
+    if (pathStatus !== undefined)
+      postPath.append('status', pathStatus.toString());
+
+    const params = {
+      postPath: postPath.toString(),
+    };
+
+    const { status, data } = await apis['GET /post']({ params });
 
     if (status === 200) {
       return {
