@@ -14,6 +14,8 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatNumberToTime } from '@/util/format';
 
+import { AddGoogleSignUpModal, AddLocalSignUpModal } from './AddSignUpModal';
+
 type VerifyMailBody =
   | {
       authProvider: 'GOOGLE';
@@ -36,9 +38,7 @@ export const EmailVerifyForm = () => {
 
   const { toSignUpLocal, toSignUpSelect } = useRouteNavigation();
   const [showSendCodeError, setShowSendCodeError] = useState(false);
-  const [showModal, setShowModal] = useState<'NONE' | 'GOOGLE' | 'LOCAL'>(
-    'NONE',
-  );
+  const [showModal, setShowModal] = useState(false);
   const { snuMail, code } = authPresentation.useValidator({});
   const {
     sendCode,
@@ -205,7 +205,21 @@ export const EmailVerifyForm = () => {
           </SubmitButton>
         </div>
       </FormContainer>
-      {showModal !== 'NONE' && <div>모달</div>}
+      {showModal && body.authProvider === 'GOOGLE' && (
+        <AddGoogleSignUpModal
+          body={{ token: body.token, snuMail: snuMail.postfix }}
+        />
+      )}
+      {showModal && body.authProvider === 'LOCAL' && (
+        <AddLocalSignUpModal
+          body={{
+            localId: body.localId,
+            password: body.password,
+            username: body.username,
+            snuMail: snuMail.postfix,
+          }}
+        />
+      )}
     </>
   );
 };
@@ -349,7 +363,7 @@ const useEmailVerify = () => {
 const useGoogleSignUp = ({
   setShowModal,
 }: {
-  setShowModal(input: 'NONE' | 'GOOGLE' | 'LOCAL'): void;
+  setShowModal(input: boolean): void;
 }) => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
@@ -370,7 +384,7 @@ const useGoogleSignUp = ({
           response.status === 409 &&
           response.message === '동일한 스누메일로 등록된 계정이 존재합니다.'
         ) {
-          setShowModal('GOOGLE');
+          setShowModal(true);
         }
         setResponseMessage(response.message);
       }
@@ -388,7 +402,7 @@ const useGoogleSignUp = ({
 const useLocalSignUp = ({
   setShowModal,
 }: {
-  setShowModal(input: 'NONE' | 'GOOGLE' | 'LOCAL'): void;
+  setShowModal(input: boolean): void;
 }) => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
@@ -416,7 +430,7 @@ const useLocalSignUp = ({
           response.status === 409 &&
           response.message === '동일한 스누메일로 등록된 계정이 존재합니다.'
         ) {
-          setShowModal('LOCAL');
+          setShowModal(true);
         }
         setResponseMessage(response.message);
       }
