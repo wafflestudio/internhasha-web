@@ -143,10 +143,10 @@ export const getApis = ({ callWithToken, callWithoutToken, callWithOptionalToken
       token,
       params,
     }: {
-      token: string;
+      token?: string;
       params: PostIdParams;
     }) =>
-      callWithToken<SuccessResponse<PostDetailResponse>>({
+      callWithOptionalToken<SuccessResponse<PostDetailResponse>>({
         method: 'GET',
         path: `post/${params.postId}`,
         token,
