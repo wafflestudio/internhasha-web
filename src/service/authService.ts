@@ -67,6 +67,30 @@ export type AuthService = {
   }): ServiceResponse<void>;
   reissueAccessToken(): ServiceResponse<{ accessToken: string }>;
   logout({ token }: { token: string }): ServiceResponse<void>;
+  addLocalSignUp({
+    username,
+    localId,
+    password,
+    snuMail,
+  }: {
+    username: string;
+    snuMail: string;
+    localId: string;
+    password: string;
+  }): ServiceResponse<{
+    user: Pick<User, 'id' | 'username' | 'isAdmin'>;
+    accessToken: string;
+  }>;
+  addGoogleSignUp({
+    snuMail,
+    googleAccessToken,
+  }: {
+    snuMail: string;
+    googleAccessToken: string;
+  }): ServiceResponse<{
+    user: Pick<User, 'id' | 'username' | 'isAdmin'>;
+    accessToken: string;
+  }>;
 };
 
 export const implAuthService = ({
@@ -223,6 +247,40 @@ export const implAuthService = ({
     tokenLocalStorage.removeToken();
     tokenState.removeToken();
     if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', status, message: data.error };
+  },
+  addGoogleSignUp: async ({ snuMail, googleAccessToken }) => {
+    const body = { snuMail, googleAccessToken };
+    const { status, data } = await apis['POST /user/signup/google']({ body });
+
+    if (status === 200) {
+      const accessToken = data.accessToken;
+
+      tokenLocalStorage.setToken({ token: accessToken });
+      tokenState.setToken({ token: accessToken });
+
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', status, message: data.error };
+  },
+  addLocalSignUp: async ({ username, localId, password, snuMail }) => {
+    const body = { username, localId, password, snuMail };
+    const { status, data } = await apis['POST /user/signup/local']({ body });
+
+    if (status === 200) {
+      const token = data.accessToken;
+
+      tokenLocalStorage.setToken({ token });
+      tokenState.setToken({ token });
+
       return {
         type: 'success',
         data,
