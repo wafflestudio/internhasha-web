@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/button';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
+import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LandingPage = () => {
@@ -55,10 +56,14 @@ const useGetPosts = () => {
 
 const useLogout = () => {
   const { authService } = useGuardContext(ServiceContext);
+  const { token } = useGuardContext(TokenContext);
 
   const { mutate: logout, isPending } = useMutation({
     mutationFn: () => {
-      return authService.logout();
+      if (token === null) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+      return authService.logout({ token });
     },
   });
 

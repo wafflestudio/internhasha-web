@@ -66,7 +66,7 @@ export type AuthService = {
     localId: string;
   }): ServiceResponse<void>;
   reissueAccessToken(): ServiceResponse<{ accessToken: string }>;
-  logout(): ServiceResponse<void>;
+  logout({ token }: { token: string }): ServiceResponse<void>;
 };
 
 export const implAuthService = ({
@@ -218,12 +218,10 @@ export const implAuthService = ({
     }
     return { type: 'error', status, message: data.error };
   },
-  logout: async () => {
-    const { status, data } = await apis['POST /user/logout']();
-
+  logout: async ({ token }) => {
+    const { status, data } = await apis['POST /user/logout']({ token });
     tokenLocalStorage.removeToken();
     tokenState.removeToken();
-
     if (status === 200) {
       return {
         type: 'success',

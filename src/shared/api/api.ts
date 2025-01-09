@@ -116,10 +116,11 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         method: 'POST',
         path: 'user/token/refresh',
       }),
-    'POST /user/logout': () =>
-      callWithoutToken<SuccessResponse<void>>({
+    'POST /user/logout': ({ token }: { token: string }) =>
+      callWithToken<SuccessResponse<void>>({
         method: 'POST',
         path: 'user/logout',
+        token,
       }),
     'GET /user/info': ({ token }: { token: string }) =>
       callWithToken<SuccessResponse<UserResponse>>({
