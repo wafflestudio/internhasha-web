@@ -44,7 +44,11 @@ type Api = (_: {
   query: never;
 }) => Promise<{ status: number; data: unknown }>;
 
-export const getApis = ({ callWithToken, callWithoutToken, callWithOptionalToken }: GetApisProps) =>
+export const getApis = ({
+  callWithToken,
+  callWithoutToken,
+  callWithOptionalToken,
+}: GetApisProps) =>
   ({
     'GET /echo/:message': ({ params }: { params: EchoParams }) =>
       callWithoutToken<SuccessResponse<never>>({

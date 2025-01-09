@@ -44,7 +44,8 @@ export const implApi = ({ externalCall }: ImplApiProps) => {
   return getApis({
     callWithToken: callWithToken,
     callWithoutToken: callWithOptionalToken,
-    callWithOptionalToken: callWithOptionalToken});
+    callWithOptionalToken: callWithOptionalToken,
+  });
 };
 
 export type Apis = ReturnType<typeof implApi>;
