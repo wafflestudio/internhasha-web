@@ -76,19 +76,21 @@ export const LandingPage = () => {
       <div
         style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}
       >
-        {/* 이전 그룹 버튼 */}
         <Button
-          onClick={() => { setCurrentGroup((prev) => Math.max(prev - 1, 0)); }}
+          onClick={() => {
+            setCurrentGroup((prev) => Math.max(prev - 1, 0));
+          }}
           disabled={currentGroup === 0}
         >
           이전
         </Button>
 
-        {/* 페이지 번호 버튼 */}
         {pageNumbers.map((page) => (
           <Button
             key={page}
-            onClick={() => { setCurrentPage(page); }}
+            onClick={() => {
+              setCurrentPage(page);
+            }}
             style={{
               margin: '0 5px',
               fontWeight: currentPage === page ? 'bold' : 'normal',
@@ -98,13 +100,12 @@ export const LandingPage = () => {
           </Button>
         ))}
 
-        {/* 다음 그룹 버튼 */}
         <Button
-          onClick={() =>
-            { setCurrentGroup((prev) =>
+          onClick={() => {
+            setCurrentGroup((prev) =>
               startPage + pagesPerGroup >= totalPages ? prev : prev + 1,
-            ); }
-          }
+            );
+          }}
           disabled={startPage + pagesPerGroup >= totalPages}
         >
           다음
