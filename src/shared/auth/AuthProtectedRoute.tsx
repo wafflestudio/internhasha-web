@@ -24,7 +24,7 @@ export const AuthProtectedRoute = () => {
 const useRefreshToken = () => {
   const { authService } = useGuardContext(ServiceContext);
 
-  const { mutate: reissueToken, isPending } = useMutation({
+  const { mutate: reissueToken } = useMutation({
     mutationFn: async () => {
       const response = await authService.reissueAccessToken();
       return response;
@@ -39,6 +39,5 @@ const useRefreshToken = () => {
 
   return {
     reissueToken,
-    isPending,
   };
 };
