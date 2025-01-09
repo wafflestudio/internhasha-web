@@ -13,11 +13,12 @@ export const LandingPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [currentGroup, setCurrentGroup] = useState(0);
 
-  const totalPages = 20; // 총 페이지 수 (예시)
-  const pagesPerGroup = 12; // 한 그룹당 표시할 페이지 수
+  // TODO: Total pages 값은 서버에서 받아온 값으로 변경하기
+  const TOTAL_PAGES = 20;
+  const PAGES_PER_GROUP = 12;
 
-  const startPage = currentGroup * pagesPerGroup;
-  const endPage = Math.min(startPage + pagesPerGroup, totalPages);
+  const startPage = currentGroup * PAGES_PER_GROUP;
+  const endPage = Math.min(startPage + PAGES_PER_GROUP, TOTAL_PAGES);
 
   const pageNumbers = Array.from(
     { length: endPage - startPage },
@@ -98,10 +99,10 @@ export const LandingPage = () => {
         <Button
           onClick={() => {
             setCurrentGroup((prev) =>
-              startPage + pagesPerGroup >= totalPages ? prev : prev + 1,
+              startPage + PAGES_PER_GROUP >= TOTAL_PAGES ? prev : prev + 1,
             );
           }}
-          disabled={startPage + pagesPerGroup >= totalPages}
+          disabled={startPage + PAGES_PER_GROUP >= TOTAL_PAGES}
         >
           다음
         </Button>
