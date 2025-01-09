@@ -9,10 +9,6 @@ type PostsResolver = {
 
 export const postsResolver: PostsResolver = {
   posts: () => {
-    const posts = mockPosts
-
-    return HttpResponse.json(posts, { status: 200 });
+    return HttpResponse.json(mockPosts, { status: 200 });
   },
 };
-
-
