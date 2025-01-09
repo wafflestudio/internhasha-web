@@ -13,6 +13,8 @@ import type {
   GoogleSignUpRequest,
   LocalSignInRequest,
   LocalSignUpRequest,
+  PostDetailResponse,
+  PostIdParams,
   PostsResponse,
   PretotypeUserSubmitRequest,
   PretotypeUserSubmitResponse,
@@ -128,8 +130,20 @@ export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
         token,
       }),
     'GET /post': () =>
-      callWithoutToken<SuccessResponse<PostsResponse[]>>({
+      callWithoutToken<SuccessResponse<PostsResponse>>({
         method: 'GET',
         path: 'post',
+      }),
+    'GET /post/:postId': ({
+      token,
+      params,
+    }: {
+      token: string;
+      params: PostIdParams;
+    }) =>
+      callWithToken<SuccessResponse<PostDetailResponse>>({
+        method: 'GET',
+        path: `post/${params.postId}`,
+        token,
       }),
   }) satisfies Record<string, Api>;

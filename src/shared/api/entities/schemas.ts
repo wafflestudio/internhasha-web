@@ -5,9 +5,59 @@ type UserBriefDTO = {
   isAdmin: boolean;
 };
 
+type AuthorBriefDTO = {
+  id: string;
+  name: string;
+  profileImageLink?: string;
+};
+
+type RoleDTO = {
+  id: string;
+  category: string;
+  detail: string;
+  headcount: string;
+};
+
+type PostDTO = {
+  id: string;
+  companyName: string;
+  email: string;
+  author: AuthorBriefDTO;
+  explanation: string;
+  tags: string[];
+  roles: RoleDTO[];
+  imageLink: string;
+  investAmount: number;
+  investCompany: string[];
+  IRDeckLink: string;
+  landingPageLink: string;
+  externalDescriptionLink: string[];
+  isActive: boolean;
+  employmentEndDate: Date;
+};
+
+type PostBriefDTO = {
+  id: string;
+  companyName: string;
+  email: string;
+  author: AuthorBriefDTO;
+  explanation: string;
+  tags: string[];
+  roles: RoleDTO[];
+  imageLink: string;
+  investAmount: number;
+  investCompany: string[];
+  isActive: boolean;
+  employmentEndDate: Date;
+};
+
 // Params
 export type EchoParams = {
   message: string;
+};
+
+export type PostIdParams = {
+  postId: string;
 };
 
 // Request
@@ -70,11 +120,9 @@ export type UserWithTokenResponse = {
   accessToken: string;
 };
 
-export type PostsResponse = {
-  id: string;
-  name: string;
-  description: string;
-};
+export type PostsResponse = PostBriefDTO[];
+
+export type PostDetailResponse = PostDTO;
 
 export type TokenResponse = {
   accessToken: string;

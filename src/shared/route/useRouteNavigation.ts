@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 
-import { PATH } from '@/entities/route';
+import { HREF, PATH } from '@/entities/route';
 
 type VerifyMailBody =
   | {
@@ -33,9 +33,14 @@ export const useRouteNavigation = () => {
     SIGN_UP_COMPLETE,
   } = PATH;
 
+  const { POST } = HREF;
+
   return {
     toMain: () => {
       void navigate(INDEX);
+    },
+    toPost: ({ postId }: { postId: string }) => {
+      void navigate(POST(postId));
     },
     toEcho: () => {
       void navigate(ECHO);

@@ -7,6 +7,7 @@ import { PATH } from '@/entities/route';
 import { EchoPage } from '@/pages/EchoPage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
+import { PostPage } from '@/pages/LandingPage/PostPage';
 import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
 import { MyPage } from '@/pages/MyPage';
 import { SignInSelectPage } from '@/pages/SignInSelectPage';
@@ -29,6 +30,7 @@ const RouterProvider = () => {
   return (
     <Routes>
       <Route path={PATH.INDEX} element={<LandingPage />} />
+      <Route path={PATH.POST} element={<PostPage />} />
       <Route path={PATH.ECHO} element={<EchoPage />} />
       <Route path={PATH.SIGN_IN_SELECT} element={<SignInSelectPage />} />
       <Route path={PATH.SIGN_UP_SELECT} element={<SignUpSelectPage />} />

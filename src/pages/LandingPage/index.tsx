@@ -6,14 +6,19 @@ import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LandingPage = () => {
-  const { toEcho, toSignUpSelect, toSignInSelect } = useRouteNavigation();
+  const { toEcho, toSignUpSelect, toSignInSelect, toPost } =
+    useRouteNavigation();
 
-  const { data: PostsData, isLoading, isError } = useGetPosts();
+  const { data: posts } = useGetPosts();
   const { logout, isPending } = useLogout();
 
   const hanldeClickLogoutButton = () => {
     logout();
   };
+
+  if (posts === undefined) {
+    throw new Error('포스트 로딩 중');
+  }
 
   return (
     <div>
@@ -25,13 +30,23 @@ export const LandingPage = () => {
         로그아웃
       </Button>
 
-      {!isLoading && !isError && PostsData != null && (
-        <ul>
-          {PostsData.map((company) => (
-            <li key={company.id}>{company.name}</li>
+      {
+        <div className="">
+          {posts.map((post) => (
+            <p key={post.id}>
+              {post.companyName}
+              <Button
+                onClick={() => {
+                  toPost({ postId: post.id });
+                }}
+              >
+                자세히 보기
+              </Button>
+            </p>
           ))}
-        </ul>
-      )}
+          )
+        </div>
+      }
     </div>
   );
 };
@@ -39,7 +54,7 @@ export const LandingPage = () => {
 const useGetPosts = () => {
   const { postService } = useGuardContext(ServiceContext);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data } = useQuery({
     queryKey: ['postService', 'getPosts'],
     queryFn: async () => {
       const response = await postService.getPosts();
@@ -50,7 +65,7 @@ const useGetPosts = () => {
     },
   });
 
-  return { data, isLoading, isError };
+  return { data };
 };
 
 const useLogout = () => {
