@@ -68,10 +68,11 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     token,
     postId,
   }: {
-    token: string;
+    token?: string;
     postId: string;
   }) => {
     const params = { postId };
+
     const { status, data } = await apis['GET /post/:postId']({ token, params });
 
     if (status === 200) {
