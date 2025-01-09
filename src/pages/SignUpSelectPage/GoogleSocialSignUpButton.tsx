@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { Button } from '@/components/button';
 import { AddGoogleSignUpModal } from '@/pages/EmailVerifyPage/AddSignUpModal';
+import { RedirectSignInModal } from '@/pages/EmailVerifyPage/AddSignUpModal';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
@@ -16,7 +17,9 @@ export const GoogleSocialSignUpButton = () => {
     null,
   );
   const [snuMail, setSnuMail] = useState<string | null>(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<'NONE' | 'ADD' | 'REDIRECT'>(
+    'NONE',
+  );
 
   const { checkGoogleMail, isPending: isPendingCheckMail } = useCheckGoogleMail(
     {
@@ -60,9 +63,12 @@ export const GoogleSocialSignUpButton = () => {
           <span>{responseMessage}</span>
         </div>
       )}
-      {showModal && googleAccessToken !== null && snuMail !== null && (
-        <AddGoogleSignUpModal body={{ token: googleAccessToken, snuMail }} />
-      )}
+      {showModal === 'ADD' &&
+        googleAccessToken !== null &&
+        snuMail !== null && (
+          <AddGoogleSignUpModal body={{ token: googleAccessToken, snuMail }} />
+        )}
+      {showModal === 'REDIRECT' && <RedirectSignInModal />}
     </div>
   );
 };
@@ -114,7 +120,7 @@ const useGoogleSignUp = ({
   setShowModal,
 }: {
   setResponseMessage(input: string): void;
-  setShowModal(input: boolean): void;
+  setShowModal(input: 'NONE' | 'ADD' | 'REDIRECT'): void;
 }) => {
   const { authService } = useGuardContext(ServiceContext);
   const { toSignUpComplete } = useRouteNavigation();
@@ -134,7 +140,9 @@ const useGoogleSignUp = ({
           response.status === 409 &&
           response.message === '동일한 스누메일로 등록된 계정이 존재합니다.'
         ) {
-          setShowModal(true);
+          setShowModal('ADD');
+        } else if (response.status === 409) {
+          setShowModal('REDIRECT');
         }
         setResponseMessage(response.message);
       }

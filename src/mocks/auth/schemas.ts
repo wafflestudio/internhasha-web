@@ -1,5 +1,5 @@
 // Skeleton of Mock Response
-export type MockErrorResponse = {
+type MockErrorResponse = {
   error: string;
 };
 
