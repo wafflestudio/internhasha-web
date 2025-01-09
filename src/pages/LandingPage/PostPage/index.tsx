@@ -8,6 +8,7 @@ import { TokenContext } from '@/shared/context/TokenContext.ts';
 export const PostPage = () => {
   const { postId } = useParams<{ postId: string }>();
 
+  console.log(postId);
   // url parameter 가 잘못되었을 경우 어떻게?
   if (postId === undefined) {
     throw new Error('잘못된 접근입니다.');
@@ -23,7 +24,11 @@ export const PostPage = () => {
     return <div>정보를 불러오는 중 문제가 발생했습니다. 새로고침해주세요.</div>;
   }
 
-  const { companyName, roles } = postDetailData.data;
+  console.log(postDetailData);
+  const { companyName: companyName, roles: roles } = postDetailData.data;
+
+  console.log(companyName);
+  console.log(roles);
 
   return (
     <div>
