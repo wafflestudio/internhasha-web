@@ -20,6 +20,6 @@ export const implUserService = ({ apis }: { apis: Apis }): UserService => ({
         data,
       };
     }
-    return { type: 'error', message: data.error };
+    return { type: 'error', status, message: data.error };
   },
 });
