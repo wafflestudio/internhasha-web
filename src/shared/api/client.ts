@@ -37,11 +37,14 @@ export const implApi = ({ externalCall }: ImplApiProps) => {
     p: InternalCallParams & { token: string },
   ) => internalCall<R | ErrorResponse>(p);
 
-  const callWithoutToken = <R extends ResponseNecessary>(
+  const callWithOptionalToken = <R extends ResponseNecessary>(
     p: InternalCallParams & { token?: string },
   ) => internalCall<R | ErrorResponse>(p);
 
-  return getApis({ callWithToken, callWithoutToken });
+  return getApis({
+    callWithToken: callWithToken,
+    callWithoutToken: callWithOptionalToken,
+    callWithOptionalToken: callWithOptionalToken});
 };
 
 export type Apis = ReturnType<typeof implApi>;

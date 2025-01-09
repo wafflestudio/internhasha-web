@@ -32,6 +32,9 @@ type GetApisProps = {
   callWithoutToken: <R extends ResponseNecessary>(
     p: InternalCallParams & { token?: never },
   ) => Promise<R | ErrorResponse>;
+  callWithOptionalToken: <R extends ResponseNecessary>(
+    p: InternalCallParams & { token?: string },
+  ) => Promise<R | ErrorResponse>;
 };
 
 type Api = (_: {
@@ -41,7 +44,7 @@ type Api = (_: {
   query: never;
 }) => Promise<{ status: number; data: unknown }>;
 
-export const getApis = ({ callWithToken, callWithoutToken }: GetApisProps) =>
+export const getApis = ({ callWithToken, callWithoutToken, callWithOptionalToken }: GetApisProps) =>
   ({
     'GET /echo/:message': ({ params }: { params: EchoParams }) =>
       callWithoutToken<SuccessResponse<never>>({
