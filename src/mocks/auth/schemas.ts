@@ -1,3 +1,10 @@
+// Skeleton of Mock Response
+export type MockErrorResponse = {
+  error: string;
+};
+
+export type MockResponse<T> = T | MockErrorResponse;
+
 // DTO
 type UserBriefDTO = {
   id: string;

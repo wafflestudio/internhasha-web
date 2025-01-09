@@ -256,7 +256,7 @@ export const implAuthService = ({
   },
   addGoogleSignUp: async ({ snuMail, googleAccessToken }) => {
     const body = { snuMail, googleAccessToken };
-    const { status, data } = await apis['POST /user/signup/google']({ body });
+    const { status, data } = await apis['POST /user/google']({ body });
 
     if (status === 200) {
       const accessToken = data.accessToken;
@@ -273,7 +273,7 @@ export const implAuthService = ({
   },
   addLocalSignUp: async ({ username, localId, password, snuMail }) => {
     const body = { username, localId, password, snuMail };
-    const { status, data } = await apis['POST /user/signup/local']({ body });
+    const { status, data } = await apis['POST /user/local']({ body });
 
     if (status === 200) {
       const token = data.accessToken;
