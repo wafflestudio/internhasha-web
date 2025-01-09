@@ -10,11 +10,12 @@ import { TokenContext } from '@/shared/context/TokenContext';
 export const AuthProtectedRoute = () => {
   const hasReissued = useRef(false);
   const { token } = useGuardContext(TokenContext);
-  const { reissueToken, isPending } = useRefreshToken();
+  const { reissueToken } = useRefreshToken();
 
-  if (token === null && !isPending && !hasReissued.current) {
+  if (token === null && !hasReissued.current) {
     reissueToken();
     hasReissued.current = true;
+    return <div>로딩중...</div>;
   }
 
   return token === null ? <ReSignInModal /> : <Outlet />;
@@ -23,14 +24,20 @@ export const AuthProtectedRoute = () => {
 const useRefreshToken = () => {
   const { authService } = useGuardContext(ServiceContext);
 
-  const { mutate: reissueToken, isPending } = useMutation({
-    mutationFn: () => {
-      return authService.reissueAccessToken();
+  const { mutate: reissueToken } = useMutation({
+    mutationFn: async () => {
+      const response = await authService.reissueAccessToken();
+      return response;
+    },
+    onSuccess: () => {
+      return;
+    },
+    onError: () => {
+      return;
     },
   });
 
   return {
     reissueToken,
-    isPending,
   };
 };

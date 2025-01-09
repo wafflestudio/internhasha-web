@@ -24,7 +24,7 @@ export const implApi = ({ externalCall }: ImplApiProps) => {
       headers: {
         'content-type': 'application/json;charset=UTF-8',
         ...(content.token !== undefined
-          ? { 'x-access-token': content.token }
+          ? { Authorization: `Bearer ${content.token}` }
           : {}),
       },
       credentials: 'include',
