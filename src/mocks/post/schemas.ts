@@ -44,6 +44,11 @@ type PostBriefDTO = {
   employmentEndDate: Date;
 };
 
-export type PostsResponse = PostBriefDTO[];
+export type PostsResponse = {
+  posts: PostBriefDTO[];
+  paginator: {
+    lastPage: number;
+  };
+};
 
 export type PostDetailResponse = PostDTO;
