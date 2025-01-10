@@ -207,7 +207,10 @@ const FilterModal = ({
   
   const [localFilters, setLocalFilters] = useState(filters);
 
-  const handleInputChange = (key, value) => {
+  const handleInputChange = (
+    key: string,
+    value: string | number | string[],
+  ) => {
     setLocalFilters((prev) => ({
       ...prev,
       [key]: value,
@@ -263,7 +266,6 @@ const FilterModal = ({
             { handleInputChange('pathStatus', parseInt(e.target.value, 10)); }
           }
         >
-          <option value="">전체</option>
           <option value="0">진행중</option>
           <option value="1">진행 완료</option>
           <option value="2">전부</option>
