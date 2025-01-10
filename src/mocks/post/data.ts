@@ -1,167 +1,49 @@
-export const mockPosts = [
-  {
-    id: '1',
-    companyName: 'ABC 회사',
-    title: 'string',
-    email: 'string',
-    author: {
-      id: 'string',
-      name: 'string',
-      profileImageLink: 'String?',
-    },
-    explanation: '회사 설명입니다.', // 추가
-    tags: ['ABC초콜릿', 'ABC초코쿠키도 있어요', '설빙ABC초코쿠키도 많은관심'],
-    roles: [
-      {
-        id: 'asdjfkadf',
-        category: '개발자',
-        detail: '프론트엔드',
-        headcount: '3', // 문자열로 수정
-      },
-      {
-        id: 'sjdfhsjldf',
-        category: '개발자',
-        detail: 'SpringBoot',
-        headcount: '2', // 문자열로 수정
-      },
-    ],
-    imageLink: '목업',
-    investAmount: 12345,
-    investCompany: ['String'], // 배열로 수정
-    isActive: true,
-    employmentEndDate: new Date('2023-12-31'), // 추가
-  },
-  {
-    id: '2',
-    companyName: 'ABC 회사',
-    title: 'string',
-    email: 'string',
-    author: {
-      id: 'string',
-      name: 'string',
-      profileImageLink: 'String?',
-    },
-    explanation: '회사 설명입니다.', // 추가
-    tags: ['ABC초콜릿', 'ABC초코쿠키도 있어요', '설빙ABC초코쿠키도 많은관심'],
-    roles: [
-      {
-        id: 'asdjfkadf',
-        category: '개발자',
-        detail: '프론트엔드',
-        headcount: '3', // 문자열로 수정
-      },
-      {
-        id: 'sjdfhsjldf',
-        category: '개발자',
-        detail: 'SpringBoot',
-        headcount: '2', // 문자열로 수정
-      },
-    ],
-    imageLink: '목업',
-    investAmount: 12345,
-    investCompany: ['String'], // 배열로 수정
-    isActive: true,
-    employmentEndDate: new Date('2023-12-31'), // 추가
-  },
-  {
-    id: '3',
-    companyName: 'ABC 회사',
-    title: 'string',
-    email: 'string',
-    author: {
-      id: 'string',
-      name: 'string',
-      profileImageLink: 'String?',
-    },
-    explanation: '회사 설명입니다.', // 추가
-    tags: ['ABC초콜릿', 'ABC초코쿠키도 있어요', '설빙ABC초코쿠키도 많은관심'],
-    roles: [
-      {
-        id: 'asdjfkadf',
-        category: '개발자',
-        detail: '프론트엔드',
-        headcount: '3', // 문자열로 수정
-      },
-      {
-        id: 'sjdfhsjldf',
-        category: '개발자',
-        detail: 'SpringBoot',
-        headcount: '2', // 문자열로 수정
-      },
-    ],
-    imageLink: '목업',
-    investAmount: 12345,
-    investCompany: ['String'], // 배열로 수정
-    isActive: true,
-    employmentEndDate: new Date('2023-12-31'), // 추가
-  },
-  {
-    id: '4',
-    companyName: 'ABC 회사',
-    title: 'string',
-    email: 'string',
-    author: {
-      id: 'string',
-      name: 'string',
-      profileImageLink: 'String?',
-    },
-    explanation: '회사 설명입니다.', // 추가
-    tags: ['ABC초콜릿', 'ABC초코쿠키도 있어요', '설빙ABC초코쿠키도 많은관심'],
-    roles: [
-      {
-        id: 'asdjfkadf',
-        category: '개발자',
-        detail: '프론트엔드',
-        headcount: '3', // 문자열로 수정
-      },
-      {
-        id: 'sjdfhsjldf',
-        category: '개발자',
-        detail: 'SpringBoot',
-        headcount: '2', // 문자열로 수정
-      },
-    ],
-    imageLink: '목업',
-    investAmount: 12345,
-    investCompany: ['String'], // 배열로 수정
-    isActive: true,
-    employmentEndDate: new Date('2023-12-31'), // 추가
-  },
-  {
-    id: '5',
-    companyName: 'ABC 회사',
-    title: 'string',
-    email: 'string',
-    author: {
-      id: 'string',
-      name: 'string',
-      profileImageLink: 'String?',
-    },
-    explanation: '회사 설명입니다.', // 추가
-    tags: ['ABC초콜릿', 'ABC초코쿠키도 있어요', '설빙ABC초코쿠키도 많은관심'],
-    roles: [
-      {
-        id: 'asdjfkadf',
-        category: '개발자',
-        detail: '프론트엔드',
-        headcount: '3', // 문자열로 수정
-      },
-      {
-        id: 'sjdfhsjldf',
-        category: '개발자',
-        detail: 'SpringBoot',
-        headcount: '2', // 문자열로 수정
-      },
-    ],
-    imageLink: '목업',
-    investAmount: 12345,
-    investCompany: ['String'], // 배열로 수정
-    isActive: true,
-    employmentEndDate: new Date('2023-12-31'), // 추가
-  },
-];
+import type {
+  PostDetailResponse,
+  PostsResponse,
+} from '@/mocks/post/schemas.ts';
 
-export const mockPost1 = {
+export const mockPostsResponse: PostsResponse = {
+  posts: Array.from({ length: 15 }, (_, index) => ({
+    id: `post-${index + 1}`,
+    companyName: `Company ${index + 1}`,
+    email: `contact${index + 1}@company.com`,
+    author: {
+      id: `author-${index + 1}`,
+      name: `Author ${index + 1}`,
+      profileImageLink:
+        index % 2 === 0
+          ? `https://example.com/profile${index + 1}.jpg`
+          : undefined,
+    },
+    explanation: `This is a brief explanation for Company ${index + 1}.`,
+    tags: [`tag${index + 1}-1`, `tag${index + 1}-2`, `tag${index + 1}-3`],
+    roles: [
+      {
+        id: `role-${index + 1}-1`,
+        category: 'Engineering',
+        detail: 'Frontend Developer',
+        headcount: '5',
+      },
+      {
+        id: `role-${index + 1}-2`,
+        category: 'Engineering',
+        detail: 'Backend Developer',
+        headcount: '3',
+      },
+    ],
+    imageLink: `https://example.com/image${index + 1}.jpg`,
+    investAmount: (index + 1) * 1000,
+    investCompany: [`Investor ${index + 1}`, `Investor ${index + 2}`],
+    isActive: index % 2 === 0,
+    employmentEndDate: new Date(2025, index % 12, (index % 28) + 1), // 날짜를 동적으로 생성
+  })),
+  paginator: {
+    lastPage: 2,
+  },
+};
+
+export const mockPost1: PostDetailResponse = {
   id: '1',
   companyName: 'Mock Company Inc.', // 수정된 회사 이름
   email: 'contact@mockcompany.com',
@@ -200,7 +82,7 @@ export const mockPost1 = {
   employmentEndDate: new Date('2024-12-31T23:59:59'),
 };
 
-export const mockPost2 = {
+export const mockPost2: PostDetailResponse = {
   id: '2',
   companyName: 'Mock Company Inc.', // 수정된 회사 이름
   email: 'contact@mockcompany.com',

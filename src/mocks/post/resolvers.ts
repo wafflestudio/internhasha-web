@@ -1,6 +1,6 @@
 import { HttpResponse, type HttpResponseResolver } from 'msw';
 
-import { mockPost1, mockPost2, mockPosts } from '@/mocks/post/data.ts';
+import { mockPost1, mockPost2, mockPostsResponse } from '@/mocks/post/data.ts';
 import type {
   PostDetailResponse,
   PostsResponse,
@@ -14,7 +14,7 @@ type PostsResolver = {
 
 export const postsResolver: PostsResolver = {
   posts: () => {
-    return HttpResponse.json(mockPosts, { status: 200 });
+    return HttpResponse.json(mockPostsResponse, { status: 200 });
   },
   postDetail1: () => {
     return HttpResponse.json(mockPost1, { status: 200 });
