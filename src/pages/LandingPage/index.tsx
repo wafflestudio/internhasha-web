@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
-import { Pagination } from '@/components/pagination.tsx';
+import { Pagination } from '@/pages/LandingPage/pagination.tsx';
 import type { Filters } from '@/entities/post.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
