@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
-import { FilterModal } from '@/pages/LandingPage/FilterModal.tsx';
+import { FilterModal, type RoleCategory } from '@/pages/LandingPage/FilterModal.tsx';
 import { Pagination } from '@/pages/LandingPage/Pagination.tsx';
 import { useGetPosts } from '@/pages/LandingPage/useGetPosts.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';
@@ -14,12 +14,14 @@ export const LandingPage = () => {
   const { toEcho, toSignUpSelect, toSignInSelect, toPost } =
     useRouteNavigation();
 
-  const [roles, setRoles] = useState<string[] | undefined>(undefined);
+  const [roles, setRoles] = useState<RoleCategory[] | undefined>(undefined);
   const [investment, setInvestment] = useState<number | undefined>(undefined);
   const [investor, setInvestor] = useState<string | undefined>(undefined);
   const [pathStatus, setPathStatus] = useState<0 | 1 | 2 | undefined>(
     undefined,
   );
+
+  console.log(roles);
 
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);

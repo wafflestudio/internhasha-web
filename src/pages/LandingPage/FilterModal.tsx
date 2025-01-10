@@ -2,9 +2,28 @@ import { useState } from 'react';
 
 import { Button } from '@/components/button';
 
+export type RoleCategory =
+  'PLANNER'
+  | 'FRONT'
+  | 'APP'
+  | 'BACKEND'
+  | 'DESIGN'
+  | 'DATA'
+  | 'MARKETER'
+
+const ROLE_CATEGORIES: RoleCategory[] = [
+  'PLANNER',
+  'FRONT',
+  'APP',
+  'BACKEND',
+  'DESIGN',
+  'DATA',
+  'MARKETER'
+];
+
 interface FilterModalProps {
-  roles: string[] | undefined;
-  setRoles: React.Dispatch<React.SetStateAction<string[] | undefined>>;
+  roles: RoleCategory[] | undefined;
+  setRoles: React.Dispatch<React.SetStateAction<RoleCategory[] | undefined>>;
   investment: number | undefined;
   setInvestment: React.Dispatch<React.SetStateAction<number | undefined>>;
   investor: string | undefined;
@@ -27,17 +46,26 @@ export const FilterModal = ({
   onClose,
   onApply,
 }: FilterModalProps) => {
-  const [tempRoles, setTempRoles] = useState(roles);
+  const [tempRoles, setTempRoles] = useState<RoleCategory[]>(roles ?? []);
   const [tempInvestment, setTempInvestment] = useState(investment);
   const [tempInvestor, setTempInvestor] = useState(investor);
   const [tempPathStatus, setTempPathStatus] = useState(pathStatus);
 
+  const handleRoleToggle = (role: RoleCategory) => {
+    setTempRoles((prev) => {
+      if (prev.includes(role)) {
+        return prev.filter((r) => r !== role);
+      }
+      return [...prev, role];
+    });
+  };
+
   const handleApply = () => {
-    setRoles(tempRoles);
+    // 빈 배열일 경우 undefined 처리
+    setRoles(tempRoles.length > 0 ? tempRoles : undefined);
     setInvestment(tempInvestment);
     setInvestor(tempInvestor);
     setPathStatus(tempPathStatus);
-
     onApply();
   };
 
@@ -45,18 +73,23 @@ export const FilterModal = ({
     <div className="modal">
       <h2>필터링 설정</h2>
 
-      {/* Roles */}
-      <label>
-        직무 종류 (roles):
-        <input
-          type="text"
-          value={tempRoles?.join(',') ?? ''}
-          onChange={(e) => {
-            const rawValue = e.target.value.trim();
-            setTempRoles(rawValue !== '' ? rawValue.split(',') : undefined);
-          }}
-        />
-      </label>
+      {/* Roles as Checkboxes */}
+      <div>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
+          <span>직무 종류 (roles): </span>{ROLE_CATEGORIES.map((role) => (
+            <label key={role} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <input
+                type="checkbox"
+                checked={tempRoles.includes(role)}
+                onChange={() => { handleRoleToggle(role); }}
+                style={{ width: '16px', height: '16px' }}
+              />
+              {role}
+            </label>
+          ))}
+        </div>
+      </div>
+
 
       {/* Investment */}
       <label>
