@@ -23,6 +23,18 @@ export type PostService = {
     postId: string;
     token: string;
   }) => ServiceResponse<PostDetailResponse>;
+  createPost: ({
+    token,
+  }: {
+    token: string;
+  }) => ServiceResponse<PostDetailResponse>;
+  updatePost: ({
+    postId,
+    token,
+  }: {
+    postId: string;
+    token: string;
+  }) => ServiceResponse<PostDetailResponse>;
 };
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
@@ -74,6 +86,31 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     const params = { postId };
 
     const { status, data } = await apis['GET /post/:postId']({ token, params });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', status, message: data.error };
+  },
+
+  createPost: async ({ token }: { token: string }) => {
+    const { status, data } = await apis['POST /admin/post']({ token });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', status, message: data.error };
+  },
+
+  updatePost: async ({ token, postId }: { token: string; postId: string; }) => {
+    const params = { postId };
+    const { status, data } = await apis['PATCH /admin/post/:postId']({ token, params });
 
     if (status === 200) {
       return {

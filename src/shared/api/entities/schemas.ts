@@ -104,6 +104,8 @@ export type CheckLocalIdDuplicateRequest = {
   localId: string;
 };
 
+export type CreateAndUpdatePostRequest = PostDTO;
+
 // Response
 export type PretotypeUserSubmitResponse = {
   email: string;

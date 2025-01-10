@@ -167,4 +167,22 @@ export const getApis = ({
         path: `post/${params.postId}`,
         token,
       }),
+    'POST /admin/post': ({ token }: { token: string }) =>
+      callWithToken<SuccessResponse<PostDetailResponse>>({
+        method: 'POST',
+        path: 'admin/post',
+        token,
+      }),
+    'PATCH /admin/post/:postId': ({
+      token,
+      params,
+    }: {
+      token: string;
+      params: PostIdParams;
+    }) =>
+      callWithToken<SuccessResponse<PostDetailResponse>>({
+        method: 'PATCH',
+        path: `admin/post/${params.postId}`,
+        token,
+      }),
   }) satisfies Record<string, Api>;
