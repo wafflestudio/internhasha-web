@@ -15,7 +15,7 @@ type PostsResolver = {
 export const postsResolver: PostsResolver = {
   posts: ({ request }) => {
     const url = new URL(request.url);
-    const page = parseInt(url.searchParams.get('page') ?? '0')
+    const page = parseInt(url.searchParams.get('page') ?? '0');
 
     const response = getPagedPosts(page);
     return HttpResponse.json(response, { status: 200 });

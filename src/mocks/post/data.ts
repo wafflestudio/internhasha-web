@@ -3,40 +3,40 @@ import type {
   PostsResponse,
 } from '@/mocks/post/schemas.ts';
 
-export const mockPostsResponse = Array.from({ length: 100 }, (_, index) => ({
-    id: `${index + 1}`,
-    companyName: `Company ${index + 1}`,
-    email: `contact${index + 1}@company.com`,
-    author: {
-      id: `author-${index + 1}`,
-      name: `Author ${index + 1}`,
-      profileImageLink:
-        index % 2 === 0
-          ? `https://example.com/profile${index + 1}.jpg`
-          : undefined,
+const mockPostsResponse = Array.from({ length: 100 }, (_, index) => ({
+  id: `${index + 1}`,
+  companyName: `Company ${index + 1}`,
+  email: `contact${index + 1}@company.com`,
+  author: {
+    id: `author-${index + 1}`,
+    name: `Author ${index + 1}`,
+    profileImageLink:
+      index % 2 === 0
+        ? `https://example.com/profile${index + 1}.jpg`
+        : undefined,
+  },
+  explanation: `This is a brief explanation for Company ${index + 1}.`,
+  tags: [`tag${index + 1}-1`, `tag${index + 1}-2`, `tag${index + 1}-3`],
+  roles: [
+    {
+      id: `role-${index + 1}-1`,
+      category: 'Engineering',
+      detail: 'Frontend Developer',
+      headcount: '5',
     },
-    explanation: `This is a brief explanation for Company ${index + 1}.`,
-    tags: [`tag${index + 1}-1`, `tag${index + 1}-2`, `tag${index + 1}-3`],
-    roles: [
-      {
-        id: `role-${index + 1}-1`,
-        category: 'Engineering',
-        detail: 'Frontend Developer',
-        headcount: '5',
-      },
-      {
-        id: `role-${index + 1}-2`,
-        category: 'Engineering',
-        detail: 'Backend Developer',
-        headcount: '3',
-      },
-    ],
-    imageLink: `https://example.com/image${index + 1}.jpg`,
-    investAmount: (index + 1) * 1000,
-    investCompany: [`Investor ${index + 1}`, `Investor ${index + 2}`],
-    isActive: index % 2 === 0,
-    employmentEndDate: new Date(2025, index % 12, (index % 28) + 1), // 날짜를 동적으로 생성
-  }))
+    {
+      id: `role-${index + 1}-2`,
+      category: 'Engineering',
+      detail: 'Backend Developer',
+      headcount: '3',
+    },
+  ],
+  imageLink: `https://example.com/image${index + 1}.jpg`,
+  investAmount: (index + 1) * 1000,
+  investCompany: [`Investor ${index + 1}`, `Investor ${index + 2}`],
+  isActive: index % 2 === 0,
+  employmentEndDate: new Date(2025, index % 12, (index % 28) + 1), // 날짜를 동적으로 생성
+}));
 
 export const mockPost1: PostDetailResponse = {
   id: '1',
@@ -124,7 +124,10 @@ const TOTAL_PAGES = Math.ceil(mockPostsResponse.length / POSTS_PER_PAGE);
 
 export const getPagedPosts = (page: number): PostsResponse => {
   const startIndex = page * POSTS_PER_PAGE;
-  const endIndex = Math.min(startIndex + POSTS_PER_PAGE, mockPostsResponse.length);
+  const endIndex = Math.min(
+    startIndex + POSTS_PER_PAGE,
+    mockPostsResponse.length,
+  );
 
   return {
     posts: mockPostsResponse.slice(startIndex, endIndex),
@@ -133,7 +136,3 @@ export const getPagedPosts = (page: number): PostsResponse => {
     },
   };
 };
-
-// 개별 게시글 상세 정보 조회
-export const getMockPost = (postId: string) =>
-  mockPostsResponse.find(post => post.id === postId);

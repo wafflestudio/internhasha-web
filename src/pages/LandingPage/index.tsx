@@ -62,12 +62,20 @@ export const LandingPage = () => {
         로그아웃
       </Button>
 
-      <Button onClick={() => { setIsFilterModalOpen(true); }}>필터링</Button>
+      <Button
+        onClick={() => {
+          setIsFilterModalOpen(true);
+        }}
+      >
+        필터링
+      </Button>
       {/* 필터 모달 */}
       {isFilterModalOpen && (
         <FilterModal
           filters={filters}
-          onClose={() => { setIsFilterModalOpen(false); }}
+          onClose={() => {
+            setIsFilterModalOpen(false);
+          }}
           onApply={(newFilters: Filters) => {
             setFilters(newFilters);
             setCurrentPage(0); // 필터 적용 시 첫 페이지로 이동
@@ -204,7 +212,6 @@ const FilterModal = ({
   onClose: () => void;
   onApply: (localFilters: Filters) => void;
 }) => {
-  
   const [localFilters, setLocalFilters] = useState(filters);
 
   const handleInputChange = (
@@ -262,9 +269,9 @@ const FilterModal = ({
         진행 상태 (pathStatus):
         <select
           value={localFilters.pathStatus}
-          onChange={(e) =>
-            { handleInputChange('pathStatus', parseInt(e.target.value, 10)); }
-          }
+          onChange={(e) => {
+            handleInputChange('pathStatus', parseInt(e.target.value, 10));
+          }}
         >
           <option value="0">진행중</option>
           <option value="1">진행 완료</option>
@@ -275,7 +282,13 @@ const FilterModal = ({
       {/* Buttons */}
       <div className="modal-buttons">
         <Button onClick={onClose}>취소</Button>
-        <Button onClick={() => { onApply(localFilters); }}>적용</Button>
+        <Button
+          onClick={() => {
+            onApply(localFilters);
+          }}
+        >
+          적용
+        </Button>
       </div>
     </div>
   );
