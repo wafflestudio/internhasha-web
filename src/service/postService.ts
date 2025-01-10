@@ -1,6 +1,10 @@
 import type { ServiceResponse } from '@/entities/response.ts';
 import type { Apis } from '@/shared/api';
-import type { PostDetailResponse, PostsResponse } from '@/shared/api/entities';
+import type {
+  CreateAndUpdatePostRequest,
+  PostDetailResponse,
+  PostsResponse,
+} from '@/shared/api/entities';
 
 export type PostService = {
   getPosts: ({
@@ -22,6 +26,22 @@ export type PostService = {
   }: {
     postId: string;
     token: string;
+  }) => ServiceResponse<PostDetailResponse>;
+  createPost: ({
+    token,
+    postContents,
+  }: {
+    token: string;
+    postContents: CreateAndUpdatePostRequest;
+  }) => ServiceResponse<PostDetailResponse>;
+  updatePost: ({
+    postId,
+    token,
+    postContents,
+  }: {
+    postId: string;
+    token: string;
+    postContents: CreateAndUpdatePostRequest;
   }) => ServiceResponse<PostDetailResponse>;
 };
 
@@ -74,6 +94,52 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     const params = { postId };
 
     const { status, data } = await apis['GET /post/:postId']({ token, params });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', status, message: data.error };
+  },
+
+  createPost: async ({
+    token,
+    postContents,
+  }: {
+    token: string;
+    postContents: CreateAndUpdatePostRequest;
+  }) => {
+    const { status, data } = await apis['POST /admin/post']({
+      token: token,
+      body: postContents,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', status, message: data.error };
+  },
+
+  updatePost: async ({
+    token,
+    postId,
+    postContents,
+  }: {
+    token: string;
+    postId: string;
+    postContents: CreateAndUpdatePostRequest;
+  }) => {
+    const params = { postId };
+    const { status, data } = await apis['PATCH /admin/post/:postId']({
+      token: token,
+      params: params,
+      body: postContents,
+    });
 
     if (status === 200) {
       return {

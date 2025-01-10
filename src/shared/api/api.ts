@@ -6,6 +6,7 @@ import type {
 } from '@/shared/api/entities/params';
 import type {
   CheckLocalIdDuplicateRequest,
+  CreateAndUpdatePostRequest,
   EchoParams,
   EmailVerifyRequest,
   GoogleEmailResponse,
@@ -166,5 +167,33 @@ export const getApis = ({
         method: 'GET',
         path: `post/${params.postId}`,
         token,
+      }),
+    'POST /admin/post': ({
+      token,
+      body,
+    }: {
+      token: string;
+      body: CreateAndUpdatePostRequest;
+    }) =>
+      callWithToken<SuccessResponse<PostDetailResponse>>({
+        method: 'POST',
+        path: 'admin/post',
+        token,
+        body,
+      }),
+    'PATCH /admin/post/:postId': ({
+      token,
+      params,
+      body,
+    }: {
+      token: string;
+      params: PostIdParams;
+      body: CreateAndUpdatePostRequest;
+    }) =>
+      callWithToken<SuccessResponse<PostDetailResponse>>({
+        method: 'PATCH',
+        path: `admin/post/${params.postId}`,
+        token,
+        body,
       }),
   }) satisfies Record<string, Api>;
