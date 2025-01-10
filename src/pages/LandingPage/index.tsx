@@ -2,7 +2,10 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
-import { FilterModal, type RoleCategory } from '@/pages/LandingPage/FilterModal.tsx';
+import {
+  FilterModal,
+  type RoleCategory,
+} from '@/pages/LandingPage/FilterModal.tsx';
 import { Pagination } from '@/pages/LandingPage/Pagination.tsx';
 import { useGetPosts } from '@/pages/LandingPage/useGetPosts.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';

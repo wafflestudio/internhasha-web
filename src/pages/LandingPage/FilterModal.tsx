@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { Button } from '@/components/button';
 
 export type RoleCategory =
-  'PLANNER'
+  | 'PLANNER'
   | 'FRONT'
   | 'APP'
   | 'BACKEND'
   | 'DESIGN'
   | 'DATA'
-  | 'MARKETER'
+  | 'MARKETER';
 
 const ROLE_CATEGORIES: RoleCategory[] = [
   'PLANNER',
@@ -18,7 +18,7 @@ const ROLE_CATEGORIES: RoleCategory[] = [
   'BACKEND',
   'DESIGN',
   'DATA',
-  'MARKETER'
+  'MARKETER',
 ];
 
 interface FilterModalProps {
@@ -76,12 +76,18 @@ export const FilterModal = ({
       {/* Roles as Checkboxes */}
       <div>
         <div style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
-          <span>직무 종류 (roles): </span>{ROLE_CATEGORIES.map((role) => (
-            <label key={role} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span>직무 종류 (roles): </span>
+          {ROLE_CATEGORIES.map((role) => (
+            <label
+              key={role}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+            >
               <input
                 type="checkbox"
                 checked={tempRoles.includes(role)}
-                onChange={() => { handleRoleToggle(role); }}
+                onChange={() => {
+                  handleRoleToggle(role);
+                }}
                 style={{ width: '16px', height: '16px' }}
               />
               {role}
@@ -89,7 +95,6 @@ export const FilterModal = ({
           ))}
         </div>
       </div>
-
 
       {/* Investment */}
       <label>

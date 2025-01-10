@@ -43,7 +43,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
 
     if (page !== undefined) postPath.append('page', page.toString());
     if (roles !== undefined) {
-      roles.forEach(role => {
+      roles.forEach((role) => {
         postPath.append('roles', role);
       });
     }

@@ -14,7 +14,7 @@ type AuthorBriefDTO = {
 type RoleDTO = {
   id: string;
   category:
-    'PLANNER'
+    | 'PLANNER'
     | 'FRONT'
     | 'APP'
     | 'BACKEND'
