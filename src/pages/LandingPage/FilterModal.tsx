@@ -1,95 +1,101 @@
-import { useState } from 'react';
-
 import { Button } from '@/components/button';
-import type { Filters } from '@/entities/post';
 
 interface FilterModalProps {
-  filters: Filters;
+  roles: string[] | undefined;
+  setRoles: React.Dispatch<React.SetStateAction<string[] | undefined>>;
+  investment: number | undefined;
+  setInvestment: React.Dispatch<React.SetStateAction<number | undefined>>;
+  investor: string | undefined;
+  setInvestor: React.Dispatch<React.SetStateAction<string | undefined>>;
+  pathStatus: 0 | 1 | 2 | undefined;
+  setPathStatus: React.Dispatch<React.SetStateAction<0 | 1 | 2 | undefined>>;
   onClose: () => void;
-  onApply: (newFilters: Filters) => void;
+  onApply: () => void;
 }
 
 export const FilterModal = ({
-  filters,
+  roles,
+  setRoles,
+  investment,
+  setInvestment,
+  investor,
+  setInvestor,
+  pathStatus,
+  setPathStatus,
   onClose,
   onApply,
 }: FilterModalProps) => {
-  const [localFilters, setLocalFilters] = useState<Filters>(filters);
-
-  const handleInputChange = (
-    key: keyof Filters,
-    value: string | number | string[],
-  ) => {
-    setLocalFilters((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
   return (
     <div className="modal">
       <h2>필터링 설정</h2>
 
-      {/* Roles */}
+      {/* (1) Roles */}
       <label>
         직무 종류 (roles):
         <input
           type="text"
-          value={localFilters.roles ?? ''}
+          value={roles?.join(',') ?? ''}
           onChange={(e) => {
-            handleInputChange('roles', e.target.value.split(','));
+            // 쉼표로 분리된 문자열을 배열로 변환
+            const rawValue = e.target.value.trim();
+            setRoles(rawValue !== '' ? rawValue.split(',') : undefined);
           }}
         />
       </label>
 
-      {/* Investment */}
+      {/* (2) Investment */}
       <label>
         투자 금액 (investment):
         <input
           type="number"
-          value={localFilters.investment ?? ''}
+          value={investment ?? ''}
           onChange={(e) => {
-            handleInputChange('investment', parseInt(e.target.value, 10));
+            const numValue = parseInt(e.target.value, 10);
+            setInvestment(isNaN(numValue) ? undefined : numValue);
           }}
         />
       </label>
 
-      {/* Investor */}
+      {/* (3) Investor */}
       <label>
         투자사 (investor):
         <input
           type="text"
-          value={localFilters.investor ?? ''}
+          value={investor ?? ''}
           onChange={(e) => {
-            handleInputChange('investor', e.target.value);
+            const value = e.target.value.trim();
+            setInvestor(value !== '' ? value : undefined);
           }}
         />
       </label>
 
-      {/* Path Status */}
+      {/* (4) Path Status */}
       <label>
         진행 상태 (pathStatus):
         <select
-          value={localFilters.pathStatus ?? 0}
+          value={pathStatus ?? ''}
           onChange={(e) => {
-            handleInputChange('pathStatus', parseInt(e.target.value, 10));
+            const selected = parseInt(e.target.value, 10);
+            // 0|1|2 중 하나면 세팅, 아니면 undefined로
+            setPathStatus(
+              selected === 0 || selected === 1 || selected === 2
+                ? selected
+                : undefined,
+            );
           }}
         >
+          {/* 선택 안 된 상태를 표시하려면 아래처럼 공백 옵션을 추가할 수도 있음 */}
+          <option value="">선택 안 함</option>
           <option value="0">진행중</option>
           <option value="1">진행 완료</option>
           <option value="2">전부</option>
         </select>
       </label>
 
+      {/* (5) 버튼들 */}
       <div className="modal-buttons">
         <Button onClick={onClose}>취소</Button>
-        <Button
-          onClick={() => {
-            onApply(localFilters);
-          }}
-        >
-          적용
-        </Button>
+        <Button onClick={onApply}>적용</Button>
       </div>
     </div>
   );

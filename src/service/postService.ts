@@ -55,6 +55,8 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
 
     const { status, data } = await apis['GET /post']({ params });
 
+    console.log(params.postPath);
+
     if (status === 200) {
       return {
         type: 'success',
