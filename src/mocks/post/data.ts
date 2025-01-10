@@ -5,7 +5,7 @@ import type {
 
 export const mockPostsResponse: PostsResponse = {
   posts: Array.from({ length: 15 }, (_, index) => ({
-    id: `post-${index + 1}`,
+    id: `${index + 1}`,
     companyName: `Company ${index + 1}`,
     email: `contact${index + 1}@company.com`,
     author: {
