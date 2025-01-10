@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
+import { Pagination } from '@/components/pagination.tsx';
 import type { Filters } from '@/entities/post.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
@@ -46,8 +47,7 @@ export const LandingPage = () => {
 
   const startPage = currentGroup * PAGES_PER_GROUP;
   const endPage = Math.min(startPage + PAGES_PER_GROUP, TOTAL_PAGES);
-
-  const pageNumbers = Array.from(
+  Array.from(
     { length: endPage - startPage },
     (_, i) => startPage + i,
   );
@@ -102,44 +102,14 @@ export const LandingPage = () => {
         </div>
       }
 
-      <div
-        style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}
-      >
-        <Button
-          onClick={() => {
-            setCurrentGroup((prev) => Math.max(prev - 1, 0));
-          }}
-          disabled={currentGroup === 0}
-        >
-          이전
-        </Button>
-
-        {pageNumbers.map((page) => (
-          <Button
-            key={page}
-            onClick={() => {
-              setCurrentPage(page);
-            }}
-            style={{
-              margin: '0 5px',
-              fontWeight: currentPage === page ? 'bold' : 'normal',
-            }}
-          >
-            {page + 1} {/* 사용자에게는 1-based index로 표시 */}
-          </Button>
-        ))}
-
-        <Button
-          onClick={() => {
-            setCurrentGroup((prev) =>
-              startPage + PAGES_PER_GROUP >= TOTAL_PAGES ? prev : prev + 1,
-            );
-          }}
-          disabled={startPage + PAGES_PER_GROUP >= TOTAL_PAGES}
-        >
-          다음
-        </Button>
-      </div>
+      <Pagination
+        totalPages={TOTAL_PAGES}
+        pagesPerGroup={PAGES_PER_GROUP}
+        currentPage={currentPage}
+        currentGroup={currentGroup}
+        onChangePage={(page) => { setCurrentPage(page); }}
+        onChangeGroup={(group) => { setCurrentGroup(group); }}
+      />
     </div>
   );
 };
