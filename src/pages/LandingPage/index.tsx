@@ -6,20 +6,31 @@ import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+import type { Filters } from '@/entities/post.ts';
 
 export const LandingPage = () => {
   const { toEcho, toSignUpSelect, toSignInSelect, toPost } =
     useRouteNavigation();
-  const [currentPage, setCurrentPage] = useState(0);
-  const [currentGroup, setCurrentGroup] = useState(0);
 
-  const { data: postsData } = useGetPosts({
-    page: currentPage,
+  const [filters, setFilters] = useState<Filters>({
     roles: undefined,
     investment: undefined,
     investor: undefined,
     pathStatus: undefined,
   });
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currentGroup, setCurrentGroup] = useState(0);
+
+  const { data: postsData } = useGetPosts({
+    page: currentPage,
+    roles: filters.roles,
+    investment: filters.investment,
+    investor: filters.investor,
+    pathStatus: filters.pathStatus,
+  });
+
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   const { logout, isPending } = useLogout();
 
@@ -31,7 +42,6 @@ export const LandingPage = () => {
     return <p>로딩 중...</p>;
   }
 
-  // TODO: Total pages 값은 서버에서 받아온 값으로 변경하기
   const TOTAL_PAGES = postsData.paginator.lastPage;
   const PAGES_PER_GROUP = 12;
 
@@ -52,6 +62,20 @@ export const LandingPage = () => {
       <Button onClick={hanldeClickLogoutButton} disabled={isPending}>
         로그아웃
       </Button>
+
+      <Button onClick={() => { setIsFilterModalOpen(true); }}>필터링</Button>
+      {/* 필터 모달 */}
+      {isFilterModalOpen && (
+        <FilterModal
+          filters={filters}
+          onClose={() => { setIsFilterModalOpen(false); }}
+          onApply={(newFilters: Filters) => {
+            setFilters(newFilters);
+            setCurrentPage(0); // 필터 적용 시 첫 페이지로 이동
+            setIsFilterModalOpen(false);
+          }}
+        />
+      )}
 
       {
         <div className="">
@@ -169,4 +193,88 @@ const useLogout = () => {
   });
 
   return { logout, isPending };
+};
+
+const FilterModal = ({
+  filters,
+  onClose,
+  onApply,
+}: {
+  filters: Filters;
+  onClose: () => void;
+  onApply: (localFilters: Filters) => void;
+}) => {
+  
+  const [localFilters, setLocalFilters] = useState(filters);
+
+  const handleInputChange = (key, value) => {
+    setLocalFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  return (
+    <div className="modal">
+      <h2>필터링 설정</h2>
+
+      {/* Roles */}
+      <label>
+        직무 종류 (roles):
+        <input
+          type="text"
+          value={localFilters.roles}
+          onChange={(e) => {
+            handleInputChange('roles', e.target.value.split(','));
+          }}
+        />
+      </label>
+
+      {/* Investment */}
+      <label>
+        투자 금액 (investment):
+        <input
+          type="number"
+          value={localFilters.investment}
+          onChange={(e) => {
+            handleInputChange('investment', parseInt(e.target.value, 10));
+          }}
+        />
+      </label>
+
+      {/* Investor */}
+      <label>
+        투자사 (investor):
+        <input
+          type="text"
+          value={localFilters.investor}
+          onChange={(e) => {
+            handleInputChange('investor', e.target.value);
+          }}
+        />
+      </label>
+
+      {/* Path Status */}
+      <label>
+        진행 상태 (pathStatus):
+        <select
+          value={localFilters.pathStatus}
+          onChange={(e) =>
+            { handleInputChange('pathStatus', parseInt(e.target.value, 10)); }
+          }
+        >
+          <option value="">전체</option>
+          <option value="0">진행중</option>
+          <option value="1">진행 완료</option>
+          <option value="2">전부</option>
+        </select>
+      </label>
+
+      {/* Buttons */}
+      <div className="modal-buttons">
+        <Button onClick={onClose}>취소</Button>
+        <Button onClick={() => { onApply(localFilters); }}>적용</Button>
+      </div>
+    </div>
+  );
 };
