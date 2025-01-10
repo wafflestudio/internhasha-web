@@ -1,6 +1,6 @@
 import { HttpResponse, type HttpResponseResolver } from 'msw';
 
-import { mockPost1, mockPost2, mockPostsResponse } from '@/mocks/post/data.ts';
+import { getPagedPosts, mockPost1, mockPost2 } from '@/mocks/post/data.ts';
 import type {
   PostDetailResponse,
   PostsResponse,
@@ -13,8 +13,12 @@ type PostsResolver = {
 };
 
 export const postsResolver: PostsResolver = {
-  posts: () => {
-    return HttpResponse.json(mockPostsResponse, { status: 200 });
+  posts: ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') ?? '0')
+
+    const response = getPagedPosts(page);
+    return HttpResponse.json(response, { status: 200 });
   },
   postDetail1: () => {
     return HttpResponse.json(mockPost1, { status: 200 });

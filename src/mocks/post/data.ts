@@ -3,8 +3,7 @@ import type {
   PostsResponse,
 } from '@/mocks/post/schemas.ts';
 
-export const mockPostsResponse: PostsResponse = {
-  posts: Array.from({ length: 15 }, (_, index) => ({
+export const mockPostsResponse = Array.from({ length: 100 }, (_, index) => ({
     id: `${index + 1}`,
     companyName: `Company ${index + 1}`,
     email: `contact${index + 1}@company.com`,
@@ -37,11 +36,7 @@ export const mockPostsResponse: PostsResponse = {
     investCompany: [`Investor ${index + 1}`, `Investor ${index + 2}`],
     isActive: index % 2 === 0,
     employmentEndDate: new Date(2025, index % 12, (index % 28) + 1), // 날짜를 동적으로 생성
-  })),
-  paginator: {
-    lastPage: 2,
-  },
-};
+  }))
 
 export const mockPost1: PostDetailResponse = {
   id: '1',
@@ -120,3 +115,25 @@ export const mockPost2: PostDetailResponse = {
   isActive: true,
   employmentEndDate: new Date('2024-12-31T23:59:59'),
 };
+
+// 페이지당 게시글 수
+const POSTS_PER_PAGE = 12;
+
+// 전체 페이지 수 계산
+const TOTAL_PAGES = Math.ceil(mockPostsResponse.length / POSTS_PER_PAGE);
+
+export const getPagedPosts = (page: number): PostsResponse => {
+  const startIndex = page * POSTS_PER_PAGE;
+  const endIndex = Math.min(startIndex + POSTS_PER_PAGE, mockPostsResponse.length);
+
+  return {
+    posts: mockPostsResponse.slice(startIndex, endIndex),
+    paginator: {
+      lastPage: TOTAL_PAGES,
+    },
+  };
+};
+
+// 개별 게시글 상세 정보 조회
+export const getMockPost = (postId: string) =>
+  mockPostsResponse.find(post => post.id === postId);

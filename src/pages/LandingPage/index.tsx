@@ -2,11 +2,11 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
+import type { Filters } from '@/entities/post.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import type { Filters } from '@/entities/post.ts';
 
 export const LandingPage = () => {
   const { toEcho, toSignUpSelect, toSignInSelect, toPost } =
@@ -19,6 +19,7 @@ export const LandingPage = () => {
     pathStatus: undefined,
   });
 
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [currentGroup, setCurrentGroup] = useState(0);
 
@@ -29,8 +30,6 @@ export const LandingPage = () => {
     investor: filters.investor,
     pathStatus: filters.pathStatus,
   });
-
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   const { logout, isPending } = useLogout();
 
@@ -43,7 +42,7 @@ export const LandingPage = () => {
   }
 
   const TOTAL_PAGES = postsData.paginator.lastPage;
-  const PAGES_PER_GROUP = 12;
+  const PAGES_PER_GROUP = 5;
 
   const startPage = currentGroup * PAGES_PER_GROUP;
   const endPage = Math.min(startPage + PAGES_PER_GROUP, TOTAL_PAGES);
@@ -72,6 +71,7 @@ export const LandingPage = () => {
           onApply={(newFilters: Filters) => {
             setFilters(newFilters);
             setCurrentPage(0); // 필터 적용 시 첫 페이지로 이동
+            setCurrentGroup(0); // 첫 그룹으로 이동
             setIsFilterModalOpen(false);
           }}
         />
