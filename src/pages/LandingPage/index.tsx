@@ -2,8 +2,10 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
-import type { Filters } from '@/entities/post.ts';
-import { FilterModal } from '@/pages/LandingPage/FilterModal.tsx';
+import {
+  FilterModal,
+  type RoleCategory,
+} from '@/pages/LandingPage/FilterModal.tsx';
 import { Pagination } from '@/pages/LandingPage/Pagination.tsx';
 import { useGetPosts } from '@/pages/LandingPage/useGetPosts.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';
@@ -15,12 +17,14 @@ export const LandingPage = () => {
   const { toEcho, toSignUpSelect, toSignInSelect, toPost } =
     useRouteNavigation();
 
-  const [filters, setFilters] = useState<Filters>({
-    roles: undefined,
-    investment: undefined,
-    investor: undefined,
-    pathStatus: undefined,
-  });
+  const [roles, setRoles] = useState<RoleCategory[] | undefined>(undefined);
+  const [investment, setInvestment] = useState<number | undefined>(undefined);
+  const [investor, setInvestor] = useState<string | undefined>(undefined);
+  const [pathStatus, setPathStatus] = useState<0 | 1 | 2 | undefined>(
+    undefined,
+  );
+
+  console.log(roles);
 
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
@@ -28,10 +32,10 @@ export const LandingPage = () => {
 
   const { data: postsData } = useGetPosts({
     page: currentPage,
-    roles: filters.roles,
-    investment: filters.investment,
-    investor: filters.investor,
-    pathStatus: filters.pathStatus,
+    roles: roles,
+    investment: investment,
+    investor: investor,
+    pathStatus: pathStatus,
   });
 
   const { logout, isPending } = useLogout();
@@ -46,10 +50,6 @@ export const LandingPage = () => {
 
   const TOTAL_PAGES = postsData.paginator.lastPage;
   const PAGES_PER_GROUP = 5;
-
-  const startPage = currentGroup * PAGES_PER_GROUP;
-  const endPage = Math.min(startPage + PAGES_PER_GROUP, TOTAL_PAGES);
-  Array.from({ length: endPage - startPage }, (_, i) => startPage + i);
 
   return (
     <div>
@@ -71,14 +71,21 @@ export const LandingPage = () => {
       {/* 필터 모달 */}
       {isFilterModalOpen && (
         <FilterModal
-          filters={filters}
+          roles={roles}
+          setRoles={setRoles}
+          investment={investment}
+          setInvestment={setInvestment}
+          investor={investor}
+          setInvestor={setInvestor}
+          pathStatus={pathStatus}
+          setPathStatus={setPathStatus}
           onClose={() => {
             setIsFilterModalOpen(false);
           }}
-          onApply={(newFilters: Filters) => {
-            setFilters(newFilters);
-            setCurrentPage(0); // 필터 적용 시 첫 페이지로 이동
-            setCurrentGroup(0); // 첫 그룹으로 이동
+          onApply={() => {
+            // 필터 적용 시 페이지/그룹 초기화
+            setCurrentPage(0);
+            setCurrentGroup(0);
             setIsFilterModalOpen(false);
           }}
         />

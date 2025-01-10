@@ -1,55 +1,110 @@
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
-import type { Filters } from '@/entities/post';
+
+export type RoleCategory =
+  | 'PLANNER'
+  | 'FRONT'
+  | 'APP'
+  | 'BACKEND'
+  | 'DESIGN'
+  | 'DATA'
+  | 'MARKETER';
+
+const ROLE_CATEGORIES: RoleCategory[] = [
+  'PLANNER',
+  'FRONT',
+  'APP',
+  'BACKEND',
+  'DESIGN',
+  'DATA',
+  'MARKETER',
+];
 
 interface FilterModalProps {
-  filters: Filters;
+  roles: RoleCategory[] | undefined;
+  setRoles: React.Dispatch<React.SetStateAction<RoleCategory[] | undefined>>;
+  investment: number | undefined;
+  setInvestment: React.Dispatch<React.SetStateAction<number | undefined>>;
+  investor: string | undefined;
+  setInvestor: React.Dispatch<React.SetStateAction<string | undefined>>;
+  pathStatus: 0 | 1 | 2 | undefined;
+  setPathStatus: React.Dispatch<React.SetStateAction<0 | 1 | 2 | undefined>>;
   onClose: () => void;
-  onApply: (newFilters: Filters) => void;
+  onApply: () => void;
 }
 
 export const FilterModal = ({
-  filters,
+  roles,
+  setRoles,
+  investment,
+  setInvestment,
+  investor,
+  setInvestor,
+  pathStatus,
+  setPathStatus,
   onClose,
   onApply,
 }: FilterModalProps) => {
-  const [localFilters, setLocalFilters] = useState<Filters>(filters);
+  const [tempRoles, setTempRoles] = useState<RoleCategory[]>(roles ?? []);
+  const [tempInvestment, setTempInvestment] = useState(investment);
+  const [tempInvestor, setTempInvestor] = useState(investor);
+  const [tempPathStatus, setTempPathStatus] = useState(pathStatus);
 
-  const handleInputChange = (
-    key: keyof Filters,
-    value: string | number | string[],
-  ) => {
-    setLocalFilters((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+  const handleRoleToggle = (role: RoleCategory) => {
+    setTempRoles((prev) => {
+      if (prev.includes(role)) {
+        return prev.filter((r) => r !== role);
+      }
+      return [...prev, role];
+    });
+  };
+
+  const handleApply = () => {
+    // 빈 배열일 경우 undefined 처리
+    setRoles(tempRoles.length > 0 ? tempRoles : undefined);
+    setInvestment(tempInvestment);
+    setInvestor(tempInvestor);
+    setPathStatus(tempPathStatus);
+    onApply();
   };
 
   return (
     <div className="modal">
       <h2>필터링 설정</h2>
 
-      {/* Roles */}
-      <label>
-        직무 종류 (roles):
-        <input
-          type="text"
-          value={localFilters.roles ?? ''}
-          onChange={(e) => {
-            handleInputChange('roles', e.target.value.split(','));
-          }}
-        />
-      </label>
+      {/* Roles as Checkboxes */}
+      <div>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
+          <span>직무 종류 (roles): </span>
+          {ROLE_CATEGORIES.map((role) => (
+            <label
+              key={role}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+            >
+              <input
+                type="checkbox"
+                checked={tempRoles.includes(role)}
+                onChange={() => {
+                  handleRoleToggle(role);
+                }}
+                style={{ width: '16px', height: '16px' }}
+              />
+              {role}
+            </label>
+          ))}
+        </div>
+      </div>
 
       {/* Investment */}
       <label>
         투자 금액 (investment):
         <input
           type="number"
-          value={localFilters.investment ?? ''}
+          value={tempInvestment ?? ''}
           onChange={(e) => {
-            handleInputChange('investment', parseInt(e.target.value, 10));
+            const numValue = parseInt(e.target.value, 10);
+            setTempInvestment(isNaN(numValue) ? undefined : numValue);
           }}
         />
       </label>
@@ -59,9 +114,10 @@ export const FilterModal = ({
         투자사 (investor):
         <input
           type="text"
-          value={localFilters.investor ?? ''}
+          value={tempInvestor ?? ''}
           onChange={(e) => {
-            handleInputChange('investor', e.target.value);
+            const value = e.target.value.trim();
+            setTempInvestor(value !== '' ? value : undefined);
           }}
         />
       </label>
@@ -70,11 +126,17 @@ export const FilterModal = ({
       <label>
         진행 상태 (pathStatus):
         <select
-          value={localFilters.pathStatus ?? 0}
+          value={tempPathStatus ?? ''}
           onChange={(e) => {
-            handleInputChange('pathStatus', parseInt(e.target.value, 10));
+            const selected = parseInt(e.target.value, 10);
+            setTempPathStatus(
+              selected === 0 || selected === 1 || selected === 2
+                ? selected
+                : undefined,
+            );
           }}
         >
+          <option value="">선택 안 함</option>
           <option value="0">진행중</option>
           <option value="1">진행 완료</option>
           <option value="2">전부</option>
@@ -83,13 +145,7 @@ export const FilterModal = ({
 
       <div className="modal-buttons">
         <Button onClick={onClose}>취소</Button>
-        <Button
-          onClick={() => {
-            onApply(localFilters);
-          }}
-        >
-          적용
-        </Button>
+        <Button onClick={handleApply}>적용</Button>
       </div>
     </div>
   );

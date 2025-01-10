@@ -13,7 +13,14 @@ type AuthorBriefDTO = {
 
 type RoleDTO = {
   id: string;
-  category: string;
+  category:
+    | 'PLANNER'
+    | 'FRONT'
+    | 'APP'
+    | 'BACKEND'
+    | 'DESIGN'
+    | 'DATA'
+    | 'MARKETER';
   detail: string;
   headcount: string;
 };

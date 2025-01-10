@@ -62,7 +62,11 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     const postPath = new URLSearchParams();
 
     if (page !== undefined) postPath.append('page', page.toString());
-    if (roles !== undefined) postPath.append('roles', roles.join(','));
+    if (roles !== undefined) {
+      roles.forEach((role) => {
+        postPath.append('roles', role);
+      });
+    }
     if (investment !== undefined)
       postPath.append('investment', investment.toString());
     if (investor !== undefined) postPath.append('investor', investor);
@@ -74,6 +78,8 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     };
 
     const { status, data } = await apis['GET /post']({ params });
+
+    console.log(params.postPath);
 
     if (status === 200) {
       return {
