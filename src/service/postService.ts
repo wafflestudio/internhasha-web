@@ -108,9 +108,12 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     return { type: 'error', status, message: data.error };
   },
 
-  updatePost: async ({ token, postId }: { token: string; postId: string; }) => {
+  updatePost: async ({ token, postId }: { token: string; postId: string }) => {
     const params = { postId };
-    const { status, data } = await apis['PATCH /admin/post/:postId']({ token, params });
+    const { status, data } = await apis['PATCH /admin/post/:postId']({
+      token,
+      params,
+    });
 
     if (status === 200) {
       return {
