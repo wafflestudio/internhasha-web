@@ -1,7 +1,11 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
+import type { Filters } from '@/entities/post.ts';
+import { FilterModal } from '@/pages/LandingPage/FilterModal.tsx';
+import { Pagination } from '@/pages/LandingPage/Pagination.tsx';
+import { useGetPosts } from '@/pages/LandingPage/useGetPosts.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -10,15 +14,24 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 export const LandingPage = () => {
   const { toEcho, toSignUpSelect, toSignInSelect, toPost } =
     useRouteNavigation();
+
+  const [filters, setFilters] = useState<Filters>({
+    roles: undefined,
+    investment: undefined,
+    investor: undefined,
+    pathStatus: undefined,
+  });
+
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [currentGroup, setCurrentGroup] = useState(0);
 
   const { data: postsData } = useGetPosts({
     page: currentPage,
-    roles: undefined,
-    investment: undefined,
-    investor: undefined,
-    pathStatus: undefined,
+    roles: filters.roles,
+    investment: filters.investment,
+    investor: filters.investor,
+    pathStatus: filters.pathStatus,
   });
 
   const { logout, isPending } = useLogout();
@@ -31,17 +44,12 @@ export const LandingPage = () => {
     return <p>로딩 중...</p>;
   }
 
-  // TODO: Total pages 값은 서버에서 받아온 값으로 변경하기
   const TOTAL_PAGES = postsData.paginator.lastPage;
-  const PAGES_PER_GROUP = 12;
+  const PAGES_PER_GROUP = 5;
 
   const startPage = currentGroup * PAGES_PER_GROUP;
   const endPage = Math.min(startPage + PAGES_PER_GROUP, TOTAL_PAGES);
-
-  const pageNumbers = Array.from(
-    { length: endPage - startPage },
-    (_, i) => startPage + i,
-  );
+  Array.from({ length: endPage - startPage }, (_, i) => startPage + i);
 
   return (
     <div>
@@ -52,6 +60,29 @@ export const LandingPage = () => {
       <Button onClick={hanldeClickLogoutButton} disabled={isPending}>
         로그아웃
       </Button>
+
+      <Button
+        onClick={() => {
+          setIsFilterModalOpen(true);
+        }}
+      >
+        필터링
+      </Button>
+      {/* 필터 모달 */}
+      {isFilterModalOpen && (
+        <FilterModal
+          filters={filters}
+          onClose={() => {
+            setIsFilterModalOpen(false);
+          }}
+          onApply={(newFilters: Filters) => {
+            setFilters(newFilters);
+            setCurrentPage(0); // 필터 적용 시 첫 페이지로 이동
+            setCurrentGroup(0); // 첫 그룹으로 이동
+            setIsFilterModalOpen(false);
+          }}
+        />
+      )}
 
       {
         <div className="">
@@ -70,89 +101,20 @@ export const LandingPage = () => {
         </div>
       }
 
-      <div
-        style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}
-      >
-        <Button
-          onClick={() => {
-            setCurrentGroup((prev) => Math.max(prev - 1, 0));
-          }}
-          disabled={currentGroup === 0}
-        >
-          이전
-        </Button>
-
-        {pageNumbers.map((page) => (
-          <Button
-            key={page}
-            onClick={() => {
-              setCurrentPage(page);
-            }}
-            style={{
-              margin: '0 5px',
-              fontWeight: currentPage === page ? 'bold' : 'normal',
-            }}
-          >
-            {page + 1} {/* 사용자에게는 1-based index로 표시 */}
-          </Button>
-        ))}
-
-        <Button
-          onClick={() => {
-            setCurrentGroup((prev) =>
-              startPage + PAGES_PER_GROUP >= TOTAL_PAGES ? prev : prev + 1,
-            );
-          }}
-          disabled={startPage + PAGES_PER_GROUP >= TOTAL_PAGES}
-        >
-          다음
-        </Button>
-      </div>
+      <Pagination
+        totalPages={TOTAL_PAGES}
+        pagesPerGroup={PAGES_PER_GROUP}
+        currentPage={currentPage}
+        currentGroup={currentGroup}
+        onChangePage={(page) => {
+          setCurrentPage(page);
+        }}
+        onChangeGroup={(group) => {
+          setCurrentGroup(group);
+        }}
+      />
     </div>
   );
-};
-
-const useGetPosts = ({
-  page = 0,
-  roles,
-  investment,
-  investor,
-  pathStatus,
-}: {
-  page?: number;
-  roles?: string[];
-  investment?: number;
-  investor?: string;
-  pathStatus?: number;
-}) => {
-  const { postService } = useGuardContext(ServiceContext);
-
-  const { data } = useQuery({
-    queryKey: [
-      'postService',
-      'getPosts',
-      page,
-      roles,
-      investment,
-      investor,
-      pathStatus,
-    ],
-    queryFn: async () => {
-      const response = await postService.getPosts({
-        page,
-        roles,
-        investment,
-        investor,
-        pathStatus,
-      });
-      if (response.type === 'success') {
-        return response.data;
-      }
-      throw new Error('회사 정보를 가져오는데 실패했습니다.');
-    },
-  });
-
-  return { data: data };
 };
 
 const useLogout = () => {
