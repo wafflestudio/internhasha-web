@@ -26,12 +26,12 @@ type PostDTO = {
   explanation: string;
   tags: string[];
   roles: RoleDTO[];
-  imageLink: string;
-  investAmount: number;
+  imageLink?: string;
+  investAmount?: number;
   investCompany: string[];
-  IRDeckLink: string;
-  landingPageLink: string;
-  externalDescriptionLink: string[];
+  IRDeckLink?: string;
+  landingPageLink?: string;
+  externalDescriptionLink?: string[];
   isActive: boolean;
   employmentEndDate: Date;
 };
@@ -44,8 +44,8 @@ type PostBriefDTO = {
   explanation: string;
   tags: string[];
   roles: RoleDTO[];
-  imageLink: string;
-  investAmount: number;
+  imageLink?: string;
+  investAmount?: number;
   investCompany: string[];
   isActive: boolean;
   employmentEndDate: Date;

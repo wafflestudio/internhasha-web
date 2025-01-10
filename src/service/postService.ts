@@ -1,6 +1,10 @@
 import type { ServiceResponse } from '@/entities/response.ts';
 import type { Apis } from '@/shared/api';
-import type { PostDetailResponse, PostsResponse } from '@/shared/api/entities';
+import type {
+  CreateAndUpdatePostRequest,
+  PostDetailResponse,
+  PostsResponse,
+} from '@/shared/api/entities';
 
 export type PostService = {
   getPosts: ({
@@ -25,15 +29,19 @@ export type PostService = {
   }) => ServiceResponse<PostDetailResponse>;
   createPost: ({
     token,
+    postContents,
   }: {
     token: string;
+    postContents: CreateAndUpdatePostRequest;
   }) => ServiceResponse<PostDetailResponse>;
   updatePost: ({
     postId,
     token,
+    postContents,
   }: {
     postId: string;
     token: string;
+    postContents: CreateAndUpdatePostRequest;
   }) => ServiceResponse<PostDetailResponse>;
 };
 
@@ -96,8 +104,17 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     return { type: 'error', status, message: data.error };
   },
 
-  createPost: async ({ token }: { token: string }) => {
-    const { status, data } = await apis['POST /admin/post']({ token });
+  createPost: async ({
+    token,
+    postContents,
+  }: {
+    token: string;
+    postContents: CreateAndUpdatePostRequest;
+  }) => {
+    const { status, data } = await apis['POST /admin/post']({
+      token: token,
+      body: postContents,
+    });
 
     if (status === 200) {
       return {
@@ -108,11 +125,20 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     return { type: 'error', status, message: data.error };
   },
 
-  updatePost: async ({ token, postId }: { token: string; postId: string }) => {
+  updatePost: async ({
+    token,
+    postId,
+    postContents,
+  }: {
+    token: string;
+    postId: string;
+    postContents: CreateAndUpdatePostRequest;
+  }) => {
     const params = { postId };
     const { status, data } = await apis['PATCH /admin/post/:postId']({
-      token,
-      params,
+      token: token,
+      params: params,
+      body: postContents,
     });
 
     if (status === 200) {
