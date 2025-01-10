@@ -1,9 +1,11 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
-import { Pagination } from '@/pages/LandingPage/pagination.tsx';
 import type { Filters } from '@/entities/post.ts';
+import { FilterModal } from '@/pages/LandingPage/FilterModal.tsx';
+import { Pagination } from '@/pages/LandingPage/Pagination.tsx';
+import { useGetPosts } from '@/pages/LandingPage/useGetPosts.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -47,10 +49,7 @@ export const LandingPage = () => {
 
   const startPage = currentGroup * PAGES_PER_GROUP;
   const endPage = Math.min(startPage + PAGES_PER_GROUP, TOTAL_PAGES);
-  Array.from(
-    { length: endPage - startPage },
-    (_, i) => startPage + i,
-  );
+  Array.from({ length: endPage - startPage }, (_, i) => startPage + i);
 
   return (
     <div>
@@ -107,54 +106,15 @@ export const LandingPage = () => {
         pagesPerGroup={PAGES_PER_GROUP}
         currentPage={currentPage}
         currentGroup={currentGroup}
-        onChangePage={(page) => { setCurrentPage(page); }}
-        onChangeGroup={(group) => { setCurrentGroup(group); }}
+        onChangePage={(page) => {
+          setCurrentPage(page);
+        }}
+        onChangeGroup={(group) => {
+          setCurrentGroup(group);
+        }}
       />
     </div>
   );
-};
-
-const useGetPosts = ({
-  page = 0,
-  roles,
-  investment,
-  investor,
-  pathStatus,
-}: {
-  page?: number;
-  roles?: string[];
-  investment?: number;
-  investor?: string;
-  pathStatus?: number;
-}) => {
-  const { postService } = useGuardContext(ServiceContext);
-
-  const { data } = useQuery({
-    queryKey: [
-      'postService',
-      'getPosts',
-      page,
-      roles,
-      investment,
-      investor,
-      pathStatus,
-    ],
-    queryFn: async () => {
-      const response = await postService.getPosts({
-        page,
-        roles,
-        investment,
-        investor,
-        pathStatus,
-      });
-      if (response.type === 'success') {
-        return response.data;
-      }
-      throw new Error('회사 정보를 가져오는데 실패했습니다.');
-    },
-  });
-
-  return { data: data };
 };
 
 const useLogout = () => {
@@ -171,95 +131,4 @@ const useLogout = () => {
   });
 
   return { logout, isPending };
-};
-
-const FilterModal = ({
-  filters,
-  onClose,
-  onApply,
-}: {
-  filters: Filters;
-  onClose: () => void;
-  onApply: (localFilters: Filters) => void;
-}) => {
-  const [localFilters, setLocalFilters] = useState(filters);
-
-  const handleInputChange = (
-    key: string,
-    value: string | number | string[],
-  ) => {
-    setLocalFilters((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  return (
-    <div className="modal">
-      <h2>필터링 설정</h2>
-
-      {/* Roles */}
-      <label>
-        직무 종류 (roles):
-        <input
-          type="text"
-          value={localFilters.roles}
-          onChange={(e) => {
-            handleInputChange('roles', e.target.value.split(','));
-          }}
-        />
-      </label>
-
-      {/* Investment */}
-      <label>
-        투자 금액 (investment):
-        <input
-          type="number"
-          value={localFilters.investment}
-          onChange={(e) => {
-            handleInputChange('investment', parseInt(e.target.value, 10));
-          }}
-        />
-      </label>
-
-      {/* Investor */}
-      <label>
-        투자사 (investor):
-        <input
-          type="text"
-          value={localFilters.investor}
-          onChange={(e) => {
-            handleInputChange('investor', e.target.value);
-          }}
-        />
-      </label>
-
-      {/* Path Status */}
-      <label>
-        진행 상태 (pathStatus):
-        <select
-          value={localFilters.pathStatus}
-          onChange={(e) => {
-            handleInputChange('pathStatus', parseInt(e.target.value, 10));
-          }}
-        >
-          <option value="0">진행중</option>
-          <option value="1">진행 완료</option>
-          <option value="2">전부</option>
-        </select>
-      </label>
-
-      {/* Buttons */}
-      <div className="modal-buttons">
-        <Button onClick={onClose}>취소</Button>
-        <Button
-          onClick={() => {
-            onApply(localFilters);
-          }}
-        >
-          적용
-        </Button>
-      </div>
-    </div>
-  );
 };

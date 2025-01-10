@@ -1,11 +1,11 @@
 import { Button } from '@/components/button';
 
 interface PaginationProps {
-  totalPages: number;          // 전체 페이지 수
-  pagesPerGroup?: number;      // 페이지 그룹에 포함할 페이지 수(default=5)
-  currentPage: number;         // 현재 선택된 페이지 (0-based index)
-  currentGroup: number;        // 현재 선택된 그룹 (0-based index)
-  onChangePage: (page: number) => void;   // 페이지 변경 이벤트
+  totalPages: number; // 전체 페이지 수
+  pagesPerGroup?: number; // 페이지 그룹에 포함할 페이지 수(default=5)
+  currentPage: number; // 현재 선택된 페이지 (0-based index)
+  currentGroup: number; // 현재 선택된 그룹 (0-based index)
+  onChangePage: (page: number) => void; // 페이지 변경 이벤트
   onChangeGroup: (group: number) => void; // 그룹 변경 이벤트
 }
 
@@ -46,7 +46,9 @@ export const Pagination = ({
       {pageNumbers.map((page) => (
         <Button
           key={page}
-          onClick={() => { onChangePage(page); }}
+          onClick={() => {
+            onChangePage(page);
+          }}
           style={{
             margin: '0 5px',
             fontWeight: currentPage === page ? 'bold' : 'normal',
