@@ -24,8 +24,6 @@ export const LandingPage = () => {
     undefined,
   );
 
-  console.log(roles);
-
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [currentGroup, setCurrentGroup] = useState(0);
