@@ -124,7 +124,12 @@ export type UserWithTokenResponse = {
   accessToken: string;
 };
 
-export type PostsResponse = PostBriefDTO[];
+export type PostsResponse = {
+  posts: PostBriefDTO[];
+  paginator: {
+    lastPage: number;
+  };
+};
 
 export type PostDetailResponse = PostDTO;
 

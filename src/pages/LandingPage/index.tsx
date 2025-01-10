@@ -13,8 +13,26 @@ export const LandingPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [currentGroup, setCurrentGroup] = useState(0);
 
+  const { data: postsData } = useGetPosts({
+    page: currentPage,
+    roles: undefined,
+    investment: undefined,
+    investor: undefined,
+    pathStatus: undefined,
+  });
+
+  const { logout, isPending } = useLogout();
+
+  const hanldeClickLogoutButton = () => {
+    logout();
+  };
+
+  if (postsData === undefined) {
+    return <p>로딩 중...</p>;
+  }
+
   // TODO: Total pages 값은 서버에서 받아온 값으로 변경하기
-  const TOTAL_PAGES = 20;
+  const TOTAL_PAGES = postsData.paginator.lastPage;
   const PAGES_PER_GROUP = 12;
 
   const startPage = currentGroup * PAGES_PER_GROUP;
@@ -24,23 +42,6 @@ export const LandingPage = () => {
     { length: endPage - startPage },
     (_, i) => startPage + i,
   );
-
-  const { data: posts } = useGetPosts({
-    page: currentPage,
-    roles: undefined,
-    investment: undefined,
-    investor: undefined,
-    pathStatus: undefined,
-  });
-  const { logout, isPending } = useLogout();
-
-  const hanldeClickLogoutButton = () => {
-    logout();
-  };
-
-  if (posts === undefined) {
-    return <p>로딩 중...</p>;
-  }
 
   return (
     <div>
@@ -54,7 +55,7 @@ export const LandingPage = () => {
 
       {
         <div className="">
-          {posts.map((post) => (
+          {postsData.posts.map((post) => (
             <p key={post.id}>
               {post.id}: {post.companyName}
               <Button
@@ -151,7 +152,7 @@ const useGetPosts = ({
     },
   });
 
-  return { data };
+  return { data: data };
 };
 
 const useLogout = () => {
