@@ -1,25 +1,7 @@
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
-
-export type RoleCategory =
-  | 'PLANNER'
-  | 'FRONT'
-  | 'APP'
-  | 'BACKEND'
-  | 'DESIGN'
-  | 'DATA'
-  | 'MARKETER';
-
-const ROLE_CATEGORIES: RoleCategory[] = [
-  'PLANNER',
-  'FRONT',
-  'APP',
-  'BACKEND',
-  'DESIGN',
-  'DATA',
-  'MARKETER',
-];
+import { ROLE_CATEGORY_LIST, type RoleCategory } from '@/entities/Post.ts';
 
 interface FilterModalProps {
   roles: RoleCategory[] | undefined;
@@ -77,7 +59,7 @@ export const FilterModal = ({
       <div>
         <div style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
           <span>직무 종류 (roles): </span>
-          {ROLE_CATEGORIES.map((role) => (
+          {ROLE_CATEGORY_LIST.map((role) => (
             <label
               key={role}
               style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
