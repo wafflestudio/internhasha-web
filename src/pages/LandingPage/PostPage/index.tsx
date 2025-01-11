@@ -4,9 +4,12 @@ import { useParams } from 'react-router';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { TokenContext } from '@/shared/context/TokenContext.ts';
+import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
+import { Button } from '@/components/button';
 
 export const PostPage = () => {
   const { postId } = useParams<{ postId: string }>();
+  const { toMain } = useRouteNavigation();
 
   // url parameter 가 잘못되었을 경우 어떻게?
   if (postId === undefined) {
@@ -30,7 +33,6 @@ export const PostPage = () => {
     roles,
     tags,
     investAmount,
-    investCompany,
     employmentEndDate,
     isActive,
     IRDeckLink,
@@ -39,6 +41,20 @@ export const PostPage = () => {
 
   return (
     <div className="post-detail" style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
+
+      <Button
+        onClick={toMain}
+        style={{
+          marginBottom: '20px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '8px 16px',
+        }}
+      >
+        ← 메인 페이지로
+      </Button>
+
       {/* 헤더 섹션 */}
       <div style={{
         display: 'flex',
@@ -112,11 +128,6 @@ export const PostPage = () => {
           {(investAmount != null) && (
             <p style={{ marginBottom: '8px' }}>
               <strong>투자금액:</strong> {investAmount.toLocaleString()}만원
-            </p>
-          )}
-          {investCompany.length > 0 && (
-            <p style={{ marginBottom: '8px' }}>
-              <strong>투자사:</strong> {investCompany.join(', ')}
             </p>
           )}
 
