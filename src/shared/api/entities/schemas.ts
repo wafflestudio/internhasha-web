@@ -43,7 +43,7 @@ type PostDTO = {
   employmentEndDate: Date;
 };
 
-type PostBriefDTO = {
+export type PostBriefDTO = {
   id: string;
   companyName: string;
   email: string;

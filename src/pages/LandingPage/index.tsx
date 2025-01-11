@@ -12,6 +12,7 @@ import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+import { PostCard } from '@/pages/LandingPage/PostCard.tsx';
 
 export const LandingPage = () => {
   const { toEcho, toSignUpSelect, toSignInSelect, toPost } =
@@ -66,7 +67,6 @@ export const LandingPage = () => {
       >
         필터링
       </Button>
-      {/* 필터 모달 */}
       {isFilterModalOpen && (
         <FilterModal
           roles={roles}
@@ -89,22 +89,20 @@ export const LandingPage = () => {
         />
       )}
 
-      {
-        <div className="">
-          {postsData.posts.map((post) => (
-            <p key={post.id}>
-              {post.id}: {post.companyName}
-              <Button
-                onClick={() => {
-                  toPost({ postId: post.id });
-                }}
-              >
-                자세히 보기
-              </Button>
-            </p>
-          ))}
-        </div>
-      }
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+        gap: '20px',
+        padding: '20px'
+      }}>
+        {postsData.posts.map((post) => (
+          <PostCard
+            key={post.id}
+            post={post}
+            onDetailClick={(postId) => { toPost({ postId }); }}
+          />
+        ))}
+      </div>
 
       <Pagination
         totalPages={TOTAL_PAGES}

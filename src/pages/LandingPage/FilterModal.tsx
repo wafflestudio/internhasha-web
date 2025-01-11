@@ -136,7 +136,6 @@ export const FilterModal = ({
             );
           }}
         >
-          <option value="">선택 안 함</option>
           <option value="0">진행중</option>
           <option value="1">진행 완료</option>
           <option value="2">전부</option>
