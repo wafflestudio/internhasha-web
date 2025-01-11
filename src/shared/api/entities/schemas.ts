@@ -55,7 +55,7 @@ export type PostBriefDTO = {
   investAmount?: number;
   investCompany: string[];
   isActive: boolean;
-  employmentEndDate: Date;
+  employeeEndDate: string;
 };
 
 // Params
