@@ -15,11 +15,8 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
     roles,
     imageLink,
     investAmount,
-    isActive,
     employeeEndDate,
   } = post;
-
-  console.log(post);
 
   const validDate = employeeEndDate.slice(0, 23);
 
@@ -144,7 +141,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
         <p
           style={{
             fontSize: '14px',
-            color: isActive ? 'green' : 'red',
+            color: new Date(validDate) > new Date() ? 'green' : 'red',
             marginBottom: '12px',
           }}
         >

@@ -33,11 +33,13 @@ export const PostPage = () => {
     roles,
     tags,
     investAmount,
-    employmentEndDate,
+    employeeEndDate,
     isActive,
     IRDeckLink,
     landingPageLink,
   } = postDetailData.data;
+
+  const validDate = employeeEndDate.slice(0, 23);
 
   return (
     <div
@@ -150,7 +152,7 @@ export const PostPage = () => {
 
           <p style={{ marginBottom: '8px' }}>
             <strong>채용 마감일:</strong>{' '}
-            {new Date(employmentEndDate).toLocaleDateString()}
+            {new Date(validDate).toLocaleDateString()}
           </p>
         </div>
       </div>
