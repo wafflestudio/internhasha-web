@@ -53,7 +53,7 @@ export const EmailVerifyForm = () => {
     timeLeft,
     responseMessage: codeResponseMessage,
     isPending: isPendingSend,
-  } = useSendCode();
+  } = useSendCode({ setShowModal });
   const {
     emailVerify,
     verifySuccess,
@@ -267,7 +267,11 @@ const ShowVerifyEmailButton = ({
   }
 };
 
-const useSendCode = () => {
+const useSendCode = ({
+  setShowModal,
+}: {
+  setShowModal(input: 'NONE' | 'ADD' | 'REDIRECT'): void;
+}) => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
   const [sendSuccess, setSendSuccess] = useState(false);
@@ -313,8 +317,19 @@ const useSendCode = () => {
         setSendSuccess(true);
         startTimer();
       } else {
-        setResponseMessage(response.message);
         stopTimer();
+        if (
+          response.status === 409 &&
+          response.message === '동일한 스누메일로 등록된 계정이 존재합니다.'
+        ) {
+          setShowModal('ADD');
+          return;
+        }
+        if (response.status === 409) {
+          setShowModal('REDIRECT');
+          return;
+        }
+        setResponseMessage(response.message);
       }
     },
     onError: () => {
