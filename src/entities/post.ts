@@ -18,3 +18,10 @@ export const ROLE_CATEGORY_LIST: RoleCategory[] = [
   'DATA',
   'MARKETER',
 ];
+
+export type FilterElements = {
+  roles?: RoleCategory[];
+  investment?: number;
+  investor?: string;
+  pathStatus?: 0 | 1 | 2;
+}
