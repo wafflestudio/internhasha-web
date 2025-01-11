@@ -33,13 +33,13 @@ export const PostPage = () => {
     roles,
     tags,
     investAmount,
-    employeeEndDate,
+    employmentEndDate,
     isActive,
     IRDeckLink,
     landingPageLink,
   } = postDetailData.data;
 
-  const validDate = employeeEndDate.slice(0, 23);
+  const validDate = employmentEndDate.slice(0, 23);
 
   return (
     <div

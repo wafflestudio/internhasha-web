@@ -40,7 +40,7 @@ type PostDTO = {
   landingPageLink?: string;
   externalDescriptionLink?: string[];
   isActive: boolean;
-  employeeEndDate: string;
+  employmentEndDate: string;
 };
 
 export type PostBriefDTO = {
@@ -55,7 +55,7 @@ export type PostBriefDTO = {
   investAmount?: number;
   investCompany: string[];
   isActive: boolean;
-  employeeEndDate: string;
+  employmentEndDate: string;
 };
 
 // Params
