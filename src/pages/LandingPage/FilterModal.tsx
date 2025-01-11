@@ -1,14 +1,18 @@
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
-import { type FilterElements, ROLE_CATEGORY_LIST, type RoleCategory } from '@/entities/post.ts';
+import {
+  type FilterElements,
+  ROLE_CATEGORY_LIST,
+  type RoleCategory,
+} from '@/entities/post.ts';
 
 type FilterModalProps = {
   filterElements: FilterElements;
   onChangeFilters: (filterElements: FilterElements) => void;
   onClose: () => void;
   onApply: () => void;
-}
+};
 
 export const FilterModal = ({
   filterElements,
@@ -16,21 +20,23 @@ export const FilterModal = ({
   onClose,
   onApply,
 }: FilterModalProps) => {
-  const [tempFilters, setTempFilters] = useState<FilterElements>(filterElements);
+  const [tempFilters, setTempFilters] =
+    useState<FilterElements>(filterElements);
 
   const handleRoleToggle = (role: RoleCategory) => {
     setTempFilters((prev) => ({
       ...prev,
-      roles: ((prev.roles?.includes(role)) === true)
-        ? prev.roles.filter((r) => r !== role)
-        : [...(prev.roles ?? []), role],
+      roles:
+        prev.roles?.includes(role) === true
+          ? prev.roles.filter((r) => r !== role)
+          : [...(prev.roles ?? []), role],
     }));
   };
 
   const handleApply = () => {
     onChangeFilters({
       ...tempFilters,
-      roles: ((tempFilters.roles?.length) != null) ? tempFilters.roles : undefined,
+      roles: tempFilters.roles?.length != null ? tempFilters.roles : undefined,
     });
     onApply();
   };
@@ -69,7 +75,7 @@ export const FilterModal = ({
           value={tempFilters.investor ?? ''}
           onChange={(e) => {
             const value = e.target.value.trim();
-            setTempFilters(prev => ({
+            setTempFilters((prev) => ({
               ...prev,
               investor: value !== '' ? value : undefined,
             }));
@@ -85,7 +91,7 @@ export const FilterModal = ({
           value={tempFilters.investor ?? ''}
           onChange={(e) => {
             const value = e.target.value.trim();
-            setTempFilters(prev => ({
+            setTempFilters((prev) => ({
               ...prev,
               investor: value !== '' ? value : undefined,
             }));
@@ -100,11 +106,12 @@ export const FilterModal = ({
           value={tempFilters.pathStatus ?? ''}
           onChange={(e) => {
             const selected = parseInt(e.target.value, 10);
-            setTempFilters(prev => ({
+            setTempFilters((prev) => ({
               ...prev,
-              pathStatus: selected === 0 || selected === 1 || selected === 2
-                ? selected
-                : undefined,
+              pathStatus:
+                selected === 0 || selected === 1 || selected === 2
+                  ? selected
+                  : undefined,
             }));
           }}
         >

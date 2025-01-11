@@ -66,7 +66,9 @@ export const LandingPage = () => {
         <FilterModal
           filterElements={filterElements}
           onChangeFilters={setFilterElements}
-          onClose={() => { setIsFilterModalOpen(false); }}
+          onClose={() => {
+            setIsFilterModalOpen(false);
+          }}
           onApply={() => {
             setCurrentPage(0);
             setCurrentGroup(0);

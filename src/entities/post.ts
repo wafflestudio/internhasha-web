@@ -24,4 +24,4 @@ export type FilterElements = {
   investment?: number;
   investor?: string;
   pathStatus?: 0 | 1 | 2;
-}
+};
