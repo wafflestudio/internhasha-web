@@ -7,6 +7,7 @@ import {
   type RoleCategory,
 } from '@/pages/LandingPage/FilterModal.tsx';
 import { Pagination } from '@/pages/LandingPage/Pagination.tsx';
+import { PostCard } from '@/pages/LandingPage/PostCard.tsx';
 import { useGetPosts } from '@/pages/LandingPage/useGetPosts.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
@@ -23,8 +24,6 @@ export const LandingPage = () => {
   const [pathStatus, setPathStatus] = useState<0 | 1 | 2 | undefined>(
     undefined,
   );
-
-  console.log(roles);
 
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
@@ -68,7 +67,6 @@ export const LandingPage = () => {
       >
         필터링
       </Button>
-      {/* 필터 모달 */}
       {isFilterModalOpen && (
         <FilterModal
           roles={roles}
@@ -91,22 +89,24 @@ export const LandingPage = () => {
         />
       )}
 
-      {
-        <div className="">
-          {postsData.posts.map((post) => (
-            <p key={post.id}>
-              {post.id}: {post.companyName}
-              <Button
-                onClick={() => {
-                  toPost({ postId: post.id });
-                }}
-              >
-                자세히 보기
-              </Button>
-            </p>
-          ))}
-        </div>
-      }
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+          gap: '20px',
+          padding: '20px',
+        }}
+      >
+        {postsData.posts.map((post) => (
+          <PostCard
+            key={post.id}
+            post={post}
+            onDetailClick={(postId) => {
+              toPost({ postId });
+            }}
+          />
+        ))}
+      </div>
 
       <Pagination
         totalPages={TOTAL_PAGES}
