@@ -16,8 +16,12 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
     imageLink,
     investAmount,
     isActive,
-    employmentEndDate,
+    employeeEndDate,
   } = post;
+
+  console.log(post);
+
+  const validDate = employeeEndDate.slice(0, 23);
 
   return (
     <div
@@ -144,7 +148,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
             marginBottom: '12px',
           }}
         >
-          마감일: {new Date(employmentEndDate).toLocaleDateString()}
+          마감일: {new Date(validDate).toLocaleDateString()}
         </p>
 
         {/* 설명 */}
