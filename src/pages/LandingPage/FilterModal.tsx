@@ -72,28 +72,12 @@ export const FilterModal = ({
         투자 금액 (investment):
         <input
           type="number"
-          value={tempFilters.investor ?? ''}
+          value={tempFilters.investment ?? ''}
           onChange={(e) => {
-            const value = e.target.value.trim();
-            setTempFilters((prev) => ({
+            const numValue = parseInt(e.target.value, 10);
+            setTempFilters(prev => ({
               ...prev,
-              investor: value !== '' ? value : undefined,
-            }));
-          }}
-        />
-      </label>
-
-      {/* Investor */}
-      <label>
-        투자사 (investor):
-        <input
-          type="text"
-          value={tempFilters.investor ?? ''}
-          onChange={(e) => {
-            const value = e.target.value.trim();
-            setTempFilters((prev) => ({
-              ...prev,
-              investor: value !== '' ? value : undefined,
+              investment: isNaN(numValue) ? undefined : numValue,
             }));
           }}
         />
