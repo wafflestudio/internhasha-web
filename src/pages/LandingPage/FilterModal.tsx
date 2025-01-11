@@ -75,7 +75,7 @@ export const FilterModal = ({
           value={tempFilters.investment ?? ''}
           onChange={(e) => {
             const numValue = parseInt(e.target.value, 10);
-            setTempFilters(prev => ({
+            setTempFilters((prev) => ({
               ...prev,
               investment: isNaN(numValue) ? undefined : numValue,
             }));
