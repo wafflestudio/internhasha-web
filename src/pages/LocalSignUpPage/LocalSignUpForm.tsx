@@ -32,6 +32,7 @@ export const LocalSignUpForm = () => {
   const { password, passwordConfirm, localId, username } =
     authPresentation.useValidator({ initialState: state?.body });
   const [localIdCheckSuccess, setLocalIdCheckSuccess] = useState(false);
+  const [isUsernameFocused, setIsUsernameFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordConfirmFocused, setIsPasswordConfirmFocused] =
     useState(false);
@@ -108,9 +109,18 @@ export const LocalSignUpForm = () => {
               onChange={(e) => {
                 username.onChange(e.target.value);
               }}
-              placeholder="홍길동"
+              placeholder="실명을 입력해주세요."
+              onFocus={() => {
+                setIsUsernameFocused(true);
+              }}
+              onBlur={() => {
+                setIsUsernameFocused(false);
+              }}
               disabled={isPending}
             />
+            {isUsernameFocused && username.isError && (
+              <div>한글명 또는 영문명을 작성해주세요.</div>
+            )}
           </LabelContainer>
           <LabelContainer label="아이디" id="localId">
             <TextInput
