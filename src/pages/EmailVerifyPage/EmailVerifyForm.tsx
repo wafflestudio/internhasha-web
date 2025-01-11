@@ -59,7 +59,7 @@ export const EmailVerifyForm = () => {
     verifySuccess,
     responseMessage: emailResponseMessage,
     isPending: isPendingVerify,
-  } = useEmailVerify();
+  } = useEmailVerify({ setShowModal });
   const {
     googleSignUp,
     responseMessage: googleSignUpResponseMessage,
@@ -336,7 +336,11 @@ const useSendCode = () => {
   };
 };
 
-const useEmailVerify = () => {
+const useEmailVerify = ({
+  setShowModal,
+}: {
+  setShowModal(input: 'NONE' | 'ADD' | 'REDIRECT'): void;
+}) => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
   const [verifySuccess, setVerifySuccess] = useState(false);
@@ -352,6 +356,17 @@ const useEmailVerify = () => {
       if (response.type === 'success') {
         setVerifySuccess(true);
       } else {
+        if (
+          response.status === 409 &&
+          response.message === '동일한 스누메일로 등록된 계정이 존재합니다.'
+        ) {
+          setShowModal('ADD');
+          return;
+        }
+        if (response.status === 409) {
+          setShowModal('REDIRECT');
+          return;
+        }
         setResponseMessage(response.message);
         setVerifySuccess(false);
       }
@@ -392,9 +407,11 @@ const useGoogleSignUp = ({
           response.message === '동일한 스누메일로 등록된 계정이 존재합니다.'
         ) {
           setShowModal('ADD');
+          return;
         }
         if (response.status === 409) {
           setShowModal('REDIRECT');
+          return;
         }
         setResponseMessage(response.message);
       }
@@ -441,9 +458,11 @@ const useLocalSignUp = ({
           response.message === '동일한 스누메일로 등록된 계정이 존재합니다.'
         ) {
           setShowModal('ADD');
+          return;
         }
         if (response.status === 409) {
           setShowModal('REDIRECT');
+          return;
         }
         setResponseMessage(response.message);
       }
