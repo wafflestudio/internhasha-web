@@ -7,12 +7,12 @@ import {
   type RoleCategory,
 } from '@/pages/LandingPage/FilterModal.tsx';
 import { Pagination } from '@/pages/LandingPage/Pagination.tsx';
+import { PostCard } from '@/pages/LandingPage/PostCard.tsx';
 import { useGetPosts } from '@/pages/LandingPage/useGetPosts.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { PostCard } from '@/pages/LandingPage/PostCard.tsx';
 
 export const LandingPage = () => {
   const { toEcho, toSignUpSelect, toSignInSelect, toPost } =
@@ -89,17 +89,21 @@ export const LandingPage = () => {
         />
       )}
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-        gap: '20px',
-        padding: '20px'
-      }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+          gap: '20px',
+          padding: '20px',
+        }}
+      >
         {postsData.posts.map((post) => (
           <PostCard
             key={post.id}
             post={post}
-            onDetailClick={(postId) => { toPost({ postId }); }}
+            onDetailClick={(postId) => {
+              toPost({ postId });
+            }}
           />
         ))}
       </div>
