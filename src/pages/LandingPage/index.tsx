@@ -22,8 +22,8 @@ export const LandingPage = () => {
     investor: undefined,
     pathStatus: undefined,
   });
-
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(0);
   const [currentGroup, setCurrentGroup] = useState(0);
 
