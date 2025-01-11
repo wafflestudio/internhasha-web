@@ -13,12 +13,13 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
     explanation,
     tags,
     roles,
+    isActive,
     imageLink,
     investAmount,
-    employeeEndDate,
+    employmentEndDate,
   } = post;
 
-  const validDate = employeeEndDate.slice(0, 23);
+  const validDate = employmentEndDate.slice(0, 23);
 
   return (
     <div
@@ -141,7 +142,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
         <p
           style={{
             fontSize: '14px',
-            color: new Date(validDate) > new Date() ? 'green' : 'red',
+            color: isActive ? 'green' : 'red',
             marginBottom: '12px',
           }}
         >
