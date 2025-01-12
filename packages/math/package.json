@@ -1,0 +1,14 @@
+{
+  "name": "@waffle/math",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build:package": "tsc",
+    "clean:package": "rm -rf dist"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3"
+  }
+}

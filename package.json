@@ -1,44 +1,18 @@
 {
-  "name": "seminar-2024-frontend-template",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "name": "waffle-team-1-web",
+  "packageManager": "yarn@4.4.1",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "vite --mode dev",
-    "mock": "vite --mode mock",
-    "build": "tsc -b && vite build --mode prod",
-    "types:check": "tsc",
-    "format:check": "prettier --check .",
-    "format:fix": "prettier --write .",
-    "lint:check": "eslint .",
-    "lint:fix": "eslint --fix .",
-    "unused:check": "knip",
-    "check-all": "yarn types:check && yarn format:check && yarn lint:check && yarn unused:check"
-  },
-  "dependencies": {
-    "@react-oauth/google": "0.12.1",
-    "@tanstack/react-query": "5.62.11",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-router": "7.1.1"
+    "check-all": "yarn workspaces foreach -A run check",
+    "build-pkg": "yarn workspaces foreach -A run build:package"
   },
   "devDependencies": {
     "@types/node": "22.7.5",
-    "@types/react": "18.3.11",
-    "@types/react-dom": "18.3.1",
-    "@vitejs/plugin-react-swc": "3.7.1",
-    "@woohm402/eslint-config-react": "0.8.0",
     "eslint": "9.12.0",
-    "knip": "5.33.3",
-    "msw": "2.7.0",
     "prettier": "3.3.3",
-    "typescript": "5.6.3",
-    "vite": "5.4.9"
-  },
-  "packageManager": "yarn@4.4.1",
-  "msw": {
-    "workerDirectory": [
-      "public"
-    ]
+    "typescript": "5.6.3"
   }
 }
