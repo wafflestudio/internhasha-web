@@ -2,8 +2,6 @@ name: deploy-admin
 
 on:
   push:
-    branches:
-      - main
     tags:
       - client*
   workflow_dispatch:
