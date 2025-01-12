@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "yarn --cwd ../.. build-pkg",
-    "dev": "yarn predev && vite",
-    "build": "tsc -b && vite build",
+    "pre:build-pkg": "yarn --cwd ../.. build-pkg",
+    "dev": "yarn pre:build-pkg && vite",
+    "build": "yarn pre:build-pkg && tsc -b && vite build",
     "types:check": "tsc",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
