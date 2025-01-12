@@ -2,8 +2,8 @@ name: deploy-client
 
 on:
   push:
-    tags:
-      - client*
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
