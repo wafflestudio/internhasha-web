@@ -1,0 +1,42 @@
+{
+  "name": "client",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "predev": "yarn --cwd ../.. build-pkg",
+    "dev": "yarn predev && vite --mode dev",
+    "mock": "vite --mode mock",
+    "build": "tsc -b && vite build --mode prod",
+    "types:check": "tsc",
+    "format:check": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "lint:check": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "check": "yarn types:check && yarn format:check && yarn lint:check"
+  },
+  "dependencies": {
+    "@react-oauth/google": "0.12.1",
+    "@tanstack/react-query": "5.62.11",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router": "7.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.7.5",
+    "@types/react": "18.3.11",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react-swc": "3.7.1",
+    "@waffle/eslint-react": "workspace:*",
+    "eslint": "9.12.0",
+    "msw": "2.7.0",
+    "prettier": "3.3.3",
+    "typescript": "5.6.3",
+    "vite": "5.4.9"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
+}
