@@ -7,6 +7,16 @@ import {
   type RoleCategory,
 } from '@/entities/post.ts';
 
+const INVESTMENT_RANGES = [
+  { label: '전체', down: undefined, up: undefined },
+  { label: '1억 원 미만', down: 0, up: 10000 },
+  { label: '1억 원 이상 ~ 5억 원 미만', down: 10000, up: 50000 },
+  { label: '5억 원 이상 ~ 10억 원 미만', down: 50000, up: 100000 },
+  { label: '10억 원 이상 ~ 50억 원 미만', down: 100000, up: 500000 },
+  { label: '50억 원 이상 ~ 100억 원 미만', down: 500000, up: 1000000 },
+  { label: '100억 원 이상 ~ 500억 원 미만', down: 1000000, up: 5000000 },
+] as const;
+
 type FilterModalProps = {
   filterElements: FilterElements;
   onChangeFilters: (filterElements: FilterElements) => void;
@@ -33,6 +43,29 @@ export const FilterModal = ({
     }));
   };
 
+  const getCurrentInvestmentRange = () => {
+    if ((tempFilters.investmentDown == null) && (tempFilters.investmentUp == null)) return '전체';
+
+    const currentRange = INVESTMENT_RANGES.find(
+      range =>
+        range.down === tempFilters.investmentDown &&
+        range.up === tempFilters.investmentUp
+    );
+
+    return (currentRange != null) ? currentRange.label : '전체';
+  };
+
+  const handleInvestmentRangeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedLabel = e.target.value;
+    const range = INVESTMENT_RANGES.find(r => r.label === selectedLabel);
+
+    setTempFilters(prev => ({
+      ...prev,
+      investmentDown: range?.down,
+      investmentUp: range?.up,
+    }));
+  };
+
   const handleApply = () => {
     onChangeFilters({
       ...tempFilters,
@@ -40,6 +73,9 @@ export const FilterModal = ({
     });
     onApply();
   };
+
+  console.log(filterElements);
+
   return (
     <div className="modal">
       <h2>필터링 설정</h2>
@@ -68,20 +104,21 @@ export const FilterModal = ({
       </div>
 
       {/* Investment */}
-      <label>
-        투자 금액 (investment):
-        <input
-          type="number"
-          value={tempFilters.investment ?? ''}
-          onChange={(e) => {
-            const numValue = parseInt(e.target.value, 10);
-            setTempFilters((prev) => ({
-              ...prev,
-              investment: isNaN(numValue) ? undefined : numValue,
-            }));
-          }}
-        />
+      <label style={{ display: 'block', marginBottom: '16px' }}>
+        투자금액 구간:
+        <select
+          value={getCurrentInvestmentRange()}
+          onChange={handleInvestmentRangeChange}
+          style={{ marginLeft: '8px', padding: '4px 8px' }}
+        >
+          {INVESTMENT_RANGES.map(range => (
+            <option key={range.label} value={range.label}>
+              {range.label}
+            </option>
+          ))}
+        </select>
       </label>
+
 
       {/* Path Status */}
       <label>
