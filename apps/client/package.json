@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "yarn --cwd ../.. build-pkg",
-    "dev": "yarn predev && vite --mode dev",
+    "pre:build-pkg": "yarn --cwd ../.. build-pkg",
+    "dev": "yarn pre:build-pkg && vite --mode dev",
     "mock": "vite --mode mock",
-    "build": "tsc -b && vite build --mode prod",
+    "build": "yarn pre:build-pkg && tsc -b && vite build --mode prod",
     "types:check": "tsc",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
