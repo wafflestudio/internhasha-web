@@ -10,13 +10,15 @@ export type PostService = {
   getPosts: ({
     page,
     roles,
-    investment,
+    investmentMax,
+    investmentMin,
     investor,
     pathStatus,
   }: {
     page?: number;
     roles?: string[];
-    investment?: number;
+    investmentMax?: number;
+    investmentMin?: number;
     investor?: string;
     pathStatus?: number;
   }) => ServiceResponse<PostsResponse>;
@@ -49,13 +51,15 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
   getPosts: async ({
     page,
     roles,
-    investment,
+    investmentMax,
+    investmentMin,
     investor,
     pathStatus,
   }: {
     page?: number;
     roles?: string[];
-    investment?: number;
+    investmentMax?: number;
+    investmentMin?: number;
     investor?: string;
     pathStatus?: number;
   }) => {
@@ -67,8 +71,10 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
         postPath.append('roles', role);
       });
     }
-    if (investment !== undefined)
-      postPath.append('investment', investment.toString());
+    if (investmentMax !== undefined)
+      postPath.append('investmentMax', investmentMax.toString());
+    if (investmentMin !== undefined)
+      postPath.append('investmentMin', investmentMin.toString());
     if (investor !== undefined) postPath.append('investor', investor);
     if (pathStatus !== undefined)
       postPath.append('status', pathStatus.toString());
@@ -76,7 +82,6 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     const params = {
       postPath: postPath.toString(),
     };
-
     const { status, data } = await apis['GET /post']({ params });
 
     if (status === 200) {

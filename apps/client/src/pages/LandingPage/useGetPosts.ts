@@ -6,7 +6,8 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 interface UseGetPostsProps {
   page?: number;
   roles?: string[];
-  investment?: number;
+  investmentMax?: number;
+  investmentMin?: number;
   investor?: string;
   pathStatus?: number;
 }
@@ -14,7 +15,8 @@ interface UseGetPostsProps {
 export const useGetPosts = ({
   page = 0,
   roles,
-  investment,
+  investmentMax,
+  investmentMin,
   investor,
   pathStatus,
 }: UseGetPostsProps) => {
@@ -26,7 +28,8 @@ export const useGetPosts = ({
       'getPosts',
       page,
       roles,
-      investment,
+      investmentMax,
+      investmentMin,
       investor,
       pathStatus,
     ],
@@ -34,7 +37,8 @@ export const useGetPosts = ({
       const response = await postService.getPosts({
         page,
         roles,
-        investment,
+        investmentMax,
+        investmentMin,
         investor,
         pathStatus,
       });
