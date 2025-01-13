@@ -8,13 +8,13 @@ import {
 } from '@/entities/post.ts';
 
 const INVESTMENT_RANGES = [
-  { label: '전체', down: undefined, up: undefined },
-  { label: '1억 원 미만', down: 0, up: 10000 },
-  { label: '1억 원 이상 ~ 5억 원 미만', down: 10000, up: 50000 },
-  { label: '5억 원 이상 ~ 10억 원 미만', down: 50000, up: 100000 },
-  { label: '10억 원 이상 ~ 50억 원 미만', down: 100000, up: 500000 },
-  { label: '50억 원 이상 ~ 100억 원 미만', down: 500000, up: 1000000 },
-  { label: '100억 원 이상 ~ 500억 원 미만', down: 1000000, up: 5000000 },
+  { label: '전체', min: undefined, max: undefined },
+  { label: '1억 원 미만', min: 0, max: 10000 },
+  { label: '1억 원 이상 ~ 5억 원 미만', min: 10000, max: 50000 },
+  { label: '5억 원 이상 ~ 10억 원 미만', min: 50000, max: 100000 },
+  { label: '10억 원 이상 ~ 50억 원 미만', min: 100000, max: 500000 },
+  { label: '50억 원 이상 ~ 100억 원 미만', min: 500000, max: 1000000 },
+  { label: '100억 원 이상 ~ 500억 원 미만', min: 1000000, max: 5000000 },
 ] as const;
 
 type FilterModalProps = {
@@ -44,12 +44,12 @@ export const FilterModal = ({
   };
 
   const getCurrentInvestmentRange = () => {
-    if ((tempFilters.investmentDown == null) && (tempFilters.investmentUp == null)) return '전체';
+    if ((tempFilters.investmentMin == null) && (tempFilters.investmentMax == null)) return '전체';
 
     const currentRange = INVESTMENT_RANGES.find(
       range =>
-        range.down === tempFilters.investmentDown &&
-        range.up === tempFilters.investmentUp
+        range.min === tempFilters.investmentMin &&
+        range.max === tempFilters.investmentMax
     );
 
     return (currentRange != null) ? currentRange.label : '전체';
@@ -61,8 +61,8 @@ export const FilterModal = ({
 
     setTempFilters(prev => ({
       ...prev,
-      investmentDown: range?.down,
-      investmentUp: range?.up,
+      investmentMin: range?.min,
+      investmentMax: range?.max,
     }));
   };
 
@@ -73,8 +73,6 @@ export const FilterModal = ({
     });
     onApply();
   };
-
-  console.log(filterElements);
 
   return (
     <div className="modal">

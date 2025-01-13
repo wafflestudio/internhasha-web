@@ -21,7 +21,7 @@ export const ROLE_CATEGORY_LIST: RoleCategory[] = [
 
 export type FilterElements = {
   roles?: RoleCategory[];
-  investmentUp?: number;
-  investmentDown?: number;
+  investmentMax?: number;
+  investmentMin?: number;
   pathStatus?: 0 | 1 | 2;
 };

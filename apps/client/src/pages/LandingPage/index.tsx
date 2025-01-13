@@ -18,8 +18,8 @@ export const LandingPage = () => {
 
   const [filterElements, setFilterElements] = useState<FilterElements>({
     roles: undefined,
-    investmentUp: undefined,
-    investmentDown: undefined,
+    investmentMax: undefined,
+    investmentMin: undefined,
     pathStatus: undefined,
   });
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
