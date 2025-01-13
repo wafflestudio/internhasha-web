@@ -175,3 +175,6 @@ export type GoogleEmailResponse = {
 
 export type ResumeResponse = ResumeDTO;
 
+export type ResumeListResponse = [
+  coffees: ResumeDTO[],
+]

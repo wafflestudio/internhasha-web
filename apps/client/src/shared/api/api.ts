@@ -19,7 +19,7 @@ import type {
   PostPathParams,
   PostsResponse,
   PretotypeUserSubmitRequest,
-  PretotypeUserSubmitResponse, ResumeIdParams, ResumeResponse,
+  PretotypeUserSubmitResponse, ResumeIdParams, ResumeListResponse, ResumeResponse,
   SendEmailCodeRequest,
   TokenResponse,
   UserResponse,
@@ -196,7 +196,10 @@ export const getApis = ({
         token,
         body,
       }),
-    'GET /resume/:resumeId': ({ token, params }: {
+    'GET /resume/:resumeId': ({
+      token,
+      params,
+    }: {
       token: string;
       params: ResumeIdParams;
     }) => {
@@ -205,6 +208,13 @@ export const getApis = ({
         path: `resume/${params.resumeId}`,
         token,
       });
+    },
+    'GET /resume': ({ token }: { token: string }) => {
+      return callWithToken<SuccessResponse<ResumeListResponse>>({
+        method: 'GET',
+        path: 'resume',
+        token,
+      })
     },
   }) satisfies Record<string, Api>;
 
