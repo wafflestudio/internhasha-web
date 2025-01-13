@@ -5,6 +5,16 @@ type UserBriefDTO = {
   isAdmin: boolean;
 };
 
+type UserDTO = {
+  id: string;
+  snuMail: string;
+  username: string;
+  phoneNumber?: string;
+  isAdmin: boolean;
+  localId?: string;
+  googleId?: string;
+}
+
 type AuthorBriefDTO = {
   id: string;
   name: string;
@@ -58,6 +68,15 @@ export type PostBriefDTO = {
   employmentEndDate: string;
 };
 
+type ResumeDTO = {
+  id: string;
+  postId: string;
+  author: UserDTO;
+  content: string;
+  phoneNumber: string;
+  createdAt: string;
+}
+
 // Params
 export type EchoParams = {
   message: string;
@@ -69,6 +88,10 @@ export type PostPathParams = {
 
 export type PostIdParams = {
   postId: string;
+};
+
+export type ResumeIdParams = {
+  resumeId: string;
 };
 
 // Request
@@ -149,3 +172,6 @@ export type TokenResponse = {
 export type GoogleEmailResponse = {
   googleEmail: string;
 };
+
+export type ResumeResponse = ResumeDTO;
+
