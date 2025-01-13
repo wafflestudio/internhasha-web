@@ -44,22 +44,25 @@ export const FilterModal = ({
   };
 
   const getCurrentInvestmentRange = () => {
-    if ((tempFilters.investmentMin == null) && (tempFilters.investmentMax == null)) return '전체';
+    if (tempFilters.investmentMin == null && tempFilters.investmentMax == null)
+      return '전체';
 
     const currentRange = INVESTMENT_RANGES.find(
-      range =>
+      (range) =>
         range.min === tempFilters.investmentMin &&
-        range.max === tempFilters.investmentMax
+        range.max === tempFilters.investmentMax,
     );
 
-    return (currentRange != null) ? currentRange.label : '전체';
+    return currentRange != null ? currentRange.label : '전체';
   };
 
-  const handleInvestmentRangeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleInvestmentRangeChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     const selectedLabel = e.target.value;
-    const range = INVESTMENT_RANGES.find(r => r.label === selectedLabel);
+    const range = INVESTMENT_RANGES.find((r) => r.label === selectedLabel);
 
-    setTempFilters(prev => ({
+    setTempFilters((prev) => ({
       ...prev,
       investmentMin: range?.min,
       investmentMax: range?.max,
@@ -109,14 +112,13 @@ export const FilterModal = ({
           onChange={handleInvestmentRangeChange}
           style={{ marginLeft: '8px', padding: '4px 8px' }}
         >
-          {INVESTMENT_RANGES.map(range => (
+          {INVESTMENT_RANGES.map((range) => (
             <option key={range.label} value={range.label}>
               {range.label}
             </option>
           ))}
         </select>
       </label>
-
 
       {/* Path Status */}
       <label>
