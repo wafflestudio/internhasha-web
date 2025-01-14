@@ -18,5 +18,8 @@
     "noUncheckedIndexedAccess": true,
     "verbatimModuleSyntax": true
   },
+  "paths": {
+    "@/*": ["./src/*"]
+  },
   "include": ["src", "vite.config.ts"]
 }
