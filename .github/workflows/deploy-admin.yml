@@ -30,6 +30,7 @@ jobs:
       - name: Build & Export
         run: |
           yarn install
+          yarn build-pkg
           yarn build
 
       - name: Deploy to S3 and Invalidate Cloudfront in dev mode
