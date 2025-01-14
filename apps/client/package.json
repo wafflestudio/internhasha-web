@@ -17,6 +17,7 @@
   "dependencies": {
     "@react-oauth/google": "0.12.1",
     "@tanstack/react-query": "5.62.11",
+    "@waffle/design-system": "workspace:*",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-router": "7.1.1"
@@ -27,9 +28,12 @@
     "@types/react-dom": "18.3.1",
     "@vitejs/plugin-react-swc": "3.7.1",
     "@waffle/eslint-react": "workspace:*",
+    "autoprefixer": "^10.4.20",
     "eslint": "9.12.0",
     "msw": "2.7.0",
+    "postcss": "^8.5.1",
     "prettier": "3.3.3",
+    "tailwindcss": "^3.4.17",
     "typescript": "5.6.3",
     "vite": "5.4.9"
   },
