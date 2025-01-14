@@ -1,4 +1,4 @@
-import './reset.css';
+import './index.css';
 
 import { Button } from '@waffle/design-system';
 import { useReducer } from 'react';
