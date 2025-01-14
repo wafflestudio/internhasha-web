@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "packageManager": "yarn@4.4.1",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.js"
+    }
+  },
   "scripts": {
-    "build:package": "tsc",
-    "clean:package": "rm -rf dist"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@woohm402/eslint-config-react": "0.8.0"
