@@ -23,6 +23,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:apps/client"\
     },\
     {\
+      "name": "@waffle/api",\
+      "reference": "workspace:packages/api"\
+    },\
+    {\
       "name": "@waffle/design-system",\
       "reference": "workspace:packages/design-system"\
     },\
@@ -34,6 +38,7 @@ const RAW_RUNTIME_STATE =
   "enableTopLevelFallback": true,\
   "ignorePatternData": "(^(?:\\\\.yarn\\\\/sdks(?:\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?:(?:(?!(?:^|\\\\/)\\\\.{1,2}(?:\\\\/|$)).)*?)|$))$)",\
   "fallbackExclusionList": [\
+    ["@waffle/api", ["workspace:packages/api"]],\
     ["@waffle/design-system", ["virtual:9845906954fdbefbb879db24fa8772d77a945dca59f459806df47a5b67245d4bc6502880b373cca7201062c81bea9f13f699f52de2004c037e79dbdbd5d97fb3#workspace:packages/design-system", "workspace:packages/design-system"]],\
     ["@waffle/eslint-react", ["workspace:packages/eslint-react"]],\
     ["admin", ["workspace:apps/admin"]],\
@@ -1879,6 +1884,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@waffle/api", [\
+      ["workspace:packages/api", {\
+        "packageLocation": "./packages/api/",\
+        "packageDependencies": [\
+          ["@waffle/api", "workspace:packages/api"],\
+          ["typescript", "patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
     ["@waffle/design-system", [\
       ["virtual:9845906954fdbefbb879db24fa8772d77a945dca59f459806df47a5b67245d4bc6502880b373cca7201062c81bea9f13f699f52de2004c037e79dbdbd5d97fb3#workspace:packages/design-system", {\
         "packageLocation": "./.yarn/__virtual__/@waffle-design-system-virtual-78d0d64477/1/packages/design-system/",\
@@ -2053,6 +2068,7 @@ const RAW_RUNTIME_STATE =
           ["@types/react", "npm:18.3.11"],\
           ["@types/react-dom", "npm:18.3.1"],\
           ["@vitejs/plugin-react-swc", "virtual:9845906954fdbefbb879db24fa8772d77a945dca59f459806df47a5b67245d4bc6502880b373cca7201062c81bea9f13f699f52de2004c037e79dbdbd5d97fb3#npm:3.7.1"],\
+          ["@waffle/api", "workspace:packages/api"],\
           ["@waffle/design-system", "virtual:9845906954fdbefbb879db24fa8772d77a945dca59f459806df47a5b67245d4bc6502880b373cca7201062c81bea9f13f699f52de2004c037e79dbdbd5d97fb3#workspace:packages/design-system"],\
           ["@waffle/eslint-react", "workspace:packages/eslint-react"],\
           ["autoprefixer", "virtual:9845906954fdbefbb879db24fa8772d77a945dca59f459806df47a5b67245d4bc6502880b373cca7201062c81bea9f13f699f52de2004c037e79dbdbd5d97fb3#npm:10.4.20"],\

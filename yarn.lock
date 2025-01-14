@@ -1375,6 +1375,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@waffle/api@workspace:*, @waffle/api@workspace:packages/api":
+  version: 0.0.0-use.local
+  resolution: "@waffle/api@workspace:packages/api"
+  dependencies:
+    typescript: "npm:5.6.3"
+  languageName: unknown
+  linkType: soft
+
 "@waffle/design-system@workspace:*, @waffle/design-system@workspace:packages/design-system":
   version: 0.0.0-use.local
   resolution: "@waffle/design-system@workspace:packages/design-system"
@@ -1474,6 +1482,7 @@ __metadata:
     "@types/react": "npm:18.3.11"
     "@types/react-dom": "npm:18.3.1"
     "@vitejs/plugin-react-swc": "npm:3.7.1"
+    "@waffle/api": "workspace:*"
     "@waffle/design-system": "workspace:*"
     "@waffle/eslint-react": "workspace:*"
     autoprefixer: "npm:^10.4.20"
