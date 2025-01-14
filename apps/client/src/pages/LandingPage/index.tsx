@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import { Button as DesignedButton } from '@waffle/design-system';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
@@ -48,6 +49,7 @@ export const LandingPage = () => {
   return (
     <div>
       <p>랜딩페이지</p>
+      <DesignedButton>와플의 버튼</DesignedButton>
       <Button onClick={toSignUpSelect}>회원가입 페이지로 이동</Button>
       <Button onClick={toSignInSelect}>로그인 페이지로 이동</Button>
       <Button onClick={toEcho}>에코 페이지로 이동</Button>
