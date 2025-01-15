@@ -14,10 +14,12 @@
     "check": "yarn types:check && yarn format:check && yarn lint:check"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.64.1",
     "@waffle/api": "workspace:*",
     "@waffle/design-system": "workspace:*",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "react-router": "^7.1.1"
   },
   "devDependencies": {
     "@types/node": "22.7.5",
@@ -27,6 +29,7 @@
     "@waffle/eslint-react": "workspace:*",
     "autoprefixer": "^10.4.20",
     "eslint": "9.12.0",
+    "msw": "^2.7.0",
     "postcss": "^8.5.0",
     "prettier": "3.3.3",
     "tailwindcss": "^3.4.17",

@@ -1,19 +1,57 @@
 import './index.css';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { type ExternalCallParams, implApi } from '@waffle/api';
-import { Button } from '@waffle/design-system';
 import { useState } from 'react';
-import { useReducer } from 'react';
+import { Route, Routes } from 'react-router';
 
-import { implEchoService } from '@/services/echoService';
+import { PATH } from '@/entities/route';
+import { implAuthService } from '@/feature/auth/service/authService';
+import { implEchoService } from '@/feature/echo';
+import { implUserService } from '@/feature/user';
+import { EchoPage } from '@/pages/EchoPage';
+import { LandingPage } from '@/pages/LandingPage';
+import { LoginPage } from '@/pages/LoginPage';
+import { MyInfoPage } from '@/pages/MyPage';
+import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
+import { EnvContext } from '@/shared/context/EnvContext';
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
+import { TokenContext } from '@/shared/context/TokenContext';
+import { implTokenLocalStorageRepository } from '@/shared/token/tokenLocalStorageRepository';
+import { implTokenStateRepository } from '@/shared/token/tokenStateRepository';
+
+const RouterProvider = () => {
+  return (
+    <Routes>
+      <Route path={PATH.INDEX} element={<LandingPage />} />
+      <Route path={PATH.ECHO} element={<EchoPage />} />
+      <Route path={PATH.LOGIN} element={<LoginPage />} />
+      <Route element={<AuthProtectedRoute />}>
+        <Route path={PATH.MY_PAGE} element={<MyInfoPage />} />
+      </Route>
+    </Routes>
+  );
+};
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+});
 
 export const App = () => {
-  const [count, increment] = useReducer((c: number) => c + 1, 0);
-  const [message, setMessage] = useState('');
-  const ENV = {
-    API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
-    APP_ENV: import.meta.env.MODE as 'prod' | 'dev' | 'mock',
-  };
+  const ENV = useGuardContext(EnvContext);
+
+  const tokenLocalStorageRepository = implTokenLocalStorageRepository();
+
+  const [token, setToken] = useState<string | null>(
+    tokenLocalStorageRepository.getToken,
+  );
+  const tokenStateRepository = implTokenStateRepository({ setToken });
 
   const externalCall = async (content: ExternalCallParams) => {
     const response = await fetch(
@@ -42,6 +80,14 @@ export const App = () => {
     }
 
     const responseBody = (await response.json().catch(() => null)) as unknown;
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        tokenStateRepository.removeToken();
+        tokenLocalStorageRepository.removeToken();
+      }
+    }
+
     return {
       status: response.status,
       data: responseBody,
@@ -49,33 +95,24 @@ export const App = () => {
   };
 
   const apis = implApi({ externalCall });
-  const echoService = implEchoService({ apis });
 
-  const handleClickButton = async (input: string) => {
-    try {
-      const res = await echoService.sendMessage({ message: input });
-      if (res.type === 'success') {
-        setMessage(res.data.message);
-      } else {
-        console.error('Error:', res.message);
-      }
-    } catch (error) {
-      console.error('Unexpected Error:', error);
-    }
+  const services = {
+    echoService: implEchoService({ apis }),
+    authService: implAuthService({
+      apis,
+      tokenLocalStorageRepository,
+      tokenStateRepository,
+    }),
+    userService: implUserService({ apis }),
   };
 
   return (
-    <div>
-      <button onClick={increment}>{count}</button>
-      <Button>와플의 버튼</Button>
-      <Button
-        onClick={() => {
-          void handleClickButton('Hello world!');
-        }}
-      >
-        버튼 누르기
-      </Button>
-      <p>{message}</p>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <ServiceContext.Provider value={services}>
+        <TokenContext.Provider value={{ token }}>
+          <RouterProvider />
+        </TokenContext.Provider>
+      </ServiceContext.Provider>
+    </QueryClientProvider>
   );
 };
