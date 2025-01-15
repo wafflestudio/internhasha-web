@@ -8,9 +8,12 @@ import { Route, Routes } from 'react-router';
 import { PATH } from '@/entities/route';
 import { implAuthService } from '@/feature/auth/service/authService';
 import { implEchoService } from '@/feature/echo';
+import { implUserService } from '@/feature/user';
 import { EchoPage } from '@/pages/EchoPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { LoginPage } from '@/pages/LoginPage';
+import { MyInfoPage } from '@/pages/MyPage';
+import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -24,6 +27,9 @@ const RouterProvider = () => {
       <Route path={PATH.INDEX} element={<LandingPage />} />
       <Route path={PATH.ECHO} element={<EchoPage />} />
       <Route path={PATH.LOGIN} element={<LoginPage />} />
+      <Route element={<AuthProtectedRoute />}>
+        <Route path={PATH.MY_PAGE} element={<MyInfoPage />} />
+      </Route>
     </Routes>
   );
 };
@@ -97,6 +103,7 @@ export const App = () => {
       tokenLocalStorageRepository,
       tokenStateRepository,
     }),
+    userService: implUserService({ apis }),
   };
 
   return (
