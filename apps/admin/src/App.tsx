@@ -1,19 +1,37 @@
 import './index.css';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { type ExternalCallParams, implApi } from '@waffle/api';
-import { Button } from '@waffle/design-system';
-import { useState } from 'react';
-import { useReducer } from 'react';
+import { Route, Routes } from 'react-router';
 
-import { implEchoService } from '@/services/echoService';
+import { PATH } from '@/entities/route';
+import { implEchoService } from '@/feature/echo';
+import { EchoPage } from '@/pages/EchoPage';
+import { LandingPage } from '@/pages/LandingPage';
+import { EnvContext } from '@/shared/context/EnvContext';
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
+
+const RouterProvider = () => {
+  return (
+    <Routes>
+      <Route path={PATH.INDEX} element={<LandingPage />} />
+      <Route path={PATH.ECHO} element={<EchoPage />} />
+    </Routes>
+  );
+};
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+});
 
 export const App = () => {
-  const [count, increment] = useReducer((c: number) => c + 1, 0);
-  const [message, setMessage] = useState('');
-  const ENV = {
-    API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
-    APP_ENV: import.meta.env.MODE as 'prod' | 'dev' | 'mock',
-  };
+  const ENV = useGuardContext(EnvContext);
 
   const externalCall = async (content: ExternalCallParams) => {
     const response = await fetch(
@@ -49,33 +67,16 @@ export const App = () => {
   };
 
   const apis = implApi({ externalCall });
-  const echoService = implEchoService({ apis });
 
-  const handleClickButton = async (input: string) => {
-    try {
-      const res = await echoService.sendMessage({ message: input });
-      if (res.type === 'success') {
-        setMessage(res.data.message);
-      } else {
-        console.error('Error:', res.message);
-      }
-    } catch (error) {
-      console.error('Unexpected Error:', error);
-    }
+  const services = {
+    echoService: implEchoService({ apis }),
   };
 
   return (
-    <div>
-      <button onClick={increment}>{count}</button>
-      <Button>와플의 버튼</Button>
-      <Button
-        onClick={() => {
-          void handleClickButton('Hello world!');
-        }}
-      >
-        버튼 누르기
-      </Button>
-      <p>{message}</p>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <ServiceContext.Provider value={services}>
+        <RouterProvider />
+      </ServiceContext.Provider>
+    </QueryClientProvider>
   );
 };
