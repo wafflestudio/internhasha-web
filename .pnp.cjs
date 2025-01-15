@@ -1931,6 +1931,7 @@ const RAW_RUNTIME_STATE =
           ["@types/react", "npm:18.3.11"],\
           ["@types/react-dom", "npm:18.3.1"],\
           ["@vitejs/plugin-react-swc", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:3.7.2"],\
+          ["@waffle/eslint-react", "workspace:packages/eslint-react"],\
           ["class-variance-authority", "npm:0.7.1"],\
           ["clsx", "npm:2.1.1"],\
           ["eslint", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:9.18.0"],\
@@ -1960,6 +1961,7 @@ const RAW_RUNTIME_STATE =
           ["@types/react", "npm:18.3.18"],\
           ["@types/react-dom", "virtual:59b935557bf5b8989946aa4c55abead07b2e0db239a800e9a2765b843a242f92eaf6a45fc570ae2a5db0fd58926852bd096ac7b3458d88db77fd959df8be20b5#npm:18.3.5"],\
           ["@vitejs/plugin-react-swc", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:3.7.2"],\
+          ["@waffle/eslint-react", "workspace:packages/eslint-react"],\
           ["class-variance-authority", "npm:0.7.1"],\
           ["clsx", "npm:2.1.1"],\
           ["eslint", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:9.18.0"],\
