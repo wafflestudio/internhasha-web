@@ -1931,12 +1931,16 @@ const RAW_RUNTIME_STATE =
           ["@types/react", "npm:18.3.11"],\
           ["@types/react-dom", "npm:18.3.1"],\
           ["@vitejs/plugin-react-swc", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:3.7.2"],\
+          ["@waffle/eslint-react", "workspace:packages/eslint-react"],\
+          ["class-variance-authority", "npm:0.7.1"],\
+          ["clsx", "npm:2.1.1"],\
           ["eslint", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:9.18.0"],\
           ["eslint-plugin-react-hooks", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:5.1.0"],\
           ["eslint-plugin-react-refresh", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:0.4.18"],\
           ["globals", "npm:15.14.0"],\
           ["react", "npm:18.3.1"],\
           ["react-dom", "virtual:9845906954fdbefbb879db24fa8772d77a945dca59f459806df47a5b67245d4bc6502880b373cca7201062c81bea9f13f699f52de2004c037e79dbdbd5d97fb3#npm:18.3.1"],\
+          ["tailwind-merge", "npm:2.6.0"],\
           ["typescript", "patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"],\
           ["typescript-eslint", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:8.19.1"],\
           ["vite", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:6.0.7"]\
@@ -1957,12 +1961,16 @@ const RAW_RUNTIME_STATE =
           ["@types/react", "npm:18.3.18"],\
           ["@types/react-dom", "virtual:59b935557bf5b8989946aa4c55abead07b2e0db239a800e9a2765b843a242f92eaf6a45fc570ae2a5db0fd58926852bd096ac7b3458d88db77fd959df8be20b5#npm:18.3.5"],\
           ["@vitejs/plugin-react-swc", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:3.7.2"],\
+          ["@waffle/eslint-react", "workspace:packages/eslint-react"],\
+          ["class-variance-authority", "npm:0.7.1"],\
+          ["clsx", "npm:2.1.1"],\
           ["eslint", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:9.18.0"],\
           ["eslint-plugin-react-hooks", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:5.1.0"],\
           ["eslint-plugin-react-refresh", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:0.4.18"],\
           ["globals", "npm:15.14.0"],\
           ["react", "npm:18.3.1"],\
           ["react-dom", "virtual:59b935557bf5b8989946aa4c55abead07b2e0db239a800e9a2765b843a242f92eaf6a45fc570ae2a5db0fd58926852bd096ac7b3458d88db77fd959df8be20b5#npm:18.3.1"],\
+          ["tailwind-merge", "npm:2.6.0"],\
           ["typescript", "patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"],\
           ["typescript-eslint", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:8.19.1"],\
           ["vite", "virtual:78d0d64477117dafc4ab0f50a04c6900168a3ecf0220af182ead2d02d978f27a73cecfabc6fb8ac97af3915c9ddb006a2727bf490eecfff8fad7b0cb2f00ec53#npm:6.0.7"]\
@@ -2552,6 +2560,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["class-variance-authority", [\
+      ["npm:0.7.1", {\
+        "packageLocation": "../../../.yarn/berry/cache/class-variance-authority-npm-0.7.1-74a7beaf7c-10c0.zip/node_modules/class-variance-authority/",\
+        "packageDependencies": [\
+          ["class-variance-authority", "npm:0.7.1"],\
+          ["clsx", "npm:2.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["cli-width", [\
       ["npm:4.1.0", {\
         "packageLocation": "../../../.yarn/berry/cache/cli-width-npm-4.1.0-c08b53be83-10c0.zip/node_modules/cli-width/",\
@@ -2597,6 +2615,15 @@ const RAW_RUNTIME_STATE =
           ["string-width", "npm:4.2.3"],\
           ["strip-ansi", "npm:6.0.1"],\
           ["wrap-ansi", "npm:7.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["clsx", [\
+      ["npm:2.1.1", {\
+        "packageLocation": "../../../.yarn/berry/cache/clsx-npm-2.1.1-96125b98be-10c0.zip/node_modules/clsx/",\
+        "packageDependencies": [\
+          ["clsx", "npm:2.1.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -5922,6 +5949,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../.yarn/berry/cache/supports-preserve-symlinks-flag-npm-1.0.0-f17c4d0028-10c0.zip/node_modules/supports-preserve-symlinks-flag/",\
         "packageDependencies": [\
           ["supports-preserve-symlinks-flag", "npm:1.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["tailwind-merge", [\
+      ["npm:2.6.0", {\
+        "packageLocation": "../../../.yarn/berry/cache/tailwind-merge-npm-2.6.0-9e4d2ba121-10c0.zip/node_modules/tailwind-merge/",\
+        "packageDependencies": [\
+          ["tailwind-merge", "npm:2.6.0"]\
         ],\
         "linkType": "HARD"\
       }]\
