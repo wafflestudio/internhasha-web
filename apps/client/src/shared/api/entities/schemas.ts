@@ -13,7 +13,7 @@ type UserDTO = {
   isAdmin: boolean;
   localId?: string;
   googleId?: string;
-}
+};
 
 type AuthorBriefDTO = {
   id: string;
@@ -75,7 +75,7 @@ type ResumeDTO = {
   content: string;
   phoneNumber: string;
   createdAt: string;
-}
+};
 
 // Params
 export type EchoParams = {
@@ -180,6 +180,4 @@ export type GoogleEmailResponse = {
 
 export type ResumeResponse = ResumeDTO;
 
-export type ResumeListResponse = [
-  coffees: ResumeDTO[],
-]
+export type ResumeListResponse = [coffees: ResumeDTO[]];

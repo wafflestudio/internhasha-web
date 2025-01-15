@@ -1,5 +1,5 @@
-import type {ServiceResponse} from "@/entities/response.ts";
-import type {Apis} from "@/shared/api";
+import type { ServiceResponse } from '@/entities/response.ts';
+import type { Apis } from '@/shared/api';
 import type { ResumeListResponse, ResumeResponse } from '@/shared/api/entities';
 
 export type ResumeService = {
@@ -109,7 +109,7 @@ export const implResumeService = ({ apis }: { apis: Apis }): ResumeService => ({
     const params = { resumeId };
     const { status, data } = await apis['DELETE /resume/:resumeId']({
       token,
-      params
+      params,
     });
 
     if (status === 200) {

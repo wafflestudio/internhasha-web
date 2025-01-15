@@ -20,7 +20,10 @@ import type {
   PostPathParams,
   PostsResponse,
   PretotypeUserSubmitRequest,
-  PretotypeUserSubmitResponse, ResumeIdParams, ResumeListResponse, ResumeResponse,
+  PretotypeUserSubmitResponse,
+  ResumeIdParams,
+  ResumeListResponse,
+  ResumeResponse,
   SendEmailCodeRequest,
   TokenResponse,
   UserResponse,
@@ -220,7 +223,7 @@ export const getApis = ({
     'POST /resume/:postId': ({
       token,
       params,
-      body
+      body,
     }: {
       token: string;
       params: PostIdParams;
@@ -230,7 +233,7 @@ export const getApis = ({
         method: 'POST',
         path: `resume/${params.postId}`,
         token,
-        body
+        body,
       });
     },
     'DELETE /resume/:resumeId': ({
@@ -247,4 +250,3 @@ export const getApis = ({
       });
     },
   }) satisfies Record<string, Api>;
-
