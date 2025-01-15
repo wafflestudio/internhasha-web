@@ -136,6 +136,11 @@ export type CheckLocalIdDuplicateRequest = {
 
 export type CreateAndUpdatePostRequest = PostDTO;
 
+export type ApplyCoffeeChatRequest = {
+  phoneNumber: string;
+  content: string;
+};
+
 // Response
 export type PretotypeUserSubmitResponse = {
   email: string;

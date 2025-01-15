@@ -5,6 +5,7 @@ import type {
   SuccessResponse,
 } from '@/shared/api/entities/params';
 import type {
+  ApplyCoffeeChatRequest,
   CheckLocalIdDuplicateRequest,
   CreateAndUpdatePostRequest,
   EchoParams,
@@ -214,7 +215,36 @@ export const getApis = ({
         method: 'GET',
         path: 'resume',
         token,
-      })
+      });
+    },
+    'POST /resume/:postId': ({
+      token,
+      params,
+      body
+    }: {
+      token: string;
+      params: PostIdParams;
+      body: ApplyCoffeeChatRequest;
+    }) => {
+      return callWithToken<SuccessResponse<ResumeResponse>>({
+        method: 'POST',
+        path: `resume/${params.postId}`,
+        token,
+        body
+      });
+    },
+    'DELETE /resume/:resumeId': ({
+      token,
+      params,
+    }: {
+      token: string;
+      params: ResumeIdParams;
+    }) => {
+      return callWithToken<SuccessResponse<void>>({
+        method: 'DELETE',
+        path: `resume/${params.resumeId}`,
+        token,
+      });
     },
   }) satisfies Record<string, Api>;
 
