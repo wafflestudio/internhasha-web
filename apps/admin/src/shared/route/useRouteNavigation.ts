@@ -4,7 +4,7 @@ import { PATH } from '@/entities/route';
 
 export const useRouteNavigation = () => {
   const navigate = useNavigate();
-  const { INDEX, ECHO, LOGIN } = PATH;
+  const { INDEX, ECHO, LOGIN, CREATE_POST } = PATH;
 
   return {
     toMain: () => {
@@ -15,6 +15,9 @@ export const useRouteNavigation = () => {
     },
     toLogin: () => {
       void navigate(LOGIN);
+    },
+    toCreatePost: () => {
+      void navigate(CREATE_POST);
     },
   };
 };
