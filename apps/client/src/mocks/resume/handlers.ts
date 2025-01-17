@@ -1,19 +1,27 @@
 import { http } from 'msw';
 
-import { postsResolver } from '@/mocks/post/resolvers.ts';
-import type {
-  PostDetailResponse,
-  PostsResponse,
-} from '@/mocks/post/schemas.ts';
+import { resumeResolver } from '@/mocks/resume/resolvers';
+import type {ResumeListResponse, ResumeResponse} from "@/mocks/resume/schemas.ts";
+
 
 export const resumeHandlers = [
-  http.get<never, never, PostsResponse>('*/api/post', postsResolver.posts),
-  http.get<never, never, PostDetailResponse>(
-    '*/api/post/1',
-    postsResolver.postDetail1,
+  http.get<never, never, ResumeListResponse>(
+    '*/api/resume',
+    resumeResolver.getResumeList
   ),
-  http.get<never, never, PostDetailResponse>(
-    '*/api/post/2',
-    postsResolver.postDetail2,
+
+  http.get<never, never, ResumeResponse>(
+    '*/api/resume/:resumeId',
+    resumeResolver.getResumeDetail
+  ),
+
+  http.post(
+    '*/api/resume/:postId',
+    resumeResolver.applyCoffeeChat
+  ),
+
+  http.delete(
+    '*/api/resume/:resumeId',
+    resumeResolver.deleteCoffeeChat
   ),
 ];
