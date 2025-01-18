@@ -9,7 +9,7 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
 
 export const PostPage = () => {
   const { postId } = useParams<{ postId: string }>();
-  const { toMain } = useRouteNavigation();
+  const { toMain, toApplyCoffeeChat } = useRouteNavigation();
 
   // url parameter 가 잘못되었을 경우 어떻게?
   if (postId === undefined) {
@@ -57,6 +57,21 @@ export const PostPage = () => {
         }}
       >
         ← 메인 페이지로
+      </Button>
+
+      <Button
+        onClick={() => {
+          toApplyCoffeeChat({ postId });
+        }}
+        style={{
+          marginBottom: '20px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '8px 16px',
+        }}
+      >
+        커피챗 신청하기
       </Button>
 
       {/* 헤더 섹션 */}

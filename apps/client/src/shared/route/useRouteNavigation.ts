@@ -33,7 +33,7 @@ export const useRouteNavigation = () => {
     SIGN_UP_COMPLETE,
   } = PATH;
 
-  const { POST } = HREF;
+  const { POST, APPLY_COFFEE_CHAT } = HREF;
 
   return {
     toMain: () => {
@@ -60,5 +60,8 @@ export const useRouteNavigation = () => {
     toSignUpComplete: () => {
       void navigate(SIGN_UP_COMPLETE);
     },
+    toApplyCoffeeChat: ({ postId }: { postId: string }) => {
+      void navigate(APPLY_COFFEE_CHAT(postId));
+    }
   };
 };

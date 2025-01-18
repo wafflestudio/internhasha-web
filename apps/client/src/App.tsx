@@ -27,6 +27,7 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { implTokenLocalStorage } from '@/shared/token/localstorage';
 import { implTokenState } from '@/shared/token/state';
+import {ApplyCoffeeChatPage} from "@/pages/LandingPage/PostPage/ApplyCoffeeChatPage";
 
 const RouterProvider = () => {
   return (
@@ -42,6 +43,7 @@ const RouterProvider = () => {
       <Route element={<AuthProtectedRoute />}>
         <Route path={PATH.MY_PAGE} element={<MyPage />} />
       </Route>
+      <Route path={PATH.APPLY_COFFEE_CHAT} element={<ApplyCoffeeChatPage />} />
     </Routes>
   );
 };

@@ -8,8 +8,10 @@ export const PATH = {
   SIGN_UP_COMPLETE: '/signup/complete',
   VERIFY_EMAIL: '/verify-email',
   MY_PAGE: '/mypage',
+  APPLY_COFFEE_CHAT: '/post/:postId/applyCoffeeChat',
 };
 
 export const HREF = {
   POST: (postId: string) => `/post/${postId}`,
+  APPLY_COFFEE_CHAT: (postId: string) => `/post/${postId}/applyCoffeeChat`,
 };
