@@ -14,7 +14,7 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LandingPage = () => {
-  const { toEcho, toSignUpSelect, toSignInSelect, toPost } =
+  const { toEcho, toSignUpSelect, toSignInSelect, toPost, toCoffeeChatList } =
     useRouteNavigation();
 
   const [filterElements, setFilterElements] = useState<FilterElements>({
@@ -56,6 +56,10 @@ export const LandingPage = () => {
       <Button onClick={hanldeClickLogoutButton} disabled={isPending}>
         로그아웃
       </Button>
+      <Button onClick={toCoffeeChatList} disabled={isPending}>
+        커피챗 목록
+      </Button>
+
 
       <Button
         onClick={() => {

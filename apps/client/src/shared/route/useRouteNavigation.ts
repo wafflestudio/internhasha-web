@@ -31,6 +31,7 @@ export const useRouteNavigation = () => {
     VERIFY_EMAIL,
     SIGN_UP_LOCAL,
     SIGN_UP_COMPLETE,
+    COFFEE_CHAT_LIST,
   } = PATH;
 
   const { POST, APPLY_COFFEE_CHAT } = HREF;
@@ -62,6 +63,9 @@ export const useRouteNavigation = () => {
     },
     toApplyCoffeeChat: ({ postId }: { postId: string }) => {
       void navigate(APPLY_COFFEE_CHAT(postId));
+    },
+    toCoffeeChatList: () => {
+      void navigate(COFFEE_CHAT_LIST)
     }
   };
 };

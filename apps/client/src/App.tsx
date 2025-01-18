@@ -9,7 +9,9 @@ import { PATH } from '@/entities/route';
 import { EchoPage } from '@/pages/EchoPage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
+import { CoffeeChatListPage } from '@/pages/LandingPage/CoffeeChatListPage';
 import { PostPage } from '@/pages/LandingPage/PostPage';
+import { ApplyCoffeeChatPage } from '@/pages/LandingPage/PostPage/ApplyCoffeeChatPage';
 import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
 import { MyPage } from '@/pages/MyPage';
 import { SignInSelectPage } from '@/pages/SignInSelectPage';
@@ -27,7 +29,6 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { implTokenLocalStorage } from '@/shared/token/localstorage';
 import { implTokenState } from '@/shared/token/state';
-import {ApplyCoffeeChatPage} from "@/pages/LandingPage/PostPage/ApplyCoffeeChatPage";
 
 const RouterProvider = () => {
   return (
@@ -44,6 +45,7 @@ const RouterProvider = () => {
         <Route path={PATH.MY_PAGE} element={<MyPage />} />
       </Route>
       <Route path={PATH.APPLY_COFFEE_CHAT} element={<ApplyCoffeeChatPage />} />
+      <Route path={PATH.COFFEE_CHAT_LIST} element={<CoffeeChatListPage />} />
     </Routes>
   );
 };
