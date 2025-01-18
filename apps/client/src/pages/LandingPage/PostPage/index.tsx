@@ -260,7 +260,6 @@ const useGetPostDetail = ({ postId }: { postId: string }) => {
     queryKey: ['post', token] as const,
     queryFn: ({ queryKey: [, t] }) => {
       if (t === null) {
-        // 나중에 optional token call 만들기
         return postService.getPostDetail({ token: '', postId: postId });
       }
       return postService.getPostDetail({ token: t, postId: postId });

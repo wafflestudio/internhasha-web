@@ -9,7 +9,7 @@ import { PATH } from '@/entities/route';
 import { EchoPage } from '@/pages/EchoPage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
-import { CoffeeChatListPage } from '@/pages/LandingPage/CoffeeChatListPage';
+import { ResumeListPage } from '@/pages/LandingPage/CoffeeChatListPage';
 import { PostPage } from '@/pages/LandingPage/PostPage';
 import { ApplyCoffeeChatPage } from '@/pages/LandingPage/PostPage/ApplyCoffeeChatPage';
 import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
@@ -20,6 +20,7 @@ import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
 import { implAuthService } from '@/service/authService';
 import { implEchoService } from '@/service/echoService';
 import { implPostService } from '@/service/postService.ts';
+import {implResumeService} from "@/service/resumeService.ts";
 import { implUserService } from '@/service/userService';
 import { type ExternalCallParams, implApi } from '@/shared/api';
 import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
@@ -45,7 +46,7 @@ const RouterProvider = () => {
         <Route path={PATH.MY_PAGE} element={<MyPage />} />
       </Route>
       <Route path={PATH.APPLY_COFFEE_CHAT} element={<ApplyCoffeeChatPage />} />
-      <Route path={PATH.COFFEE_CHAT_LIST} element={<CoffeeChatListPage />} />
+      <Route path={PATH.COFFEE_CHAT_LIST} element={<ResumeListPage />} />
     </Routes>
   );
 };
@@ -114,6 +115,7 @@ export const App = () => {
     authService: implAuthService({ apis, tokenState, tokenLocalStorage }),
     postService: implPostService({ apis }),
     userService: implUserService({ apis }),
+    resumeService: implResumeService({ apis }),
   };
 
   return (

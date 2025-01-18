@@ -8,7 +8,6 @@ interface UseGetPostsProps {
   roles?: string[];
   investmentMax?: number;
   investmentMin?: number;
-  investor?: string;
   pathStatus?: number;
 }
 
@@ -17,7 +16,6 @@ export const useGetPosts = ({
   roles,
   investmentMax,
   investmentMin,
-  investor,
   pathStatus,
 }: UseGetPostsProps) => {
   const { postService } = useGuardContext(ServiceContext);
@@ -30,7 +28,6 @@ export const useGetPosts = ({
       roles,
       investmentMax,
       investmentMin,
-      investor,
       pathStatus,
     ],
     queryFn: async () => {
@@ -39,7 +36,6 @@ export const useGetPosts = ({
         roles,
         investmentMax,
         investmentMin,
-        investor,
         pathStatus,
       });
       if (response.type === 'success') {
