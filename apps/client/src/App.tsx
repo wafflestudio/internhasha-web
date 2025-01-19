@@ -4,13 +4,13 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Route, Routes } from 'react-router';
+import { CoffeeChatListPage } from 'src/pages/LandingPage/CoffeeChatListPage';
+import { CoffeeChatDetailPage } from 'src/pages/LandingPage/CoffeeChatListPage/CoffeeChatDetailPage';
 
 import { PATH } from '@/entities/route';
 import { EchoPage } from '@/pages/EchoPage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
-import { CoffeeChatListPage } from 'src/pages/LandingPage/CoffeeChatListPage';
-import { CoffeeChatDetailPage } from 'src/pages/LandingPage/CoffeeChatListPage/CoffeeChatDetailPage';
 import { PostPage } from '@/pages/LandingPage/PostPage';
 import { ApplyCoffeeChatPage } from '@/pages/LandingPage/PostPage/ApplyCoffeeChatPage';
 import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
