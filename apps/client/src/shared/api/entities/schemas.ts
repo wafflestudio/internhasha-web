@@ -38,7 +38,7 @@ type RoleDTO = {
 type Link = {
   link: string;
   description: string;
-}
+};
 
 type PostDTO = {
   id: string;
@@ -52,13 +52,7 @@ type PostDTO = {
   imageLink?: string;
   investAmount?: number;
   investCompany: string[];
-  series:
-    'SEED' |
-    'PRE_A' |
-    'A' |
-    'B' |
-    'C' |
-    'D';
+  series: 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
   IRDeckLink?: string;
   landingPageLink?: string;
   externalDescriptionLink?: Link[];
@@ -78,13 +72,7 @@ export type PostBriefDTO = {
   imageLink?: string;
   investAmount?: number;
   investCompany: string[];
-  series:
-    'SEED' |
-    'PRE_A' |
-    'A' |
-    'B' |
-    'C' |
-    'D';
+  series: 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
   isActive: boolean;
   employmentEndDate: string;
 };

@@ -4,7 +4,8 @@ import { mockResumes } from '@/mocks/resume/data';
 import type {
   ResumeDTO,
   ResumeListResponse,
-  ResumeResponse} from '@/mocks/resume/schemas.ts';
+  ResumeResponse,
+} from '@/mocks/resume/schemas.ts';
 
 type ResumeResolver = {
   getResumeList: HttpResponseResolver<never, never, ResumeListResponse>;
@@ -60,7 +61,7 @@ export const resumeResolver: ResumeResolver = {
     if (!resumeExists) {
       return HttpResponse.json(
         { error: '이력서를 찾을 수 없습니다.' },
-        { status: 404 }
+        { status: 404 },
       );
     }
 

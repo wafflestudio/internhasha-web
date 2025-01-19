@@ -65,10 +65,10 @@ export const useRouteNavigation = () => {
       void navigate(APPLY_COFFEE_CHAT(postId));
     },
     toCoffeeChatList: () => {
-      void navigate(COFFEE_CHAT_LIST)
+      void navigate(COFFEE_CHAT_LIST);
     },
     toCoffeeChatDetail: ({ resumeId }: { resumeId: string }) => {
       void navigate(COFFEE_CHAT_DETAIL(resumeId));
-    }
+    },
   };
 };

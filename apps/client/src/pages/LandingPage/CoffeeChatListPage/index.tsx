@@ -1,8 +1,8 @@
-import {useQuery} from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
 
-import {useGuardContext} from "@/shared/context/hooks.ts";
-import {ServiceContext} from "@/shared/context/ServiceContext.ts";
-import {TokenContext} from "@/shared/context/TokenContext.ts";
+import { useGuardContext } from '@/shared/context/hooks.ts';
+import { ServiceContext } from '@/shared/context/ServiceContext.ts';
+import { TokenContext } from '@/shared/context/TokenContext.ts';
 
 export const CoffeeChatListPage = () => {
   const { resumeListData } = useGetCoffeeChatList();

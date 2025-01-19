@@ -60,7 +60,6 @@ export const LandingPage = () => {
         커피챗 목록
       </Button>
 
-
       <Button
         onClick={() => {
           setIsFilterModalOpen(true);
