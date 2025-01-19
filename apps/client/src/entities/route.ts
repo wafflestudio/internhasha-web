@@ -9,10 +9,12 @@ export const PATH = {
   VERIFY_EMAIL: '/verify-email',
   MY_PAGE: '/mypage',
   APPLY_COFFEE_CHAT: '/post/:postId/applyCoffeeChat',
-  COFFEE_CHAT_LIST: '/resume'
+  COFFEE_CHAT_LIST: '/resume',
+  COFFEE_CHAT_DETAIL: '/resume/:resumeId',
 };
 
 export const HREF = {
   POST: (postId: string) => `/post/${postId}`,
   APPLY_COFFEE_CHAT: (postId: string) => `/post/${postId}/applyCoffeeChat`,
+  COFFEE_CHAT_DETAIL: (resumeId: string) => `/resume/${resumeId}`,
 };

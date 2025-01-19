@@ -34,7 +34,7 @@ export const useRouteNavigation = () => {
     COFFEE_CHAT_LIST,
   } = PATH;
 
-  const { POST, APPLY_COFFEE_CHAT } = HREF;
+  const { POST, APPLY_COFFEE_CHAT, COFFEE_CHAT_DETAIL } = HREF;
 
   return {
     toMain: () => {
@@ -66,6 +66,9 @@ export const useRouteNavigation = () => {
     },
     toCoffeeChatList: () => {
       void navigate(COFFEE_CHAT_LIST)
+    },
+    toCoffeeChatDetail: ({ resumeId }: { resumeId: string }) => {
+      void navigate(COFFEE_CHAT_DETAIL(resumeId));
     }
   };
 };

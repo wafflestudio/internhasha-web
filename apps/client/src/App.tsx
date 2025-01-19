@@ -10,6 +10,7 @@ import { EchoPage } from '@/pages/EchoPage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { ResumeListPage } from '@/pages/LandingPage/CoffeeChatListPage';
+import {CoffeeChatDetailPage} from "@/pages/LandingPage/CoffeeChatListPage/CoffeeChatDetailPage";
 import { PostPage } from '@/pages/LandingPage/PostPage';
 import { ApplyCoffeeChatPage } from '@/pages/LandingPage/PostPage/ApplyCoffeeChatPage';
 import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
@@ -47,6 +48,7 @@ const RouterProvider = () => {
       </Route>
       <Route path={PATH.APPLY_COFFEE_CHAT} element={<ApplyCoffeeChatPage />} />
       <Route path={PATH.COFFEE_CHAT_LIST} element={<ResumeListPage />} />
+      <Route path={PATH.COFFEE_CHAT_DETAIL} element={<CoffeeChatDetailPage />} />
     </Routes>
   );
 };
