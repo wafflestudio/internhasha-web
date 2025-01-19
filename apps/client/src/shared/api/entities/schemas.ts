@@ -35,20 +35,27 @@ type RoleDTO = {
   headcount: string;
 };
 
+type Link = {
+  link: string;
+  description: string;
+};
+
 type PostDTO = {
   id: string;
   companyName: string;
   email: string;
   author: AuthorBriefDTO;
+  slogan: string;
   explanation: string;
   tags: string[];
   roles: RoleDTO[];
   imageLink?: string;
   investAmount?: number;
   investCompany: string[];
+  series: 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
   IRDeckLink?: string;
   landingPageLink?: string;
-  externalDescriptionLink?: string[];
+  externalDescriptionLink?: Link[];
   isActive: boolean;
   employmentEndDate: string;
 };
@@ -58,12 +65,14 @@ export type PostBriefDTO = {
   companyName: string;
   email: string;
   author: AuthorBriefDTO;
+  slogan: string;
   explanation: string;
   tags: string[];
   roles: RoleDTO[];
   imageLink?: string;
   investAmount?: number;
   investCompany: string[];
+  series: 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
   isActive: boolean;
   employmentEndDate: string;
 };
@@ -180,4 +189,4 @@ export type GoogleEmailResponse = {
 
 export type ResumeResponse = ResumeDTO;
 
-export type ResumeListResponse = [coffees: ResumeDTO[]];
+export type ResumeListResponse = { resumeList: ResumeDTO[] };

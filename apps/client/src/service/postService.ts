@@ -12,14 +12,12 @@ export type PostService = {
     roles,
     investmentMax,
     investmentMin,
-    investor,
     pathStatus,
   }: {
     page?: number;
     roles?: string[];
     investmentMax?: number;
     investmentMin?: number;
-    investor?: string;
     pathStatus?: number;
   }) => ServiceResponse<PostsResponse>;
   getPostDetail: ({
@@ -53,14 +51,12 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     roles,
     investmentMax,
     investmentMin,
-    investor,
     pathStatus,
   }: {
     page?: number;
     roles?: string[];
     investmentMax?: number;
     investmentMin?: number;
-    investor?: string;
     pathStatus?: number;
   }) => {
     const postPath = new URLSearchParams();
@@ -75,7 +71,6 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
       postPath.append('investmentMax', investmentMax.toString());
     if (investmentMin !== undefined)
       postPath.append('investmentMin', investmentMin.toString());
-    if (investor !== undefined) postPath.append('investor', investor);
     if (pathStatus !== undefined)
       postPath.append('status', pathStatus.toString());
 
