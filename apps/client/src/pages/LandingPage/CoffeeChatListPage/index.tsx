@@ -4,8 +4,8 @@ import {useGuardContext} from "@/shared/context/hooks.ts";
 import {ServiceContext} from "@/shared/context/ServiceContext.ts";
 import {TokenContext} from "@/shared/context/TokenContext.ts";
 
-export const ResumeListPage = () => {
-  const { resumeListData } = useGetResumeList();
+export const CoffeeChatListPage = () => {
+  const { resumeListData } = useGetCoffeeChatList();
 
   if (resumeListData === undefined) {
     return <div>로딩중...</div>;
@@ -17,7 +17,7 @@ export const ResumeListPage = () => {
     );
   }
 
-  const { coffees: resumeList } = resumeListData.data;
+  const { resumeList: resumeList } = resumeListData.data;
 
   return (
     <div>
@@ -36,7 +36,7 @@ export const ResumeListPage = () => {
   );
 };
 
-const useGetResumeList = () => {
+const useGetCoffeeChatList = () => {
   const { token } = useGuardContext(TokenContext);
   const { resumeService } = useGuardContext(ServiceContext);
 

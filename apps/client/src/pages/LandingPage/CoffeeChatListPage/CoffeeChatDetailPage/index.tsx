@@ -1,11 +1,18 @@
 import {useQuery} from "@tanstack/react-query";
+import {useParams} from "react-router";
 
 import {useGuardContext} from "@/shared/context/hooks.ts";
 import {ServiceContext} from "@/shared/context/ServiceContext.ts";
 import {TokenContext} from "@/shared/context/TokenContext.ts";
 
 
-export const CoffeeChatDetailPage = ({ resumeId }: { resumeId: string }) => {
+export const CoffeeChatDetailPage = () => {
+  const { resumeId } = useParams<{ resumeId: string }>();
+
+  if (resumeId === undefined) {
+    throw new Error('잘못된 접근입니다.');
+  }
+
   const { resumeDetailData } = useGetCoffeeChatDetail({ resumeId });
 
   if (resumeDetailData === undefined) {
