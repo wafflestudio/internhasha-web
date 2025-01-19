@@ -10,16 +10,17 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
   const {
     id,
     companyName,
-    explanation,
-    tags,
-    roles,
+    slogan,
+    title,
+    series,
+    category,
     isActive,
     imageLink,
     investAmount,
     employmentEndDate,
+    headcount,
+    isAlways,
   } = post;
-
-  const validDate = employmentEndDate.slice(0, 23);
 
   return (
     <div
@@ -45,30 +46,15 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
           overflow: 'hidden',
         }}
       >
-        {imageLink != null ? (
-          <img
-            src={imageLink}
-            alt={companyName}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
-          />
-        ) : (
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: '#f0f0f0',
-            }}
-          >
-            No Image
-          </div>
-        )}
+        <img
+          src={imageLink}
+          alt={companyName}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        />
       </div>
 
       {/* 회사 정보 */}
@@ -77,98 +63,90 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
           style={{
             fontSize: '18px',
             fontWeight: 'bold',
-            marginBottom: '8px',
+            marginBottom: '4px',
           }}
         >
           {companyName}
         </h3>
 
-        {/* 태그 목록 */}
-        <div
+        {/* 슬로건 */}
+        <p
           style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '4px',
-            marginBottom: '8px',
+            fontSize: '14px',
+            color: '#666',
+            marginBottom: '12px',
           }}
         >
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              style={{
-                padding: '4px 8px',
-                backgroundColor: '#f0f0f0',
-                borderRadius: '4px',
-                fontSize: '12px',
-              }}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+          {slogan}
+        </p>
 
-        {/* 역할 목록 */}
+        {/* 채용 공고 제목 */}
+        <h4
+          style={{
+            fontSize: '16px',
+            fontWeight: 'bold',
+            marginBottom: '8px',
+            color: '#1a73e8',
+          }}
+        >
+          {title}
+        </h4>
+
+        {/* 시리즈 & 카테고리 */}
         <div
           style={{
             display: 'flex',
-            flexWrap: 'wrap',
-            gap: '4px',
+            gap: '8px',
             marginBottom: '8px',
           }}
         >
-          {roles.map((role) => (
-            <span
-              key={role.id}
-              style={{
-                padding: '4px 8px',
-                backgroundColor: '#e3f2fd',
-                borderRadius: '4px',
-                fontSize: '12px',
-              }}
-            >
-              {role.category}
-            </span>
-          ))}
+          <span
+            style={{
+              padding: '4px 8px',
+              backgroundColor: '#e3f2fd',
+              borderRadius: '4px',
+              fontSize: '12px',
+            }}
+          >
+            Series {series}
+          </span>
+          <span
+            style={{
+              padding: '4px 8px',
+              backgroundColor: '#e8f5e9',
+              borderRadius: '4px',
+              fontSize: '12px',
+            }}
+          >
+            {category}
+          </span>
         </div>
 
         {/* 투자 정보 */}
-        {investAmount != null && (
-          <p style={{ fontSize: '14px', marginBottom: '8px' }}>
+        {(investAmount != null) && (
+          <p style={{ fontSize: '14px', marginBottom: '4px' }}>
             투자금액: {investAmount.toLocaleString()}만원
           </p>
         )}
 
-        {/* 채용 마감일 */}
-        <p
+        {/* 채용 정보 */}
+        <div
           style={{
             fontSize: '14px',
-            color: isActive ? 'green' : 'red',
             marginBottom: '12px',
           }}
         >
-          마감일: {new Date(validDate).toLocaleDateString()}
-        </p>
-
-        {/* 설명 */}
-        <p
-          style={{
-            fontSize: '14px',
-            marginBottom: '16px',
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          {explanation}
-        </p>
+          <p>채용 인원: {headcount}명</p>
+          <p style={{
+            color: isActive ? 'green' : 'red',
+          }}>
+            {isAlways ? '상시 채용' : `마감일: ${new Date(employmentEndDate).toLocaleDateString()}`}
+          </p>
+        </div>
 
         {/* 상세보기 버튼 */}
         <Button
-          onClick={() => {
-            onDetailClick(id);
-          }}
+          onClick={() => { onDetailClick(id); }}
           style={{
             width: '100%',
           }}

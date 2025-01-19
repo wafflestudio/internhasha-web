@@ -54,7 +54,7 @@ type PostDTO = {
   landingPageLink?: string;
   imageLink?: string;
   externalDescriptionLink?: Link[];
-  tags: string[];
+  tags?: string[];
 
   // post 정보
   title: string;
