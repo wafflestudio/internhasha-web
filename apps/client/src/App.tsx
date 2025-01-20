@@ -27,6 +27,7 @@ import { implPostService } from '@/service/postService.ts';
 import { implResumeService } from '@/service/resumeService.ts';
 import { implUserService } from '@/service/userService';
 import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
+import { CompanyProtectedRoute } from '@/shared/auth/CompanyProtectedRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -53,6 +54,8 @@ const RouterProvider = () => {
       />
       <Route element={<AuthProtectedRoute />}>
         <Route path={PATH.MY_PAGE} element={<MyPage />} />
+      </Route>
+      <Route element={<CompanyProtectedRoute />}>
         <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
         <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
       </Route>
