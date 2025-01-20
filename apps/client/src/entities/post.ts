@@ -7,7 +7,7 @@ export type RoleCategory =
   | 'BACKEND'
   | 'DESIGN'
   | 'DATA'
-  | 'MARKETER'
+  | 'MARKETING'
   | 'OTHERS';
 
 export type FilterElements = {
@@ -68,6 +68,6 @@ export const ROLE_CATEGORY_LIST: RoleCategory[] = [
   'BACKEND',
   'DESIGN',
   'DATA',
-  'MARKETER',
+  'MARKETING',
   'OTHERS',
 ];

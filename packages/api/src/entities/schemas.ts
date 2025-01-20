@@ -29,7 +29,7 @@ type RoleDTO = {
     | "OTHERS"
     | "DESIGN"
     | "DATA"
-    | "MARKETER";
+    | "MARKETING";
   detail: string;
   headcount: string;
 };
