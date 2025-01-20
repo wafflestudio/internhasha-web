@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { Button } from '@/components/button';
 import type { FilterElements } from '@/entities/post.ts';
-import { FilterSection } from '@/pages/LandingPage/FilterModal.tsx';
+import { FilterSection } from '@/pages/LandingPage/FilterSection.tsx';
 import { Pagination } from '@/pages/LandingPage/Pagination.tsx';
 import { PostCard } from '@/pages/LandingPage/PostCard.tsx';
 import { useGetPosts } from '@/pages/LandingPage/useGetPosts.ts';

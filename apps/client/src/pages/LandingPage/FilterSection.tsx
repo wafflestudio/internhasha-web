@@ -1,3 +1,5 @@
+import { SelectContainerWithOptions } from '@waffle/design-system';
+
 import {
   type FilterElements,
   ROLE_CATEGORY_LIST,
@@ -54,50 +56,40 @@ export const FilterSection = ({
   return (
     <div className="filter-section" style={{ marginBottom: '20px' }}>
       <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-        {/* 모집 상태 필터 */}
-        <div>
-          <select
-            value={filterElements.pathStatus ?? ''}
-            onChange={(e) => {
-              const selected = parseInt(e.target.value, 10);
-              onChangeFilters({
-                ...filterElements,
-                pathStatus:
-                  selected === 0 || selected === 1 || selected === 2
-                    ? selected
-                    : undefined,
-              });
-            }}
-          >
-            <option value="0">모집중</option>
-            <option value="1">모집완료</option>
-            <option value="2">전체</option>
-          </select>
-        </div>
+        <SelectContainerWithOptions
+          id="pathStatus"
+          value={filterElements.pathStatus}
+          options={[
+            { value: 0, label: '전체' },
+            { value: 1, label: '모집 중' },
+            { value: 2, label: '모집 완료' },
+          ]}
+          onChange={(value) => {
+            onChangeFilters({
+              ...filterElements,
+              pathStatus: typeof value === 'number' ? value : undefined,
+            });
+          }}
+          label="모집 상태"
+        />
 
-        {/* 투자금액 필터 */}
-        <div>
-          <select
-            value={getCurrentInvestmentRange()}
-            onChange={(e) => {
-              const selectedLabel = e.target.value;
-              const range = INVESTMENT_RANGES.find(
-                (r) => r.label === selectedLabel,
-              );
-              onChangeFilters({
-                ...filterElements,
-                investmentMin: range?.min,
-                investmentMax: range?.max,
-              });
-            }}
-          >
-            {INVESTMENT_RANGES.map((range) => (
-              <option key={range.label} value={range.label}>
-                {range.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        <SelectContainerWithOptions
+          id="investmentRange"
+          value={getCurrentInvestmentRange()}
+          options={INVESTMENT_RANGES.map((range) => ({
+            value: range.label,
+            label: range.label,
+          }))}
+          onChange={(value) => {
+            const range = INVESTMENT_RANGES.find((r) => r.label === value);
+            onChangeFilters({
+              ...filterElements,
+              investmentMin: range?.min,
+              investmentMax: range?.max,
+            });
+          }}
+          label="투자금액"
+        />
       </div>
 
       {/* 직무 체크박스 */}
