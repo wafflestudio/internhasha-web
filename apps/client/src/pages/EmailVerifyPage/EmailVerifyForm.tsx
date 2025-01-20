@@ -212,19 +212,10 @@ export const EmailVerifyForm = () => {
         </div>
       </FormContainer>
       {showModal === 'ADD' && body.authProvider === 'GOOGLE' && (
-        <AddGoogleSignUpModal
-          body={{ token: body.token, snuMail: snuMail.postfix }}
-        />
+        <AddGoogleSignUpModal />
       )}
       {showModal === 'ADD' && body.authProvider === 'LOCAL' && (
-        <AddLocalSignUpModal
-          body={{
-            localId: body.localId,
-            password: body.password,
-            username: body.username,
-            snuMail: snuMail.postfix,
-          }}
-        />
+        <AddLocalSignUpModal />
       )}
       {showModal === 'REDIRECT' && <RedirectSignInModal />}
     </>
@@ -408,9 +399,13 @@ const useGoogleSignUp = ({
 
   const { mutate: googleSignUp, isPending } = useMutation({
     mutationFn: ({ snuMail, token }: { snuMail: string; token: string }) => {
-      return authService.googleSignUp({
-        snuMail,
-        googleAccessToken: token,
+      return authService.signUp({
+        authType: 'SOCIAL_APPLICANT',
+        info: {
+          provider: 'google',
+          snuMail,
+          token,
+        },
       });
     },
     onSuccess: (response) => {
@@ -462,7 +457,10 @@ const useLocalSignUp = ({
       localId: string;
       password: string;
     }) => {
-      return authService.localSignUp({ username, snuMail, localId, password });
+      return authService.signUp({
+        authType: 'LOCAL_APPLICANT',
+        info: { name: username, snuMail, localLoginId: localId, password },
+      });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {

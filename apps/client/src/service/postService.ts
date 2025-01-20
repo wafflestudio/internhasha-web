@@ -1,10 +1,8 @@
+import type { Apis } from '@waffle/api';
+
+import type { Paginator } from '@/entities/paginator';
+import type { BriefPost, Post } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response.ts';
-import type { Apis } from '@/shared/api';
-import type {
-  CreateAndUpdatePostRequest,
-  PostDetailResponse,
-  PostsResponse,
-} from '@/shared/api/entities';
 
 export type PostService = {
   getPosts: ({
@@ -19,21 +17,24 @@ export type PostService = {
     investmentMax?: number;
     investmentMin?: number;
     pathStatus?: number;
-  }) => ServiceResponse<PostsResponse>;
+  }) => ServiceResponse<{
+    posts: BriefPost[];
+    paginator: Paginator;
+  }>;
   getPostDetail: ({
     postId,
     token,
   }: {
     postId: string;
     token: string;
-  }) => ServiceResponse<PostDetailResponse>;
+  }) => ServiceResponse<Post>;
   createPost: ({
     token,
     postContents,
   }: {
     token: string;
-    postContents: CreateAndUpdatePostRequest;
-  }) => ServiceResponse<PostDetailResponse>;
+    postContents: Post;
+  }) => ServiceResponse<Post>;
   updatePost: ({
     postId,
     token,
@@ -41,8 +42,8 @@ export type PostService = {
   }: {
     postId: string;
     token: string;
-    postContents: CreateAndUpdatePostRequest;
-  }) => ServiceResponse<PostDetailResponse>;
+    postContents: Post;
+  }) => ServiceResponse<Post>;
 };
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
@@ -113,7 +114,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     postContents,
   }: {
     token: string;
-    postContents: CreateAndUpdatePostRequest;
+    postContents: Post;
   }) => {
     const { status, data } = await apis['POST /admin/post']({
       token: token,
@@ -136,7 +137,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
   }: {
     token: string;
     postId: string;
-    postContents: CreateAndUpdatePostRequest;
+    postContents: Post;
   }) => {
     const params = { postId };
     const { status, data } = await apis['PATCH /admin/post/:postId']({

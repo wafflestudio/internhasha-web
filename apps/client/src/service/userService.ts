@@ -1,6 +1,7 @@
+import type { Apis } from '@waffle/api';
+
 import type { ServiceResponse } from '@/entities/response';
 import type { User } from '@/entities/user';
-import type { Apis } from '@/shared/api';
 
 export type UserService = {
   getMyInfo({

@@ -5,6 +5,14 @@ type UserBriefDTO = {
   isAdmin: boolean;
 };
 
+type UserDTO = {
+  id: string;
+  snuMail: string;
+  username: string;
+  phoneNumber?: string;
+  isAdmin: boolean;
+};
+
 type AuthorBriefDTO = {
   id: string;
   name: string;
@@ -18,6 +26,7 @@ type RoleDTO = {
     | "FRONT"
     | "APP"
     | "BACKEND"
+    | "OTHERS"
     | "DESIGN"
     | "DATA"
     | "MARKETER";
@@ -25,37 +34,90 @@ type RoleDTO = {
   headcount: string;
 };
 
+type Link = {
+  link: string;
+  description: string;
+};
+
 type PostDTO = {
   id: string;
+  author: AuthorBriefDTO;
+
+  // 회사 정보
   companyName: string;
   email: string;
-  author: AuthorBriefDTO;
-  explanation: string;
-  tags: string[];
-  roles: RoleDTO[];
-  imageLink?: string;
+  slogan: string;
   investAmount?: number;
   investCompany: string[];
+  series: "SEED" | "PRE_A" | "A" | "B" | "C" | "D";
   IRDeckLink?: string;
   landingPageLink?: string;
-  externalDescriptionLink?: string[];
-  isActive: boolean;
+  imageLink?: string;
+  externalDescriptionLink?: Link[];
+  tags?: string[];
+
+  // post 정보
+  title: string;
+  isAlways: boolean;
   employmentEndDate: string;
+  createdAt: string;
+  updatedAt: string;
+  isActive: boolean;
+  category: RoleDTO["category"];
+  detail: string;
+  headcount: string;
 };
 
 export type PostBriefDTO = {
   id: string;
-  companyName: string;
-  email: string;
   author: AuthorBriefDTO;
-  explanation: string;
-  tags: string[];
-  roles: RoleDTO[];
-  imageLink?: string;
+
+  // 회사 정보
+  companyName: string;
+  slogan: string;
   investAmount?: number;
   investCompany: string[];
-  isActive: boolean;
+  series: "SEED" | "PRE_A" | "A" | "B" | "C" | "D";
+  imageLink: string;
+
+  // 포스트 정보
+  title: string;
+  isAlways: boolean;
   employmentEndDate: string;
+  createdAt: string;
+  updatedAt: string;
+  isActive: boolean;
+  category: RoleDTO["category"];
+  headcount: string;
+};
+
+type ResumeDTO = {
+  id: string;
+  postId: string;
+  author: UserDTO;
+  content: string;
+  phoneNumber: string;
+  createdAt: string;
+};
+
+type LocalApplicantInfo = {
+  name: string;
+  localLoginId: string;
+  snuMail: string;
+  password: string;
+};
+
+type PostAdminInfo = {
+  secretPassword: string;
+  name: string;
+  localLoginId: string;
+  password: string;
+};
+
+type SocialApplicantInfo = {
+  provider: "google";
+  snuMail: string;
+  token: string;
 };
 
 // Params
@@ -71,30 +133,38 @@ export type PostIdParams = {
   postId: string;
 };
 
+export type ResumeIdParams = {
+  resumeId: string;
+};
+
 // Request
 export type PretotypeUserSubmitRequest = {
   email: string;
   isSubscribed: boolean;
 };
 
-export type LocalSignUpRequest = {
-  username: string;
-  localId: string;
-  password: string;
-  snuMail: string;
+export type SignUpRequest = {
+  authType: "LOCAL_APPLICANT" | "SOCIAL_APPLICANT" | "POST_ADMIN";
+  info: LocalApplicantInfo | PostAdminInfo | SocialApplicantInfo;
 };
 
-export type LocalSignInRequest = {
-  localId: string;
-  password: string;
+export type SignInRequest = {
+  authType: "LOCAL" | "SOCIAL";
+  info:
+    | {
+        localLoginId: string;
+        password: string;
+      }
+    | {
+        provider: "google";
+        token: string;
+      };
 };
 
-export type GoogleSignUpRequest = {
-  snuMail: string;
-  googleAccessToken: string;
+export type AccessTokenRequest = {
+  accessToken: string;
 };
-
-export type SendEmailCodeRequest = {
+export type SnuMailRequest = {
   snuMail: string;
 };
 
@@ -103,15 +173,16 @@ export type EmailVerifyRequest = {
   code: string;
 };
 
-export type GoogleSignInRequest = {
-  googleAccessToken: string;
-};
-
-export type CheckLocalIdDuplicateRequest = {
-  localId: string;
+export type IdRequest = {
+  id: string;
 };
 
 export type CreateAndUpdatePostRequest = PostDTO;
+
+export type ApplyCoffeeChatRequest = {
+  phoneNumber: string;
+  content: string;
+};
 
 // Response
 export type PretotypeUserSubmitResponse = {
@@ -149,3 +220,7 @@ export type TokenResponse = {
 export type GoogleEmailResponse = {
   googleEmail: string;
 };
+
+export type ResumeResponse = ResumeDTO;
+
+export type ResumeListResponse = { resumeList: ResumeDTO[] };

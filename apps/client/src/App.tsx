@@ -2,6 +2,7 @@ import './index.css';
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { type ExternalCallParams, implApi } from '@waffle/api';
 import { useState } from 'react';
 import { Route, Routes } from 'react-router';
 
@@ -23,7 +24,6 @@ import { implEchoService } from '@/service/echoService';
 import { implPostService } from '@/service/postService.ts';
 import { implResumeService } from '@/service/resumeService.ts';
 import { implUserService } from '@/service/userService';
-import { type ExternalCallParams, implApi } from '@/shared/api';
 import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';

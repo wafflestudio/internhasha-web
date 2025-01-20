@@ -13,10 +13,6 @@ export const GoogleSocialSignUpButton = () => {
   const [responseMessage, setResponseMessage] = useState<string | undefined>(
     undefined,
   );
-  const [googleAccessToken, setGoogleAccessToken] = useState<string | null>(
-    null,
-  );
-  const [snuMail, setSnuMail] = useState<string | null>(null);
   const [showModal, setShowModal] = useState<'NONE' | 'ADD' | 'REDIRECT'>(
     'NONE',
   );
@@ -26,8 +22,6 @@ export const GoogleSocialSignUpButton = () => {
       setResponseMessage,
       onSnuEmailSuccess: (email, token) => {
         googleSignUp({ snuMail: email, token });
-        setSnuMail(email);
-        setGoogleAccessToken(token);
       },
     },
   );
@@ -63,11 +57,7 @@ export const GoogleSocialSignUpButton = () => {
           <span>{responseMessage}</span>
         </div>
       )}
-      {showModal === 'ADD' &&
-        googleAccessToken !== null &&
-        snuMail !== null && (
-          <AddGoogleSignUpModal body={{ token: googleAccessToken, snuMail }} />
-        )}
+      {showModal === 'ADD' && <AddGoogleSignUpModal />}
       {showModal === 'REDIRECT' && <RedirectSignInModal />}
     </div>
   );
@@ -81,7 +71,7 @@ const useCheckGoogleMail = ({
   onSnuEmailSuccess(email: string, token: string): void;
 }) => {
   const { authService } = useGuardContext(ServiceContext);
-  const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@snu\.ac\.kr$/;
+  const SNU_MAIL_REGEX = /^[a-zA-Z0-9._%+-]+@snu\.ac\.kr$/;
 
   const { toVerifyEmail } = useRouteNavigation();
 
@@ -93,7 +83,7 @@ const useCheckGoogleMail = ({
       if (response.type === 'success') {
         const email = response.data.googleEmail;
 
-        if (EMAIL_REGEX.test(email)) {
+        if (SNU_MAIL_REGEX.test(email)) {
           onSnuEmailSuccess(email, variables.token);
         } else {
           toVerifyEmail({ token: variables.token, authProvider: 'GOOGLE' });
@@ -127,9 +117,13 @@ const useGoogleSignUp = ({
 
   const { mutate: googleSignUp, isPending } = useMutation({
     mutationFn: ({ snuMail, token }: { snuMail: string; token: string }) => {
-      return authService.googleSignUp({
-        snuMail,
-        googleAccessToken: token,
+      return authService.signUp({
+        authType: 'SOCIAL_APPLICANT',
+        info: {
+          provider: 'google',
+          snuMail,
+          token,
+        },
       });
     },
     onSuccess: (response) => {
