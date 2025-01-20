@@ -1,5 +1,6 @@
+import type { Apis } from '@waffle/api';
+
 import type { ServiceResponse } from '@/entities/response.ts';
-import type { Apis } from '@/shared/api';
 import type { ResumeListResponse, ResumeResponse } from '@/shared/api/entities';
 
 export type ResumeService = {

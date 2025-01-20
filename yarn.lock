@@ -1920,6 +1920,7 @@ __metadata:
     "@types/react": "npm:18.3.11"
     "@types/react-dom": "npm:18.3.1"
     "@vitejs/plugin-react-swc": "npm:3.7.1"
+    "@waffle/api": "workspace:*"
     "@waffle/design-system": "workspace:*"
     "@waffle/eslint-react": "workspace:*"
     autoprefixer: "npm:^10.4.20"

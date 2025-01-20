@@ -6,6 +6,7 @@ import type {
 } from "./entities/params";
 import type {
   AccessTokenRequest,
+  ApplyCoffeeChatRequest,
   CreateAndUpdatePostRequest,
   EchoParams,
   EmailVerifyRequest,
@@ -17,6 +18,9 @@ import type {
   PostsResponse,
   PretotypeUserSubmitRequest,
   PretotypeUserSubmitResponse,
+  ResumeIdParams,
+  ResumeListResponse,
+  ResumeResponse,
   SignInRequest,
   SignUpRequest,
   SnuMailRequest,
@@ -173,4 +177,53 @@ export const getApis = ({
         token,
         body,
       }),
+    "GET /resume/:resumeId": ({
+      token,
+      params,
+    }: {
+      token: string;
+      params: ResumeIdParams;
+    }) => {
+      return callWithToken<SuccessResponse<ResumeResponse>>({
+        method: "GET",
+        path: `resume/${params.resumeId}`,
+        token,
+      });
+    },
+    "GET /resume": ({ token }: { token: string }) => {
+      return callWithToken<SuccessResponse<ResumeListResponse>>({
+        method: "GET",
+        path: "resume",
+        token,
+      });
+    },
+    "POST /resume/:postId": ({
+      token,
+      params,
+      body,
+    }: {
+      token: string;
+      params: PostIdParams;
+      body: ApplyCoffeeChatRequest;
+    }) => {
+      return callWithToken<SuccessResponse<ResumeResponse>>({
+        method: "POST",
+        path: `resume/${params.postId}`,
+        token,
+        body,
+      });
+    },
+    "DELETE /resume/:resumeId": ({
+      token,
+      params,
+    }: {
+      token: string;
+      params: ResumeIdParams;
+    }) => {
+      return callWithToken<SuccessResponse<void>>({
+        method: "DELETE",
+        path: `resume/${params.resumeId}`,
+        token,
+      });
+    },
   }) satisfies Record<string, Api>;

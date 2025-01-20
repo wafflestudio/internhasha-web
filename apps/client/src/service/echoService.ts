@@ -1,6 +1,7 @@
+import type { Apis } from '@waffle/api';
+
 import type { EchoMessage, UserSubmit } from '@/entities/echo';
 import type { ServiceResponse } from '@/entities/response';
-import type { Apis } from '@/shared/api';
 
 export type EchoService = {
   sendMessage({ message }: { message: string }): ServiceResponse<EchoMessage>;
