@@ -9,6 +9,7 @@ import { PATH } from '@/entities/route';
 import { implAuthService } from '@/feature/auth/service/authService';
 import { implEchoService } from '@/feature/echo';
 import { implUserService } from '@/feature/user';
+import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { EchoPage } from '@/pages/EchoPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { LoginPage } from '@/pages/LoginPage';
@@ -21,6 +22,8 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { implTokenLocalStorageRepository } from '@/shared/token/tokenLocalStorageRepository';
 import { implTokenStateRepository } from '@/shared/token/tokenStateRepository';
 
+import { CreatePostPage } from './pages/CreatePostPage';
+
 const RouterProvider = () => {
   return (
     <Routes>
@@ -29,6 +32,8 @@ const RouterProvider = () => {
       <Route path={PATH.LOGIN} element={<LoginPage />} />
       <Route element={<AuthProtectedRoute />}>
         <Route path={PATH.MY_PAGE} element={<MyInfoPage />} />
+        <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
+        <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
       </Route>
     </Routes>
   );

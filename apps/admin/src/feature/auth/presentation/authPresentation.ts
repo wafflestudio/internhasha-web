@@ -1,10 +1,6 @@
 import { useState } from 'react';
 
-type StringInput = {
-  isError: boolean;
-  value: string;
-  onChange: (e: string) => void;
-};
+import type { StringInput } from '@/entities/input';
 
 type InitialState = {
   password?: string;

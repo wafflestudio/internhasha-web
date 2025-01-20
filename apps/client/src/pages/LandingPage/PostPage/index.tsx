@@ -61,9 +61,32 @@ export const PostPage = () => {
         >
           ← 메인 페이지로
         </Button>
+      <Button
+        onClick={() => {
+          toApplyCoffeeChat({ postId });
+        }}
+        style={{
+          marginBottom: '20px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '8px 16px',
+        }}
+      >
+        커피챗 신청하기
+      </Button>
 
-        <Button
-          onClick={() => { toApplyCoffeeChat({ postId }); }}
+      {/* 헤더 섹션 */}
+      <div
+        style={{
+          display: 'flex',
+          gap: '24px',
+          marginBottom: '32px',
+          alignItems: 'flex-start',
+        }}
+      >
+        {/* 회사 이미지 */}
+        <div
           style={{
             display: 'flex',
             alignItems: 'center',
