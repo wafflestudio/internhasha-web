@@ -46,8 +46,6 @@ export const LandingPage = () => {
   const TOTAL_PAGES = postsData.paginator.lastPage;
   const PAGES_PER_GROUP = 5;
 
-  console.log(postsData);
-
   return (
     <div>
       <p>랜딩페이지</p>
