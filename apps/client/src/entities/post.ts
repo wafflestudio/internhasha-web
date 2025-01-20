@@ -7,7 +7,8 @@ export type RoleCategory =
   | 'BACKEND'
   | 'DESIGN'
   | 'DATA'
-  | 'MARKETER';
+  | 'MARKETER'
+  | 'OTHERS';
 
 export const ROLE_CATEGORY_LIST: RoleCategory[] = [
   'PLANNER',
@@ -17,6 +18,7 @@ export const ROLE_CATEGORY_LIST: RoleCategory[] = [
   'DESIGN',
   'DATA',
   'MARKETER',
+  'OTHERS',
 ];
 
 export type FilterElements = {

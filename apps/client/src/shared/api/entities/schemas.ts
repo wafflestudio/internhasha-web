@@ -11,8 +11,6 @@ type UserDTO = {
   username: string;
   phoneNumber?: string;
   isAdmin: boolean;
-  localId?: string;
-  googleId?: string;
 };
 
 type AuthorBriefDTO = {
@@ -30,7 +28,8 @@ type RoleDTO = {
     | 'BACKEND'
     | 'DESIGN'
     | 'DATA'
-    | 'MARKETER';
+    | 'MARKETER'
+    | 'OTHERS';
   detail: string;
   headcount: string;
 };
@@ -42,39 +41,54 @@ type Link = {
 
 type PostDTO = {
   id: string;
+  author: AuthorBriefDTO;
+
+  // 회사 정보
   companyName: string;
   email: string;
-  author: AuthorBriefDTO;
   slogan: string;
-  explanation: string;
-  tags: string[];
-  roles: RoleDTO[];
-  imageLink?: string;
   investAmount?: number;
   investCompany: string[];
   series: 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
   IRDeckLink?: string;
   landingPageLink?: string;
+  imageLink?: string;
   externalDescriptionLink?: Link[];
-  isActive: boolean;
+  tags?: string[];
+
+  // post 정보
+  title: string;
+  isAlways: boolean;
   employmentEndDate: string;
+  createdAt: string;
+  updatedAt: string;
+  isActive: boolean;
+  category: RoleDTO['category'];
+  detail: string;
+  headcount: string;
 };
 
 export type PostBriefDTO = {
   id: string;
-  companyName: string;
-  email: string;
   author: AuthorBriefDTO;
+
+  // 회사 정보
+  companyName: string;
   slogan: string;
-  explanation: string;
-  tags: string[];
-  roles: RoleDTO[];
-  imageLink?: string;
   investAmount?: number;
   investCompany: string[];
   series: 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
-  isActive: boolean;
+  imageLink: string;
+
+  // 포스트 정보
+  title: string;
+  isAlways: boolean;
   employmentEndDate: string;
+  createdAt: string;
+  updatedAt: string;
+  isActive: boolean;
+  category: RoleDTO['category'];
+  headcount: string;
 };
 
 type ResumeDTO = {
