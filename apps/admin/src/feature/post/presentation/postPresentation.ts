@@ -58,27 +58,22 @@ export const postPresentation: PostPresentation = {
     const [title, setTitle] = useState(
       initialState.title !== undefined ? initialState.title : '',
     );
-
     const [jobMajorCategory, setJobMajorCategory] = useState<JobMajorCategory>(
       initialState.jobMajorCategory !== undefined
         ? initialState.jobMajorCategory
         : 'DEVELOPMENT',
     );
-
     const [jobMinorCategory, setJobMinorCategory] = useState<JobMinorCategory>(
       initialState.jobMinorCategory !== undefined
         ? initialState.jobMinorCategory
         : 'NONE',
     );
-
     const [headcount, setHeadcount] = useState(
       initialState.headcount !== undefined ? initialState.headcount : '',
     );
-
     const [content, setContent] = useState(
       initialState.content !== undefined ? initialState.content : '',
     );
-
     const [employmentEndDate, setEmploymentEndDate] = useState(
       initialState.employmentEndDate !== undefined
         ? initialState.employmentEndDate

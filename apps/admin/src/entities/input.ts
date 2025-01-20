@@ -9,3 +9,23 @@ export type SelectInput<TSelect> = {
   value: TSelect;
   onChange: (input: TSelect) => void;
 };
+
+export type ListInput<TElement> = {
+  isError: boolean;
+  value: TElement[];
+  onChange: ({
+    input,
+    index,
+    mode,
+  }:
+    | {
+        input: TElement;
+        index?: never;
+        mode: 'ADD' | 'REMOVE';
+      }
+    | {
+        input: TElement;
+        index: number;
+        mode: 'PATCH';
+      }) => void;
+};
