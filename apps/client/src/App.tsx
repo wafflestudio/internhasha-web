@@ -4,6 +4,8 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Route, Routes } from 'react-router';
+import { CoffeeChatListPage } from 'src/pages/LandingPage/CoffeeChatListPage';
+import { CoffeeChatDetailPage } from 'src/pages/LandingPage/CoffeeChatListPage/CoffeeChatDetailPage';
 
 import { PATH } from '@/entities/route';
 import { EchoPage } from '@/pages/EchoPage';
