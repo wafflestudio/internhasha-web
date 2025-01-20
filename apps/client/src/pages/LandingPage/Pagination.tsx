@@ -43,9 +43,9 @@ export const Pagination = ({
         이전
       </Button>
 
-      {pageNumbers.map((page) => (
+      {pageNumbers.map((page, idx) => (
         <Button
-          key={page}
+          key={`pagination-button-${idx}`}
           onClick={() => {
             onChangePage(page);
           }}

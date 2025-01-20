@@ -46,6 +46,8 @@ export const LandingPage = () => {
   const TOTAL_PAGES = postsData.paginator.lastPage;
   const PAGES_PER_GROUP = 5;
 
+  console.log(postsData);
+
   return (
     <div>
       <p>랜딩페이지</p>
@@ -90,9 +92,9 @@ export const LandingPage = () => {
           padding: '20px',
         }}
       >
-        {postsData.posts.map((post) => (
+        {postsData.posts.map((post, idx) => (
           <PostCard
-            key={post.id}
+            key={`post-${idx}`}
             post={post}
             onDetailClick={(postId) => {
               toPost({ postId });
