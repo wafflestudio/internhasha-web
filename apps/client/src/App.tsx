@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { Route, Routes } from 'react-router';
 
 import { PATH } from '@/entities/route';
+import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
+import { CreatePostPage } from '@/pages/CreatePostPage';
 import { EchoPage } from '@/pages/EchoPage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
@@ -29,8 +31,8 @@ import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
-import { implTokenLocalStorage } from '@/shared/token/localstorage';
-import { implTokenState } from '@/shared/token/state';
+import { implTokenLocalStorageRepository } from '@/shared/token/localstorage';
+import { implTokenStateRepository } from '@/shared/token/state';
 
 const RouterProvider = () => {
   return (
@@ -43,15 +45,17 @@ const RouterProvider = () => {
       <Route path={PATH.SIGN_UP_LOCAL} element={<LocalSignUpPage />} />
       <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
       <Route path={PATH.SIGN_UP_COMPLETE} element={<SignUpCompletePage />} />
-      <Route element={<AuthProtectedRoute />}>
-        <Route path={PATH.MY_PAGE} element={<MyPage />} />
-      </Route>
       <Route path={PATH.APPLY_COFFEE_CHAT} element={<ApplyCoffeeChatPage />} />
       <Route path={PATH.COFFEE_CHAT_LIST} element={<CoffeeChatListPage />} />
       <Route
         path={PATH.COFFEE_CHAT_DETAIL}
         element={<CoffeeChatDetailPage />}
       />
+      <Route element={<AuthProtectedRoute />}>
+        <Route path={PATH.MY_PAGE} element={<MyPage />} />
+        <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
+        <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
+      </Route>
     </Routes>
   );
 };
@@ -66,12 +70,12 @@ const queryClient = new QueryClient({
 });
 
 export const App = () => {
-  const tokenLocalStorage = implTokenLocalStorage();
+  const tokenLocalStorage = implTokenLocalStorageRepository();
   const [token, setToken] = useState<string | null>(
     tokenLocalStorage.getToken(),
   );
   const ENV = useGuardContext(EnvContext);
-  const tokenState = implTokenState({ setToken });
+  const tokenState = implTokenStateRepository({ setToken });
 
   const externalCall = async (content: ExternalCallParams) => {
     const response = await fetch(

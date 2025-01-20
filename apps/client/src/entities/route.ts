@@ -11,6 +11,8 @@ export const PATH = {
   APPLY_COFFEE_CHAT: '/post/:postId/applyCoffeeChat',
   COFFEE_CHAT_LIST: '/coffee-chat-list',
   COFFEE_CHAT_DETAIL: '/coffee-chat-list/:resumeId',
+  CREATE_COMPANY: '/company/create',
+  CREATE_POST: '/post/create',
 };
 
 export const HREF = {

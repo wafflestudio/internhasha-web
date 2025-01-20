@@ -160,6 +160,18 @@ export const CreateCompanyForm = () => {
         </Button>
       </LabelContainer>
       <LabelContainer label="해시태그" id="tags">
+        {tags.value.map((input) => (
+          <div key={`tag-${input}`}>
+            <span>{input}</span>
+            <Button
+              onClick={() => {
+                tags.onChange({ input, mode: 'REMOVE' });
+              }}
+            >
+              삭제
+            </Button>
+          </div>
+        ))}
         <TextInput
           value={rawTagValue}
           placeholder="회사를 소개하는 태그를 입력해주세요. (최대 10개)"
@@ -167,14 +179,16 @@ export const CreateCompanyForm = () => {
             setRawTagValue(e.target.value);
           }}
           onKeyDown={(e) => {
-            e.preventDefault();
             if (e.key === 'Enter' && rawTagValue.trim() !== '') {
               tags.onChange({ input: rawTagValue.trim(), mode: 'ADD' });
               setRawTagValue('');
+              e.preventDefault();
             }
           }}
         />
-        <p>태그는 띄어쓰기로 구분되며 한 개당 최대 8자까지 입력할 수 있어요.</p>
+        <p>
+          엔터를 치면 태그가 생성되며 한 개당 최대 8자까지 입력할 수 있어요.
+        </p>
       </LabelContainer>
       <LabelContainer label="IR Deck 자료" id="IRDeckLink">
         {IRDeckPreview.value !== null ? (
