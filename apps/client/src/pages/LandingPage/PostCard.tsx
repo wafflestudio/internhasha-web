@@ -123,7 +123,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
         </div>
 
         {/* 투자 정보 */}
-        {(investAmount != null) && (
+        {investAmount != null && (
           <p style={{ fontSize: '14px', marginBottom: '4px' }}>
             투자금액: {investAmount.toLocaleString()}만원
           </p>
@@ -137,16 +137,22 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
           }}
         >
           <p>채용 인원: {headcount}명</p>
-          <p style={{
-            color: isActive ? 'green' : 'red',
-          }}>
-            {isAlways ? '상시 채용' : `마감일: ${new Date(employmentEndDate).toLocaleDateString()}`}
+          <p
+            style={{
+              color: isActive ? 'green' : 'red',
+            }}
+          >
+            {isAlways
+              ? '상시 채용'
+              : `마감일: ${new Date(employmentEndDate).toLocaleDateString()}`}
           </p>
         </div>
 
         {/* 상세보기 버튼 */}
         <Button
-          onClick={() => { onDetailClick(id); }}
+          onClick={() => {
+            onDetailClick(id);
+          }}
           style={{
             width: '100%',
           }}
