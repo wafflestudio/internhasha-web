@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { Button } from '@/components/button';
 import type { FilterElements } from '@/entities/post.ts';
-import { FilterModal } from '@/pages/LandingPage/FilterModal.tsx';
+import { FilterSection } from '@/pages/LandingPage/FilterModal.tsx';
 import { Pagination } from '@/pages/LandingPage/Pagination.tsx';
 import { PostCard } from '@/pages/LandingPage/PostCard.tsx';
 import { useGetPosts } from '@/pages/LandingPage/useGetPosts.ts';
@@ -23,7 +23,6 @@ export const LandingPage = () => {
     investmentMin: undefined,
     pathStatus: undefined,
   });
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(0);
   const [currentGroup, setCurrentGroup] = useState(0);
@@ -60,27 +59,10 @@ export const LandingPage = () => {
         커피챗 목록
       </Button>
 
-      <Button
-        onClick={() => {
-          setIsFilterModalOpen(true);
-        }}
-      >
-        필터링
-      </Button>
-      {isFilterModalOpen && (
-        <FilterModal
-          filterElements={filterElements}
-          onChangeFilters={setFilterElements}
-          onClose={() => {
-            setIsFilterModalOpen(false);
-          }}
-          onApply={() => {
-            setCurrentPage(0);
-            setCurrentGroup(0);
-            setIsFilterModalOpen(false);
-          }}
-        />
-      )}
+      <FilterSection
+        filterElements={filterElements}
+        onChangeFilters={setFilterElements}
+      />
 
       <div
         style={{

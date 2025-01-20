@@ -1,6 +1,3 @@
-import { useState } from 'react';
-
-import { Button } from '@/components/button';
 import {
   type FilterElements,
   ROLE_CATEGORY_LIST,
@@ -17,134 +14,116 @@ const INVESTMENT_RANGES = [
   { label: '100억 원 이상 ~ 500억 원 미만', min: 1000000, max: 5000000 },
 ] as const;
 
-type FilterModalProps = {
+type FilterSectionProps = {
   filterElements: FilterElements;
   onChangeFilters: (filterElements: FilterElements) => void;
-  onClose: () => void;
-  onApply: () => void;
 };
 
-export const FilterModal = ({
+export const FilterSection = ({
   filterElements,
   onChangeFilters,
-  onClose,
-  onApply,
-}: FilterModalProps) => {
-  const [tempFilters, setTempFilters] =
-    useState<FilterElements>(filterElements);
-
+}: FilterSectionProps) => {
   const handleRoleToggle = (role: RoleCategory) => {
-    setTempFilters((prev) => ({
-      ...prev,
-      roles:
-        prev.roles?.includes(role) === true
-          ? prev.roles.filter((r) => r !== role)
-          : [...(prev.roles ?? []), role],
-    }));
+    const newRoles =
+      filterElements.roles?.includes(role) === true
+        ? filterElements.roles.filter((r) => r !== role)
+        : [...(filterElements.roles ?? []), role];
+
+    onChangeFilters({
+      ...filterElements,
+      roles: newRoles.length > 0 ? newRoles : undefined,
+    });
   };
 
   const getCurrentInvestmentRange = () => {
-    if (tempFilters.investmentMin == null && tempFilters.investmentMax == null)
+    if (
+      filterElements.investmentMin == null &&
+      filterElements.investmentMax == null
+    )
       return '전체';
 
     const currentRange = INVESTMENT_RANGES.find(
       (range) =>
-        range.min === tempFilters.investmentMin &&
-        range.max === tempFilters.investmentMax,
+        range.min === filterElements.investmentMin &&
+        range.max === filterElements.investmentMax,
     );
 
-    return currentRange != null ? currentRange.label : '전체';
-  };
-
-  const handleInvestmentRangeChange = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    const selectedLabel = e.target.value;
-    const range = INVESTMENT_RANGES.find((r) => r.label === selectedLabel);
-
-    setTempFilters((prev) => ({
-      ...prev,
-      investmentMin: range?.min,
-      investmentMax: range?.max,
-    }));
-  };
-
-  const handleApply = () => {
-    onChangeFilters({
-      ...tempFilters,
-      roles: tempFilters.roles?.length != null ? tempFilters.roles : undefined,
-    });
-    onApply();
+    return currentRange?.label ?? '전체';
   };
 
   return (
-    <div className="modal">
-      <h2>필터링 설정</h2>
+    <div className="filter-section" style={{ marginBottom: '20px' }}>
+      <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+        {/* 모집 상태 필터 */}
+        <div>
+          <select
+            value={filterElements.pathStatus ?? ''}
+            onChange={(e) => {
+              const selected = parseInt(e.target.value, 10);
+              onChangeFilters({
+                ...filterElements,
+                pathStatus:
+                  selected === 0 || selected === 1 || selected === 2
+                    ? selected
+                    : undefined,
+              });
+            }}
+          >
+            <option value="0">모집중</option>
+            <option value="1">모집완료</option>
+            <option value="2">전체</option>
+          </select>
+        </div>
 
-      {/* Roles as Checkboxes */}
-      <div>
-        <div style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
-          <span>직무 종류 (roles): </span>
-          {ROLE_CATEGORY_LIST.map((role) => (
-            <label
-              key={role}
-              style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-            >
-              <input
-                type="checkbox"
-                checked={tempFilters.roles?.includes(role) ?? false}
-                onChange={() => {
-                  handleRoleToggle(role);
-                }}
-                style={{ width: '16px', height: '16px' }}
-              />
-              {role}
-            </label>
-          ))}
+        {/* 투자금액 필터 */}
+        <div>
+          <select
+            value={getCurrentInvestmentRange()}
+            onChange={(e) => {
+              const selectedLabel = e.target.value;
+              const range = INVESTMENT_RANGES.find(
+                (r) => r.label === selectedLabel,
+              );
+              onChangeFilters({
+                ...filterElements,
+                investmentMin: range?.min,
+                investmentMax: range?.max,
+              });
+            }}
+          >
+            {INVESTMENT_RANGES.map((range) => (
+              <option key={range.label} value={range.label}>
+                {range.label}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
-      {/* Investment */}
-      <label style={{ display: 'block', marginBottom: '16px' }}>
-        투자금액 구간:
-        <select
-          value={getCurrentInvestmentRange()}
-          onChange={handleInvestmentRangeChange}
-          style={{ marginLeft: '8px', padding: '4px 8px' }}
-        >
-          {INVESTMENT_RANGES.map((range) => (
-            <option key={range.label} value={range.label}>
-              {range.label}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      {/* Path Status */}
-      <label>
-        진행 상태 (pathStatus):
-        <select
-          value={tempFilters.pathStatus ?? ''}
-          onChange={(e) => {
-            const selected = parseInt(e.target.value, 10);
-            setTempFilters((prev) => ({
-              ...prev,
-              pathStatus:
-                selected === 0 || selected === 1 || selected === 2
-                  ? selected
-                  : undefined,
-            }));
-          }}
-        >
-          <option value="0">진행중</option>
-          <option value="1">진행 완료</option>
-          <option value="2">전부</option>
-        </select>
-      </label>
-
-      <div className="modal-buttons">
-        <Button onClick={onClose}>취소</Button>
-        <Button onClick={handleApply}>적용</Button>
+      {/* 직무 체크박스 */}
+      <div
+        style={{
+          marginTop: '16px',
+          display: 'flex',
+          gap: '12px',
+          flexWrap: 'wrap',
+        }}
+      >
+        {ROLE_CATEGORY_LIST.map((role) => (
+          <label
+            key={role}
+            style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+          >
+            <input
+              type="checkbox"
+              checked={filterElements.roles?.includes(role) ?? false}
+              onChange={() => {
+                handleRoleToggle(role);
+              }}
+            />
+            {role}
+          </label>
+        ))}
       </div>
     </div>
   );
