@@ -43,6 +43,26 @@ type PostDTO = {
   employmentEndDate: string;
 };
 
+type LocalApplicantInfo = {
+  name: string;
+  localLoginId: string;
+  snuMail: string;
+  password: string;
+};
+
+type PostAdminInfo = {
+  secretPassword: string;
+  name: string;
+  localLoginId: string;
+  password: string;
+};
+
+type SocialApplicantInfo = {
+  provider: "google";
+  snuMail: string;
+  token: string;
+};
+
 export type PostBriefDTO = {
   id: string;
   companyName: string;
@@ -77,24 +97,28 @@ export type PretotypeUserSubmitRequest = {
   isSubscribed: boolean;
 };
 
-export type LocalSignUpRequest = {
-  username: string;
-  localId: string;
-  password: string;
-  snuMail: string;
+export type SignUpRequest = {
+  authType: "LOCAL_APPLICANT" | "SOCIAL_APPLICANT" | "POST_ADMIN";
+  info: LocalApplicantInfo | PostAdminInfo | SocialApplicantInfo;
 };
 
-export type LocalSignInRequest = {
-  localId: string;
-  password: string;
+export type SignInRequest = {
+  authType: "LOCAL" | "SOCIAL";
+  info:
+    | {
+        localLoginId: string;
+        password: string;
+      }
+    | {
+        provider: "google";
+        token: string;
+      };
 };
 
-export type GoogleSignUpRequest = {
-  snuMail: string;
-  googleAccessToken: string;
+export type AccessTokenRequest = {
+  accessToken: string;
 };
-
-export type SendEmailCodeRequest = {
+export type SnuMailRequest = {
   snuMail: string;
 };
 
@@ -103,12 +127,8 @@ export type EmailVerifyRequest = {
   code: string;
 };
 
-export type GoogleSignInRequest = {
-  googleAccessToken: string;
-};
-
-export type CheckLocalIdDuplicateRequest = {
-  localId: string;
+export type IdRequest = {
+  id: string;
 };
 
 export type CreateAndUpdatePostRequest = PostDTO;

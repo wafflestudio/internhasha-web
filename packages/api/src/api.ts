@@ -5,22 +5,21 @@ import type {
   SuccessResponse,
 } from "./entities/params";
 import type {
-  CheckLocalIdDuplicateRequest,
+  AccessTokenRequest,
   CreateAndUpdatePostRequest,
   EchoParams,
   EmailVerifyRequest,
   GoogleEmailResponse,
-  GoogleSignInRequest,
-  GoogleSignUpRequest,
-  LocalSignInRequest,
-  LocalSignUpRequest,
+  IdRequest,
   PostDetailResponse,
   PostIdParams,
   PostPathParams,
   PostsResponse,
   PretotypeUserSubmitRequest,
   PretotypeUserSubmitResponse,
-  SendEmailCodeRequest,
+  SignInRequest,
+  SignUpRequest,
+  SnuMailRequest,
   TokenResponse,
   UserResponse,
   UserWithTokenResponse,
@@ -62,87 +61,65 @@ export const getApis = ({
         path: "pretotype",
         body,
       }),
-    "POST /user/signup/local": ({ body }: { body: LocalSignUpRequest }) =>
+    "POST /user/signup": ({ body }: { body: SignUpRequest }) =>
       callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
         method: "POST",
-        path: "user/signup/local",
+        path: "user/signup",
         body,
       }),
-    "POST /user/signup/google": ({ body }: { body: GoogleSignUpRequest }) =>
-      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
+    "POST /user/snu-mail-verification/google-email": ({
+      body,
+    }: {
+      body: AccessTokenRequest;
+    }) =>
+      callWithoutToken<SuccessResponse<GoogleEmailResponse>>({
         method: "POST",
-        path: "user/signup/google",
+        path: "user/snu-mail-verification/google-email",
         body,
       }),
-    "POST /user/signin/local": ({ body }: { body: LocalSignInRequest }) =>
-      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
-        method: "POST",
-        path: "user/signin/local",
-        body,
-      }),
-    "POST /user/signin/google": ({ body }: { body: GoogleSignInRequest }) =>
-      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
-        method: "POST",
-        path: "user/signin/google",
-        body,
-      }),
-    "POST /user/signup/send-code": ({ body }: { body: SendEmailCodeRequest }) =>
+    "POST /user/snu-mail-verification/request": ({
+      body,
+    }: {
+      body: SnuMailRequest;
+    }) =>
       callWithoutToken<SuccessResponse<void>>({
         method: "POST",
-        path: "user/signup/send-code",
+        path: "user/snu-mail-verification/request",
         body,
       }),
-    "POST /user/signup/verify-email": ({
+    "POST /user/snu-mail-verification/verify": ({
       body,
     }: {
       body: EmailVerifyRequest;
     }) =>
       callWithoutToken<SuccessResponse<void>>({
         method: "POST",
-        path: "user/signup/verify-email",
+        path: "user/snu-mail-verification/verify",
         body,
       }),
-    "POST /user/signup/id-duplicate": ({
-      body,
-    }: {
-      body: CheckLocalIdDuplicateRequest;
-    }) =>
+    "POST /user/signin": ({ body }: { body: SignInRequest }) =>
+      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
+        method: "POST",
+        path: "user/signin",
+        body,
+      }),
+
+    "POST /user/signup/check-id": ({ body }: { body: IdRequest }) =>
       callWithoutToken<SuccessResponse<void>>({
         method: "POST",
-        path: "user/signup/id-duplicate",
+        path: "user/signup/check-id",
         body,
       }),
-    "POST /user/signup/google-email": ({
-      body,
-    }: {
-      body: GoogleSignInRequest;
-    }) =>
-      callWithoutToken<SuccessResponse<GoogleEmailResponse>>({
-        method: "POST",
-        path: "user/signup/google-email",
-        body,
-      }),
-    "POST /user/google": ({ body }: { body: GoogleSignUpRequest }) =>
-      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
-        method: "POST",
-        path: "user/google",
-        body,
-      }),
-    "POST /user/local": ({ body }: { body: LocalSignInRequest }) =>
-      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
-        method: "POST",
-        path: "user/local",
-        body,
-      }),
-    "POST /user/token/refresh": () =>
+
+    "POST /user/refresh-token": () =>
       callWithoutToken<SuccessResponse<TokenResponse>>({
         method: "POST",
-        path: "user/token/refresh",
+        path: "user/refresh-token",
       }),
-    "POST /user/logout": ({ token }: { token: string }) =>
+    "POST /user/signout": ({ token }: { token: string }) =>
       callWithToken<SuccessResponse<void>>({
         method: "POST",
-        path: "user/logout",
+        path: "user/signout",
         token,
       }),
     "GET /user/info": ({ token }: { token: string }) =>

@@ -12,6 +12,7 @@
     "clean:package": "rm -rf dist"
   },
   "devDependencies": {
+    "@waffle/eslint-react": "workspace:*",
     "typescript": "5.6.3"
   }
 }

@@ -1917,6 +1917,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/api/",\
         "packageDependencies": [\
           ["@waffle/api", "workspace:packages/api"],\
+          ["@waffle/eslint-react", "workspace:packages/eslint-react"],\
           ["typescript", "patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"]\
         ],\
         "linkType": "SOFT"\
