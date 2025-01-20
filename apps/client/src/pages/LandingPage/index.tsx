@@ -90,9 +90,9 @@ export const LandingPage = () => {
           padding: '20px',
         }}
       >
-        {postsData.posts.map((post) => (
+        {postsData.posts.map((post, idx) => (
           <PostCard
-            key={post.id}
+            key={`post-${idx}`}
             post={post}
             onDetailClick={(postId) => {
               toPost({ postId });

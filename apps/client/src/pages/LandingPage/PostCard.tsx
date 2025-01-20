@@ -91,75 +91,75 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
         >
           {title}
         </h4>
-
-        {/* 시리즈 & 카테고리 */}
-        <div
-          style={{
-            display: 'flex',
-            gap: '8px',
-            marginBottom: '8px',
-          }}
-        >
-          <span
-            style={{
-              padding: '4px 8px',
-              backgroundColor: '#e3f2fd',
-              borderRadius: '4px',
-              fontSize: '12px',
-            }}
-          >
-            Series {series}
-          </span>
-          <span
-            style={{
-              padding: '4px 8px',
-              backgroundColor: '#e8f5e9',
-              borderRadius: '4px',
-              fontSize: '12px',
-            }}
-          >
-            {category}
-          </span>
-        </div>
-
-        {/* 투자 정보 */}
-        {investAmount != null && (
-          <p style={{ fontSize: '14px', marginBottom: '4px' }}>
-            투자금액: {investAmount.toLocaleString()}만원
-          </p>
-        )}
-
-        {/* 채용 정보 */}
-        <div
-          style={{
-            fontSize: '14px',
-            marginBottom: '12px',
-          }}
-        >
-          <p>채용 인원: {headcount}명</p>
-          <p
-            style={{
-              color: isActive ? 'green' : 'red',
-            }}
-          >
-            {isAlways
-              ? '상시 채용'
-              : `마감일: ${new Date(employmentEndDate).toLocaleDateString()}`}
-          </p>
-        </div>
-
-        {/* 상세보기 버튼 */}
-        <Button
-          onClick={() => {
-            onDetailClick(id);
-          }}
-          style={{
-            width: '100%',
-          }}
-        >
-          자세히 보기
-        </Button>
       </div>
+
+      {/* 시리즈 & 카테고리 */}
+      <div
+        style={{
+          display: 'flex',
+          gap: '8px',
+          marginBottom: '8px',
+        }}
+      >
+        <span
+          style={{
+            padding: '4px 8px',
+            backgroundColor: '#e3f2fd',
+            borderRadius: '4px',
+            fontSize: '12px',
+          }}
+        >
+          Series {series}
+        </span>
+        <span
+          style={{
+            padding: '4px 8px',
+            backgroundColor: '#e8f5e9',
+            borderRadius: '4px',
+            fontSize: '12px',
+          }}
+        >
+          {category}
+        </span>
+      </div>
+
+      {/* 투자 정보 */}
+      {investAmount != null && (
+        <p style={{ fontSize: '14px', marginBottom: '4px' }}>
+          투자금액: {investAmount.toLocaleString()}만원
+        </p>
+      )}
+
+      {/* 채용 정보 */}
+      <div
+        style={{
+          fontSize: '14px',
+          marginBottom: '12px',
+        }}
+      >
+        <p>채용 인원: {headcount}명</p>
+        <p
+          style={{
+            color: isActive ? 'green' : 'red',
+          }}
+        >
+          {isAlways
+            ? '상시 채용'
+            : `마감일: ${new Date(employmentEndDate).toLocaleDateString()}`}
+        </p>
+      </div>
+
+      {/* 상세보기 버튼 */}
+      <Button
+        onClick={() => {
+          onDetailClick(id);
+        }}
+        style={{
+          width: '100%',
+        }}
+      >
+        자세히 보기
+      </Button>
     </div>
   );
 };
