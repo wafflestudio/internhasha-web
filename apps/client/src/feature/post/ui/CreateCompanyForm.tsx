@@ -160,6 +160,18 @@ export const CreateCompanyForm = () => {
         </Button>
       </LabelContainer>
       <LabelContainer label="해시태그" id="tags">
+        {tags.value.map((input) => (
+          <div key={`tag-${input}`}>
+            <span>{input}</span>
+            <Button
+              onClick={() => {
+                tags.onChange({ input, mode: 'REMOVE' });
+              }}
+            >
+              삭제
+            </Button>
+          </div>
+        ))}
         <TextInput
           value={rawTagValue}
           placeholder="회사를 소개하는 태그를 입력해주세요. (최대 10개)"

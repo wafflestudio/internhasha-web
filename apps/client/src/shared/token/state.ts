@@ -1,13 +1,13 @@
-export type TokenState = {
+export type TokenStateRepository = {
   setToken({ token }: { token: string }): void;
   removeToken(): void;
 };
 
-export const implTokenState = ({
+export const implTokenStateRepository = ({
   setToken,
 }: {
   setToken(token: string | null): void;
-}): TokenState => ({
+}): TokenStateRepository => ({
   setToken: ({ token }) => {
     setToken(token);
   },

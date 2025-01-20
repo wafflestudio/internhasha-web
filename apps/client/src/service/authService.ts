@@ -2,8 +2,8 @@ import type { Apis } from '@waffle/api';
 
 import type { ServiceResponse } from '@/entities/response';
 import type { User } from '@/entities/user';
-import type { TokenLocalStorage } from '@/shared/token/localstorage';
-import type { TokenState } from '@/shared/token/state';
+import type { TokenLocalStorageRepository } from '@/shared/token/localstorage';
+import type { TokenStateRepository } from '@/shared/token/state';
 
 export type AuthService = {
   signUp({
@@ -73,8 +73,8 @@ export const implAuthService = ({
   tokenState,
 }: {
   apis: Apis;
-  tokenLocalStorage: TokenLocalStorage;
-  tokenState: TokenState;
+  tokenLocalStorage: TokenLocalStorageRepository;
+  tokenState: TokenStateRepository;
 }): AuthService => ({
   signUp: async ({ authType, info }) => {
     const body = { authType, info };

@@ -31,8 +31,8 @@ import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
-import { implTokenLocalStorage } from '@/shared/token/localstorage';
-import { implTokenState } from '@/shared/token/state';
+import { implTokenLocalStorageRepository } from '@/shared/token/localstorage';
+import { implTokenStateRepository } from '@/shared/token/state';
 
 const RouterProvider = () => {
   return (
@@ -70,12 +70,12 @@ const queryClient = new QueryClient({
 });
 
 export const App = () => {
-  const tokenLocalStorage = implTokenLocalStorage();
+  const tokenLocalStorage = implTokenLocalStorageRepository();
   const [token, setToken] = useState<string | null>(
     tokenLocalStorage.getToken(),
   );
   const ENV = useGuardContext(EnvContext);
-  const tokenState = implTokenState({ setToken });
+  const tokenState = implTokenStateRepository({ setToken });
 
   const externalCall = async (content: ExternalCallParams) => {
     const response = await fetch(
