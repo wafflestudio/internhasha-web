@@ -30,8 +30,15 @@ export const implAuthService = ({
   tokenStateRepository: TokenState;
 }): AuthService => ({
   localSignIn: async ({ localId, password }) => {
-    const body = { localId, password };
-    const { status, data } = await apis['POST /user/signin/local']({ body });
+    const { status, data } = await apis['POST /user/signin']({
+      body: {
+        authType: 'LOCAL',
+        info: {
+          localLoginId: localId,
+          password,
+        },
+      },
+    });
 
     if (status === 200) {
       const token = data.accessToken;
@@ -47,7 +54,7 @@ export const implAuthService = ({
     return { type: 'error', status, message: data.error };
   },
   reissueAccessToken: async () => {
-    const { status, data } = await apis['POST /user/token/refresh']();
+    const { status, data } = await apis['POST /user/refresh-token']();
 
     if (status === 200) {
       const accessToken = data.accessToken;
@@ -63,7 +70,7 @@ export const implAuthService = ({
     return { type: 'error', status, message: data.error };
   },
   logout: async ({ token }) => {
-    const { status, data } = await apis['POST /user/logout']({ token });
+    const { status, data } = await apis['POST /user/signout']({ token });
     tokenLocalStorageRepository.removeToken();
     tokenStateRepository.removeToken();
     if (status === 200) {

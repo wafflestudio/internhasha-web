@@ -1,7 +1,7 @@
 import type { Apis } from '@waffle/api';
 
-import type { ServiceResponse } from '@/entities/response.ts';
-import type { ResumeListResponse, ResumeResponse } from '@/shared/api/entities';
+import type { ServiceResponse } from '@/entities/response';
+import type { Resume } from '@/entities/resume';
 
 export type ResumeService = {
   getResumeDetail: ({
@@ -10,12 +10,12 @@ export type ResumeService = {
   }: {
     token: string;
     resumeId: string;
-  }) => ServiceResponse<ResumeResponse>;
+  }) => ServiceResponse<Resume>;
   getResumeList: ({
     token,
   }: {
     token: string;
-  }) => ServiceResponse<ResumeListResponse>;
+  }) => ServiceResponse<{ resumeList: Resume[] }>;
   applyCoffeeChat: ({
     token,
     phoneNumber,
@@ -26,7 +26,7 @@ export type ResumeService = {
     phoneNumber: string;
     content: string;
     postId: string;
-  }) => ServiceResponse<ResumeResponse>;
+  }) => ServiceResponse<Resume>;
   deleteCoffeeChat: ({
     token,
     resumeId,

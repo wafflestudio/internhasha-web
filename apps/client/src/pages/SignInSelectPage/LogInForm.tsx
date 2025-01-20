@@ -75,7 +75,10 @@ const useLocalSignIn = () => {
       localId: string;
       password: string;
     }) => {
-      return authService.localSignIn({ localId, password });
+      return authService.signIn({
+        authType: 'LOCAL',
+        info: { localLoginId: localId, password },
+      });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {

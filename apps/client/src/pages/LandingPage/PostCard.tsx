@@ -1,10 +1,10 @@
 import { Button } from '@/components/button';
-import type { PostBriefDTO } from '@/shared/api/entities';
+import type { BriefPost } from '@/entities/post';
 
-interface PostCardProps {
-  post: PostBriefDTO;
+type PostCardProps = {
+  post: BriefPost;
   onDetailClick: (postId: string) => void;
-}
+};
 
 export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
   const {
