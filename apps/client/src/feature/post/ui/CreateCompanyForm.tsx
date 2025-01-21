@@ -2,6 +2,7 @@ import {
   Button,
   FormContainer,
   LabelContainer,
+  SubmitButton,
   TextInput,
 } from '@waffle/design-system';
 import { useState } from 'react';
@@ -13,7 +14,7 @@ import {
 import { companyPresentation } from '@/feature/post/presentation/companypresentation';
 
 export const CreateCompanyForm = () => {
-  const [rawTagValue, setRawTagValue] = useState('');
+  const [isSubmit, setIsSubmit] = useState(false);
   const {
     companyName,
     companyEmail,
@@ -25,10 +26,20 @@ export const CreateCompanyForm = () => {
     landingPageLink,
     externalDescriptionLink,
   } = companyPresentation.useValidator({});
-  const { thumbnail, IRDeckPreview } = companyPresentation.useUtilState();
+  const { rawTags, thumbnail, IRDeckPreview } =
+    companyPresentation.useUtilState();
 
   const handleSubmit = () => {
-    console.log(thumbnail);
+    setIsSubmit(true);
+    console.log(companyName);
+    console.log(companyEmail);
+    console.log(slogan);
+    console.log(tags);
+    console.log(series);
+    console.log(investAmount);
+    console.log(investCompany);
+    console.log(landingPageLink);
+    console.log(externalDescriptionLink);
   };
 
   const addThumbnailImage = (file: File | undefined) => {
@@ -60,6 +71,9 @@ export const CreateCompanyForm = () => {
             companyName.onChange(e.target.value);
           }}
         />
+        {isSubmit && companyName.isError && (
+          <p>올바른 회사명을 입력해주세요.</p>
+        )}
       </LabelContainer>
       <LabelContainer label="회사 이메일" id="companyEmail">
         <TextInput
@@ -69,6 +83,9 @@ export const CreateCompanyForm = () => {
             companyEmail.onChange(e.target.value);
           }}
         />
+        {isSubmit && companyEmail.isError && (
+          <p>올바르지 않은 이메일 형식입니다.</p>
+        )}
       </LabelContainer>
       <LabelContainer label="한 줄 소개" id="slogan">
         <TextInput
@@ -78,6 +95,9 @@ export const CreateCompanyForm = () => {
             slogan.onChange(e.target.value);
           }}
         />
+        {isSubmit && companyEmail.isError && (
+          <p>한 줄 소개는 500자 이내로 작성해주세요.</p>
+        )}
       </LabelContainer>
       <LabelContainer label="대표 사진" id="imageLink">
         {thumbnail.value !== null ? (
@@ -103,6 +123,9 @@ export const CreateCompanyForm = () => {
             }
           }}
         />
+        {isSubmit && thumbnail.isError && (
+          <p>1MB 이하의 이미지 파일을 올려주세요.</p>
+        )}
       </LabelContainer>
       <LabelContainer label="투자 단계" id="series">
         <select
@@ -118,6 +141,7 @@ export const CreateCompanyForm = () => {
             </option>
           ))}
         </select>
+        {isSubmit && series.isError && <p>투자 단계를 선택해주세요.</p>}
       </LabelContainer>
       <LabelContainer label="누적 투자액" id="investAmount">
         <TextInput
@@ -128,6 +152,9 @@ export const CreateCompanyForm = () => {
           }}
         />
         <span>천만원</span>
+        {isSubmit && investAmount.isError && (
+          <p>0 이상의 양의 정수로 입력해주세요.</p>
+        )}
       </LabelContainer>
       <LabelContainer label="투자사 정보" id="investCompany">
         {investCompany.value.map((input, index) => (
@@ -158,6 +185,9 @@ export const CreateCompanyForm = () => {
         >
           추가
         </Button>
+        {isSubmit && investCompany.isError && (
+          <p>투자사 정보는 1개 이상, 10개 이하로 입력해주세요.</p>
+        )}
       </LabelContainer>
       <LabelContainer label="해시태그" id="tags">
         {tags.value.map((input) => (
@@ -173,15 +203,15 @@ export const CreateCompanyForm = () => {
           </div>
         ))}
         <TextInput
-          value={rawTagValue}
+          value={rawTags.value}
           placeholder="회사를 소개하는 태그를 입력해주세요. (최대 10개)"
           onChange={(e) => {
-            setRawTagValue(e.target.value);
+            rawTags.onChange(e.target.value);
           }}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && rawTagValue.trim() !== '') {
-              tags.onChange({ input: rawTagValue.trim(), mode: 'ADD' });
-              setRawTagValue('');
+            if (e.key === 'Enter' && rawTags.value.trim() !== '') {
+              tags.onChange({ input: rawTags.value.trim(), mode: 'ADD' });
+              rawTags.onChange('');
               e.preventDefault();
             }
           }}
@@ -189,6 +219,9 @@ export const CreateCompanyForm = () => {
         <p>
           엔터를 치면 태그가 생성되며 한 개당 최대 8자까지 입력할 수 있어요.
         </p>
+        {isSubmit && tags.isError && (
+          <p>하나의 태그는 8자 이하, 총 10개까지 작성 가능합니다.</p>
+        )}
       </LabelContainer>
       <LabelContainer label="IR Deck 자료" id="IRDeckLink">
         {IRDeckPreview.value !== null ? (
@@ -213,6 +246,9 @@ export const CreateCompanyForm = () => {
             }
           }}
         />
+        {isSubmit && IRDeckPreview.isError && (
+          <p>5MB 이하의 PDF 파일을 올려주세요.</p>
+        )}
       </LabelContainer>
       <LabelContainer label="기업 소개 홈페이지">
         <TextInput
@@ -223,6 +259,9 @@ export const CreateCompanyForm = () => {
             landingPageLink.onChange(e.target.value);
           }}
         />
+        {isSubmit && landingPageLink.isError && (
+          <p>https로 시작하는 홈페이지 링크를 입력해주세요.</p>
+        )}
       </LabelContainer>
       <LabelContainer label="외부 소개 링크" id="externalDescriptionLink">
         {externalDescriptionLink.value.map((input, index) => (
@@ -281,7 +320,11 @@ export const CreateCompanyForm = () => {
           더벤처스, 잡코리아, 기사 링크 등 회사를 소개할 수 있는 기타 링크를
           첨부해주세요.
         </p>
+        {isSubmit && externalDescriptionLink.isError && (
+          <p>외부 소개 링크는 최대 5개까지 입력 가능합니다.</p>
+        )}
       </LabelContainer>
+      <SubmitButton onClick={handleSubmit}>제출하기</SubmitButton>
     </FormContainer>
   );
 };

@@ -39,18 +39,18 @@ type CompanyPresentation = {
     externalDescriptionLink: ListInput<ExternalLink>;
   };
   useUtilState(): {
-    thumbnail: {
-      value: { file: File; url: string } | null;
-      onChange(input: { file: File; url: string } | null): void;
-    };
-    IRDeckPreview: {
-      value: { file: File; url: string } | null;
-      onChange(input: { file: File; url: string } | null): void;
-    };
+    rawTags: Input<string>;
+    thumbnail: Input<{ file: File; url: string } | null>;
+    IRDeckPreview: Input<{ file: File; url: string } | null>;
   };
 };
 
 const MAX_TAGS = 10;
+const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
+const MAX_FILE_SIZE = 5 * 1024 * 2024;
+const IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif'];
+const FILE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif'];
+
 const CONTENT_REGEX = /^(?!\s*$).{1,500}$/;
 const TAG_REGEX = /^(?!\s*$).{1,8}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -335,6 +335,7 @@ export const companyPresentation: CompanyPresentation = {
     };
   },
   useUtilState: () => {
+    const [rawTags, setRawTags] = useState('');
     const [thumbnail, setThumbnail] = useState<{
       file: File;
       url: string;
@@ -343,6 +344,58 @@ export const companyPresentation: CompanyPresentation = {
       file: File;
       url: string;
     } | null>(null);
+
+    const isThumbnailImageValid = (
+      input: {
+        file: File;
+        url: string;
+      } | null,
+    ) => {
+      if (input === null) {
+        return false;
+      }
+
+      const fileExtenstion = input.file.name
+        .split('.')
+        .pop()
+        ?.toLocaleLowerCase();
+      if (fileExtenstion === undefined) {
+        return false;
+      }
+      if (!IMAGE_EXTENSIONS.includes(fileExtenstion)) {
+        return false;
+      }
+      if (input.file.size > MAX_IMAGE_SIZE) {
+        return false;
+      }
+      return true;
+    };
+
+    const isIRDeckPreviewValid = (
+      input: {
+        file: File;
+        url: string;
+      } | null,
+    ) => {
+      if (input === null) {
+        return false;
+      }
+
+      const fileExtenstion = input.file.name
+        .split('.')
+        .pop()
+        ?.toLocaleLowerCase();
+      if (fileExtenstion === undefined) {
+        return false;
+      }
+      if (!FILE_EXTENSIONS.includes(fileExtenstion)) {
+        return false;
+      }
+      if (input.file.size > MAX_FILE_SIZE) {
+        return false;
+      }
+      return true;
+    };
 
     const handleThumbnailChange = (
       input: {
@@ -355,13 +408,23 @@ export const companyPresentation: CompanyPresentation = {
     const handleIRDeckPreview = (input: { file: File; url: string } | null) => {
       setIRDeckPreview(input);
     };
+    const handleRawTags = (input: string) => {
+      setRawTags(input);
+    };
 
     return {
+      rawTags: {
+        isError: false,
+        value: rawTags,
+        onChange: handleRawTags,
+      },
       thumbnail: {
+        isError: isThumbnailImageValid(thumbnail),
         value: thumbnail,
         onChange: handleThumbnailChange,
       },
       IRDeckPreview: {
+        isError: isIRDeckPreviewValid(IRDeckPreview),
         value: IRDeckPreview,
         onChange: handleIRDeckPreview,
       },
