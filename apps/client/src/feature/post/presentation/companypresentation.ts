@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 import type { Input, ListInput, SelectInput } from '@/entities/input';
+import type { Series } from '@/entities/post';
 
-export type Series = 'NONE' | 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
 export const seriesList = ['SEED', 'PRE_A', 'A', 'B', 'C', 'D'];
 
 type ExternalLink = {
@@ -15,7 +15,7 @@ type InitialState = {
   companyEmail?: string;
   slogan?: string;
   imageLink?: string;
-  series?: Series;
+  series?: Series | 'NONE';
   investAmount?: string;
   investCompany?: string[];
   tags?: string[];
@@ -30,7 +30,7 @@ type CompanyPresentation = {
     companyEmail: Input<string>;
     slogan: Input<string>;
     imageLink: Input<string>;
-    series: SelectInput<Series>;
+    series: SelectInput<Series | 'NONE'>;
     investAmount: Input<string>;
     investCompany: ListInput<string>;
     tag: Input<string>;
@@ -89,7 +89,7 @@ export const companyPresentation: CompanyPresentation = {
     const [imageLink, setImageLink] = useState(
       initialState.imageLink !== undefined ? initialState.imageLink : '',
     );
-    const [series, setSeries] = useState<Series>(
+    const [series, setSeries] = useState<Series | 'NONE'>(
       initialState.series !== undefined ? initialState.series : 'NONE',
     );
     const [investAmount, setInvestAmount] = useState(
@@ -174,7 +174,7 @@ export const companyPresentation: CompanyPresentation = {
     const handleImageLinkChange = (input: string) => {
       setImageLink(input);
     };
-    const handleSeriesChange = (input: Series) => {
+    const handleSeriesChange = (input: Series | 'NONE') => {
       setSeries(input);
     };
     const handleInvestAmountChange = (input: string) => {
@@ -321,7 +321,7 @@ export const companyPresentation: CompanyPresentation = {
         onChange: handleImageLinkChange,
       },
       series: {
-        isError: series !== 'NONE',
+        isError: series === 'NONE',
         value: series,
         onChange: handleSeriesChange,
       },

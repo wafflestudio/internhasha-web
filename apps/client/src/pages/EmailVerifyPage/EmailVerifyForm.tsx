@@ -122,7 +122,7 @@ export const EmailVerifyForm = () => {
 
   const hanldeClickPreviousButton = () => {
     if (body.authProvider === 'LOCAL') {
-      toSignUpLocal(body);
+      toSignUpLocal({ body });
       return;
     }
     toSignUpSelect();

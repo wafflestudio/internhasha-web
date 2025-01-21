@@ -10,6 +10,8 @@ export type RoleCategory =
   | 'MARKETING'
   | 'OTHERS';
 
+export type Series = 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
+
 export type FilterElements = {
   roles?: RoleCategory[];
   investmentMax?: number;
@@ -32,7 +34,7 @@ export type Post = {
   slogan: string;
   investAmount?: number;
   investCompany: string[];
-  series: 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
+  series: Series;
   IRDeckLink?: string;
   landingPageLink?: string;
   imageLink?: string;

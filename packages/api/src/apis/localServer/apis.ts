@@ -3,19 +3,21 @@ import type {
   InternalCallParams,
   ResponseNecessary,
   SuccessResponse,
-} from "./entities/params";
+} from "../../entities";
 import type {
   AccessTokenRequest,
   ApplyCoffeeChatRequest,
   CreateAndUpdatePostRequest,
   EchoParams,
   EmailVerifyRequest,
+  FileUploadRequest,
   GoogleEmailResponse,
   IdRequest,
   PostDetailResponse,
   PostIdParams,
   PostPathParams,
   PostsResponse,
+  PresignedUrlResponse,
   PretotypeUserSubmitRequest,
   PretotypeUserSubmitResponse,
   ResumeIdParams,
@@ -27,7 +29,7 @@ import type {
   TokenResponse,
   UserResponse,
   UserWithTokenResponse,
-} from "./entities/schemas";
+} from "./schemas";
 
 type GetApisProps = {
   callWithToken: <R extends ResponseNecessary>(
@@ -48,7 +50,7 @@ type Api = (_: {
   query: never;
 }) => Promise<{ status: number; data: unknown }>;
 
-export const getApis = ({
+export const getLocalServerApis = ({
   callWithToken,
   callWithoutToken,
   callWithOptionalToken,
@@ -107,14 +109,12 @@ export const getApis = ({
         path: "user/signin",
         body,
       }),
-
     "POST /user/signup/check-id": ({ body }: { body: IdRequest }) =>
       callWithoutToken<SuccessResponse<void>>({
         method: "POST",
         path: "user/signup/check-id",
         body,
       }),
-
     "POST /user/refresh-token": () =>
       callWithoutToken<SuccessResponse<TokenResponse>>({
         method: "POST",
@@ -224,6 +224,20 @@ export const getApis = ({
         method: "DELETE",
         path: `resume/${params.resumeId}`,
         token,
+      });
+    },
+    "POST /admin/post/upload/presigned": ({
+      token,
+      body,
+    }: {
+      token: string;
+      body: FileUploadRequest;
+    }) => {
+      return callWithToken<SuccessResponse<PresignedUrlResponse>>({
+        method: "POST",
+        path: "admin/post/upload/presigned",
+        token,
+        body,
       });
     },
   }) satisfies Record<string, Api>;

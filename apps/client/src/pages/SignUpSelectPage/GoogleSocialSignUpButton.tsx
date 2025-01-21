@@ -86,7 +86,9 @@ const useCheckGoogleMail = ({
         if (SNU_MAIL_REGEX.test(email)) {
           onSnuEmailSuccess(email, variables.token);
         } else {
-          toVerifyEmail({ token: variables.token, authProvider: 'GOOGLE' });
+          toVerifyEmail({
+            body: { token: variables.token, authProvider: 'GOOGLE' },
+          });
         }
       } else {
         setResponseMessage(response.message);

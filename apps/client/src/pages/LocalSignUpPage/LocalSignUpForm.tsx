@@ -86,10 +86,12 @@ export const LocalSignUpForm = () => {
     }
 
     toVerifyEmail({
-      authProvider: 'LOCAL',
-      localId: localId.value,
-      password: password.value,
-      username: username.value,
+      body: {
+        authProvider: 'LOCAL',
+        localId: localId.value,
+        password: password.value,
+        username: username.value,
+      },
     });
   };
 
