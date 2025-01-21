@@ -52,13 +52,12 @@ const RouterProvider = () => {
         path={PATH.COFFEE_CHAT_DETAIL}
         element={<CoffeeChatDetailPage />}
       />
+      <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
+      <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
       <Route element={<AuthProtectedRoute />}>
         <Route path={PATH.MY_PAGE} element={<MyPage />} />
       </Route>
-      <Route element={<CompanyProtectedRoute />}>
-        <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
-        <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
-      </Route>
+      <Route element={<CompanyProtectedRoute />}></Route>
     </Routes>
   );
 };

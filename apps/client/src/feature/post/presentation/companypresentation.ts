@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import type { ListInput, SelectInput, StringInput } from '@/entities/input';
+import type { Input, ListInput, SelectInput } from '@/entities/input';
 
 export type Series = 'NONE' | 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
 export const seriesList = ['SEED', 'PRE_A', 'A', 'B', 'C', 'D'];
@@ -26,16 +26,16 @@ type InitialState = {
 
 type CompanyPresentation = {
   useValidator({ initialState }: { initialState?: InitialState }): {
-    companyName: StringInput;
-    companyEmail: StringInput;
-    slogan: StringInput;
-    imageLink: StringInput;
+    companyName: Input<string>;
+    companyEmail: Input<string>;
+    slogan: Input<string>;
+    imageLink: Input<string>;
     series: SelectInput<Series>;
-    investAmount: StringInput;
+    investAmount: Input<string>;
     investCompany: ListInput<string>;
     tags: ListInput<string>;
-    IRDeckLink: StringInput;
-    landingPageLink: StringInput;
+    IRDeckLink: Input<string>;
+    landingPageLink: Input<string>;
     externalDescriptionLink: ListInput<ExternalLink>;
   };
   useUtilState(): {
