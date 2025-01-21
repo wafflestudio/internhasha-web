@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Route, Routes } from 'react-router';
 
 import { PATH } from '@/entities/route';
+import { implPostService } from '@/feature/post';
 import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
 import { EchoPage } from '@/pages/EchoPage';
@@ -23,8 +24,7 @@ import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
 import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
 import { implAuthService } from '@/service/authService';
 import { implEchoService } from '@/service/echoService';
-import { implPostService } from '@/service/postService.ts';
-import { implResumeService } from '@/service/resumeService.ts';
+import { implResumeService } from '@/service/resumeService';
 import { implUserService } from '@/service/userService';
 import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { CompanyProtectedRoute } from '@/shared/auth/CompanyProtectedRoute';
@@ -79,7 +79,7 @@ export const App = () => {
   const ENV = useGuardContext(EnvContext);
   const tokenState = implTokenStateRepository({ setToken });
 
-  const externalCall = async (content: ExternalCallParams) => {
+  const localServerCall = async (content: ExternalCallParams) => {
     const response = await fetch(
       `${ENV.APP_ENV === 'prod' ? ENV.API_BASE_URL : '/api'}/${content.path}`,
       {
@@ -119,12 +119,30 @@ export const App = () => {
     };
   };
 
-  const apis = implApi({ externalCall });
+  const externalServerCall = async (content: ExternalCallParams) => {
+    const response = await fetch(content.path, {
+      method: content.method,
+      headers: content.headers,
+      ...(content.body !== undefined
+        ? { body: JSON.stringify(content.body) }
+        : {}),
+    });
+
+    const responseBody = (await response.json().catch(() => null)) as unknown;
+
+    return {
+      status: response.status,
+      data: responseBody,
+    };
+  };
+
+  const apis = implApi({ externalCall: localServerCall });
+  const externalApis = implApi({ externalCall: externalServerCall });
 
   const services = {
     echoService: implEchoService({ apis }),
     authService: implAuthService({ apis, tokenState, tokenLocalStorage }),
-    postService: implPostService({ apis }),
+    postService: implPostService({ apis, externalApis }),
     userService: implUserService({ apis }),
     resumeService: implResumeService({ apis }),
   };

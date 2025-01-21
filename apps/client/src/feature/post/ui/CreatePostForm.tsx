@@ -1,4 +1,5 @@
 import {
+  Button,
   FormContainer,
   LabelContainer,
   SubmitButton,
@@ -6,6 +7,7 @@ import {
 } from '@waffle/design-system';
 import { useState } from 'react';
 
+import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import type {
   JobMajorCategory,
   JobMinorCategory,
@@ -15,8 +17,10 @@ import {
   JOB_MAJOR_CATEGORIES,
   postPresentation,
 } from '@/feature/post/presentation/postPresentation';
+import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 export const CreatePostForm = () => {
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isCancel, setIsCancel] = useState(false);
   const formatMajorValueToLabel = (input: string) => {
     switch (input) {
       case 'DEVELOPMENT':
@@ -66,6 +70,8 @@ export const CreatePostForm = () => {
   const { rawHeadcount, employmentEndDate, employmentEndTime } =
     postPresentation.useUtilState();
 
+  const { toMain } = useRouteNavigation();
+
   const handleSubmit = () => {
     setIsSubmit(true);
     console.log(
@@ -78,126 +84,153 @@ export const CreatePostForm = () => {
     );
   };
 
+  const handleClickCancelButton = () => {
+    setIsCancel(true);
+  };
+
+  const closeCancelModal = () => {
+    setIsCancel(false);
+  };
+
   return (
-    <FormContainer
-      id="CreatePostForm"
-      handleSubmit={handleSubmit}
-      response={''}
-    >
-      <LabelContainer label="공고명" id="title">
-        <TextInput
-          id="title"
-          value={title.value}
-          onChange={(e) => {
-            title.onChange(e.target.value);
-          }}
-          placeholder="공고명을 입력해주세요."
-        />
-        {isSubmit && title.isError && (
-          <p>공고명은 500자 이내로 작성해주세요.</p>
-        )}
-      </LabelContainer>
-      <div>
-        <LabelContainer label="직무 유형" id="job">
-          <div>
-            <div>
-              <select
-                value={jobMajorCategory.value}
-                onChange={(e) => {
-                  jobMajorCategory.onChange(e.target.value as JobMajorCategory);
-                }}
-              >
-                {JOB_MAJOR_CATEGORIES.map((category) => {
-                  const label = formatMajorValueToLabel(category);
-
-                  if (label === null) return null;
-
-                  return (
-                    <option key={`major-category-${category}`} value={category}>
-                      {formatMajorValueToLabel(category)}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <div>
-              <select
-                value={jobMinorCategory.value}
-                onChange={(e) => {
-                  jobMinorCategory.onChange(e.target.value as JobMinorCategory);
-                }}
-              >
-                <option value="NONE" selected disabled hidden></option>
-                {JOB_CATEGORY_MAP[jobMajorCategory.value].map((subCategory) => (
-                  <option
-                    key={`sub-category-${subCategory}`}
-                    value={subCategory}
-                  >
-                    {formatMinorValueToLabel(subCategory)}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          {isSubmit && jobMinorCategory.isError && <p>직무를 선택해주세요.</p>}
-        </LabelContainer>
-        <LabelContainer label="모집 인원" id="headcount">
+    <>
+      <FormContainer
+        id="CreatePostForm"
+        handleSubmit={handleSubmit}
+        response={''}
+      >
+        <LabelContainer label="공고명" id="title">
           <TextInput
-            value={rawHeadcount.value}
+            id="title"
+            value={title.value}
             onChange={(e) => {
-              rawHeadcount.onChange(e.target.value);
-              headcount.onChange(Number(e.target.value));
+              title.onChange(e.target.value);
             }}
-            placeholder="모집 인원 수"
+            placeholder="공고명을 입력해주세요."
           />
-          {isSubmit && headcount.isError && (
-            <p>모집 인원은 0 또는 양의 정수여야 합니다.</p>
+          {isSubmit && title.isError && (
+            <p>공고명은 500자 이내로 작성해주세요.</p>
           )}
         </LabelContainer>
-      </div>
-      <LabelContainer label="상세 공고 글" id="content">
-        <TextInput
-          id="content"
-          value={content.value}
-          onChange={(e) => {
-            content.onChange(e.target.value);
-          }}
-          placeholder="직무 설명, 근무 조건, 지원 조건, 지원 절차 등에 대해 구체적으로 작성해주세요."
-        />
-        {isSubmit && content.isError && (
-          <p>상세 공고 글은 10,000자 이상 작성하실 수 없습니다.</p>
-        )}
-      </LabelContainer>
-      <LabelContainer label="채용 마감일" id="employmentEndDate">
-        <input
-          id="employmentEndDate"
-          type="date"
-          value={employmentEndDate.value}
-          onChange={(e) => {
-            employmentEndDate.onChange(e.target.value);
-            employmentEndDateTime.onChange(
-              `${e.target.value}T${employmentEndTime.value}`,
-            );
-          }}
-        />
-        <input
-          id="employmentEndTime"
-          type="time"
-          value={employmentEndTime.value}
-          onChange={(e) => {
-            employmentEndTime.onChange(e.target.value);
-            employmentEndDateTime.onChange(
-              `${employmentEndDate.value}T${e.target.value}`,
-            );
-          }}
-        />
-        {isSubmit && employmentEndDate.isError && (
-          <p>올바른 채용 마감일을 선택해주세요.</p>
-        )}
-      </LabelContainer>
-      <SubmitButton form="CreatePostForm" onClick={handleSubmit}>
-        제출하기
-      </SubmitButton>
-    </FormContainer>
+        <div>
+          <LabelContainer label="직무 유형" id="job">
+            <div>
+              <div>
+                <select
+                  value={jobMajorCategory.value}
+                  onChange={(e) => {
+                    jobMajorCategory.onChange(
+                      e.target.value as JobMajorCategory,
+                    );
+                  }}
+                >
+                  {JOB_MAJOR_CATEGORIES.map((category) => {
+                    const label = formatMajorValueToLabel(category);
+
+                    if (label === null) return null;
+
+                    return (
+                      <option
+                        key={`major-category-${category}`}
+                        value={category}
+                      >
+                        {formatMajorValueToLabel(category)}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <div>
+                <select
+                  value={jobMinorCategory.value}
+                  onChange={(e) => {
+                    jobMinorCategory.onChange(
+                      e.target.value as JobMinorCategory,
+                    );
+                  }}
+                >
+                  <option value="NONE" selected disabled hidden></option>
+                  {JOB_CATEGORY_MAP[jobMajorCategory.value].map(
+                    (subCategory) => (
+                      <option
+                        key={`sub-category-${subCategory}`}
+                        value={subCategory}
+                      >
+                        {formatMinorValueToLabel(subCategory)}
+                      </option>
+                    ),
+                  )}
+                </select>
+              </div>
+            </div>
+            {isSubmit && jobMinorCategory.isError && (
+              <p>직무를 선택해주세요.</p>
+            )}
+          </LabelContainer>
+          <LabelContainer label="모집 인원" id="headcount">
+            <TextInput
+              value={rawHeadcount.value}
+              onChange={(e) => {
+                rawHeadcount.onChange(e.target.value);
+                headcount.onChange(Number(e.target.value));
+              }}
+              placeholder="모집 인원 수"
+            />
+            {isSubmit && headcount.isError && (
+              <p>모집 인원은 0 또는 양의 정수여야 합니다.</p>
+            )}
+          </LabelContainer>
+        </div>
+        <LabelContainer label="상세 공고 글" id="content">
+          <TextInput
+            id="content"
+            value={content.value}
+            onChange={(e) => {
+              content.onChange(e.target.value);
+            }}
+            placeholder="직무 설명, 근무 조건, 지원 조건, 지원 절차 등에 대해 구체적으로 작성해주세요."
+          />
+          {isSubmit && content.isError && (
+            <p>상세 공고 글은 10,000자 이상 작성하실 수 없습니다.</p>
+          )}
+        </LabelContainer>
+        <LabelContainer label="채용 마감일" id="employmentEndDate">
+          <input
+            id="employmentEndDate"
+            type="date"
+            value={employmentEndDate.value}
+            onChange={(e) => {
+              employmentEndDate.onChange(e.target.value);
+              employmentEndDateTime.onChange(
+                `${e.target.value}T${employmentEndTime.value}`,
+              );
+            }}
+          />
+          <input
+            id="employmentEndTime"
+            type="time"
+            value={employmentEndTime.value}
+            onChange={(e) => {
+              employmentEndTime.onChange(e.target.value);
+              employmentEndDateTime.onChange(
+                `${employmentEndDate.value}T${e.target.value}`,
+              );
+            }}
+          />
+          {isSubmit && employmentEndDate.isError && (
+            <p>올바른 채용 마감일을 선택해주세요.</p>
+          )}
+        </LabelContainer>
+        <div>
+          <Button onClick={handleClickCancelButton}>이전으로</Button>
+          <SubmitButton form="CreatePostForm" onClick={handleSubmit}>
+            제출하기
+          </SubmitButton>
+        </div>
+      </FormContainer>
+      {isCancel && (
+        <CancelCheckModal onClose={toMain} onCancel={closeCancelModal} />
+      )}
+    </>
   );
 };

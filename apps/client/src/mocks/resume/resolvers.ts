@@ -5,7 +5,7 @@ import type {
   ResumeDTO,
   ResumeListResponse,
   ResumeResponse,
-} from '@/mocks/resume/schemas.ts';
+} from '@/mocks/resume/schemas';
 
 type ResumeResolver = {
   getResumeList: HttpResponseResolver<never, never, ResumeListResponse>;

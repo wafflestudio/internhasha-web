@@ -3,13 +3,13 @@ import { Button as DesignedButton } from '@waffle/design-system';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
-import type { FilterElements } from '@/entities/post.ts';
-import { FilterSection } from '@/pages/LandingPage/FilterSection.tsx';
-import { Pagination } from '@/pages/LandingPage/Pagination.tsx';
-import { PostCard } from '@/pages/LandingPage/PostCard.tsx';
-import { useGetPosts } from '@/pages/LandingPage/useGetPosts.ts';
-import { useGuardContext } from '@/shared/context/hooks.ts';
-import { ServiceContext } from '@/shared/context/ServiceContext.ts';
+import type { FilterElements } from '@/entities/post';
+import { FilterSection } from '@/pages/LandingPage/FilterSection';
+import { Pagination } from '@/pages/LandingPage/Pagination';
+import { PostCard } from '@/pages/LandingPage/PostCard';
+import { useGetPosts } from '@/pages/LandingPage/useGetPosts';
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 

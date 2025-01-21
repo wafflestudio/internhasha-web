@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
 
+import type { Series } from '@/entities/post';
 import { HREF, PATH } from '@/entities/route';
 
 type VerifyMailBody =
@@ -19,6 +20,29 @@ type PreviousForm = {
   localId: string;
   password: string;
   username: string;
+};
+
+type CompanyBody = {
+  companyName: string;
+  companyEmail: string;
+  slogan: string;
+  series: Series;
+  imageLink: string;
+  investAmount: number;
+  investCompany: string[];
+  tags: string[] | null;
+  IRDeckLink: string | null;
+  landingPageLink: string | null;
+  externalDescriptionLink: { link: string; description: string }[] | null;
+};
+
+type PostBody = {
+  title: string;
+  jobMajorCategory: string;
+  jobMinorCategory: string;
+  headcount: number;
+  content: string;
+  employmentEndDateTime: string;
 };
 
 export const useRouteNavigation = () => {
@@ -54,10 +78,10 @@ export const useRouteNavigation = () => {
     toSignUpSelect: () => {
       void navigate(SIGN_UP_SELECT);
     },
-    toVerifyEmail: (body: VerifyMailBody) => {
+    toVerifyEmail: ({ body }: { body: VerifyMailBody }) => {
       void navigate(VERIFY_EMAIL, { state: { body } });
     },
-    toSignUpLocal: (body?: PreviousForm) => {
+    toSignUpLocal: ({ body }: { body?: PreviousForm }) => {
       void navigate(SIGN_UP_LOCAL, { state: { body } });
     },
     toSignUpComplete: () => {
@@ -72,11 +96,17 @@ export const useRouteNavigation = () => {
     toCoffeeChatDetail: ({ resumeId }: { resumeId: string }) => {
       void navigate(COFFEE_CHAT_DETAIL(resumeId));
     },
-    toCreateCompany: () => {
-      void navigate(CREATE_COMPANY);
+    toCreateCompany: ({ companyBody }: { companyBody?: CompanyBody }) => {
+      void navigate(CREATE_COMPANY, { state: { companyBody } });
     },
-    toCreatePost: () => {
-      void navigate(CREATE_POST);
+    toCreatePost: ({
+      companyBody,
+      postBody,
+    }: {
+      companyBody: CompanyBody;
+      postBody?: PostBody;
+    }) => {
+      void navigate(CREATE_POST, { state: { companyBody, postBody } });
     },
   };
 };

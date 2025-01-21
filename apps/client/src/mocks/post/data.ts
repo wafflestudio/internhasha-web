@@ -1,7 +1,4 @@
-import type {
-  PostDetailResponse,
-  PostsResponse,
-} from '@/mocks/post/schemas.ts';
+import type { PostDetailResponse, PostsResponse } from '@/mocks/post/schemas';
 
 const mockPostsResponse = Array.from({ length: 100 }, (_, index) => ({
   id: `${index + 1}`,

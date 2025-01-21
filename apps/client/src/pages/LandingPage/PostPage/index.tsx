@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router';
 
 import { Button } from '@/components/button';
-import { useGuardContext } from '@/shared/context/hooks.ts';
-import { ServiceContext } from '@/shared/context/ServiceContext.ts';
-import { TokenContext } from '@/shared/context/TokenContext.ts';
-import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
+import { TokenContext } from '@/shared/context/TokenContext';
+import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const PostPage = () => {
   const { postId } = useParams<{ postId: string }>();

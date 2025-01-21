@@ -4,7 +4,7 @@ import {
   type FilterElements,
   ROLE_CATEGORY_LIST,
   type RoleCategory,
-} from '@/entities/post.ts';
+} from '@/entities/post';
 
 const INVESTMENT_RANGES = [
   { label: '전체', min: undefined, max: undefined },

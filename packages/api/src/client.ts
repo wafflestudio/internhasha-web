@@ -1,4 +1,4 @@
-import { getApis } from "./api";
+import { getExternalServerApis, getLocalServerApis } from "./apis";
 import type {
   ErrorResponse,
   ExternalCallParams,
@@ -14,6 +14,7 @@ export const implApi = ({ externalCall }: ImplApiProps) => {
   const internalCall = async <R extends ResponseNecessary>(content: {
     method: string;
     path: string;
+    contentType?: string;
     body?: Record<string, unknown>;
     token?: string;
   }) => {
@@ -22,7 +23,9 @@ export const implApi = ({ externalCall }: ImplApiProps) => {
       path: content.path,
       body: content.body,
       headers: {
-        "content-type": "application/json;charset=UTF-8",
+        ...(content.contentType !== undefined
+          ? { "content-type": content.contentType }
+          : { "content-type": "application/json;charset=UTF-8" }),
         ...(content.token !== undefined
           ? { Authorization: `Bearer ${content.token}` }
           : {}),
@@ -45,11 +48,15 @@ export const implApi = ({ externalCall }: ImplApiProps) => {
     p: InternalCallParams & { token?: string },
   ) => internalCall<R | ErrorResponse>(p);
 
-  return getApis({
-    callWithToken: callWithToken,
-    callWithoutToken: callWithoutToken,
-    callWithOptionalToken: callWithOptionalToken,
-  });
+  return {
+    ...getLocalServerApis({
+      callWithToken,
+      callWithoutToken,
+      callWithOptionalToken,
+    }),
+    ...getExternalServerApis({ callWithoutToken }),
+  };
 };
 
-export type Apis = ReturnType<typeof implApi>;
+export type Apis = ReturnType<typeof getLocalServerApis>;
+export type ExternalApis = ReturnType<typeof getExternalServerApis>;

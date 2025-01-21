@@ -184,6 +184,11 @@ export type ApplyCoffeeChatRequest = {
   content: string;
 };
 
+export type FileUploadRequest = {
+  fileName: string;
+  fileType: string;
+};
+
 // Response
 export type PretotypeUserSubmitResponse = {
   email: string;
@@ -224,3 +229,7 @@ export type GoogleEmailResponse = {
 export type ResumeResponse = ResumeDTO;
 
 export type ResumeListResponse = { resumeList: ResumeDTO[] };
+
+export type PresignedUrlResponse = {
+  presignedUrl: string;
+};

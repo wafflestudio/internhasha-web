@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router';
 
-import { useGuardContext } from '@/shared/context/hooks.ts';
-import { ServiceContext } from '@/shared/context/ServiceContext.ts';
-import { TokenContext } from '@/shared/context/TokenContext.ts';
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
+import { TokenContext } from '@/shared/context/TokenContext';
 
 export const CoffeeChatDetailPage = () => {
   const { resumeId } = useParams<{ resumeId: string }>();

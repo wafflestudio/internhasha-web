@@ -4,7 +4,7 @@ import { resumeResolver } from '@/mocks/resume/resolvers';
 import type {
   ResumeListResponse,
   ResumeResponse,
-} from '@/mocks/resume/schemas.ts';
+} from '@/mocks/resume/schemas';
 
 export const resumeHandlers = [
   http.get<never, never, ResumeListResponse>(

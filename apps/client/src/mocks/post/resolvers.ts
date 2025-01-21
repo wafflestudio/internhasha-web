@@ -1,10 +1,7 @@
 import { HttpResponse, type HttpResponseResolver } from 'msw';
 
-import { getPagedPosts, mockPost1, mockPost2 } from '@/mocks/post/data.ts';
-import type {
-  PostDetailResponse,
-  PostsResponse,
-} from '@/mocks/post/schemas.ts';
+import { getPagedPosts, mockPost1, mockPost2 } from '@/mocks/post/data';
+import type { PostDetailResponse, PostsResponse } from '@/mocks/post/schemas';
 
 type PostsResolver = {
   posts: HttpResponseResolver<never, never, PostsResponse>;

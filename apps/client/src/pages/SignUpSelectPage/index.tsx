@@ -11,7 +11,7 @@ export const SignUpSelectPage = () => {
       <GoogleSocialSignUpButton />
       <Button
         onClick={() => {
-          toSignUpLocal();
+          toSignUpLocal({});
         }}
       >
         일반 회원가입

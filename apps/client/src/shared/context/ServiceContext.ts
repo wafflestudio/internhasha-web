@@ -1,9 +1,9 @@
 import { createContext } from 'react';
 
+import type { PostService } from '@/feature/post';
 import type { AuthService } from '@/service/authService';
 import type { EchoService } from '@/service/echoService';
-import type { PostService } from '@/service/postService.ts';
-import type { ResumeService } from '@/service/resumeService.ts';
+import type { ResumeService } from '@/service/resumeService';
 import type { UserService } from '@/service/userService';
 
 export type ServiceContext = {
