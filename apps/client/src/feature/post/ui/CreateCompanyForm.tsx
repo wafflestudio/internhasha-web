@@ -28,17 +28,18 @@ export const CreateCompanyForm = () => {
   } = companyPresentation.useValidator({});
   const { rawTags, thumbnail, IRDeckPreview } =
     companyPresentation.useUtilState();
+  const { tagValidator, tagInputValidator } = companyPresentation.validator;
 
   const handleSubmit = () => {
     setIsSubmit(true);
-    console.log(companyName);
-    console.log(companyEmail);
-    console.log(slogan);
-    console.log(tags);
-    console.log(series);
-    console.log(investAmount);
-    console.log(investCompany);
-    console.log(landingPageLink);
+    // console.log(companyName);
+    // console.log(companyEmail);
+    // console.log(slogan);
+    // console.log(tags);
+    // console.log(series);
+    // console.log(investAmount);
+    // console.log(investCompany);
+    // console.log(landingPageLink);
     console.log(externalDescriptionLink);
   };
 
@@ -67,6 +68,7 @@ export const CreateCompanyForm = () => {
         <TextInput
           id="companyName"
           value={companyName.value}
+          placeholder="회사명을 입력해주세요."
           onChange={(e) => {
             companyName.onChange(e.target.value);
           }}
@@ -79,6 +81,7 @@ export const CreateCompanyForm = () => {
         <TextInput
           id="companyEmail"
           value={companyEmail.value}
+          placeholder="회사 이메일을 입력해주세요."
           onChange={(e) => {
             companyEmail.onChange(e.target.value);
           }}
@@ -91,6 +94,7 @@ export const CreateCompanyForm = () => {
         <TextInput
           id="slogan"
           value={slogan.value}
+          placeholder="한 줄 소개를 입력해주세요."
           onChange={(e) => {
             slogan.onChange(e.target.value);
           }}
@@ -116,9 +120,7 @@ export const CreateCompanyForm = () => {
           accept="image/*"
           className="hidden"
           onChange={(e) => {
-            console.log('here');
             if (e.target.files !== null) {
-              console.log(e.target.files);
               addThumbnailImage(e.target.files[0]);
             }
           }}
@@ -135,6 +137,7 @@ export const CreateCompanyForm = () => {
             }
           }}
         >
+          <option value="NONE" disabled hidden></option>
           {seriesList.map((seriesItem, idx) => (
             <option key={idx} value={seriesItem}>
               {seriesItem}
@@ -147,6 +150,7 @@ export const CreateCompanyForm = () => {
         <TextInput
           id="investAmount"
           value={investAmount.value}
+          placeholder="100"
           onChange={(e) => {
             investAmount.onChange(e.target.value);
           }}
@@ -157,10 +161,11 @@ export const CreateCompanyForm = () => {
         )}
       </LabelContainer>
       <LabelContainer label="투자사 정보" id="investCompany">
-        {investCompany.value.map((input, index) => (
+        {investCompany.value.map((company, index) => (
           <div key={`invest-company-${index}`}>
             <TextInput
-              value={input}
+              value={company}
+              placeholder="투자사 이름을 입력해주세요."
               onChange={(e) => {
                 investCompany.onChange({
                   input: e.target.value,
@@ -168,10 +173,17 @@ export const CreateCompanyForm = () => {
                   mode: 'PATCH',
                 });
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  investCompany.onChange({ input: '', mode: 'ADD' });
+                }
+              }}
             />
             <Button
-              onClick={() => {
-                investCompany.onChange({ input, mode: 'REMOVE' });
+              onClick={(e) => {
+                e.preventDefault();
+                investCompany.onChange({ input: company, mode: 'REMOVE' });
               }}
             >
               삭제
@@ -179,23 +191,25 @@ export const CreateCompanyForm = () => {
           </div>
         ))}
         <Button
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
             investCompany.onChange({ input: '', mode: 'ADD' });
           }}
         >
           추가
         </Button>
         {isSubmit && investCompany.isError && (
-          <p>투자사 정보는 1개 이상, 10개 이하로 입력해주세요.</p>
+          <p>투자사 정보는 1개 이상, 10개 이하로 중복되지 않게 입력해주세요.</p>
         )}
       </LabelContainer>
       <LabelContainer label="해시태그" id="tags">
-        {tags.value.map((input) => (
-          <div key={`tag-${input}`}>
-            <span>{input}</span>
+        {tags.value.map((tag) => (
+          <div key={`tag-${tag}`}>
+            <span>{tag}</span>
             <Button
-              onClick={() => {
-                tags.onChange({ input, mode: 'REMOVE' });
+              onClick={(e) => {
+                e.preventDefault();
+                tags.onChange({ input: tag, mode: 'REMOVE' });
               }}
             >
               삭제
@@ -209,16 +223,26 @@ export const CreateCompanyForm = () => {
             rawTags.onChange(e.target.value);
           }}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && rawTags.value.trim() !== '') {
-              tags.onChange({ input: rawTags.value.trim(), mode: 'ADD' });
-              rawTags.onChange('');
+            if (e.key === 'Enter') {
               e.preventDefault();
+              if (
+                tagValidator({ tag: rawTags.value.trim(), tags: tags.value })
+              ) {
+                tags.onChange({ input: rawTags.value.trim(), mode: 'ADD' });
+                rawTags.onChange('');
+              }
             }
           }}
         />
         <p>
           엔터를 치면 태그가 생성되며 한 개당 최대 8자까지 입력할 수 있어요.
         </p>
+        {!tagInputValidator({
+          tag: rawTags.value.trim(),
+          tags: tags.value,
+        }) && (
+          <p>입력한 태그와 중복되지 않는 8자 이하의 태그를 작성해주세요.</p>
+        )}
         {isSubmit && tags.isError && (
           <p>하나의 태그는 8자 이하, 총 10개까지 작성 가능합니다.</p>
         )}
@@ -241,7 +265,6 @@ export const CreateCompanyForm = () => {
           className="hidden"
           onChange={(e) => {
             if (e.target.files !== null) {
-              console.log(e.target.files);
               addPdfPreview(e.target.files[0]);
             }
           }}
@@ -269,8 +292,24 @@ export const CreateCompanyForm = () => {
             <div>
               <LabelContainer label="제목">
                 <TextInput
-                  value={input.link}
+                  value={input.description}
                   placeholder="링크 제목을 작성해주세요. (e.g. OO 프로젝트 성과 기사)"
+                  onChange={(e) => {
+                    externalDescriptionLink.onChange({
+                      input: {
+                        link: input.link,
+                        description: e.target.value,
+                      },
+                      index,
+                      mode: 'PATCH',
+                    });
+                  }}
+                />
+              </LabelContainer>
+              <LabelContainer label="링크">
+                <TextInput
+                  value={input.link}
+                  placeholder="https://"
                   onChange={(e) => {
                     externalDescriptionLink.onChange({
                       input: {
@@ -281,23 +320,20 @@ export const CreateCompanyForm = () => {
                       mode: 'PATCH',
                     });
                   }}
-                />
-              </LabelContainer>
-              <LabelContainer label="링크">
-                <TextInput
-                  value={input.description}
-                  placeholder="https://"
-                  onChange={(e) => {
-                    externalDescriptionLink.onChange({
-                      input: { link: input.link, description: e.target.value },
-                      index,
-                      mode: 'PATCH',
-                    });
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      externalDescriptionLink.onChange({
+                        input: { link: '', description: '' },
+                        mode: 'ADD',
+                      });
+                    }
                   }}
                 />
               </LabelContainer>
               <Button
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   externalDescriptionLink.onChange({ input, mode: 'REMOVE' });
                 }}
               >
@@ -307,7 +343,8 @@ export const CreateCompanyForm = () => {
           </div>
         ))}
         <Button
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
             externalDescriptionLink.onChange({
               input: { link: '', description: '' },
               mode: 'ADD',
@@ -321,7 +358,10 @@ export const CreateCompanyForm = () => {
           첨부해주세요.
         </p>
         {isSubmit && externalDescriptionLink.isError && (
-          <p>외부 소개 링크는 최대 5개까지 입력 가능합니다.</p>
+          <div>
+            <p>유효한 링크를 입력해주세요.</p>
+            <p>외부 소개 링크는 최대 5개까지 입력 가능합니다.</p>
+          </div>
         )}
       </LabelContainer>
       <SubmitButton onClick={handleSubmit}>제출하기</SubmitButton>

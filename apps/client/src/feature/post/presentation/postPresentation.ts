@@ -107,7 +107,6 @@ export const postPresentation: PostPresentation = {
     };
 
     const handleJobMinorCategoryChange = (input: JobMinorCategory) => {
-      console.log(input);
       setJobMinorCategory(input);
     };
 
