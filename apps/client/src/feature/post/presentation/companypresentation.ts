@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import type { ListInput, SelectInput, StringInput } from '@/entities/input';
+import type { Input, ListInput, SelectInput } from '@/entities/input';
 
 export type Series = 'NONE' | 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
 export const seriesList = ['SEED', 'PRE_A', 'A', 'B', 'C', 'D'];
@@ -26,31 +26,50 @@ type InitialState = {
 
 type CompanyPresentation = {
   useValidator({ initialState }: { initialState?: InitialState }): {
-    companyName: StringInput;
-    companyEmail: StringInput;
-    slogan: StringInput;
-    imageLink: StringInput;
+    companyName: Input<string>;
+    companyEmail: Input<string>;
+    slogan: Input<string>;
+    imageLink: Input<string>;
     series: SelectInput<Series>;
-    investAmount: StringInput;
+    investAmount: Input<string>;
     investCompany: ListInput<string>;
+    tag: Input<string>;
     tags: ListInput<string>;
-    IRDeckLink: StringInput;
-    landingPageLink: StringInput;
+    IRDeckLink: Input<string>;
+    landingPageLink: Input<string>;
     externalDescriptionLink: ListInput<ExternalLink>;
   };
   useUtilState(): {
-    thumbnail: {
-      value: { file: File; url: string } | null;
-      onChange(input: { file: File; url: string } | null): void;
-    };
-    IRDeckPreview: {
-      value: { file: File; url: string } | null;
-      onChange(input: { file: File; url: string } | null): void;
-    };
+    rawTags: Input<string>;
+    thumbnail: Input<{ file: File; url: string } | null>;
+    IRDeckPreview: Input<{ file: File; url: string } | null>;
+  };
+  validator: {
+    tagValidator({ tag, tags }: { tag: string; tags: string[] }): boolean;
+    tagInputValidator({ tag, tags }: { tag: string; tags: string[] }): boolean;
   };
 };
 
 const MAX_TAGS = 10;
+const MAX_TAG_LENGTH = 8;
+const MAX_COMPANY_LENGTH = 30;
+const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
+const MAX_FILE_SIZE = 5 * 1024 * 2024;
+const IMAGE_EXTENSIONS = [
+  'png',
+  'jpg',
+  'jpeg',
+  'gif',
+  'bmp',
+  'webp',
+  'svg',
+  'tiff',
+  'ico',
+  'heif',
+  'heic',
+];
+const FILE_EXTENSIONS = ['pdf'];
+
 const CONTENT_REGEX = /^(?!\s*$).{1,500}$/;
 const TAG_REGEX = /^(?!\s*$).{1,8}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -81,6 +100,7 @@ export const companyPresentation: CompanyPresentation = {
         ? initialState.investCompany
         : [''],
     );
+    const [tag, setTag] = useState('');
     const [tags, setTags] = useState<string[]>(
       initialState.tags !== undefined ? initialState.tags : [],
     );
@@ -103,9 +123,6 @@ export const companyPresentation: CompanyPresentation = {
     const isInvestCompanyExist = (input: string) => {
       return input in investCompany;
     };
-    const isTagExist = (input: string) => {
-      return input in tags;
-    };
     const isExternalLinkExist = (input: ExternalLink) => {
       return externalDescriptionLink.some(
         (item) =>
@@ -115,7 +132,7 @@ export const companyPresentation: CompanyPresentation = {
     const isExternalLinkValid = (input: ExternalLink[]) => {
       const filteredExternalLink = input.filter(
         (item) =>
-          item.link.trim().length === 0 && item.description.trim().length,
+          item.link.trim().length !== 0 && item.description.trim().length !== 0,
       );
       return filteredExternalLink.every(
         (externalLink) =>
@@ -125,16 +142,19 @@ export const companyPresentation: CompanyPresentation = {
     };
     const isInvestCompanyValid = (input: string[]) => {
       const filteredInvestCompany = input.filter(
-        (item) => item.trim().length === 0,
+        (item) => item.trim().length !== 0,
       );
       const hasDuplicates =
         new Set(filteredInvestCompany).size !== filteredInvestCompany.length;
       return (
-        filteredInvestCompany.every((company) => CONTENT_REGEX.test(company)) &&
+        filteredInvestCompany.every(
+          (company) => company.length <= MAX_COMPANY_LENGTH,
+        ) &&
         !hasDuplicates &&
-        input.length < MAX_TAGS
+        input.length <= MAX_TAGS
       );
     };
+
     const isTagsValid = (input: string[]) => {
       const hasDuplicates = new Set(input).size !== input.length;
       return (
@@ -196,6 +216,9 @@ export const companyPresentation: CompanyPresentation = {
         }
       });
     };
+    const handleTagChange = (input: string) => {
+      setTag(input);
+    };
     const handleTagsChange = ({
       input,
       index,
@@ -214,7 +237,7 @@ export const companyPresentation: CompanyPresentation = {
       setTags((prevState) => {
         switch (mode) {
           case 'ADD':
-            return isTagExist(input) ? prevState : [...prevState, input];
+            return [...prevState, input];
           case 'REMOVE':
             return prevState.filter((item) => item !== input);
           case 'PATCH':
@@ -312,6 +335,11 @@ export const companyPresentation: CompanyPresentation = {
         value: investCompany,
         onChange: handleInvestCompanyChange,
       },
+      tag: {
+        isError: false,
+        value: tag,
+        onChange: handleTagChange,
+      },
       tags: {
         isError: isTagsValid(tags),
         value: tags,
@@ -335,6 +363,7 @@ export const companyPresentation: CompanyPresentation = {
     };
   },
   useUtilState: () => {
+    const [rawTags, setRawTags] = useState('');
     const [thumbnail, setThumbnail] = useState<{
       file: File;
       url: string;
@@ -343,6 +372,56 @@ export const companyPresentation: CompanyPresentation = {
       file: File;
       url: string;
     } | null>(null);
+
+    const isThumbnailImageValid = (
+      input: {
+        file: File;
+        url: string;
+      } | null,
+    ) => {
+      if (input === null) {
+        return false;
+      }
+      const fileExtenstion = input.file.name
+        .split('.')
+        .pop()
+        ?.toLocaleLowerCase();
+      if (fileExtenstion === undefined) {
+        return false;
+      }
+      if (!IMAGE_EXTENSIONS.includes(fileExtenstion)) {
+        return false;
+      }
+      if (input.file.size > MAX_IMAGE_SIZE) {
+        return false;
+      }
+      return true;
+    };
+    const isIRDeckPreviewValid = (
+      input: {
+        file: File;
+        url: string;
+      } | null,
+    ) => {
+      if (input === null) {
+        return false;
+      }
+
+      const fileExtenstion = input.file.name
+        .split('.')
+        .pop()
+        ?.toLocaleLowerCase();
+      if (fileExtenstion === undefined) {
+        return false;
+      }
+      if (!FILE_EXTENSIONS.includes(fileExtenstion)) {
+        return false;
+      }
+      if (input.file.size > MAX_FILE_SIZE) {
+        return false;
+      }
+      return true;
+    };
 
     const handleThumbnailChange = (
       input: {
@@ -355,16 +434,40 @@ export const companyPresentation: CompanyPresentation = {
     const handleIRDeckPreview = (input: { file: File; url: string } | null) => {
       setIRDeckPreview(input);
     };
+    const handleRawTags = (input: string) => {
+      setRawTags(input);
+    };
 
     return {
+      rawTags: {
+        isError: false,
+        value: rawTags,
+        onChange: handleRawTags,
+      },
       thumbnail: {
+        isError: !isThumbnailImageValid(thumbnail),
         value: thumbnail,
         onChange: handleThumbnailChange,
       },
       IRDeckPreview: {
+        isError: !isIRDeckPreviewValid(IRDeckPreview),
         value: IRDeckPreview,
         onChange: handleIRDeckPreview,
       },
     };
+  },
+  validator: {
+    tagValidator: ({ tag, tags }: { tag: string; tags: string[] }) => {
+      if (tags.includes(tag)) {
+        return false;
+      }
+      if (tag.length > MAX_TAG_LENGTH || tag.length === 0) {
+        return false;
+      }
+      return true;
+    },
+    tagInputValidator: ({ tag, tags }: { tag: string; tags: string[] }) => {
+      return !(tags.includes(tag) || tag.length > MAX_TAG_LENGTH);
+    },
   },
 };

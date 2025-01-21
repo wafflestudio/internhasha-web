@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import type { SelectInput, StringInput } from '@/entities/input';
+import type { Input, SelectInput } from '@/entities/input';
 
 export type JobMajorCategory =
   | 'DEVELOPMENT'
@@ -32,26 +32,33 @@ type InitialState = {
   title?: string;
   jobMajorCategory?: JobMajorCategory;
   jobMinorCategory?: JobMinorCategory;
-  headcount?: string;
+  headcount?: number;
   content?: string;
   employmentEndDate?: string;
 };
 
 type PostPresentation = {
   useValidator({ initialState }: { initialState?: InitialState }): {
-    title: StringInput;
+    title: Input<string>;
     jobMajorCategory: SelectInput<JobMajorCategory>;
     jobMinorCategory: SelectInput<JobMinorCategory>;
-    headcount: StringInput;
-    content: StringInput;
-    employmentEndDate: StringInput;
+    headcount: Input<number>;
+    content: Input<string>;
+    employmentEndDateTime: Input<string>;
+  };
+  useUtilState(): {
+    rawHeadcount: Input<string>;
+    employmentEndDate: Input<string>;
+    employmentEndTime: Input<string>;
   };
 };
 
 const TITLE_MAX_LENGTH = 500;
 const CONTENT_MAX_LENGTH = 10000;
-const JOB_INVALID = 'NONE';
-const DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
+const HEADCOUNT_REGEX = /^\d+$/;
+const DATE_TIME_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
+const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
+const TIME_REGEX = /^\d{2}:\d{2}:\d{2}$/;
 
 export const postPresentation: PostPresentation = {
   useValidator: ({ initialState = {} }) => {
@@ -69,12 +76,12 @@ export const postPresentation: PostPresentation = {
         : 'NONE',
     );
     const [headcount, setHeadcount] = useState(
-      initialState.headcount !== undefined ? initialState.headcount : '',
+      initialState.headcount !== undefined ? initialState.headcount : 0,
     );
     const [content, setContent] = useState(
       initialState.content !== undefined ? initialState.content : '',
     );
-    const [employmentEndDate, setEmploymentEndDate] = useState(
+    const [employmentEndDateTime, setEmploymentEndDateTime] = useState(
       initialState.employmentEndDate !== undefined
         ? initialState.employmentEndDate
         : '',
@@ -84,19 +91,10 @@ export const postPresentation: PostPresentation = {
       major: JobMajorCategory,
       minor: JobMinorCategory,
     ) => {
-      if (jobMinorCategory === JOB_INVALID) {
+      if (minor === 'NONE') {
         return false;
       }
-      return minor in JOB_CATEGORY_MAP[major];
-    };
-
-    const isEmploymentEndDateValid = (input: string) => {
-      if (!DATE_REGEX.test(input)) {
-        return false;
-      }
-      const inputDate = new Date(input);
-      const today = new Date();
-      return inputDate > today;
+      return JOB_CATEGORY_MAP[major].includes(minor);
     };
 
     const handleTitleChange = (input: string) => {
@@ -109,12 +107,10 @@ export const postPresentation: PostPresentation = {
     };
 
     const handleJobMinorCategoryChange = (input: JobMinorCategory) => {
-      if (isJobMinorCategoryValid(jobMajorCategory, input)) {
-        setJobMinorCategory(input);
-      }
+      setJobMinorCategory(input);
     };
 
-    const handleHeadcountChange = (input: string) => {
+    const handleHeadcountChange = (input: number) => {
       setHeadcount(input);
     };
 
@@ -122,13 +118,13 @@ export const postPresentation: PostPresentation = {
       setContent(input);
     };
 
-    const handleEmploymentEndDateChange = (input: string) => {
-      setEmploymentEndDate(input);
+    const handleEmploymentEndDateTimeChange = (input: string) => {
+      setEmploymentEndDateTime(input);
     };
 
     return {
       title: {
-        isError: title.length > TITLE_MAX_LENGTH,
+        isError: title.length > TITLE_MAX_LENGTH || title.length === 0,
         value: title,
         onChange: handleTitleChange,
       },
@@ -138,24 +134,69 @@ export const postPresentation: PostPresentation = {
         onChange: handleJobMajorCategoryChange,
       },
       jobMinorCategory: {
-        isError: isJobMinorCategoryValid(jobMajorCategory, jobMinorCategory),
+        isError: !isJobMinorCategoryValid(jobMajorCategory, jobMinorCategory),
         value: jobMinorCategory,
         onChange: handleJobMinorCategoryChange,
       },
       headcount: {
-        isError: isNaN(Number(headcount)),
+        isError: isNaN(headcount) || headcount <= 0,
         value: headcount,
         onChange: handleHeadcountChange,
       },
       content: {
-        isError: content.length > CONTENT_MAX_LENGTH,
+        isError: content.length > CONTENT_MAX_LENGTH || content.length === 0,
         value: content,
         onChange: handleContentChange,
       },
+      employmentEndDateTime: {
+        isError: DATE_TIME_REGEX.test(employmentEndDateTime),
+        value: `${employmentEndDateTime}:00`,
+        onChange: handleEmploymentEndDateTimeChange,
+      },
+    };
+  },
+  useUtilState: () => {
+    const [rawHeadcount, setRawHeadcount] = useState('');
+    const [employmentEndDate, setEmploymentEndDate] = useState('');
+    const [employmentEndTime, setEmploymentEndTime] = useState('');
+
+    const isEmploymentEndDateValid = (input: string) => {
+      if (!DATE_REGEX.test(input)) {
+        return false;
+      }
+      const inputDate = new Date(input);
+      const today = new Date();
+      return inputDate > today;
+    };
+    const isEmploymentEndTimeValid = (input: string) => {
+      return TIME_REGEX.test(input);
+    };
+
+    const handleRawHeadcount = (input: string) => {
+      setRawHeadcount(input);
+    };
+    const handleEmploymentEndDateChange = (input: string) => {
+      setEmploymentEndDate(input);
+    };
+    const handleEmploymentEndTimeChange = (input: string) => {
+      setEmploymentEndTime(input);
+    };
+
+    return {
+      rawHeadcount: {
+        isError: HEADCOUNT_REGEX.test(rawHeadcount),
+        value: rawHeadcount,
+        onChange: handleRawHeadcount,
+      },
       employmentEndDate: {
-        isError: isEmploymentEndDateValid(employmentEndDate),
+        isError: !isEmploymentEndDateValid(employmentEndDate),
         value: employmentEndDate,
         onChange: handleEmploymentEndDateChange,
+      },
+      employmentEndTime: {
+        isError: !isEmploymentEndTimeValid(employmentEndTime),
+        value: employmentEndTime,
+        onChange: handleEmploymentEndTimeChange,
       },
     };
   },

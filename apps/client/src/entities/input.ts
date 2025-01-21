@@ -1,7 +1,7 @@
-export type StringInput = {
+export type Input<TInput> = {
   isError: boolean;
-  value: string;
-  onChange: (input: string) => void;
+  value: TInput;
+  onChange: (input: TInput) => void;
 };
 
 export type SelectInput<TSelect> = {
