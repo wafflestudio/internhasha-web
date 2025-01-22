@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import MDEditor from '@uiw/react-md-editor';
 import {
   Button,
   FormContainer,
@@ -191,6 +192,11 @@ export const CreateCompanyForm = () => {
           {isSubmit && email.isError && (
             <p>한 줄 소개는 500자 이내로 작성해주세요.</p>
           )}
+        </LabelContainer>
+        <LabelContainer label="회사 상세 소개">
+          <div data-color-mode="light">
+            <MDEditor />
+          </div>
         </LabelContainer>
         <LabelContainer label="대표 사진" id="imageLink">
           {thumbnail.value !== null ? (

@@ -17,6 +17,7 @@
   "dependencies": {
     "@react-oauth/google": "0.12.1",
     "@tanstack/react-query": "5.62.11",
+    "@uiw/react-md-editor": "^4.0.5",
     "@waffle/api": "workspace:*",
     "@waffle/design-system": "workspace:*",
     "eslint": "9.12.0",
