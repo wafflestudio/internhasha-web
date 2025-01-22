@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query';
-import { Button as DesignedButton } from '@waffle/design-system';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
@@ -33,6 +32,7 @@ export const LandingPage = () => {
   });
 
   const { logout, isPending } = useLogout();
+  const { token } = useGuardContext(TokenContext);
 
   const hanldeClickLogoutButton = () => {
     logout();
@@ -47,54 +47,87 @@ export const LandingPage = () => {
 
   return (
     <div>
-      <p>랜딩페이지</p>
-      <DesignedButton>와플의 버튼</DesignedButton>
-      <Button onClick={toSignUpSelect}>회원가입 페이지로 이동</Button>
-      <Button onClick={toSignInSelect}>로그인 페이지로 이동</Button>
-      <Button onClick={toEcho}>에코 페이지로 이동</Button>
-      <Button onClick={hanldeClickLogoutButton} disabled={isPending}>
-        로그아웃
-      </Button>
-      <Button onClick={toCoffeeChatList} disabled={isPending}>
-        커피챗 목록
-      </Button>
+      <div className="min-h-screen bg-gray-50">
+        {/* 헤더 */}
+        <header className="bg-white shadow-md">
+          <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 className="text-xl font-bold text-gray-800">랜딩페이지</h1>
+            <div className="flex gap-4">
+              {(token == null) ? (
+                <>
+                  <Button onClick={toEcho} className="text-blue-600">
+                    에코 페이지
+                  </Button>
+                  <Button onClick={toSignUpSelect} className="text-blue-600">
+                    회원가입
+                  </Button>
+                  <Button onClick={toSignInSelect} className="text-blue-600">
+                    로그인
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    onClick={hanldeClickLogoutButton}
+                    disabled={isPending}
+                    className="text-red-600"
+                  >
+                    로그아웃
+                  </Button>
+                  <Button
+                    onClick={toCoffeeChatList}
+                    disabled={isPending}
+                    className="text-blue-600"
+                  >
+                    커피챗 목록
+                  </Button>
+                </>
+              )}
+            </div>
+          </div>
+        </header>
 
-      <FilterSection
-        filterElements={filterElements}
-        onChangeFilters={setFilterElements}
-      />
+        {/* 필터 섹션 */}
+        <section className="container mx-auto px-6 py-6">
+          <FilterSection
+            filterElements={filterElements}
+            onChangeFilters={setFilterElements}
+          />
+        </section>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-          gap: '20px',
-          padding: '20px',
-        }}
-      >
-        {postsData.posts.map((post, idx) => (
-          <PostCard
-            key={`post-${idx}`}
-            post={post}
-            onDetailClick={(postId) => {
-              toPost({ postId });
+        {/* 게시글 리스트 */}
+        <main className="container mx-auto px-6 py-6">
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          >
+            {postsData.posts.map((post, idx) => (
+              <PostCard
+                key={`post-${idx}`}
+                post={post}
+                onDetailClick={(postId) => {
+                  toPost({ postId });
+                }}
+              />
+            ))}
+          </div>
+        </main>
+
+        {/* 페이지네이션 */}
+        <footer className="container mx-auto px-6 py-6 flex justify-center">
+          <Pagination
+            totalPages={TOTAL_PAGES}
+            pagesPerGroup={PAGES_PER_GROUP}
+            currentPage={currentPage}
+            currentGroup={currentGroup}
+            onChangePage={(page) => {
+              setCurrentPage(page);
+            }}
+            onChangeGroup={(group) => {
+              setCurrentGroup(group);
             }}
           />
-        ))}
+        </footer>
       </div>
-
-      <Pagination
-        totalPages={TOTAL_PAGES}
-        pagesPerGroup={PAGES_PER_GROUP}
-        currentPage={currentPage}
-        currentGroup={currentGroup}
-        onChangePage={(page) => {
-          setCurrentPage(page);
-        }}
-        onChangeGroup={(group) => {
-          setCurrentGroup(group);
-        }}
-      />
     </div>
   );
 };

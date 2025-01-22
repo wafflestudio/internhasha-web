@@ -8,12 +8,12 @@ import {
 
 const INVESTMENT_RANGES = [
   { label: '전체', min: undefined, max: undefined },
-  { label: '1억 원 미만', min: 0, max: 10000 },
-  { label: '1억 원 이상 ~ 5억 원 미만', min: 10000, max: 50000 },
-  { label: '5억 원 이상 ~ 10억 원 미만', min: 50000, max: 100000 },
-  { label: '10억 원 이상 ~ 50억 원 미만', min: 100000, max: 500000 },
-  { label: '50억 원 이상 ~ 100억 원 미만', min: 500000, max: 1000000 },
-  { label: '100억 원 이상 ~ 500억 원 미만', min: 1000000, max: 5000000 },
+  { label: '1억 미만', min: 0, max: 10000 },
+  { label: '1억 ~ 5억', min: 10000, max: 50000 },
+  { label: '5억~ 10억', min: 50000, max: 100000 },
+  { label: '10억~ 50억', min: 100000, max: 500000 },
+  { label: '50억~ 100억', min: 500000, max: 1000000 },
+  { label: '100억~ 500억', min: 1000000, max: 5000000 },
 ] as const;
 
 type FilterSectionProps = {
