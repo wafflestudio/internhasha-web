@@ -45,6 +45,7 @@ export type Post = {
 
   // 회사 정보
   companyName: string;
+  explanation: string;
   email: string;
   slogan: string;
   investAmount?: number;
