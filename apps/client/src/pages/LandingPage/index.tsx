@@ -34,7 +34,7 @@ export const LandingPage = () => {
   const { logout, isPending } = useLogout();
   const { token } = useGuardContext(TokenContext);
 
-  const hanldeClickLogoutButton = () => {
+  const handleClickLogoutButton = () => {
     logout();
   };
 
@@ -68,7 +68,7 @@ export const LandingPage = () => {
               ) : (
                 <>
                   <Button
-                    onClick={hanldeClickLogoutButton}
+                    onClick={handleClickLogoutButton}
                     disabled={isPending}
                     className="text-red-600"
                   >
