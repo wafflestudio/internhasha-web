@@ -43,7 +43,7 @@ export const RolesFilter = ({ roles = [], onChangeRoles }: RolesFilterProps) => 
 
   return (
     <div>
-      <div className="bg-white p-4 rounded-lg shadow-sm">
+      <div className="w-60 p-2 rounded-lg">
         <div className="space-y-4">
           {Object.keys(jobCategoryList).map((category: string) => {
             const typedCategory = category as keyof typeof jobCategoryList;
@@ -52,7 +52,8 @@ export const RolesFilter = ({ roles = [], onChangeRoles }: RolesFilterProps) => 
               <div key={typedCategory}>
                 {/* 직무 제목 */}
                 <div
-                  className="flex justify-between items-center cursor-pointer"
+                  className={`flex justify-between items-center cursor-pointer
+                    px-6 py-3 rounded-lg ${activeCategory === typedCategory ? 'bg-white' : ''}`}
                   onClick={() => {
                     handleCategoryClick(typedCategory);
                   }}

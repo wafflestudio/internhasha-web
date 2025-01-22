@@ -52,7 +52,7 @@ export const LandingPage = () => {
 
   return (
     <div>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-100">
         {/* 헤더 */}
         <header className="bg-white shadow-md">
           <div className="container px-6 py-4 flex justify-between items-center">
@@ -100,7 +100,7 @@ export const LandingPage = () => {
           {/* 우측 게시글 리스트 및 상단 필터 */}
           <div className="flex-1">
             {/* 상단 필터 섹션 */}
-            <div className="flex justify-between items-center mb-2">
+            <div className="flex justify-between items-center mb-2 pl-2">
               <FilterSection
                 filterElements={filterElements}
                 onChangeFilters={setFilterElements}
@@ -109,7 +109,7 @@ export const LandingPage = () => {
 
             {/* 게시글 리스트 */}
             <main>
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pr-2">
                 {postsData.posts.map((post, idx) => (
                   <PostCard
                     key={`post-${idx}`}
