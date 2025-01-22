@@ -1,39 +1,15 @@
 import { useState } from 'react';
 
 import type { Input, SelectInput } from '@/entities/input';
-
-export type JobMajorCategory =
-  | 'DEVELOPMENT'
-  | 'DESIGNER'
-  | 'PLANNER'
-  | 'MARKETING';
-
-type JobMinorCategoryMap = {
-  DEVELOPMENT: 'FRONT' | 'APP' | 'BACKEND' | 'DATA' | 'OTHERS';
-  DESIGNER: 'DESIGNER';
-  PLANNER: 'PLANNER';
-  MARKETING: 'MARKETING';
-};
-
-export type JobMinorCategory =
-  | JobMinorCategoryMap[keyof JobMinorCategoryMap]
-  | 'NONE';
-
-export const JOB_CATEGORY_MAP: Record<JobMajorCategory, JobMinorCategory[]> = {
-  DEVELOPMENT: ['FRONT', 'APP', 'BACKEND', 'DATA', 'OTHERS'],
-  DESIGNER: ['DESIGNER'],
-  PLANNER: ['PLANNER'],
-  MARKETING: ['MARKETING'],
-};
-
-export const JOB_MAJOR_CATEGORIES = Object.keys(JOB_CATEGORY_MAP);
+import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
+import { JOB_CATEGORY_MAP } from '@/entities/post';
 
 type InitialState = {
   title?: string;
   jobMajorCategory?: JobMajorCategory;
-  jobMinorCategory?: JobMinorCategory;
+  jobMinorCategory?: JobMinorCategory | 'NONE';
   headcount?: number;
-  content?: string;
+  detail?: string;
   employmentEndDate?: string;
 };
 
@@ -41,9 +17,9 @@ type PostPresentation = {
   useValidator({ initialState }: { initialState?: InitialState }): {
     title: Input<string>;
     jobMajorCategory: SelectInput<JobMajorCategory>;
-    jobMinorCategory: SelectInput<JobMinorCategory>;
+    jobMinorCategory: SelectInput<JobMinorCategory | 'NONE'>;
     headcount: Input<number>;
-    content: Input<string>;
+    detail: Input<string>;
     employmentEndDateTime: Input<string>;
   };
   useUtilState(): {
@@ -70,7 +46,9 @@ export const postPresentation: PostPresentation = {
         ? initialState.jobMajorCategory
         : 'DEVELOPMENT',
     );
-    const [jobMinorCategory, setJobMinorCategory] = useState<JobMinorCategory>(
+    const [jobMinorCategory, setJobMinorCategory] = useState<
+      JobMinorCategory | 'NONE'
+    >(
       initialState.jobMinorCategory !== undefined
         ? initialState.jobMinorCategory
         : 'NONE',
@@ -78,8 +56,8 @@ export const postPresentation: PostPresentation = {
     const [headcount, setHeadcount] = useState(
       initialState.headcount !== undefined ? initialState.headcount : 0,
     );
-    const [content, setContent] = useState(
-      initialState.content !== undefined ? initialState.content : '',
+    const [detail, setDetail] = useState(
+      initialState.detail !== undefined ? initialState.detail : '',
     );
     const [employmentEndDateTime, setEmploymentEndDateTime] = useState(
       initialState.employmentEndDate !== undefined
@@ -89,7 +67,7 @@ export const postPresentation: PostPresentation = {
 
     const isJobMinorCategoryValid = (
       major: JobMajorCategory,
-      minor: JobMinorCategory,
+      minor: JobMinorCategory | 'NONE',
     ) => {
       if (minor === 'NONE') {
         return false;
@@ -106,7 +84,7 @@ export const postPresentation: PostPresentation = {
       setJobMinorCategory('NONE');
     };
 
-    const handleJobMinorCategoryChange = (input: JobMinorCategory) => {
+    const handleJobMinorCategoryChange = (input: JobMinorCategory | 'NONE') => {
       setJobMinorCategory(input);
     };
 
@@ -114,8 +92,8 @@ export const postPresentation: PostPresentation = {
       setHeadcount(input);
     };
 
-    const handleContentChange = (input: string) => {
-      setContent(input);
+    const handleDetailChange = (input: string) => {
+      setDetail(input);
     };
 
     const handleEmploymentEndDateTimeChange = (input: string) => {
@@ -143,10 +121,10 @@ export const postPresentation: PostPresentation = {
         value: headcount,
         onChange: handleHeadcountChange,
       },
-      content: {
-        isError: content.length > CONTENT_MAX_LENGTH || content.length === 0,
-        value: content,
-        onChange: handleContentChange,
+      detail: {
+        isError: detail.length > CONTENT_MAX_LENGTH || detail.length === 0,
+        value: detail,
+        onChange: handleDetailChange,
       },
       employmentEndDateTime: {
         isError: DATE_TIME_REGEX.test(employmentEndDateTime),

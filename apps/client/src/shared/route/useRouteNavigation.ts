@@ -24,16 +24,16 @@ type PreviousForm = {
 
 type CompanyBody = {
   companyName: string;
-  companyEmail: string;
+  email: string;
   slogan: string;
   series: Series;
   imageLink: string;
   investAmount: number;
   investCompany: string[];
-  tags: string[] | null;
-  IRDeckLink: string | null;
-  landingPageLink: string | null;
-  externalDescriptionLink: { link: string; description: string }[] | null;
+  tags?: string[];
+  IRDeckLink?: string;
+  landingPageLink?: string;
+  externalDescriptionLink?: { link: string; description: string }[];
 };
 
 type PostBody = {

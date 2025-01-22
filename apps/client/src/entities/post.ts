@@ -1,19 +1,34 @@
 import type { Author } from '@/entities/author';
 
-export type RoleCategory =
-  | 'PLANNER'
-  | 'FRONT'
-  | 'APP'
-  | 'BACKEND'
+export type JobMajorCategory =
+  | 'DEVELOPMENT'
   | 'DESIGN'
-  | 'DATA'
-  | 'MARKETING'
-  | 'OTHERS';
+  | 'PLANNER'
+  | 'MARKETING';
+
+type JobMinorCategoryMap = {
+  DEVELOPMENT: 'FRONT' | 'APP' | 'BACKEND' | 'DATA' | 'OTHERS';
+  DESIGNER: 'DESIGN';
+  PLANNER: 'PLANNER';
+  MARKETING: 'MARKETING';
+};
+
+export type JobMinorCategory = JobMinorCategoryMap[keyof JobMinorCategoryMap];
+
+export const JOB_CATEGORY_MAP: Record<JobMajorCategory, JobMinorCategory[]> = {
+  DEVELOPMENT: ['FRONT', 'APP', 'BACKEND', 'DATA', 'OTHERS'],
+  DESIGN: ['DESIGN'],
+  PLANNER: ['PLANNER'],
+  MARKETING: ['MARKETING'],
+};
+
+export const JOB_MAJOR_CATEGORIES = Object.keys(JOB_CATEGORY_MAP);
+export const JOB_MINOR_CATEGORIES = Object.values(JOB_CATEGORY_MAP).flat();
 
 export type Series = 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
 
 export type FilterElements = {
-  roles?: RoleCategory[];
+  roles?: JobMinorCategory[];
   investmentMax?: number;
   investmentMin?: number;
   pathStatus?: 0 | 1 | 2;
@@ -48,10 +63,15 @@ export type Post = {
   createdAt: string;
   updatedAt: string;
   isActive: boolean;
-  category: RoleCategory;
+  category: JobMinorCategory;
   detail: string;
-  headcount: string;
+  headcount: number;
 };
+
+export type PostRequest = Omit<
+  Post,
+  'id' | 'createdAt' | 'updatedAt' | 'isActive'
+>;
 
 export type BriefPost = Omit<
   Post,
@@ -62,14 +82,3 @@ export type BriefPost = Omit<
   | 'tags'
   | 'detail'
 >;
-
-export const ROLE_CATEGORY_LIST: RoleCategory[] = [
-  'PLANNER',
-  'FRONT',
-  'APP',
-  'BACKEND',
-  'DESIGN',
-  'DATA',
-  'MARKETING',
-  'OTHERS',
-];

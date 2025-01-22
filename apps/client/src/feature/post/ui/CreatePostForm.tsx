@@ -1,3 +1,4 @@
+import { useMutation } from '@tanstack/react-query';
 import {
   Button,
   FormContainer,
@@ -6,28 +7,49 @@ import {
   TextInput,
 } from '@waffle/design-system';
 import { useState } from 'react';
+import { useLocation } from 'react-router';
 
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
-import type {
-  JobMajorCategory,
-  JobMinorCategory,
-} from '@/feature/post/presentation/postPresentation';
-import {
-  JOB_CATEGORY_MAP,
-  JOB_MAJOR_CATEGORIES,
-  postPresentation,
-} from '@/feature/post/presentation/postPresentation';
+import type { PostRequest, Series } from '@/entities/post';
+import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
+import { JOB_CATEGORY_MAP, JOB_MAJOR_CATEGORIES } from '@/entities/post';
+import { postPresentation } from '@/feature/post/presentation/postPresentation';
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
+import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+
+type CompanyBody = {
+  companyName: string;
+  email: string;
+  slogan: string;
+  series: Series;
+  imageLink: string;
+  investAmount: number;
+  investCompany: string[];
+  tags?: string[];
+  IRDeckLink?: string;
+  landingPageLink?: string;
+  externalDescriptionLink?: { link: string; description: string }[];
+};
+
 export const CreatePostForm = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [isCancel, setIsCancel] = useState(false);
+  const [responseMessage, setResponseMessage] = useState('');
+
+  const location = useLocation();
+  const state = location.state as CompanyBody | undefined;
+
+  const { createPost, isPending } = useCreatePost({ setResponseMessage });
+
   const formatMajorValueToLabel = (input: string) => {
     switch (input) {
       case 'DEVELOPMENT':
         return '개발';
       case 'PLANNER':
         return '기획';
-      case 'DESIGNER':
+      case 'DESIGN':
         return '디자인';
       case 'MARKETING':
         return '마케팅';
@@ -49,7 +71,7 @@ export const CreatePostForm = () => {
         return '기타';
       case 'PLANNER':
         return '기획';
-      case 'DESIGNER':
+      case 'DESIGN':
         return '디자인';
       case 'MARKETING':
         return '마케팅';
@@ -63,7 +85,7 @@ export const CreatePostForm = () => {
     jobMajorCategory,
     jobMinorCategory,
     headcount,
-    content,
+    detail,
     employmentEndDateTime,
   } = postPresentation.useValidator({});
 
@@ -79,9 +101,29 @@ export const CreatePostForm = () => {
       jobMajorCategory,
       jobMinorCategory,
       headcount,
-      content,
+      detail,
       employmentEndDateTime,
     );
+    if (jobMinorCategory.value === 'NONE' || state === undefined) {
+      return;
+    }
+    createPost({
+      post: {
+        // TODO: athor 정보 불러오기
+        author: {
+          id: '...',
+          name: '...',
+        },
+        ...state,
+        title: title.value,
+        category: jobMinorCategory.value,
+        headcount: headcount.value,
+        detail: detail.value,
+        // TODO: isAlways 설정 방식 포함하기 (달력 폼 생성 시 함께 처리)
+        isAlways: false,
+        employmentEndDate: employmentEndDateTime.value,
+      },
+    });
   };
 
   const handleClickCancelButton = () => {
@@ -97,12 +139,13 @@ export const CreatePostForm = () => {
       <FormContainer
         id="CreatePostForm"
         handleSubmit={handleSubmit}
-        response={''}
+        response={responseMessage}
       >
         <LabelContainer label="공고명" id="title">
           <TextInput
             id="title"
             value={title.value}
+            disabled={isPending}
             onChange={(e) => {
               title.onChange(e.target.value);
             }}
@@ -118,6 +161,7 @@ export const CreatePostForm = () => {
               <div>
                 <select
                   value={jobMajorCategory.value}
+                  disabled={isPending}
                   onChange={(e) => {
                     jobMajorCategory.onChange(
                       e.target.value as JobMajorCategory,
@@ -143,6 +187,7 @@ export const CreatePostForm = () => {
               <div>
                 <select
                   value={jobMinorCategory.value}
+                  disabled={isPending}
                   onChange={(e) => {
                     jobMinorCategory.onChange(
                       e.target.value as JobMinorCategory,
@@ -170,6 +215,7 @@ export const CreatePostForm = () => {
           <LabelContainer label="모집 인원" id="headcount">
             <TextInput
               value={rawHeadcount.value}
+              disabled={isPending}
               onChange={(e) => {
                 rawHeadcount.onChange(e.target.value);
                 headcount.onChange(Number(e.target.value));
@@ -181,16 +227,17 @@ export const CreatePostForm = () => {
             )}
           </LabelContainer>
         </div>
-        <LabelContainer label="상세 공고 글" id="content">
+        <LabelContainer label="상세 공고 글" id="detail">
           <TextInput
-            id="content"
-            value={content.value}
+            id="detail"
+            value={detail.value}
+            disabled={isPending}
             onChange={(e) => {
-              content.onChange(e.target.value);
+              detail.onChange(e.target.value);
             }}
             placeholder="직무 설명, 근무 조건, 지원 조건, 지원 절차 등에 대해 구체적으로 작성해주세요."
           />
-          {isSubmit && content.isError && (
+          {isSubmit && detail.isError && (
             <p>상세 공고 글은 10,000자 이상 작성하실 수 없습니다.</p>
           )}
         </LabelContainer>
@@ -199,6 +246,7 @@ export const CreatePostForm = () => {
             id="employmentEndDate"
             type="date"
             value={employmentEndDate.value}
+            disabled={isPending}
             onChange={(e) => {
               employmentEndDate.onChange(e.target.value);
               employmentEndDateTime.onChange(
@@ -210,6 +258,7 @@ export const CreatePostForm = () => {
             id="employmentEndTime"
             type="time"
             value={employmentEndTime.value}
+            disabled={isPending}
             onChange={(e) => {
               employmentEndTime.onChange(e.target.value);
               employmentEndDateTime.onChange(
@@ -222,8 +271,14 @@ export const CreatePostForm = () => {
           )}
         </LabelContainer>
         <div>
-          <Button onClick={handleClickCancelButton}>이전으로</Button>
-          <SubmitButton form="CreatePostForm" onClick={handleSubmit}>
+          <Button onClick={handleClickCancelButton} disabled={isPending}>
+            이전으로
+          </Button>
+          <SubmitButton
+            form="CreatePostForm"
+            onClick={handleSubmit}
+            disabled={isPending}
+          >
             제출하기
           </SubmitButton>
         </div>
@@ -233,4 +288,40 @@ export const CreatePostForm = () => {
       )}
     </>
   );
+};
+
+const useCreatePost = ({
+  setResponseMessage,
+}: {
+  setResponseMessage(input: string): void;
+}) => {
+  const { postService } = useGuardContext(ServiceContext);
+  const { token } = useGuardContext(TokenContext);
+  const { toMain } = useRouteNavigation();
+
+  const { mutate: createPost, isPending } = useMutation({
+    mutationFn: ({ post }: { post: PostRequest }) => {
+      if (token === null) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+      return postService.createPost({ token, postContents: post });
+    },
+    onSuccess: (response) => {
+      if (response.type === 'success') {
+        toMain();
+      } else {
+        setResponseMessage(response.message);
+      }
+    },
+    onError: () => {
+      setResponseMessage(
+        '공고 생성에 실패했습니다. 잠시 후에 다시 실행해주세요.',
+      );
+    },
+  });
+
+  return {
+    createPost,
+    isPending,
+  };
 };
