@@ -53,7 +53,7 @@ export const LandingPage = () => {
           <div className="container mx-auto px-6 py-4 flex justify-between items-center">
             <h1 className="text-xl font-bold text-gray-800">랜딩페이지</h1>
             <div className="flex gap-4">
-              {(token == null) ? (
+              {token == null ? (
                 <>
                   <Button onClick={toEcho} className="text-blue-600">
                     에코 페이지
@@ -97,9 +97,7 @@ export const LandingPage = () => {
 
         {/* 게시글 리스트 */}
         <main className="container mx-auto px-6 py-6">
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {postsData.posts.map((post, idx) => (
               <PostCard
                 key={`post-${idx}`}
