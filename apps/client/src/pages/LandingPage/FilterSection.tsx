@@ -2,8 +2,8 @@ import { SelectContainerWithOptions } from '@waffle/design-system';
 
 import {
   type FilterElements,
-  ROLE_CATEGORY_LIST,
-  type RoleCategory,
+  JOB_MINOR_CATEGORIES,
+  type JobMinorCategory,
 } from '@/entities/post';
 
 const INVESTMENT_RANGES = [
@@ -25,7 +25,7 @@ export const FilterSection = ({
   filterElements,
   onChangeFilters,
 }: FilterSectionProps) => {
-  const handleRoleToggle = (role: RoleCategory) => {
+  const handleRoleToggle = (role: JobMinorCategory) => {
     const newRoles =
       filterElements.roles?.includes(role) === true
         ? filterElements.roles.filter((r) => r !== role)
@@ -101,7 +101,7 @@ export const FilterSection = ({
           flexWrap: 'wrap',
         }}
       >
-        {ROLE_CATEGORY_LIST.map((role) => (
+        {JOB_MINOR_CATEGORIES.map((role) => (
           <label
             key={role}
             style={{ display: 'flex', alignItems: 'center', gap: '4px' }}

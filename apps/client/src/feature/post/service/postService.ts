@@ -1,7 +1,7 @@
 import type { Apis, ExternalApis } from '@waffle/api';
 
 import type { Paginator } from '@/entities/paginator';
-import type { BriefPost, Post } from '@/entities/post';
+import type { BriefPost, Post, PostRequest } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 
 export type PostService = {
@@ -33,7 +33,7 @@ export type PostService = {
     postContents,
   }: {
     token: string;
-    postContents: Post;
+    postContents: PostRequest;
   }) => ServiceResponse<Post>;
   updatePost: ({
     postId,
@@ -42,7 +42,7 @@ export type PostService = {
   }: {
     postId: string;
     token: string;
-    postContents: Post;
+    postContents: PostRequest;
   }) => ServiceResponse<Post>;
   getPresignedUrl({
     token,
@@ -75,12 +75,6 @@ export const implPostService = ({
     investmentMax,
     investmentMin,
     pathStatus,
-  }: {
-    page?: number;
-    roles?: string[];
-    investmentMax?: number;
-    investmentMin?: number;
-    pathStatus?: number;
   }) => {
     const postPath = new URLSearchParams();
 
@@ -131,13 +125,7 @@ export const implPostService = ({
     return { type: 'error', status, message: data.error };
   },
 
-  createPost: async ({
-    token,
-    postContents,
-  }: {
-    token: string;
-    postContents: Post;
-  }) => {
+  createPost: async ({ token, postContents }) => {
     const { status, data } = await apis['POST /admin/post']({
       token: token,
       body: postContents,
@@ -152,15 +140,7 @@ export const implPostService = ({
     return { type: 'error', status, message: data.error };
   },
 
-  updatePost: async ({
-    token,
-    postId,
-    postContents,
-  }: {
-    token: string;
-    postId: string;
-    postContents: Post;
-  }) => {
+  updatePost: async ({ token, postId, postContents }) => {
     const params = { postId };
     const { status, data } = await apis['PATCH /admin/post/:postId']({
       token: token,

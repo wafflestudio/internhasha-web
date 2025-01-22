@@ -12,7 +12,7 @@ type ExternalLink = {
 
 type InitialState = {
   companyName?: string;
-  companyEmail?: string;
+  email?: string;
   slogan?: string;
   imageLink?: string;
   series?: Series | 'NONE';
@@ -27,7 +27,7 @@ type InitialState = {
 type CompanyPresentation = {
   useValidator({ initialState }: { initialState?: InitialState }): {
     companyName: Input<string>;
-    companyEmail: Input<string>;
+    email: Input<string>;
     slogan: Input<string>;
     imageLink: Input<string>;
     series: SelectInput<Series | 'NONE'>;
@@ -47,6 +47,11 @@ type CompanyPresentation = {
   validator: {
     tagValidator({ tag, tags }: { tag: string; tags: string[] }): boolean;
     tagInputValidator({ tag, tags }: { tag: string; tags: string[] }): boolean;
+  };
+  filter: {
+    tagsFilter: (input: string[]) => string[];
+    investCompanyFilter: (input: string[]) => string[];
+    externalDescriptionLinkFilter: (input: ExternalLink[]) => ExternalLink[];
   };
 };
 
@@ -80,8 +85,8 @@ export const companyPresentation: CompanyPresentation = {
     const [companyName, setCompanyName] = useState(
       initialState.companyName !== undefined ? initialState.companyName : '',
     );
-    const [companyEmail, setCompanyEmail] = useState(
-      initialState.companyEmail !== undefined ? initialState.companyEmail : '',
+    const [email, setEmail] = useState(
+      initialState.email !== undefined ? initialState.email : '',
     );
     const [slogan, setSlogan] = useState(
       initialState.slogan !== undefined ? initialState.slogan : '',
@@ -165,8 +170,8 @@ export const companyPresentation: CompanyPresentation = {
     const handleCompanyNameChange = (input: string) => {
       setCompanyName(input);
     };
-    const handleCompanyEmailChange = (input: string) => {
-      setCompanyEmail(input);
+    const handleEmailChange = (input: string) => {
+      setEmail(input);
     };
     const handleSloganChange = (input: string) => {
       setSlogan(input);
@@ -305,10 +310,10 @@ export const companyPresentation: CompanyPresentation = {
         value: companyName,
         onChange: handleCompanyNameChange,
       },
-      companyEmail: {
-        isError: !EMAIL_REGEX.test(companyEmail),
-        value: companyEmail,
-        onChange: handleCompanyEmailChange,
+      email: {
+        isError: !EMAIL_REGEX.test(email),
+        value: email,
+        onChange: handleEmailChange,
       },
       slogan: {
         isError: !CONTENT_REGEX.test(slogan),
@@ -468,6 +473,23 @@ export const companyPresentation: CompanyPresentation = {
     },
     tagInputValidator: ({ tag, tags }: { tag: string; tags: string[] }) => {
       return !(tags.includes(tag) || tag.length > MAX_TAG_LENGTH);
+    },
+  },
+  filter: {
+    tagsFilter: (tags: string[]) => {
+      const filteredTags = tags.filter((item) => item.trim().length !== 0);
+      return Array.from(new Set(filteredTags));
+    },
+    investCompanyFilter: (tags: string[]) => {
+      const filteredTags = tags.filter((item) => item.trim().length !== 0);
+      return Array.from(new Set(filteredTags));
+    },
+    externalDescriptionLinkFilter: (tags: ExternalLink[]) => {
+      const filteredTags = tags.filter(
+        (item) =>
+          item.link.trim().length !== 0 && item.description.trim().length !== 0,
+      );
+      return Array.from(new Set(filteredTags));
     },
   },
 };

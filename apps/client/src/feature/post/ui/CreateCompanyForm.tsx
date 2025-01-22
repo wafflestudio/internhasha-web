@@ -1,3 +1,4 @@
+import { useMutation } from '@tanstack/react-query';
 import {
   Button,
   FormContainer,
@@ -11,6 +12,9 @@ import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import type { Series } from '@/entities/post';
 import { seriesList } from '@/feature/post/presentation/companypresentation';
 import { companyPresentation } from '@/feature/post/presentation/companypresentation';
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
+import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const CreateCompanyForm = () => {
@@ -22,7 +26,7 @@ export const CreateCompanyForm = () => {
 
   const {
     companyName,
-    companyEmail,
+    email,
     slogan,
     tags,
     series,
@@ -34,6 +38,8 @@ export const CreateCompanyForm = () => {
   const { rawTags, thumbnail, IRDeckPreview } =
     companyPresentation.useUtilState();
   const { tagValidator, tagInputValidator } = companyPresentation.validator;
+  const { tagsFilter, investCompanyFilter, externalDescriptionLinkFilter } =
+    companyPresentation.filter;
   const { toMain, toCreatePost } = useRouteNavigation();
 
   const addThumbnailImage = (file: File | undefined) => {
@@ -110,19 +116,15 @@ export const CreateCompanyForm = () => {
       });
     }
     if (imageResponseMessage !== '' || pdfResponseMessage !== '') {
+      console.log('here');
       return;
     }
     if (
       companyName.isError ||
-      companyEmail.isError ||
+      email.isError ||
       slogan.isError ||
       investAmount.isError ||
-      investCompany.isError ||
-      tags.isError ||
-      landingPageLink.isError ||
-      externalDescriptionLink.isError ||
       thumbnail.value === null ||
-      series.isError ||
       series.value === 'NONE'
     ) {
       return;
@@ -130,17 +132,19 @@ export const CreateCompanyForm = () => {
     toCreatePost({
       companyBody: {
         companyName: companyName.value,
-        companyEmail: companyEmail.value,
+        email: email.value,
         slogan: slogan.value,
         series: series.value,
         imageLink: thumbnail.value.url,
         investAmount: Number(investAmount.value),
-        investCompany: Array.from(new Set(investCompany.value)),
-        tags: tags.value,
+        investCompany: investCompanyFilter(investCompany.value),
+        tags: tagsFilter(tags.value),
         IRDeckLink:
-          IRDeckPreview.value !== null ? IRDeckPreview.value.url : null,
+          IRDeckPreview.value !== null ? IRDeckPreview.value.url : undefined,
         landingPageLink: landingPageLink.value,
-        externalDescriptionLink: externalDescriptionLink.value,
+        externalDescriptionLink: externalDescriptionLinkFilter(
+          externalDescriptionLink.value,
+        ),
       },
     });
   };
@@ -165,16 +169,14 @@ export const CreateCompanyForm = () => {
         <LabelContainer label="회사 이메일" id="companyEmail">
           <TextInput
             id="companyEmail"
-            value={companyEmail.value}
+            value={email.value}
             placeholder="회사 이메일을 입력해주세요."
             disabled={isPending}
             onChange={(e) => {
-              companyEmail.onChange(e.target.value);
+              email.onChange(e.target.value);
             }}
           />
-          {isSubmit && companyEmail.isError && (
-            <p>올바르지 않은 이메일 형식입니다.</p>
-          )}
+          {isSubmit && email.isError && <p>올바르지 않은 이메일 형식입니다.</p>}
         </LabelContainer>
         <LabelContainer label="한 줄 소개" id="slogan">
           <TextInput
@@ -186,7 +188,7 @@ export const CreateCompanyForm = () => {
               slogan.onChange(e.target.value);
             }}
           />
-          {isSubmit && companyEmail.isError && (
+          {isSubmit && email.isError && (
             <p>한 줄 소개는 500자 이내로 작성해주세요.</p>
           )}
         </LabelContainer>
@@ -488,12 +490,6 @@ export const CreateCompanyForm = () => {
     </>
   );
 };
-
-import { useMutation } from '@tanstack/react-query';
-
-import { useGuardContext } from '@/shared/context/hooks';
-import { ServiceContext } from '@/shared/context/ServiceContext';
-import { TokenContext } from '@/shared/context/TokenContext';
 
 const useGetPresignedUrl = ({
   onSuccess,

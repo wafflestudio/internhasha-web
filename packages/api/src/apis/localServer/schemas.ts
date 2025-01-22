@@ -19,20 +19,15 @@ type AuthorBriefDTO = {
   profileImageLink?: string;
 };
 
-type RoleDTO = {
-  id: string;
-  category:
-    | "PLANNER"
-    | "FRONT"
-    | "APP"
-    | "BACKEND"
-    | "OTHERS"
-    | "DESIGN"
-    | "DATA"
-    | "MARKETING";
-  detail: string;
-  headcount: string;
-};
+type JobCategory =
+  | "PLANNER"
+  | "FRONT"
+  | "APP"
+  | "BACKEND"
+  | "OTHERS"
+  | "DESIGN"
+  | "DATA"
+  | "MARKETING";
 
 type Link = {
   link: string;
@@ -63,9 +58,10 @@ type PostDTO = {
   createdAt: string;
   updatedAt: string;
   isActive: boolean;
-  category: RoleDTO["category"];
+  category: JobCategory;
+
   detail: string;
-  headcount: string;
+  headcount: number;
 };
 
 export type PostBriefDTO = {
@@ -87,8 +83,8 @@ export type PostBriefDTO = {
   createdAt: string;
   updatedAt: string;
   isActive: boolean;
-  category: RoleDTO["category"];
-  headcount: string;
+  category: JobCategory;
+  headcount: number;
 };
 
 type ResumeDTO = {
@@ -177,7 +173,10 @@ export type IdRequest = {
   id: string;
 };
 
-export type CreateAndUpdatePostRequest = PostDTO;
+export type CreateAndUpdatePostRequest = Omit<
+  PostDTO,
+  "id" | "createdAt" | "updatedAt" | "isActive"
+>;
 
 export type ApplyCoffeeChatRequest = {
   phoneNumber: string;
