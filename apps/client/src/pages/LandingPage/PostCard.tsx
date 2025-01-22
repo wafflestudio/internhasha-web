@@ -9,7 +9,6 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
   const {
     id,
     companyName,
-    explanation,
     slogan,
     title,
     series,
@@ -30,7 +29,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
 
       {/* 직군 & 마감일 */}
       <div className="relative">
-        <div className="flex justify-between items-center pl-5 pr-5 p-3 bg-gray-300 relative">
+        <div className="flex justify-between items-center rounded-t-lg pl-5 pr-5 p-3 bg-gray-200 relative">
           <div className="flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +57,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
             </svg>
             <span className="text-lg text-gray-600">{title}</span>
           </div>
-          <span className="text-lg text-gray-500">
+          <span className="text-lg text-gray-400">
             {getEmploymentStatus(employmentEndDate)}
           </span>
         </div>
@@ -67,7 +66,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
           className="text-lg absolute bottom-[-10px] right-4 transform -translate-x-1/2
       w-0 h-0 border-l-[10px] border-l-transparent
       border-r-[10px] border-r-transparent
-      border-t-[10px] border-t-gray-300"
+      border-t-[10px] border-t-gray-200"
         ></div>
       </div>
 
@@ -77,7 +76,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
       pl-5 pr-5 p-4"
       >
         {/* 회사 이미지 */}
-        <div className="w-12 h-12 rounded-full bg-gray-100 overflow-hidden">
+        <div className="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden">
           <img
             src={imageLink}
             alt={companyName}
@@ -85,14 +84,12 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
           />
         </div>
 
-        {/* 회사 이름 및 슬로건 */}
         <div>
-          <h3 className="text-md font-semibold text-gray-800">{companyName}</h3>
-          <p className="text-sm text-gray-500">{slogan}</p>
+          <h3 className="text-xl font-semibold text-gray-800">{companyName}</h3>
         </div>
       </div>
 
-      <div className="pl-5 pr-5 p-4">{explanation}</div>
+      <div className="text-lg text-gray-600 pl-5 pr-5 p-4">{slogan}</div>
 
       {/* 시리즈 및 투자 정보 */}
       <div

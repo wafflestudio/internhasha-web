@@ -2,8 +2,6 @@ import { SelectContainerWithOptions } from '@waffle/design-system';
 
 import {
   type FilterElements,
-  JOB_MINOR_CATEGORIES,
-  type JobMinorCategory,
 } from '@/entities/post';
 
 const INVESTMENT_RANGES = [
@@ -25,17 +23,6 @@ export const FilterSection = ({
   filterElements,
   onChangeFilters,
 }: FilterSectionProps) => {
-  const handleRoleToggle = (role: JobMinorCategory) => {
-    const newRoles =
-      filterElements.roles?.includes(role) === true
-        ? filterElements.roles.filter((r) => r !== role)
-        : [...(filterElements.roles ?? []), role];
-
-    onChangeFilters({
-      ...filterElements,
-      roles: newRoles.length > 0 ? newRoles : undefined,
-    });
-  };
 
   const getCurrentInvestmentRange = () => {
     if (
@@ -54,7 +41,7 @@ export const FilterSection = ({
   };
 
   return (
-    <div className="filter-section" style={{ marginBottom: '20px' }}>
+    <div className="filter-section">
       <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
         <SelectContainerWithOptions
           id="pathStatus"
@@ -90,32 +77,6 @@ export const FilterSection = ({
           }}
           label="투자금액"
         />
-      </div>
-
-      {/* 직무 체크박스 */}
-      <div
-        style={{
-          marginTop: '16px',
-          display: 'flex',
-          gap: '12px',
-          flexWrap: 'wrap',
-        }}
-      >
-        {JOB_MINOR_CATEGORIES.map((role) => (
-          <label
-            key={role}
-            style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
-          >
-            <input
-              type="checkbox"
-              checked={filterElements.roles?.includes(role) ?? false}
-              onChange={() => {
-                handleRoleToggle(role);
-              }}
-            />
-            {role}
-          </label>
-        ))}
       </div>
     </div>
   );

@@ -2,10 +2,11 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
-import type { FilterElements } from '@/entities/post';
+import type { FilterElements, JobMinorCategory } from '@/entities/post';
 import { FilterSection } from '@/pages/LandingPage/FilterSection';
 import { Pagination } from '@/pages/LandingPage/Pagination';
 import { PostCard } from '@/pages/LandingPage/PostCard';
+import { RolesFilter } from '@/pages/LandingPage/RolesFilter.tsx';
 import { useGetPosts } from '@/pages/LandingPage/useGetPosts';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -22,6 +23,10 @@ export const LandingPage = () => {
     investmentMin: undefined,
     pathStatus: undefined,
   });
+
+  const handleRolesChange = (updatedRoles: JobMinorCategory[]) => {
+    setFilterElements((prev) => ({ ...prev, roles: updatedRoles }));
+  };
 
   const [currentPage, setCurrentPage] = useState(0);
   const [currentGroup, setCurrentGroup] = useState(0);
@@ -50,7 +55,7 @@ export const LandingPage = () => {
       <div className="min-h-screen bg-gray-50">
         {/* 헤더 */}
         <header className="bg-white shadow-md">
-          <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+          <div className="container px-6 py-4 flex justify-between items-center">
             <h1 className="text-xl font-bold text-gray-800">랜딩페이지</h1>
             <div className="flex gap-4">
               {token == null ? (
@@ -87,44 +92,47 @@ export const LandingPage = () => {
           </div>
         </header>
 
-        {/* 필터 섹션 */}
-        <section className="container mx-auto px-6 py-6">
-          <FilterSection
-            filterElements={filterElements}
-            onChangeFilters={setFilterElements}
-          />
-        </section>
+        {/* 메인 컨텐츠 */}
+        <div className="container mx-auto py-6 flex gap-2">
+          {/* 좌측 Roles 필터 */}
+          <RolesFilter roles={filterElements.roles} onChangeRoles={handleRolesChange} />
 
-        {/* 게시글 리스트 */}
-        <main className="container mx-auto px-6 py-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {postsData.posts.map((post, idx) => (
-              <PostCard
-                key={`post-${idx}`}
-                post={post}
-                onDetailClick={(postId) => {
-                  toPost({ postId });
-                }}
+          {/* 우측 게시글 리스트 및 상단 필터 */}
+          <div className="flex-1">
+            {/* 상단 필터 섹션 */}
+            <div className="flex justify-between items-center mb-2">
+              <FilterSection
+                filterElements={filterElements}
+                onChangeFilters={setFilterElements}
               />
-            ))}
-          </div>
-        </main>
+            </div>
 
-        {/* 페이지네이션 */}
-        <footer className="container mx-auto px-6 py-6 flex justify-center">
-          <Pagination
-            totalPages={TOTAL_PAGES}
-            pagesPerGroup={PAGES_PER_GROUP}
-            currentPage={currentPage}
-            currentGroup={currentGroup}
-            onChangePage={(page) => {
-              setCurrentPage(page);
-            }}
-            onChangeGroup={(group) => {
-              setCurrentGroup(group);
-            }}
-          />
-        </footer>
+            {/* 게시글 리스트 */}
+            <main>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {postsData.posts.map((post, idx) => (
+                  <PostCard
+                    key={`post-${idx}`}
+                    post={post}
+                    onDetailClick={(postId) => { toPost({ postId }); }}
+                  />
+                ))}
+              </div>
+            </main>
+
+            {/* 페이지네이션 */}
+            <footer className="mt-6 flex justify-center">
+              <Pagination
+                totalPages={TOTAL_PAGES}
+                pagesPerGroup={PAGES_PER_GROUP}
+                currentPage={currentPage}
+                currentGroup={currentGroup}
+                onChangePage={(page) => { setCurrentPage(page); }}
+                onChangeGroup={(group) => { setCurrentGroup(group); }}
+              />
+            </footer>
+          </div>
+        </div>
       </div>
     </div>
   );
