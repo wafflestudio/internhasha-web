@@ -1,7 +1,7 @@
 import type { Apis } from '@waffle/api';
 
 import type { Paginator } from '@/entities/paginator';
-import type { BriefPost, Post, PostRequest } from '@/entities/post';
+import type { BriefPost, Post, PostRequest, Series } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 
 export type PostService = {
@@ -10,12 +10,14 @@ export type PostService = {
     roles,
     investmentMax,
     investmentMin,
+    series,
     pathStatus,
   }: {
     page?: number;
     roles?: string[];
     investmentMax?: number;
     investmentMin?: number;
+    series?: Series;
     pathStatus?: number;
   }) => ServiceResponse<{
     posts: BriefPost[];
@@ -52,6 +54,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     roles,
     investmentMax,
     investmentMin,
+    series,
     pathStatus,
   }) => {
     const postPath = new URLSearchParams();
@@ -66,6 +69,8 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
       postPath.append('investmentMax', investmentMax.toString());
     if (investmentMin !== undefined)
       postPath.append('investmentMin', investmentMin.toString());
+    if (series !== undefined)
+      postPath.append('series', series)
     if (pathStatus !== undefined)
       postPath.append('status', pathStatus.toString());
 

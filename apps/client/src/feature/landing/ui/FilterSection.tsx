@@ -74,6 +74,25 @@ export const FilterSection = ({
           }}
           label="투자금액"
         />
+
+        <SelectContainerWithOptions
+          id="series"
+          value={filterElements.series}
+          options={[
+            { value: 'SEED', label: 'Seed' },
+            { value: 'PRE_A', label: 'Pre-Series A' },
+            { value: 'B', label: 'Series B' },
+            { value: 'C', label: 'Series C' },
+            { value: 'D', label: 'Series D' },
+          ]}
+          onChange={(value) => {
+            onChangeFilters({
+              ...filterElements,
+              series: typeof value === 'string' ? value : undefined,
+            });
+          }}
+          label="시리즈"
+        />
       </div>
     </div>
   );

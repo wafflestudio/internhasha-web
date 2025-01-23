@@ -21,6 +21,7 @@ export const LandingPage = () => {
     roles: undefined,
     investmentMax: undefined,
     investmentMin: undefined,
+    series: undefined,
     pathStatus: undefined,
   });
 
