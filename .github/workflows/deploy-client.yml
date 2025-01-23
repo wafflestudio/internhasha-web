@@ -27,6 +27,10 @@ jobs:
           touch .env.local
           echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}" >> .env.local
 
+      - name: Remove msw files
+        run: |
+          find . -name "mockServiceWorker.js" -delete
+
       - name: Build & Export
         run: |
           yarn install
