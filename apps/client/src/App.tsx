@@ -7,57 +7,63 @@ import { useState } from 'react';
 import { Route, Routes } from 'react-router';
 
 import { PATH } from '@/entities/route';
+import { implAuthService } from '@/feature/auth';
 import { implPostService } from '@/feature/post';
+import { implResumeService } from '@/feature/resume';
+import { implUserService } from '@/feature/user';
 import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
-import { EchoPage } from '@/pages/EchoPage';
+import { CreateResumePage } from '@/pages/CreateResumePage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
-import { CoffeeChatListPage } from '@/pages/LandingPage/CoffeeChatListPage';
-import { CoffeeChatDetailPage } from '@/pages/LandingPage/CoffeeChatListPage/CoffeeChatDetailPage';
-import { PostPage } from '@/pages/LandingPage/PostPage';
-import { ApplyCoffeeChatPage } from '@/pages/LandingPage/PostPage/ApplyCoffeeChatPage';
 import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
 import { MyPage } from '@/pages/MyPage';
+import { PostDetailPage } from '@/pages/PostDetailPage';
+import { ResumeDetailPage } from '@/pages/ResumeDetailPage';
+import { ResumeListPage } from '@/pages/ResumeListPage';
 import { SignInSelectPage } from '@/pages/SignInSelectPage';
 import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
 import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
-import { implAuthService } from '@/service/authService';
-import { implEchoService } from '@/service/echoService';
-import { implResumeService } from '@/service/resumeService';
-import { implUserService } from '@/service/userService';
+import { VentureCapitalLandingPage } from '@/pages/VentureCapitalLandingPage';
+import { AuthCompanySwitchRoute } from '@/shared/auth/AuthAdminSwitchRoute';
 import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { CompanyProtectedRoute } from '@/shared/auth/CompanyProtectedRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
+import { implFileService } from '@/shared/file/fileService';
 import { implTokenLocalStorageRepository } from '@/shared/token/localstorage';
 import { implTokenStateRepository } from '@/shared/token/state';
 
 const RouterProvider = () => {
   return (
     <Routes>
-      <Route path={PATH.INDEX} element={<LandingPage />} />
-      <Route path={PATH.POST} element={<PostPage />} />
-      <Route path={PATH.ECHO} element={<EchoPage />} />
+      <Route
+        path={PATH.INDEX}
+        element={
+          <AuthCompanySwitchRoute
+            nonCompanyPage={<LandingPage />}
+            companyPage={<VentureCapitalLandingPage />}
+          />
+        }
+      />
+      <Route path={PATH.POST_DETAIL} element={<PostDetailPage />} />
       <Route path={PATH.SIGN_IN_SELECT} element={<SignInSelectPage />} />
       <Route path={PATH.SIGN_UP_SELECT} element={<SignUpSelectPage />} />
       <Route path={PATH.SIGN_UP_LOCAL} element={<LocalSignUpPage />} />
       <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
       <Route path={PATH.SIGN_UP_COMPLETE} element={<SignUpCompletePage />} />
-      <Route path={PATH.APPLY_COFFEE_CHAT} element={<ApplyCoffeeChatPage />} />
-      <Route path={PATH.COFFEE_CHAT_LIST} element={<CoffeeChatListPage />} />
-      <Route
-        path={PATH.COFFEE_CHAT_DETAIL}
-        element={<CoffeeChatDetailPage />}
-      />
-      <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
-      <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
+      <Route path={PATH.CREATE_RESUME} element={<CreateResumePage />} />
+      <Route path={PATH.RESUME_LIST} element={<ResumeListPage />} />
+      <Route path={PATH.RESUME_DETAIL} element={<ResumeDetailPage />} />
       <Route element={<AuthProtectedRoute />}>
         <Route path={PATH.MY_PAGE} element={<MyPage />} />
       </Route>
-      <Route element={<CompanyProtectedRoute />}></Route>
+      <Route element={<CompanyProtectedRoute />}>
+        <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
+        <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
+      </Route>
     </Routes>
   );
 };
@@ -140,11 +146,11 @@ export const App = () => {
   const externalApis = implApi({ externalCall: externalServerCall });
 
   const services = {
-    echoService: implEchoService({ apis }),
     authService: implAuthService({ apis, tokenState, tokenLocalStorage }),
-    postService: implPostService({ apis, externalApis }),
+    postService: implPostService({ apis }),
     userService: implUserService({ apis }),
     resumeService: implResumeService({ apis }),
+    fileService: implFileService({ apis, externalApis }),
   };
 
   return (

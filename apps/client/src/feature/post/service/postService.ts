@@ -1,4 +1,4 @@
-import type { Apis, ExternalApis } from '@waffle/api';
+import type { Apis } from '@waffle/api';
 
 import type { Paginator } from '@/entities/paginator';
 import type { BriefPost, Post, PostRequest } from '@/entities/post';
@@ -44,31 +44,9 @@ export type PostService = {
     token: string;
     postContents: PostRequest;
   }) => ServiceResponse<Post>;
-  getPresignedUrl({
-    token,
-    fileName,
-    fileType,
-  }: {
-    token: string;
-    fileName: string;
-    fileType: string;
-  }): ServiceResponse<{ presignedUrl: string }>;
-  uploadImage({
-    presignedUrl,
-    file,
-  }: {
-    presignedUrl: string;
-    file: File;
-  }): ServiceResponse<void>;
 };
 
-export const implPostService = ({
-  apis,
-  externalApis,
-}: {
-  apis: Apis;
-  externalApis: ExternalApis;
-}): PostService => ({
+export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
   getPosts: async ({
     page,
     roles,
@@ -146,37 +124,6 @@ export const implPostService = ({
       token: token,
       params: params,
       body: postContents,
-    });
-
-    if (status === 200) {
-      return {
-        type: 'success',
-        data,
-      };
-    }
-    return { type: 'error', status, message: data.error };
-  },
-  getPresignedUrl: async ({ token, fileName, fileType }) => {
-    const body = { fileName, fileType };
-    const { status, data } = await apis['POST /admin/post/upload/presigned']({
-      token,
-      body,
-    });
-
-    if (status === 200) {
-      return {
-        type: 'success',
-        data,
-      };
-    }
-    return { type: 'error', status, message: data.error };
-  },
-  uploadImage: async ({ presignedUrl, file }) => {
-    const body = { file };
-    const { status, data } = await externalApis['PUT upload-file']({
-      path: presignedUrl,
-      body,
-      contentType: file.type,
     });
 
     if (status === 200) {

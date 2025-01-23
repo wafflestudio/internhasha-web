@@ -17,7 +17,7 @@ export const resumeHandlers = [
     resumeResolver.getResumeDetail,
   ),
 
-  http.post('*/api/resume/:postId', resumeResolver.applyCoffeeChat),
+  http.post('*/api/resume/:postId', resumeResolver.createResume),
 
-  http.delete('*/api/resume/:resumeId', resumeResolver.deleteCoffeeChat),
+  http.delete('*/api/resume/:resumeId', resumeResolver.deleteResume),
 ];

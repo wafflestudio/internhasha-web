@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import MDEditor from '@uiw/react-md-editor';
 import {
   Button,
   FormContainer,
@@ -228,15 +229,15 @@ export const CreatePostForm = () => {
           </LabelContainer>
         </div>
         <LabelContainer label="상세 공고 글" id="detail">
-          <TextInput
-            id="detail"
-            value={detail.value}
-            disabled={isPending}
-            onChange={(e) => {
-              detail.onChange(e.target.value);
-            }}
-            placeholder="직무 설명, 근무 조건, 지원 조건, 지원 절차 등에 대해 구체적으로 작성해주세요."
-          />
+          <div data-color-mode="light">
+            <MDEditor
+              id="detail"
+              value={detail.value}
+              onChange={(value) => {
+                detail.onChange(value ?? '');
+              }}
+            />
+          </div>
           {isSubmit && detail.isError && (
             <p>상세 공고 글은 10,000자 이상 작성하실 수 없습니다.</p>
           )}

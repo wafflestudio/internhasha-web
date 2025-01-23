@@ -17,7 +17,7 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LandingPage = () => {
-  const { toEcho, toSignUpSelect, toSignInSelect, toPost, toCoffeeChatList } =
+  const { toSignUpSelect, toSignInSelect, toPost, toResumeList } =
     useRouteNavigation();
 
   const [filterElements, setFilterElements] = useState<FilterElements>({

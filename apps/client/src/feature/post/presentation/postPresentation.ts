@@ -57,7 +57,9 @@ export const postPresentation: PostPresentation = {
       initialState.headcount !== undefined ? initialState.headcount : 0,
     );
     const [detail, setDetail] = useState(
-      initialState.detail !== undefined ? initialState.detail : '',
+      initialState.detail !== undefined
+        ? initialState.detail
+        : '직무 설명, 근무 조건, 지원 조건, 지원 절차 등에 대해 구체적으로 작성해주세요.',
     );
     const [employmentEndDateTime, setEmploymentEndDateTime] = useState(
       initialState.employmentEndDate !== undefined
