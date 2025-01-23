@@ -6,8 +6,8 @@ import type {
 } from "../../entities";
 import type {
   AccessTokenRequest,
-  ApplyCoffeeChatRequest,
   CreateAndUpdatePostRequest,
+  CreateResumeRequest,
   EchoParams,
   EmailVerifyRequest,
   FileUploadRequest,
@@ -204,7 +204,7 @@ export const getLocalServerApis = ({
     }: {
       token: string;
       params: PostIdParams;
-      body: ApplyCoffeeChatRequest;
+      body: CreateResumeRequest;
     }) => {
       return callWithToken<SuccessResponse<ResumeResponse>>({
         method: "POST",

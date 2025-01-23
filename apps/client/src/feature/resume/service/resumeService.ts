@@ -1,0 +1,124 @@
+import type { Apis } from '@waffle/api';
+
+import type { ServiceResponse } from '@/entities/response';
+import type { Resume } from '@/entities/resume';
+
+export type ResumeService = {
+  getResumeDetail: ({
+    token,
+    resumeId,
+  }: {
+    token: string;
+    resumeId: string;
+  }) => ServiceResponse<Resume>;
+  getResumeList: ({
+    token,
+  }: {
+    token: string;
+  }) => ServiceResponse<{ resumeList: Resume[] }>;
+  applyResume: ({
+    token,
+    phoneNumber,
+    content,
+    postId,
+  }: {
+    token: string;
+    phoneNumber: string;
+    content: string;
+    postId: string;
+  }) => ServiceResponse<Resume>;
+  deleteResume: ({
+    token,
+    resumeId,
+  }: {
+    token: string;
+    resumeId: string;
+  }) => ServiceResponse<void>;
+};
+
+export const implResumeService = ({ apis }: { apis: Apis }): ResumeService => ({
+  getResumeDetail: async ({
+    token,
+    resumeId,
+  }: {
+    token: string;
+    resumeId: string;
+  }) => {
+    const params = { resumeId };
+
+    const { status, data } = await apis['GET /resume/:resumeId']({
+      token,
+      params,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', status, message: data.error };
+  },
+  getResumeList: async ({ token }: { token: string }) => {
+    const { status, data } = await apis['GET /resume']({
+      token,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', status, message: data.error };
+  },
+  applyResume: async ({
+    token,
+    phoneNumber,
+    content,
+    postId,
+  }: {
+    token: string;
+    phoneNumber: string;
+    content: string;
+    postId: string;
+  }) => {
+    const body = { phoneNumber, content };
+    const params = { postId };
+
+    const { status, data } = await apis['POST /resume/:postId']({
+      token,
+      params,
+      body,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', status, message: data.error };
+  },
+  deleteResume: async ({
+    token,
+    resumeId,
+  }: {
+    token: string;
+    resumeId: string;
+  }) => {
+    const params = { resumeId };
+    const { status, data } = await apis['DELETE /resume/:resumeId']({
+      token,
+      params,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', status, message: data.error };
+  },
+});

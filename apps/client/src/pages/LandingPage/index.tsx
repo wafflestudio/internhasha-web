@@ -14,7 +14,7 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LandingPage = () => {
-  const { toEcho, toSignUpSelect, toSignInSelect, toPost, toCoffeeChatList } =
+  const { toSignUpSelect, toSignInSelect, toPost, toResumeList } =
     useRouteNavigation();
 
   const [filterElements, setFilterElements] = useState<FilterElements>({
@@ -51,11 +51,10 @@ export const LandingPage = () => {
       <DesignedButton>와플의 버튼</DesignedButton>
       <Button onClick={toSignUpSelect}>회원가입 페이지로 이동</Button>
       <Button onClick={toSignInSelect}>로그인 페이지로 이동</Button>
-      <Button onClick={toEcho}>에코 페이지로 이동</Button>
       <Button onClick={hanldeClickLogoutButton} disabled={isPending}>
         로그아웃
       </Button>
-      <Button onClick={toCoffeeChatList} disabled={isPending}>
+      <Button onClick={toResumeList} disabled={isPending}>
         커피챗 목록
       </Button>
 

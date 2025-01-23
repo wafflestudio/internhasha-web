@@ -1,4 +1,4 @@
-import { CreateCompanyForm } from '@/feature/post';
+import { CreateCompanyForm } from '@/feature/company';
 
 export const CreateCompanyPage = () => {
   return (

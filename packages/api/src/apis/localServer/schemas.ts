@@ -178,7 +178,7 @@ export type CreateAndUpdatePostRequest = Omit<
   "id" | "createdAt" | "updatedAt" | "isActive"
 >;
 
-export type ApplyCoffeeChatRequest = {
+export type CreateResumeRequest = {
   phoneNumber: string;
   content: string;
 };
