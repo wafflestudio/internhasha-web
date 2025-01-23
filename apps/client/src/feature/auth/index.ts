@@ -8,3 +8,4 @@ export {
 export { EmailVerifyForm } from '@/feature/auth/ui/signUp/EmailVerifyForm';
 export { GoogleSocialSignInButton } from '@/feature/auth/ui/signIn/GoogleSocialSignInButton';
 export { LocalLogInForm } from '@/feature/auth/ui/signIn/LocalLoginForm';
+export { GoogleSocialSignUpButton } from '@/feature/auth/ui/signUp/GoogleSocialSignUpButton';
