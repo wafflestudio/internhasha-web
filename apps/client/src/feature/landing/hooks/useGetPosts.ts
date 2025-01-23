@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { useGuardContext } from '@/shared/context/hooks';
-import { ServiceContext } from '@/shared/context/ServiceContext';
+import { useGuardContext } from '@/shared/context/hooks.ts';
+import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 
 interface UseGetPostsProps {
   page?: number;

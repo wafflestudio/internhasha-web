@@ -15,7 +15,7 @@ import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
 import { CreateResumePage } from '@/pages/CreateResumePage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
-import { LandingPage } from '@/pages/LandingPage';
+import { LandingPage } from '@/pages/LandingPage.tsx';
 import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
 import { MyPage } from '@/pages/MyPage';
 import { PostDetailPage } from '@/pages/PostDetailPage';
@@ -30,6 +30,7 @@ import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { CompanyProtectedRoute } from '@/shared/auth/CompanyProtectedRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
+import { RolesFilterProvider } from '@/shared/context/RolesFilterContext.tsx';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { implFileService } from '@/shared/file/fileService';
@@ -79,9 +80,7 @@ const queryClient = new QueryClient({
 
 export const App = () => {
   const tokenLocalStorage = implTokenLocalStorageRepository();
-  const [token, setToken] = useState<string | null>(
-    tokenLocalStorage.getToken(),
-  );
+  const [token, setToken] = useState<string | null>(tokenLocalStorage.getToken);
   const ENV = useGuardContext(EnvContext);
   const tokenState = implTokenStateRepository({ setToken });
 
@@ -158,7 +157,9 @@ export const App = () => {
       <ServiceContext.Provider value={services}>
         <TokenContext.Provider value={{ token }}>
           <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID}>
-            <RouterProvider />
+            <RolesFilterProvider>
+              <RouterProvider />
+            </RolesFilterProvider>
           </GoogleOAuthProvider>
         </TokenContext.Provider>
       </ServiceContext.Provider>
