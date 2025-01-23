@@ -1,6 +1,6 @@
 import { Button } from '@/components/button';
-import { GoogleSocialSignInButton } from '@/pages/SignInSelectPage/GoogleSocialSignInButton';
-import { LocalLogInForm } from '@/pages/SignInSelectPage/LogInForm';
+import { GoogleSocialSignInButton } from '@/feature/auth';
+import { LocalLogInForm } from '@/feature/auth';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const SignInSelectPage = () => {

@@ -13,7 +13,7 @@ import {
   AddGoogleSignUpModal,
   AddLocalSignUpModal,
   RedirectSignInModal,
-} from '@/feature/auth/ui/AddSignUpModal';
+} from '@/feature/auth/ui/signUp/AddSignUpModal';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
