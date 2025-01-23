@@ -8,7 +8,7 @@ export const CoffeeChatDetailPage = () => {
   const { resumeId } = useParams<{ resumeId: string }>();
 
   if (resumeId === undefined) {
-    return <RouteNavigator link={PATH.INDEX} />;
+    return <RouteNavigator link={PATH.COFFEE_CHAT_LIST} />;
   }
   return (
     <div>

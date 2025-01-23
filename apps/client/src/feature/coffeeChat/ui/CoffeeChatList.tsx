@@ -4,13 +4,12 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 
-export const CoffeeChatListPage = () => {
+export const CoffeeChatList = () => {
   const { resumeListData } = useGetCoffeeChatList();
 
   if (resumeListData === undefined) {
     return <div>로딩중...</div>;
   }
-
   if (resumeListData.type === 'error') {
     return (
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
