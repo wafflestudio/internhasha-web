@@ -38,5 +38,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ap-northeast-2
         run: |
-          aws s3 sync ./dist s3://wafflestudio-22.5-prod --delete
+          aws s3 sync ./dist s3://intern-hasha-client --delete
           aws cloudfront create-invalidation --distribution-id ENNREX04O38RJ --paths "/*"
