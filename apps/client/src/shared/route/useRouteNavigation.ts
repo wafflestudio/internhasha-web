@@ -49,7 +49,6 @@ export const useRouteNavigation = () => {
   const navigate = useNavigate();
   const {
     INDEX,
-    ECHO,
     SIGN_IN_SELECT,
     SIGN_UP_SELECT,
     VERIFY_EMAIL,
@@ -68,9 +67,6 @@ export const useRouteNavigation = () => {
     },
     toPost: ({ postId }: { postId: string }) => {
       void navigate(POST(postId));
-    },
-    toEcho: () => {
-      void navigate(ECHO);
     },
     toSignInSelect: () => {
       void navigate(SIGN_IN_SELECT);

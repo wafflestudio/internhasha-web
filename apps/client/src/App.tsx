@@ -10,7 +10,6 @@ import { PATH } from '@/entities/route';
 import { implPostService } from '@/feature/post';
 import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
-import { EchoPage } from '@/pages/EchoPage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { CoffeeChatListPage } from '@/pages/LandingPage/CoffeeChatListPage';
@@ -50,7 +49,6 @@ const RouterProvider = () => {
         }
       />
       <Route path={PATH.POST} element={<PostPage />} />
-      <Route path={PATH.ECHO} element={<EchoPage />} />
       <Route path={PATH.SIGN_IN_SELECT} element={<SignInSelectPage />} />
       <Route path={PATH.SIGN_UP_SELECT} element={<SignUpSelectPage />} />
       <Route path={PATH.SIGN_UP_LOCAL} element={<LocalSignUpPage />} />
