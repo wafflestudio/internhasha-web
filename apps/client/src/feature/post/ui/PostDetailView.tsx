@@ -1,24 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router';
 
 import { Button } from '@/components/button';
-import { PATH } from '@/entities/route';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
-import { RouteNavigator } from '@/shared/route/RouteNavigator';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
-export const PostPage = () => {
-  const { postId } = useParams<{ postId: string }>();
+export const PostDetailView = ({ postId }: { postId: string }) => {
+  const { postDetailData } = useGetPostDetail({ postId: postId });
   const { toMain, toApplyCoffeeChat } = useRouteNavigation();
 
-  const { postDetailData } = useGetPostDetail({ postId: postId });
-
-  if (postId === undefined) {
-    return <RouteNavigator link={PATH.INDEX} />;
-  }
-
+  // TODO: 전체 페이지 대신 카드 컴포넌트만 로딩되도록 설정
   if (postDetailData === undefined) {
     return <div>로딩 중...</div>;
   }
@@ -52,20 +44,12 @@ export const PostPage = () => {
       className="post-detail"
       style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}
     >
-      {/* 네비게이션 버튼 */}
       <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
-        <Button
-          onClick={toMain}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 16px',
-          }}
-        >
-          ← 메인 페이지로
-        </Button>
-
+        <div>
+          <span>채용 마감일</span>
+          <span>{}</span>
+          <span></span>
+        </div>
         <Button
           onClick={() => {
             toApplyCoffeeChat({ postId });
@@ -81,9 +65,18 @@ export const PostPage = () => {
         >
           커피챗 신청하기
         </Button>
+        <Button
+          onClick={toMain}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 16px',
+          }}
+        >
+          목록으로
+        </Button>
       </div>
-
-      {/* 헤더 섹션 */}
       <div
         style={{
           display: 'flex',
@@ -280,16 +273,13 @@ export const PostPage = () => {
   );
 };
 
-const useGetPostDetail = ({ postId }: { postId: string | undefined }) => {
+const useGetPostDetail = ({ postId }: { postId: string }) => {
   const { token } = useGuardContext(TokenContext);
   const { postService } = useGuardContext(ServiceContext);
 
   const { data: postDetailData } = useQuery({
     queryKey: ['post', token] as const,
     queryFn: ({ queryKey: [, t] }) => {
-      if (postId === undefined) {
-        throw new Error('유효하지 않은 요청입니다.');
-      }
       if (t === null) {
         return postService.getPostDetail({ token: '', postId: postId });
       }
