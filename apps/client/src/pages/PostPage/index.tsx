@@ -2,21 +2,22 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router';
 
 import { Button } from '@/components/button';
+import { PATH } from '@/entities/route';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
+import { RouteNavigator } from '@/shared/route/RouteNavigator';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const PostPage = () => {
   const { postId } = useParams<{ postId: string }>();
   const { toMain, toApplyCoffeeChat } = useRouteNavigation();
 
-  // url parameter 가 잘못되었을 경우 어떻게?
-  if (postId === undefined) {
-    throw new Error('잘못된 접근입니다.');
-  }
-
   const { postDetailData } = useGetPostDetail({ postId: postId });
+
+  if (postId === undefined) {
+    return <RouteNavigator link={PATH.INDEX} />;
+  }
 
   if (postDetailData === undefined) {
     return <div>로딩 중...</div>;
@@ -279,13 +280,16 @@ export const PostPage = () => {
   );
 };
 
-const useGetPostDetail = ({ postId }: { postId: string }) => {
+const useGetPostDetail = ({ postId }: { postId: string | undefined }) => {
   const { token } = useGuardContext(TokenContext);
   const { postService } = useGuardContext(ServiceContext);
 
   const { data: postDetailData } = useQuery({
     queryKey: ['post', token] as const,
     queryFn: ({ queryKey: [, t] }) => {
+      if (postId === undefined) {
+        throw new Error('유효하지 않은 요청입니다.');
+      }
       if (t === null) {
         return postService.getPostDetail({ token: '', postId: postId });
       }
