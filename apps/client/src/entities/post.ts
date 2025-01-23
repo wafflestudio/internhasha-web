@@ -32,6 +32,7 @@ export type FilterElements = {
   investmentMax?: number;
   investmentMin?: number;
   pathStatus?: 0 | 1 | 2;
+  series?: Series;
 };
 
 type Link = {

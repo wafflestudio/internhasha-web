@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+import type { Series } from '@/entities/post.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 
@@ -8,6 +9,7 @@ interface UseGetPostsProps {
   roles?: string[];
   investmentMax?: number;
   investmentMin?: number;
+  series?: Series;
   pathStatus?: number;
 }
 
@@ -16,6 +18,7 @@ export const useGetPosts = ({
   roles,
   investmentMax,
   investmentMin,
+  series,
   pathStatus,
 }: UseGetPostsProps) => {
   const { postService } = useGuardContext(ServiceContext);
@@ -28,6 +31,7 @@ export const useGetPosts = ({
       roles,
       investmentMax,
       investmentMin,
+      series,
       pathStatus,
     ],
     queryFn: async () => {
@@ -36,6 +40,7 @@ export const useGetPosts = ({
         roles,
         investmentMax,
         investmentMin,
+        series,
         pathStatus,
       });
       if (response.type === 'success') {
