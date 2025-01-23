@@ -18,7 +18,10 @@ export const SelectContainerWithOptions = <T extends string | number>({
   return (
     <div className="select-container">
       {label != null && (
-        <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor={id}
+          className="block text-sm font-medium text-gray-700 ml-1"
+        >
           {label}
         </label>
       )}

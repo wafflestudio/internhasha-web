@@ -1,19 +1,15 @@
 import { SelectContainerWithOptions } from '@waffle/design-system';
 
-import {
-  type FilterElements,
-  JOB_MINOR_CATEGORIES,
-  type JobMinorCategory,
-} from '@/entities/post';
+import { type FilterElements } from '@/entities/post';
 
 const INVESTMENT_RANGES = [
   { label: '전체', min: undefined, max: undefined },
-  { label: '1억 원 미만', min: 0, max: 10000 },
-  { label: '1억 원 이상 ~ 5억 원 미만', min: 10000, max: 50000 },
-  { label: '5억 원 이상 ~ 10억 원 미만', min: 50000, max: 100000 },
-  { label: '10억 원 이상 ~ 50억 원 미만', min: 100000, max: 500000 },
-  { label: '50억 원 이상 ~ 100억 원 미만', min: 500000, max: 1000000 },
-  { label: '100억 원 이상 ~ 500억 원 미만', min: 1000000, max: 5000000 },
+  { label: '1억 미만', min: 0, max: 10000 },
+  { label: '1억 ~ 5억', min: 10000, max: 50000 },
+  { label: '5억~ 10억', min: 50000, max: 100000 },
+  { label: '10억~ 50억', min: 100000, max: 500000 },
+  { label: '50억~ 100억', min: 500000, max: 1000000 },
+  { label: '100억~ 500억', min: 1000000, max: 5000000 },
 ] as const;
 
 type FilterSectionProps = {
@@ -25,18 +21,6 @@ export const FilterSection = ({
   filterElements,
   onChangeFilters,
 }: FilterSectionProps) => {
-  const handleRoleToggle = (role: JobMinorCategory) => {
-    const newRoles =
-      filterElements.roles?.includes(role) === true
-        ? filterElements.roles.filter((r) => r !== role)
-        : [...(filterElements.roles ?? []), role];
-
-    onChangeFilters({
-      ...filterElements,
-      roles: newRoles.length > 0 ? newRoles : undefined,
-    });
-  };
-
   const getCurrentInvestmentRange = () => {
     if (
       filterElements.investmentMin == null &&
@@ -54,15 +38,15 @@ export const FilterSection = ({
   };
 
   return (
-    <div className="filter-section" style={{ marginBottom: '20px' }}>
+    <div className="filter-section">
       <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
         <SelectContainerWithOptions
           id="pathStatus"
           value={filterElements.pathStatus}
           options={[
-            { value: 0, label: '전체' },
-            { value: 1, label: '모집 중' },
-            { value: 2, label: '모집 완료' },
+            { value: 0, label: '모집 중' },
+            { value: 1, label: '모집 완료' },
+            { value: 2, label: '전체' },
           ]}
           onChange={(value) => {
             onChangeFilters({
@@ -90,32 +74,6 @@ export const FilterSection = ({
           }}
           label="투자금액"
         />
-      </div>
-
-      {/* 직무 체크박스 */}
-      <div
-        style={{
-          marginTop: '16px',
-          display: 'flex',
-          gap: '12px',
-          flexWrap: 'wrap',
-        }}
-      >
-        {JOB_MINOR_CATEGORIES.map((role) => (
-          <label
-            key={role}
-            style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
-          >
-            <input
-              type="checkbox"
-              checked={filterElements.roles?.includes(role) ?? false}
-              onChange={() => {
-                handleRoleToggle(role);
-              }}
-            />
-            {role}
-          </label>
-        ))}
       </div>
     </div>
   );

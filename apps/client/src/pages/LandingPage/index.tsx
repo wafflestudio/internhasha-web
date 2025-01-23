@@ -1,12 +1,15 @@
 import { useMutation } from '@tanstack/react-query';
-import { Button as DesignedButton } from '@waffle/design-system';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
-import type { FilterElements } from '@/entities/post';
+import type { FilterElements, JobMinorCategory } from '@/entities/post';
 import { FilterSection } from '@/pages/LandingPage/FilterSection';
 import { Pagination } from '@/pages/LandingPage/Pagination';
 import { PostCard } from '@/pages/LandingPage/PostCard';
+import {
+  NarrowRolesFilter,
+  RolesFilter,
+} from '@/pages/LandingPage/RolesFilter.tsx';
 import { useGetPosts } from '@/pages/LandingPage/useGetPosts';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -24,6 +27,10 @@ export const LandingPage = () => {
     pathStatus: undefined,
   });
 
+  const handleRolesChange = (updatedRoles: JobMinorCategory[]) => {
+    setFilterElements((prev) => ({ ...prev, roles: updatedRoles }));
+  };
+
   const [currentPage, setCurrentPage] = useState(0);
   const [currentGroup, setCurrentGroup] = useState(0);
 
@@ -33,8 +40,9 @@ export const LandingPage = () => {
   });
 
   const { logout, isPending } = useLogout();
+  const { token } = useGuardContext(TokenContext);
 
-  const hanldeClickLogoutButton = () => {
+  const handleClickLogoutButton = () => {
     logout();
   };
 
@@ -47,53 +55,105 @@ export const LandingPage = () => {
 
   return (
     <div>
-      <p>랜딩페이지</p>
-      <DesignedButton>와플의 버튼</DesignedButton>
-      <Button onClick={toSignUpSelect}>회원가입 페이지로 이동</Button>
-      <Button onClick={toSignInSelect}>로그인 페이지로 이동</Button>
-      <Button onClick={hanldeClickLogoutButton} disabled={isPending}>
-        로그아웃
-      </Button>
-      <Button onClick={toResumeList} disabled={isPending}>
-        커피챗 목록
-      </Button>
+      <div className="min-h-screen bg-gray-100">
+        {/* 헤더 */}
+        <header className="bg-white shadow-md">
+          <div className="container px-6 py-4 flex justify-between items-center">
+            <h1 className="text-xl font-bold text-gray-800">랜딩페이지</h1>
+            <div className="flex gap-4">
+              {token == null ? (
+                <>
+                  <Button onClick={toSignUpSelect} className="text-blue-600">
+                    회원가입
+                  </Button>
+                  <Button onClick={toSignInSelect} className="text-blue-600">
+                    로그인
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    onClick={handleClickLogoutButton}
+                    disabled={isPending}
+                    className="text-red-600"
+                  >
+                    로그아웃
+                  </Button>
+                  <Button
+                    onClick={toResumeList}
+                    disabled={isPending}
+                    className="text-blue-600"
+                  >
+                    커피챗 목록
+                  </Button>
+                </>
+              )}
+            </div>
+          </div>
+        </header>
 
-      <FilterSection
-        filterElements={filterElements}
-        onChangeFilters={setFilterElements}
-      />
+        {/* 메인 컨텐츠 */}
+        <div className="container mx-auto py-6 flex flex-col lg:flex-row gap-2">
+          {/* RolesFilter */}
+          {/* RolesFilter */}
+          <div className="hidden lg:block lg:w-1/4 w-full order-1 lg:order-none">
+            <RolesFilter
+              roles={filterElements.roles}
+              onChangeRoles={handleRolesChange}
+            />
+          </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-          gap: '20px',
-          padding: '20px',
-        }}
-      >
-        {postsData.posts.map((post, idx) => (
-          <PostCard
-            key={`post-${idx}`}
-            post={post}
-            onDetailClick={(postId) => {
-              toPost({ postId });
-            }}
-          />
-        ))}
+          {/* NarrowRolesFilter */}
+          <div className="block lg:hidden w-full order-1 lg:order-none">
+            <NarrowRolesFilter
+              roles={filterElements.roles}
+              onChangeRoles={handleRolesChange}
+            />
+          </div>
+
+          {/* 게시글 리스트 및 상단 필터 */}
+          <div className="flex-1 order-2 lg:order-none">
+            {/* 상단 필터 섹션 */}
+            <div className="flex justify-between items-center mb-2 pl-2">
+              <FilterSection
+                filterElements={filterElements}
+                onChangeFilters={setFilterElements}
+              />
+            </div>
+
+            {/* 게시글 리스트 */}
+            <main>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pr-2">
+                {postsData.posts.map((post, idx) => (
+                  <PostCard
+                    key={`post-${idx}`}
+                    post={post}
+                    onDetailClick={(postId) => {
+                      toPost({ postId });
+                    }}
+                  />
+                ))}
+              </div>
+            </main>
+
+            {/* 페이지네이션 */}
+            <footer className="mt-6 flex justify-center">
+              <Pagination
+                totalPages={TOTAL_PAGES}
+                pagesPerGroup={PAGES_PER_GROUP}
+                currentPage={currentPage}
+                currentGroup={currentGroup}
+                onChangePage={(page) => {
+                  setCurrentPage(page);
+                }}
+                onChangeGroup={(group) => {
+                  setCurrentGroup(group);
+                }}
+              />
+            </footer>
+          </div>
+        </div>
       </div>
-
-      <Pagination
-        totalPages={TOTAL_PAGES}
-        pagesPerGroup={PAGES_PER_GROUP}
-        currentPage={currentPage}
-        currentGroup={currentGroup}
-        onChangePage={(page) => {
-          setCurrentPage(page);
-        }}
-        onChangeGroup={(group) => {
-          setCurrentGroup(group);
-        }}
-      />
     </div>
   );
 };
