@@ -2,19 +2,19 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
-import type { FilterElements, JobMinorCategory } from '@/entities/post';
-import { FilterSection } from '@/pages/LandingPage/FilterSection';
-import { Pagination } from '@/pages/LandingPage/Pagination';
-import { PostCard } from '@/pages/LandingPage/PostCard';
+import type { FilterElements, JobMinorCategory } from '@/entities/post.ts';
+import { useGetPosts } from '@/feature/landing/index.tsx';
+import { FilterSection } from '@/feature/landing/index.tsx';
+import { Pagination } from '@/feature/landing/index.tsx';
+import { PostCard } from '@/feature/landing/index.tsx';
 import {
   NarrowRolesFilter,
   RolesFilter,
-} from '@/pages/LandingPage/RolesFilter.tsx';
-import { useGetPosts } from '@/pages/LandingPage/useGetPosts';
-import { useGuardContext } from '@/shared/context/hooks';
-import { ServiceContext } from '@/shared/context/ServiceContext';
-import { TokenContext } from '@/shared/context/TokenContext';
-import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+} from '@/feature/landing/index.tsx';
+import { useGuardContext } from '@/shared/context/hooks.ts';
+import { ServiceContext } from '@/shared/context/ServiceContext.ts';
+import { TokenContext } from '@/shared/context/TokenContext.ts';
+import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
 
 export const LandingPage = () => {
   const { toSignUpSelect, toSignInSelect, toPost, toResumeList } =

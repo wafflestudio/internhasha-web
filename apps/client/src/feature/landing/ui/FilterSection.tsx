@@ -1,6 +1,6 @@
 import { SelectContainerWithOptions } from '@waffle/design-system';
 
-import { type FilterElements } from '@/entities/post';
+import { type FilterElements } from '@/entities/post.ts';
 
 const INVESTMENT_RANGES = [
   { label: '전체', min: undefined, max: undefined },
