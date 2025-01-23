@@ -33,6 +33,7 @@ import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
+import { implFileService } from '@/shared/file/fileService';
 import { implTokenLocalStorageRepository } from '@/shared/token/localstorage';
 import { implTokenStateRepository } from '@/shared/token/state';
 
@@ -151,9 +152,10 @@ export const App = () => {
   const services = {
     echoService: implEchoService({ apis }),
     authService: implAuthService({ apis, tokenState, tokenLocalStorage }),
-    postService: implPostService({ apis, externalApis }),
+    postService: implPostService({ apis }),
     userService: implUserService({ apis }),
     resumeService: implResumeService({ apis }),
+    fileService: implFileService({ apis, externalApis }),
   };
 
   return (

@@ -504,7 +504,7 @@ const useGetPresignedUrl = ({
   onSuccess({ presignedUrl }: { presignedUrl: string }): void;
   setResponseMessage(input: string): void;
 }) => {
-  const { postService } = useGuardContext(ServiceContext);
+  const { fileService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
 
   const { mutate: getPresignedUrl, isPending } = useMutation({
@@ -518,7 +518,7 @@ const useGetPresignedUrl = ({
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return postService.getPresignedUrl({ token, fileName, fileType });
+      return fileService.getPresignedUrl({ token, fileName, fileType });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
@@ -543,7 +543,7 @@ const useUploadFile = ({
 }: {
   setResponseMessage(input: string): void;
 }) => {
-  const { postService } = useGuardContext(ServiceContext);
+  const { fileService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
 
   const { mutate: uploadFile, isPending } = useMutation({
@@ -560,7 +560,7 @@ const useUploadFile = ({
       if (file === undefined) {
         throw new Error('파일이 존재하지 않습니다.');
       }
-      return postService.uploadImage({ presignedUrl, file });
+      return fileService.uploadImage({ presignedUrl, file });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
