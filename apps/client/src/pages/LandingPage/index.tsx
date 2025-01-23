@@ -63,9 +63,6 @@ export const LandingPage = () => {
             <div className="flex gap-4">
               {token == null ? (
                 <>
-                  <Button onClick={toEcho} className="text-blue-600">
-                    에코 페이지
-                  </Button>
                   <Button onClick={toSignUpSelect} className="text-blue-600">
                     회원가입
                   </Button>
@@ -83,7 +80,7 @@ export const LandingPage = () => {
                     로그아웃
                   </Button>
                   <Button
-                    onClick={toCoffeeChatList}
+                    onClick={toResumeList}
                     disabled={isPending}
                     className="text-blue-600"
                   >
