@@ -18,6 +18,8 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
     employmentEndDate,
   } = post;
 
+  console.log(slogan);
+
   return (
     <div
       className="border border-gray-200 rounded-lg shadow-sm bg-white
@@ -26,7 +28,6 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
         onDetailClick(id);
       }}
     >
-
       {/* 직군 & 마감일 */}
       <div className="relative">
         <div className="flex justify-between items-center rounded-t-lg pl-5 pr-5 p-3 bg-gray-200 relative">
@@ -99,17 +100,21 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
         <span
           className={`px-2 py-1 text-xs rounded ${
             series === 'PRE_A' || series === 'A'
-              ? 'bg-blue-100 text-blue-600'
+              ? 'bg-blue-100 text-blue-900'
               : series === 'B'
-                ? 'bg-red-100 text-red-600'
+                ? 'bg-red-100 text-red-900'
                 : series === 'C'
-                  ? 'bg-green-100 text-green-600'
+                  ? 'bg-green-100 text-green-900'
                   : series === 'D'
-                    ? 'bg-yellow-100 text-yellow-600'
-                    : 'bg-gray-200'
+                    ? 'bg-yellow-100 text-yellow-900'
+                    : 'bg-gray-100 text-gray-800'
           }`}
         >
-          {series.length === 1 ? `Series-${series}` : series}
+          {series.length === 1
+            ? series === 'PRE_A'
+              ? 'Pre-Series A'
+              : `Series ${series}`
+            : 'Seed'}
         </span>
         {investAmount != null && (
           <span className="px-2 py-1 bg-gray-200 text-xs rounded">

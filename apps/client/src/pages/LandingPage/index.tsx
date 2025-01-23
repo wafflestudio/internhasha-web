@@ -6,7 +6,10 @@ import type { FilterElements, JobMinorCategory } from '@/entities/post';
 import { FilterSection } from '@/pages/LandingPage/FilterSection';
 import { Pagination } from '@/pages/LandingPage/Pagination';
 import { PostCard } from '@/pages/LandingPage/PostCard';
-import { RolesFilter } from '@/pages/LandingPage/RolesFilter.tsx';
+import {
+  NarrowRolesFilter,
+  RolesFilter,
+} from '@/pages/LandingPage/RolesFilter.tsx';
 import { useGetPosts } from '@/pages/LandingPage/useGetPosts';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -93,12 +96,26 @@ export const LandingPage = () => {
         </header>
 
         {/* 메인 컨텐츠 */}
-        <div className="container mx-auto py-6 flex gap-2">
-          {/* 좌측 Roles 필터 */}
-          <RolesFilter roles={filterElements.roles} onChangeRoles={handleRolesChange} />
+        <div className="container mx-auto py-6 flex flex-col lg:flex-row gap-2">
+          {/* RolesFilter */}
+          {/* RolesFilter */}
+          <div className="hidden lg:block lg:w-1/4 w-full order-1 lg:order-none">
+            <RolesFilter
+              roles={filterElements.roles}
+              onChangeRoles={handleRolesChange}
+            />
+          </div>
 
-          {/* 우측 게시글 리스트 및 상단 필터 */}
-          <div className="flex-1">
+          {/* NarrowRolesFilter */}
+          <div className="block lg:hidden w-full order-1 lg:order-none">
+            <NarrowRolesFilter
+              roles={filterElements.roles}
+              onChangeRoles={handleRolesChange}
+            />
+          </div>
+
+          {/* 게시글 리스트 및 상단 필터 */}
+          <div className="flex-1 order-2 lg:order-none">
             {/* 상단 필터 섹션 */}
             <div className="flex justify-between items-center mb-2 pl-2">
               <FilterSection
@@ -114,7 +131,9 @@ export const LandingPage = () => {
                   <PostCard
                     key={`post-${idx}`}
                     post={post}
-                    onDetailClick={(postId) => { toPost({ postId }); }}
+                    onDetailClick={(postId) => {
+                      toPost({ postId });
+                    }}
                   />
                 ))}
               </div>
@@ -127,8 +146,12 @@ export const LandingPage = () => {
                 pagesPerGroup={PAGES_PER_GROUP}
                 currentPage={currentPage}
                 currentGroup={currentGroup}
-                onChangePage={(page) => { setCurrentPage(page); }}
-                onChangeGroup={(group) => { setCurrentGroup(group); }}
+                onChangePage={(page) => {
+                  setCurrentPage(page);
+                }}
+                onChangeGroup={(group) => {
+                  setCurrentGroup(group);
+                }}
               />
             </footer>
           </div>

@@ -1,8 +1,6 @@
 import { SelectContainerWithOptions } from '@waffle/design-system';
 
-import {
-  type FilterElements,
-} from '@/entities/post';
+import { type FilterElements } from '@/entities/post';
 
 const INVESTMENT_RANGES = [
   { label: '전체', min: undefined, max: undefined },
@@ -23,7 +21,6 @@ export const FilterSection = ({
   filterElements,
   onChangeFilters,
 }: FilterSectionProps) => {
-
   const getCurrentInvestmentRange = () => {
     if (
       filterElements.investmentMin == null &&
@@ -47,9 +44,9 @@ export const FilterSection = ({
           id="pathStatus"
           value={filterElements.pathStatus}
           options={[
-            { value: 0, label: '전체' },
-            { value: 1, label: '모집 중' },
-            { value: 2, label: '모집 완료' },
+            { value: 0, label: '모집 중' },
+            { value: 1, label: '모집 완료' },
+            { value: 2, label: '전체' },
           ]}
           onChange={(value) => {
             onChangeFilters({
