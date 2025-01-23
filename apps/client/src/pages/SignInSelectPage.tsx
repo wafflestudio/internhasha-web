@@ -23,7 +23,6 @@ export const SignInSelectPage = () => {
               <div className="block flex-1 bg-grey-normal h-[1px]"></div>
               <span className="text-grey-normal">또는</span>
               <div className="block flex-1 bg-grey-normal h-[1px]"></div>
-              <div></div>
             </div>
             <GoogleSocialSignInButton />
           </div>

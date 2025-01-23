@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { ICON_SRC } from '@/entities/asset';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
@@ -34,7 +35,8 @@ export const GoogleSocialSignInButton = () => {
         variant="outline"
         className="w-full"
       >
-        구글 계정으로 로그인하기
+        <img src={ICON_SRC.GOOGLE} />
+        구글 계정으로 간편 로그인
       </Button>
       {error !== undefined && (
         <div>

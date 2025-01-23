@@ -2,7 +2,8 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { Button } from '@/components/button';
+import { Button } from '@/components/ui/button';
+import { ICON_SRC } from '@/entities/asset';
 import { AddGoogleSignUpModal } from '@/feature/auth';
 import { RedirectSignInModal } from '@/feature/auth';
 import { useGuardContext } from '@/shared/context/hooks';
@@ -49,8 +50,14 @@ export const GoogleSocialSignUpButton = () => {
 
   return (
     <div>
-      <Button onClick={handleClickGoogleSignUpButton} disabled={isPending}>
-        구글 계정으로 가입하기 🚀
+      <Button
+        onClick={handleClickGoogleSignUpButton}
+        disabled={isPending}
+        variant="outline"
+        className="w-full"
+      >
+        <img src={ICON_SRC.GOOGLE} />
+        구글 계정으로 간편 회원가입
       </Button>
       {responseMessage !== undefined && (
         <div>
