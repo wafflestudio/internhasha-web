@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-
 import type { JobMinorCategory } from '@/entities/post.ts';
+import { useGuardContext } from '@/shared/context/hooks.ts';
+import { RolesFilterContext } from '@/shared/context/RolesFilterContext.tsx';
 
 type RolesFilterProps = {
   roles: JobMinorCategory[] | undefined;
@@ -18,23 +18,8 @@ export const RolesFilter = ({
   roles = [],
   onChangeRoles,
 }: RolesFilterProps) => {
-  // TODO 로컬 스토리지 로직 리팩토링 필요
-  const [activeCategory, setActiveCategory] = useState<
-    keyof typeof jobCategoryList | null
-  >(
-    () =>
-      localStorage.getItem('activeCategory') as
-        | keyof typeof jobCategoryList
-        | null,
-  );
-
-  useEffect(() => {
-    if (activeCategory != null) {
-      localStorage.setItem('activeCategory', activeCategory);
-    } else {
-      localStorage.removeItem('activeCategory');
-    }
-  }, [activeCategory]);
+  const { activeCategory, setActiveCategory } =
+    useGuardContext(RolesFilterContext);
 
   const handleCheckboxChange = (role: JobMinorCategory) => {
     const updatedRoles = roles.includes(role)
@@ -44,7 +29,9 @@ export const RolesFilter = ({
   };
 
   const handleCategoryClick = (category: keyof typeof jobCategoryList) => {
-    setActiveCategory((prev) => (prev === category ? null : category));
+    setActiveCategory((prev: '개발' | '기획' | '디자인' | '마케팅' | null) =>
+      prev === category ? null : category,
+    );
   };
 
   return (
@@ -109,13 +96,8 @@ export const NarrowRolesFilter = ({
   roles = [],
   onChangeRoles,
 }: RolesFilterProps) => {
-  const [activeCategory, setActiveCategory] = useState<
-    keyof typeof jobCategoryList | null
-  >(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(() => {
-    const savedState = localStorage.getItem('isDropdownOpen');
-    return savedState === 'true';
-  });
+  const { isFilterDropdownOpen, setIsFilterDropdownOpen } =
+    useGuardContext(RolesFilterContext);
 
   const handleCheckboxChange = (role: JobMinorCategory) => {
     const updatedRoles = roles.includes(role)
@@ -124,29 +106,21 @@ export const NarrowRolesFilter = ({
     onChangeRoles(updatedRoles);
   };
 
-  const handleCategoryClick = (category: keyof typeof jobCategoryList) => {
-    setActiveCategory((prev) => (prev === category ? null : category));
-  };
-
-  useEffect(() => {
-    localStorage.setItem('isDropdownOpen', JSON.stringify(isDropdownOpen));
-  }, [isDropdownOpen]);
-
   return (
     <div className="block lg:hidden w-full p-2 rounded-lg">
       {/* Dropdown Toggle */}
       <button
         onClick={() => {
-          setIsDropdownOpen((prev) => !prev);
+          setIsFilterDropdownOpen((prev) => !prev);
         }}
         className="w-full flex justify-between items-center px-6 py-3 bg-white rounded-lg shadow-sm"
       >
         <span className="text-lg font-bold text-gray-800">직무 유형 선택</span>
-        <span>{isDropdownOpen ? '▼' : '▲'}</span>
+        <span>{isFilterDropdownOpen ? '▼' : '▲'}</span>
       </button>
 
       {/* Dropdown Content */}
-      {isDropdownOpen && (
+      {isFilterDropdownOpen && (
         <div className="mt-2 bg-white rounded-lg shadow-sm p-4">
           {Object.keys(jobCategoryList).map((category: string, index) => {
             const typedCategory = category as keyof typeof jobCategoryList;
@@ -162,11 +136,8 @@ export const NarrowRolesFilter = ({
               >
                 {/* 직무 제목 */}
                 <div
-                  className={`flex justify-between items-center cursor-pointer
-                      px-6 py-3 rounded-lg ${activeCategory === typedCategory ? 'bg-gray-100' : ''}`}
-                  onClick={() => {
-                    handleCategoryClick(typedCategory);
-                  }}
+                  className="flex justify-between items-center cursor-pointer
+                      px-6 py-3 rounded-lg"
                 >
                   <span className="text-md font-bold text-gray-800">
                     {typedCategory}

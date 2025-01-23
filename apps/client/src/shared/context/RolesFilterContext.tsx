@@ -4,20 +4,30 @@ const LOCAL_STORAGE_IS_FILTER_DROPDOWN_KEY = 'is-filler-dropdown';
 import { createContext, useEffect, useState } from 'react';
 
 type RolesFilterStorageRepository = {
-  setActiveJobCategory: ({activeCategory} : {activeCategory: string}) => void;
+  setActiveJobCategory: ({
+    activeCategory,
+  }: {
+    activeCategory: string;
+  }) => void;
   getActiveJobCategory: () => string | null;
   removeActiveJobCategory: () => void;
-  setIsFilterDropdownOpen: ({isFilterDropdownOpen}: {isFilterDropdownOpen: boolean}) => void;
+  setIsFilterDropdownOpen: ({
+    isFilterDropdownOpen,
+  }: {
+    isFilterDropdownOpen: boolean;
+  }) => void;
   getIsFilterDropdownOpen: () => boolean;
   removeIsFilterDropdownOpen: () => void;
-}
+};
 
-type RolesFilterContextType = {
+type RolesFilterContext = {
   activeCategory: '개발' | '기획' | '디자인' | '마케팅' | null;
-  setActiveCategory: (value: '개발' | '기획' | '디자인' | '마케팅'| null) => void;
+  setActiveCategory: React.Dispatch<
+    React.SetStateAction<'개발' | '기획' | '디자인' | '마케팅' | null>
+  >;
   isFilterDropdownOpen: boolean;
-  setIsFilterDropdownOpen: (value: boolean) => void;
-}
+  setIsFilterDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const implRolesFilterStorageRepository = (): RolesFilterStorageRepository => ({
   setActiveJobCategory: ({ activeCategory }) => {
@@ -36,17 +46,22 @@ const implRolesFilterStorageRepository = (): RolesFilterStorageRepository => ({
     );
   },
   getIsFilterDropdownOpen: () => {
-    return localStorage.getItem(LOCAL_STORAGE_IS_FILTER_DROPDOWN_KEY) === 'true';
+    return (
+      localStorage.getItem(LOCAL_STORAGE_IS_FILTER_DROPDOWN_KEY) === 'true'
+    );
   },
   removeIsFilterDropdownOpen: () => {
-    localStorage.removeItem(LOCAL_STORAGE_IS_FILTER_DROPDOWN_KEY)
-  }
+    localStorage.removeItem(LOCAL_STORAGE_IS_FILTER_DROPDOWN_KEY);
+  },
 });
 
-const RolesFilterContext = createContext<RolesFilterContextType | undefined>(undefined);
+export const RolesFilterContext = createContext<RolesFilterContext | null>(
+  null,
+);
 
-export const RolesFilterProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-
+export const RolesFilterProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const rolesFilterLocalStorage = implRolesFilterStorageRepository();
 
   const [activeCategory, setActiveCategory] = useState<
@@ -54,11 +69,14 @@ export const RolesFilterProvider: React.FC<{ children: React.ReactNode }> = ({ c
   >(null);
 
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(
-    rolesFilterLocalStorage.getIsFilterDropdownOpen
+    rolesFilterLocalStorage.getIsFilterDropdownOpen,
   );
 
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_IS_FILTER_DROPDOWN_KEY, JSON.stringify(isFilterDropdownOpen));
+    localStorage.setItem(
+      LOCAL_STORAGE_IS_FILTER_DROPDOWN_KEY,
+      JSON.stringify(isFilterDropdownOpen),
+    );
   }, [isFilterDropdownOpen]);
 
   useEffect(() => {
@@ -72,14 +90,13 @@ export const RolesFilterProvider: React.FC<{ children: React.ReactNode }> = ({ c
   return (
     <RolesFilterContext.Provider
       value={{
-        isFilterDropdownOpen,
-        setIsFilterDropdownOpen,
         activeCategory,
         setActiveCategory,
+        isFilterDropdownOpen,
+        setIsFilterDropdownOpen,
       }}
     >
       {children}
     </RolesFilterContext.Provider>
   );
 };
-

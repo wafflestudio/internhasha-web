@@ -80,9 +80,7 @@ const queryClient = new QueryClient({
 
 export const App = () => {
   const tokenLocalStorage = implTokenLocalStorageRepository();
-  const [token, setToken] = useState<string | null>(
-    tokenLocalStorage.getToken,
-  );
+  const [token, setToken] = useState<string | null>(tokenLocalStorage.getToken);
   const ENV = useGuardContext(EnvContext);
   const tokenState = implTokenStateRepository({ setToken });
 

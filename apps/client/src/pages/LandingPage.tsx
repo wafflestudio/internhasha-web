@@ -7,10 +7,7 @@ import { useGetPosts } from '@/feature/landing/index.tsx';
 import { FilterSection } from '@/feature/landing/index.tsx';
 import { Pagination } from '@/feature/landing/index.tsx';
 import { PostCard } from '@/feature/landing/index.tsx';
-import {
-  NarrowRolesFilter,
-  RolesFilter,
-} from '@/feature/landing/index.tsx';
+import { NarrowRolesFilter, RolesFilter } from '@/feature/landing/index.tsx';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { TokenContext } from '@/shared/context/TokenContext.ts';
