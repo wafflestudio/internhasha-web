@@ -4,7 +4,7 @@ import type { PostService } from '@/feature/post';
 import type { AuthService } from '@/feature/auth/service/authService';
 import type { EchoService } from '@/service/echoService';
 import type { ResumeService } from '@/service/resumeService';
-import type { UserService } from '@/service/userService';
+import type { UserService } from '@/feature/user/service/userService';
 
 export type ServiceContext = {
   echoService: EchoService;

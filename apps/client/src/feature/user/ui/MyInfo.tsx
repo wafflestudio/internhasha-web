@@ -4,7 +4,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 
-export const MyPage = () => {
+export const MyInfo = () => {
   const { myInfoData } = useMyInfo();
 
   if (myInfoData === undefined) {
