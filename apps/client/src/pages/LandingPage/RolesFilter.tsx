@@ -8,10 +8,10 @@ type RolesFilterProps = {
 };
 
 const jobCategoryList = {
-  개발: ['FRONT', 'APP', 'BACKEND', 'DATA', 'OTHERS'],
-  기획: ['PLANNER'],
-  디자인: ['DESIGN'],
-  마케팅: ['MARKETING'],
+  '개발': ['FRONT', 'APP', 'BACKEND', 'DATA', 'OTHERS'],
+  '기획': ['PLANNER'],
+  '디자인': ['DESIGN'],
+  '마케팅': ['MARKETING'],
 } as const;
 
 export const RolesFilter = ({
