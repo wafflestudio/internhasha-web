@@ -17,6 +17,7 @@ export const FormContainer = ({
           event.preventDefault();
           handleSubmit();
         }}
+        className="flex flex-col gap-[30px]"
       >
         {children}
       </form>
