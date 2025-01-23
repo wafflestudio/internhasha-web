@@ -1,10 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { SubmitButton } from '@/components/button';
 import { FormContainer } from '@/components/form';
-import { TextInput } from '@/components/input';
-import { LabelContainer } from '@/components/input/LabelContainer';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { authPresentation } from '@/feature/auth/presentation/authPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -23,42 +22,51 @@ export const LocalLogInForm = () => {
     }
   };
 
+  const blockButton =
+    localId.value.trim() === '' || password.value.trim() === '';
+
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>로그인하기</h1>
+    <>
       <FormContainer
         id="SignInForm"
         handleSubmit={onSubmit}
         response={responseMessage}
       >
-        <LabelContainer label="아이디" id="localId">
-          <TextInput
+        <div className="flex flex-col gap-[10px]">
+          <Input
             id="localId"
             value={localId.value}
             onChange={(e) => {
               localId.onChange(e.target.value);
             }}
-            placeholder="아이디를 입력하세요"
+            placeholder="아이디"
             disabled={isPending}
+            className="mt-1"
           />
-        </LabelContainer>
-        <LabelContainer label="비밀번호" id="password">
-          <TextInput
+          <Input
             id="password"
             type="password"
             value={password.value}
             onChange={(e) => {
               password.onChange(e.target.value);
             }}
-            placeholder="비밀번호를 입력하세요"
+            placeholder="비밀번호"
             disabled={isPending}
+            className="mt-1"
           />
-        </LabelContainer>
-        <SubmitButton form="SignInForm" disabled={isPending}>
+        </div>
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isPending || blockButton}
+        >
           로그인
-        </SubmitButton>
+        </Button>
+        {responseMessage !== '' && (
+          <p className="text-red-500 text-sm mt-2">{responseMessage}</p>
+        )}
       </FormContainer>
-    </div>
+    </>
   );
 };
 

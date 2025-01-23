@@ -2,7 +2,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { Button } from '@/components/button';
+import { Button } from '@/components/ui/button';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
@@ -27,8 +27,13 @@ export const GoogleSocialSignInButton = () => {
   };
 
   return (
-    <div>
-      <Button onClick={handleClickGoogleSignUpButton} disabled={isPending}>
+    <div className="w-full">
+      <Button
+        onClick={handleClickGoogleSignUpButton}
+        disabled={isPending}
+        variant="outline"
+        className="w-full"
+      >
         구글 계정으로 로그인하기
       </Button>
       {error !== undefined && (
