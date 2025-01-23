@@ -9,23 +9,22 @@ import { Route, Routes } from 'react-router';
 import { PATH } from '@/entities/route';
 import { implAuthService } from '@/feature/auth';
 import { implPostService } from '@/feature/post';
+import { implResumeService } from '@/feature/resume';
 import { implUserService } from '@/feature/user';
-import { ApplyCoffeeChatPage } from '@/pages/ApplyCoffeeChatPage';
-import { CoffeeChatDetailPage } from '@/pages/CoffeeChatDetailPage';
-import { CoffeeChatListPage } from '@/pages/CoffeeChatListPage';
 import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
+import { CreateResumePage } from '@/pages/CreateResumePage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
 import { MyPage } from '@/pages/MyPage';
-import { PostPage } from '@/pages/PostPage';
+import { PostDetailPage } from '@/pages/PostDetailPage';
+import { ResumeDetailPage } from '@/pages/ResumeDetailPage';
+import { ResumeListPage } from '@/pages/ResumeListPage';
 import { SignInSelectPage } from '@/pages/SignInSelectPage';
 import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
 import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
 import { VentureCapitalLandingPage } from '@/pages/VentureCapitalLandingPage';
-import { implEchoService } from '@/service/echoService';
-import { implResumeService } from '@/service/resumeService';
 import { AuthCompanySwitchRoute } from '@/shared/auth/AuthAdminSwitchRoute';
 import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { CompanyProtectedRoute } from '@/shared/auth/CompanyProtectedRoute';
@@ -49,18 +48,15 @@ const RouterProvider = () => {
           />
         }
       />
-      <Route path={PATH.POST} element={<PostPage />} />
+      <Route path={PATH.POST_DETAIL} element={<PostDetailPage />} />
       <Route path={PATH.SIGN_IN_SELECT} element={<SignInSelectPage />} />
       <Route path={PATH.SIGN_UP_SELECT} element={<SignUpSelectPage />} />
       <Route path={PATH.SIGN_UP_LOCAL} element={<LocalSignUpPage />} />
       <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
       <Route path={PATH.SIGN_UP_COMPLETE} element={<SignUpCompletePage />} />
-      <Route path={PATH.APPLY_COFFEE_CHAT} element={<ApplyCoffeeChatPage />} />
-      <Route path={PATH.COFFEE_CHAT_LIST} element={<CoffeeChatListPage />} />
-      <Route
-        path={PATH.COFFEE_CHAT_DETAIL}
-        element={<CoffeeChatDetailPage />}
-      />
+      <Route path={PATH.CREATE_RESUME} element={<CreateResumePage />} />
+      <Route path={PATH.RESUME_LIST} element={<ResumeListPage />} />
+      <Route path={PATH.RESUME_DETAIL} element={<ResumeDetailPage />} />
       <Route element={<AuthProtectedRoute />}>
         <Route path={PATH.MY_PAGE} element={<MyPage />} />
       </Route>
@@ -150,7 +146,6 @@ export const App = () => {
   const externalApis = implApi({ externalCall: externalServerCall });
 
   const services = {
-    echoService: implEchoService({ apis }),
     authService: implAuthService({ apis, tokenState, tokenLocalStorage }),
     postService: implPostService({ apis }),
     userService: implUserService({ apis }),

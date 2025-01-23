@@ -4,43 +4,51 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 
-export const CoffeeChatDetailView = ({ resumeId }: { resumeId: string }) => {
-  const { resumeDetailData } = useGetCoffeeChatDetail({ resumeId });
+export const ResumeListView = () => {
+  const { resumeListData } = useGetResumeList();
 
-  if (resumeDetailData === undefined) {
+  if (resumeListData === undefined) {
     return <div>로딩중...</div>;
   }
-
-  if (resumeDetailData.type === 'error') {
+  if (resumeListData.type === 'error') {
     return (
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
   }
 
-  const resumeDetail = resumeDetailData.data;
+  const { resumeList } = resumeListData.data;
 
   return (
-    <>
-      <p>{resumeDetail.id}</p>
-      <p>{resumeDetail.content}</p>
-    </>
+    <div>
+      <h1>Resumes</h1>
+      <ul>
+        {resumeList.map((resume) => (
+          <li key={resume.id}>
+            <p>{resume.content}</p>
+            <p>{resume.author.username}</p>
+            <p>{resume.phoneNumber}</p>
+            <p>{resume.createdAt}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 
-const useGetCoffeeChatDetail = ({ resumeId }: { resumeId: string }) => {
+const useGetResumeList = () => {
   const { token } = useGuardContext(TokenContext);
   const { resumeService } = useGuardContext(ServiceContext);
 
-  const { data: resumeDetailData } = useQuery({
+  const { data: resumeListData } = useQuery({
     queryKey: ['user', 'resume', token] as const,
     queryFn: ({ queryKey: [, , t] }) => {
       if (t === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return resumeService.getResumeDetail({ token: t, resumeId: resumeId });
+      return resumeService.getResumeList({ token: t });
     },
     enabled: token !== null,
   });
 
-  return { resumeDetailData: resumeDetailData };
+  return { resumeListData };
 };

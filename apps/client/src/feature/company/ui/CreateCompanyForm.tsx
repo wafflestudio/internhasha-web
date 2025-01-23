@@ -11,8 +11,8 @@ import { useState } from 'react';
 
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import type { Series } from '@/entities/post';
-import { seriesList } from '@/feature/post/presentation/companypresentation';
-import { companyPresentation } from '@/feature/post/presentation/companypresentation';
+import { seriesList } from '@/feature/company/presentation/companypresentation';
+import { companyPresentation } from '@/feature/company/presentation/companypresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';

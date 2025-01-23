@@ -4,51 +4,43 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 
-export const CoffeeChatList = () => {
-  const { resumeListData } = useGetCoffeeChatList();
+export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
+  const { resumeDetailData } = useGetResumeDetail({ resumeId });
 
-  if (resumeListData === undefined) {
+  if (resumeDetailData === undefined) {
     return <div>로딩중...</div>;
   }
-  if (resumeListData.type === 'error') {
+
+  if (resumeDetailData.type === 'error') {
     return (
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
   }
 
-  const { resumeList: resumeList } = resumeListData.data;
+  const resumeDetail = resumeDetailData.data;
 
   return (
-    <div>
-      <h1>Coffee Chat Resumes</h1>
-      <ul>
-        {resumeList.map((resume) => (
-          <li key={resume.id}>
-            <p>{resume.content}</p>
-            <p>{resume.author.username}</p>
-            <p>{resume.phoneNumber}</p>
-            <p>{resume.createdAt}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <p>{resumeDetail.id}</p>
+      <p>{resumeDetail.content}</p>
+    </>
   );
 };
 
-const useGetCoffeeChatList = () => {
+const useGetResumeDetail = ({ resumeId }: { resumeId: string }) => {
   const { token } = useGuardContext(TokenContext);
   const { resumeService } = useGuardContext(ServiceContext);
 
-  const { data: resumeListData } = useQuery({
+  const { data: resumeDetailData } = useQuery({
     queryKey: ['user', 'resume', token] as const,
     queryFn: ({ queryKey: [, , t] }) => {
       if (t === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return resumeService.getResumeList({ token: t });
+      return resumeService.getResumeDetail({ token: t, resumeId: resumeId });
     },
     enabled: token !== null,
   });
 
-  return { resumeListData };
+  return { resumeDetailData: resumeDetailData };
 };

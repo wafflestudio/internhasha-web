@@ -4,7 +4,7 @@ import { PATH } from '@/entities/route';
 import { PostDetailView } from '@/feature/post';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
 
-export const PostPage = () => {
+export const PostDetailPage = () => {
   const { postId } = useParams<{ postId: string }>();
 
   if (postId === undefined) {

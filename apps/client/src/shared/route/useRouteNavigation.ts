@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 
 import type { Series } from '@/entities/post';
-import { HREF, PATH } from '@/entities/route';
+import { PATH } from '@/entities/route';
 
 type VerifyMailBody =
   | {
@@ -54,19 +54,18 @@ export const useRouteNavigation = () => {
     VERIFY_EMAIL,
     SIGN_UP_LOCAL,
     SIGN_UP_COMPLETE,
-    COFFEE_CHAT_LIST,
+    RESUME_LIST,
     CREATE_COMPANY,
     CREATE_POST,
   } = PATH;
-
-  const { POST, APPLY_COFFEE_CHAT, COFFEE_CHAT_DETAIL } = HREF;
+  const { POST_DETAIL, CREATE_RESUME, RESUME_DETAIL } = PATH.MAKE;
 
   return {
     toMain: () => {
       void navigate(INDEX);
     },
     toPost: ({ postId }: { postId: string }) => {
-      void navigate(POST(postId));
+      void navigate(POST_DETAIL(postId));
     },
     toSignInSelect: () => {
       void navigate(SIGN_IN_SELECT);
@@ -83,14 +82,14 @@ export const useRouteNavigation = () => {
     toSignUpComplete: () => {
       void navigate(SIGN_UP_COMPLETE);
     },
-    toApplyCoffeeChat: ({ postId }: { postId: string }) => {
-      void navigate(APPLY_COFFEE_CHAT(postId));
+    toCreateResume: ({ postId }: { postId: string }) => {
+      void navigate(CREATE_RESUME(postId));
     },
-    toCoffeeChatList: () => {
-      void navigate(COFFEE_CHAT_LIST);
+    toResumeList: () => {
+      void navigate(RESUME_LIST);
     },
-    toCoffeeChatDetail: ({ resumeId }: { resumeId: string }) => {
-      void navigate(COFFEE_CHAT_DETAIL(resumeId));
+    toResumeDetail: ({ resumeId }: { resumeId: string }) => {
+      void navigate(RESUME_DETAIL(resumeId));
     },
     toCreateCompany: ({ companyBody }: { companyBody?: CompanyBody }) => {
       void navigate(CREATE_COMPANY, { state: { companyBody } });

@@ -19,4 +19,4 @@ export type ResumeDTO = {
 
 export type ResumeResponse = ResumeDTO;
 
-export type ResumeListResponse = [coffees: ResumeDTO[]];
+export type ResumeListResponse = [resumeList: ResumeDTO[]];

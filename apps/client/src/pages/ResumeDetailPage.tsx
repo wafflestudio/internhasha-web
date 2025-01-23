@@ -1,18 +1,18 @@
 import { useParams } from 'react-router';
 
 import { PATH } from '@/entities/route';
-import { CoffeeChatDetailView } from '@/feature/coffeeChat';
+import { ResumeDetailView } from '@/feature/resume';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
 
-export const CoffeeChatDetailPage = () => {
+export const ResumeDetailPage = () => {
   const { resumeId } = useParams<{ resumeId: string }>();
 
   if (resumeId === undefined) {
-    return <RouteNavigator link={PATH.COFFEE_CHAT_LIST} />;
+    return <RouteNavigator link={PATH.RESUME_LIST} />;
   }
   return (
     <div>
-      <CoffeeChatDetailView resumeId={resumeId} />
+      <ResumeDetailView resumeId={resumeId} />
     </div>
   );
 };

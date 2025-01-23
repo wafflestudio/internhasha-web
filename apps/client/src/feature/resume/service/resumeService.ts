@@ -16,7 +16,7 @@ export type ResumeService = {
   }: {
     token: string;
   }) => ServiceResponse<{ resumeList: Resume[] }>;
-  applyCoffeeChat: ({
+  applyResume: ({
     token,
     phoneNumber,
     content,
@@ -27,7 +27,7 @@ export type ResumeService = {
     content: string;
     postId: string;
   }) => ServiceResponse<Resume>;
-  deleteCoffeeChat: ({
+  deleteResume: ({
     token,
     resumeId,
   }: {
@@ -72,7 +72,7 @@ export const implResumeService = ({ apis }: { apis: Apis }): ResumeService => ({
     }
     return { type: 'error', status, message: data.error };
   },
-  applyCoffeeChat: async ({
+  applyResume: async ({
     token,
     phoneNumber,
     content,
@@ -100,7 +100,7 @@ export const implResumeService = ({ apis }: { apis: Apis }): ResumeService => ({
     }
     return { type: 'error', status, message: data.error };
   },
-  deleteCoffeeChat: async ({
+  deleteResume: async ({
     token,
     resumeId,
   }: {

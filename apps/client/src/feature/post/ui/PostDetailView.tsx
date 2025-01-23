@@ -8,7 +8,7 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
-  const { toMain, toApplyCoffeeChat } = useRouteNavigation();
+  const { toMain, toCreateResume } = useRouteNavigation();
 
   // TODO: 전체 페이지 대신 카드 컴포넌트만 로딩되도록 설정
   if (postDetailData === undefined) {
@@ -52,7 +52,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
         </div>
         <Button
           onClick={() => {
-            toApplyCoffeeChat({ postId });
+            toCreateResume({ postId });
           }}
           style={{
             display: 'flex',

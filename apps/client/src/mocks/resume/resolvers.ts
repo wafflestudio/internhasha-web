@@ -10,8 +10,8 @@ import type {
 type ResumeResolver = {
   getResumeList: HttpResponseResolver<never, never, ResumeListResponse>;
   getResumeDetail: HttpResponseResolver<never, never, ResumeResponse>;
-  applyCoffeeChat: HttpResponseResolver<never, never, ResumeResponse>;
-  deleteCoffeeChat: HttpResponseResolver<never, never, never>;
+  createResume: HttpResponseResolver<never, never, ResumeResponse>;
+  deleteResume: HttpResponseResolver<never, never, never>;
 };
 
 export const resumeResolver: ResumeResolver = {
@@ -30,7 +30,7 @@ export const resumeResolver: ResumeResolver = {
     return HttpResponse.json(response, { status: 200 });
   },
 
-  applyCoffeeChat: async ({ request, params }) => {
+  createResume: async ({ request, params }) => {
     const { postId } = params;
     const { phoneNumber, content } = await request.json();
 
@@ -54,7 +54,7 @@ export const resumeResolver: ResumeResolver = {
     return HttpResponse.json(newResume, { status: 200 });
   },
 
-  deleteCoffeeChat: ({ params }) => {
+  deleteResume: ({ params }) => {
     const { resumeId } = params;
     const resumeExists = mockResumes.some((r) => r.id === resumeId);
 
