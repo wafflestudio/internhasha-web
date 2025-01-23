@@ -30,6 +30,7 @@ import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { CompanyProtectedRoute } from '@/shared/auth/CompanyProtectedRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
+import { RolesFilterProvider } from '@/shared/context/RolesFilterContext.tsx';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { implFileService } from '@/shared/file/fileService';
@@ -158,7 +159,9 @@ export const App = () => {
       <ServiceContext.Provider value={services}>
         <TokenContext.Provider value={{ token }}>
           <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID}>
-            <RouterProvider />
+            <RolesFilterProvider>
+              <RouterProvider />
+            </RolesFilterProvider>
           </GoogleOAuthProvider>
         </TokenContext.Provider>
       </ServiceContext.Provider>
