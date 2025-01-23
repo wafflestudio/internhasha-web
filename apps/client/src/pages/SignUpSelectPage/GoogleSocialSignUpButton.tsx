@@ -3,8 +3,8 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
-import { AddGoogleSignUpModal } from '@/pages/EmailVerifyPage/AddSignUpModal';
-import { RedirectSignInModal } from '@/pages/EmailVerifyPage/AddSignUpModal';
+import { AddGoogleSignUpModal } from '@/feature/auth/ui/AddSignUpModal';
+import { RedirectSignInModal } from '@/feature/auth/ui/AddSignUpModal';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';

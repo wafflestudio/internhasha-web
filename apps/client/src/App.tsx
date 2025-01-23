@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Route, Routes } from 'react-router';
 
 import { PATH } from '@/entities/route';
+import { implAuthService } from '@/feature/auth';
 import { implPostService } from '@/feature/post';
 import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
@@ -22,7 +23,6 @@ import { SignInSelectPage } from '@/pages/SignInSelectPage';
 import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
 import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
 import { VentureCapitalLandingPage } from '@/pages/VentureCapitalLandingPage';
-import { implAuthService } from '@/service/authService';
 import { implEchoService } from '@/service/echoService';
 import { implResumeService } from '@/service/resumeService';
 import { implUserService } from '@/service/userService';

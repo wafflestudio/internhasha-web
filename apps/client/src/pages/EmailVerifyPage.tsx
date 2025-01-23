@@ -1,4 +1,4 @@
-import { EmailVerifyForm } from '@/pages/EmailVerifyPage/EmailVerifyForm';
+import { EmailVerifyForm } from '@/feature/auth';
 
 export const EmailVerifyPage = () => {
   return (

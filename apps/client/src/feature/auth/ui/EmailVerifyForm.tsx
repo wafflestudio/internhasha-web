@@ -8,17 +8,16 @@ import { FormContainer } from '@/components/form';
 import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
 import { ProgressBar } from '@/components/progressBar/ProgressBar';
-import { authPresentation } from '@/presentation/authPresentation';
-import { useGuardContext } from '@/shared/context/hooks';
-import { ServiceContext } from '@/shared/context/ServiceContext';
-import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { formatNumberToTime } from '@/util/format';
-
+import { authPresentation } from '@/feature/auth/presentation/authPresentation';
 import {
   AddGoogleSignUpModal,
   AddLocalSignUpModal,
   RedirectSignInModal,
-} from './AddSignUpModal';
+} from '@/feature/auth/ui/AddSignUpModal';
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
+import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+import { formatNumberToTime } from '@/util/format';
 
 type VerifyMailBody =
   | {

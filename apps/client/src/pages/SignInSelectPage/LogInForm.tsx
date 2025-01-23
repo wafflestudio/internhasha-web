@@ -5,7 +5,7 @@ import { SubmitButton } from '@/components/button';
 import { FormContainer } from '@/components/form';
 import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
-import { authPresentation } from '@/presentation/authPresentation';
+import { authPresentation } from '@/feature/auth/presentation/authPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
