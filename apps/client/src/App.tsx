@@ -22,10 +22,12 @@ import { MyPage } from '@/pages/MyPage';
 import { SignInSelectPage } from '@/pages/SignInSelectPage';
 import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
 import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
+import { VentureCapitalLandingPage } from '@/pages/VentureCapitalLandingPage';
 import { implAuthService } from '@/service/authService';
 import { implEchoService } from '@/service/echoService';
 import { implResumeService } from '@/service/resumeService';
 import { implUserService } from '@/service/userService';
+import { AuthCompanySwitchRoute } from '@/shared/auth/AuthAdminSwitchRoute';
 import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { CompanyProtectedRoute } from '@/shared/auth/CompanyProtectedRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
@@ -38,7 +40,15 @@ import { implTokenStateRepository } from '@/shared/token/state';
 const RouterProvider = () => {
   return (
     <Routes>
-      <Route path={PATH.INDEX} element={<LandingPage />} />
+      <Route
+        path={PATH.INDEX}
+        element={
+          <AuthCompanySwitchRoute
+            nonCompanyPage={<LandingPage />}
+            companyPage={<VentureCapitalLandingPage />}
+          />
+        }
+      />
       <Route path={PATH.POST} element={<PostPage />} />
       <Route path={PATH.ECHO} element={<EchoPage />} />
       <Route path={PATH.SIGN_IN_SELECT} element={<SignInSelectPage />} />
@@ -52,12 +62,13 @@ const RouterProvider = () => {
         path={PATH.COFFEE_CHAT_DETAIL}
         element={<CoffeeChatDetailPage />}
       />
-      <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
-      <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
       <Route element={<AuthProtectedRoute />}>
         <Route path={PATH.MY_PAGE} element={<MyPage />} />
       </Route>
-      <Route element={<CompanyProtectedRoute />}></Route>
+      <Route element={<CompanyProtectedRoute />}>
+        <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
+        <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
+      </Route>
     </Routes>
   );
 };
