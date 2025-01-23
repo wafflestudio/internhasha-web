@@ -1,5 +1,5 @@
 import { Button } from '@/components/button';
-import { LocalSignUpForm } from '@/pages/LocalSignUpPage/LocalSignUpForm';
+import { LocalSignUpForm } from '@/feature/auth/ui/LocalSignUpForm';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LocalSignUpPage = () => {
