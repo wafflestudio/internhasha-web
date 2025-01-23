@@ -69,8 +69,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
       postPath.append('investmentMax', investmentMax.toString());
     if (investmentMin !== undefined)
       postPath.append('investmentMin', investmentMin.toString());
-    if (series !== undefined)
-      postPath.append('series', series)
+    if (series !== undefined) postPath.append('series', series);
     if (pathStatus !== undefined)
       postPath.append('status', pathStatus.toString());
 

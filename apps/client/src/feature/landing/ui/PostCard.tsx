@@ -110,11 +110,11 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
                     : 'bg-gray-100 text-gray-800'
           }`}
         >
-          { series === 'PRE_A'
-              ? 'Pre-Series A'
-              : series.length === 1
+          {series === 'PRE_A'
+            ? 'Pre-Series A'
+            : series.length === 1
               ? `Series ${series}`
-            : 'Seed'}
+              : 'Seed'}
         </span>
         {investAmount != null && (
           <span className="px-2 py-1 bg-gray-200 text-xs rounded">
