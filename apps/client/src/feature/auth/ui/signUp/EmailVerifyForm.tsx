@@ -405,12 +405,12 @@ const useGoogleSignUp = ({
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        toSignUpComplete();
-      } else {
-        if (response.code === 'USER_001') {
+        if (response.data.user.isMerged) {
           setShowModal('ADD');
           return;
         }
+        toSignUpComplete();
+      } else {
         if (response.code === 'USER-003') {
           setShowModal('REDIRECT');
           return;
@@ -462,12 +462,12 @@ const useLocalSignUp = ({
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        toSignUpComplete();
-      } else {
-        if (response.code === 'USER_001') {
+        if (response.data.user.isMerged) {
           setShowModal('ADD');
           return;
         }
+        toSignUpComplete();
+      } else {
         if (response.code === 'USER_002') {
           setShowModal('REDIRECT');
           return;
