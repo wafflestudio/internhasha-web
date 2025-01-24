@@ -97,14 +97,6 @@ export const CreatePostForm = () => {
 
   const handleSubmit = () => {
     setIsSubmit(true);
-    console.log(
-      title,
-      jobMajorCategory,
-      jobMinorCategory,
-      headcount,
-      detail,
-      employmentEndDateTime,
-    );
     if (jobMinorCategory.value === 'NONE' || state === undefined) {
       return;
     }
@@ -311,7 +303,7 @@ const useCreatePost = ({
       if (response.type === 'success') {
         toMain();
       } else {
-        setResponseMessage(response.message);
+        setResponseMessage(response.code);
       }
     },
     onError: () => {

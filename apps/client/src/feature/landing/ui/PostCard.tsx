@@ -18,8 +18,6 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
     employmentEndDate,
   } = post;
 
-  console.log(slogan);
-
   return (
     <div
       className="border border-gray-200 rounded-lg shadow-sm bg-white

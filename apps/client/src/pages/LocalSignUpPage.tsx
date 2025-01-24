@@ -1,15 +1,13 @@
-import { Button } from '@/components/button';
+import { ModalBackground } from '@/components/ui/layout';
 import { LocalSignUpForm } from '@/feature/auth';
-import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LocalSignUpPage = () => {
-  const { toSignUpSelect } = useRouteNavigation();
-
   return (
-    <div>
-      <h1>로컬 회원가입하기</h1>
-      <LocalSignUpForm />
-      <Button onClick={toSignUpSelect}>이전</Button>
-    </div>
+    <ModalBackground>
+      <h2 className="text-2xl font-bold text-center">회원가입</h2>
+      <div>
+        <LocalSignUpForm />
+      </div>
+    </ModalBackground>
   );
 };

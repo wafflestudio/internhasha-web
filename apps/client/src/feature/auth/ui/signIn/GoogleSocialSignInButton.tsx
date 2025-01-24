@@ -2,6 +2,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { FormErrorResponse } from '@/components/response/formError';
 import { Button } from '@/components/ui/button';
 import { ICON_SRC } from '@/entities/asset';
 import { createErrorMessage } from '@/entities/errors';
@@ -46,7 +47,9 @@ export const GoogleSocialSignInButton = () => {
       )}
       {responseMessage !== '' && (
         <div className="text-red-500 text-sm mt-2">
-          <span>{createErrorMessage(responseMessage)}</span>
+          <FormErrorResponse>
+            {createErrorMessage(responseMessage)}
+          </FormErrorResponse>
         </div>
       )}
     </div>
@@ -73,7 +76,7 @@ const useGoogleSignIn = () => {
       if (response.type === 'success') {
         toMain();
       } else {
-        setResponseMessage(response.message);
+        setResponseMessage(response.code);
       }
     },
     onError: () => {

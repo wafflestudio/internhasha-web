@@ -8,6 +8,8 @@ import { FormContainer } from '@/components/form';
 import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
 import { ProgressBar } from '@/components/progressBar/ProgressBar';
+import { FormErrorResponse } from '@/components/response/formError';
+import { createErrorMessage } from '@/entities/errors';
 import { authPresentation } from '@/feature/auth/presentation/authPresentation';
 import {
   AddGoogleSignUpModal,
@@ -209,6 +211,16 @@ export const EmailVerifyForm = () => {
             회원가입 완료
           </SubmitButton>
         </div>
+        {localSignUpResponseMessage !== '' && (
+          <FormErrorResponse>
+            {createErrorMessage(localSignUpResponseMessage)}
+          </FormErrorResponse>
+        )}
+        {googleSignUpResponseMessage !== '' && (
+          <FormErrorResponse>
+            {createErrorMessage(googleSignUpResponseMessage)}
+          </FormErrorResponse>
+        )}
       </FormContainer>
       {showModal === 'ADD' && body.authProvider === 'GOOGLE' && (
         <AddGoogleSignUpModal />
@@ -312,7 +324,7 @@ const useSendCode = ({
           setShowModal('ADD');
           return;
         }
-        setResponseMessage(response.message);
+        setResponseMessage(response.code);
       }
     },
     onError: () => {
@@ -358,7 +370,7 @@ const useEmailVerify = ({
           setShowModal('ADD');
           return;
         }
-        setResponseMessage(response.message);
+        setResponseMessage(response.code);
         setVerifySuccess(false);
       }
     },
@@ -406,7 +418,7 @@ const useGoogleSignUp = ({
           setShowModal('REDIRECT');
           return;
         }
-        setResponseMessage(response.message);
+        setResponseMessage(response.code);
       }
     },
     onError: () => {
@@ -463,7 +475,7 @@ const useLocalSignUp = ({
           setShowModal('REDIRECT');
           return;
         }
-        setResponseMessage(response.message);
+        setResponseMessage(response.code);
       }
     },
     onError: () => {
