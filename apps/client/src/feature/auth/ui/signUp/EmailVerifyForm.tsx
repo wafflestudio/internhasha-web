@@ -147,7 +147,7 @@ export const EmailVerifyForm = () => {
         )}
         <LabelContainer label="이메일" id="email">
           <div className="flex relative gap-2 items-center">
-            <div className="flex gap-1 items-center">
+            <div className="flex w-full gap-1 items-center">
               <Input
                 id="email"
                 value={snuMail.value}
