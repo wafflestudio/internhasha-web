@@ -62,9 +62,6 @@ export const LocalLogInForm = () => {
         >
           로그인
         </Button>
-        {responseMessage !== '' && (
-          <p className="text-red-500 text-sm mt-2">{responseMessage}</p>
-        )}
       </FormContainer>
     </>
   );
@@ -85,14 +82,14 @@ const useLocalSignIn = () => {
     }) => {
       return authService.signIn({
         authType: 'LOCAL',
-        info: { localLoginId: localId, password },
+        info: { type: 'LOCAL', localLoginId: localId, password },
       });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
         toMain();
       } else {
-        setResponseMessage(response.message);
+        setResponseMessage(response.code);
       }
     },
     onError: () => {

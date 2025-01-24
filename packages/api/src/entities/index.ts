@@ -13,7 +13,9 @@ export type ErrorResponse<
 > = {
   status: Status;
   data: {
-    error: string;
+    timestamp: string;
+    message: string;
+    code: string;
   };
 };
 

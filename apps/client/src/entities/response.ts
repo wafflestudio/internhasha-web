@@ -4,7 +4,7 @@ export type ServiceResponse<T> = T extends undefined
       | { type: 'success'; data: T }
       | {
           type: 'error';
-          status: 400 | 401 | 403 | 404 | 409 | 500;
+          code: string;
           message: string;
         }
     >;

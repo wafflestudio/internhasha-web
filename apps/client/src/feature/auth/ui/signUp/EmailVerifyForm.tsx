@@ -308,15 +308,8 @@ const useSendCode = ({
         startTimer();
       } else {
         stopTimer();
-        if (
-          response.status === 409 &&
-          response.message === '동일한 스누메일로 등록된 계정이 존재합니다.'
-        ) {
+        if (response.code === 'USER_001') {
           setShowModal('ADD');
-          return;
-        }
-        if (response.status === 409) {
-          setShowModal('REDIRECT');
           return;
         }
         setResponseMessage(response.message);
@@ -361,15 +354,8 @@ const useEmailVerify = ({
       if (response.type === 'success') {
         setVerifySuccess(true);
       } else {
-        if (
-          response.status === 409 &&
-          response.message === '동일한 스누메일로 등록된 계정이 존재합니다.'
-        ) {
+        if (response.code === 'USER_001') {
           setShowModal('ADD');
-          return;
-        }
-        if (response.status === 409) {
-          setShowModal('REDIRECT');
           return;
         }
         setResponseMessage(response.message);
@@ -399,8 +385,9 @@ const useGoogleSignUp = ({
   const { mutate: googleSignUp, isPending } = useMutation({
     mutationFn: ({ snuMail, token }: { snuMail: string; token: string }) => {
       return authService.signUp({
-        authType: 'SOCIAL_APPLICANT',
+        authType: 'SOCIAL_NORMAL',
         info: {
+          type: 'SOCIAL_NORMAL',
           provider: 'google',
           snuMail,
           token,
@@ -411,14 +398,11 @@ const useGoogleSignUp = ({
       if (response.type === 'success') {
         toSignUpComplete();
       } else {
-        if (
-          response.status === 409 &&
-          response.message === '동일한 스누메일로 등록된 계정이 존재합니다.'
-        ) {
+        if (response.code === 'USER_001') {
           setShowModal('ADD');
           return;
         }
-        if (response.status === 409) {
+        if (response.code === 'USER-003') {
           setShowModal('REDIRECT');
           return;
         }
@@ -457,22 +441,25 @@ const useLocalSignUp = ({
       password: string;
     }) => {
       return authService.signUp({
-        authType: 'LOCAL_APPLICANT',
-        info: { name: username, snuMail, localLoginId: localId, password },
+        authType: 'LOCAL_NORMAL',
+        info: {
+          type: 'LOCAL_NORMAL',
+          name: username,
+          snuMail,
+          localLoginId: localId,
+          password,
+        },
       });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
         toSignUpComplete();
       } else {
-        if (
-          response.status === 409 &&
-          response.message === '동일한 스누메일로 등록된 계정이 존재합니다.'
-        ) {
+        if (response.code === 'USER_001') {
           setShowModal('ADD');
           return;
         }
-        if (response.status === 409) {
+        if (response.code === 'USER_002') {
           setShowModal('REDIRECT');
           return;
         }

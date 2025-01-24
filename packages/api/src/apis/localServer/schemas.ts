@@ -1,17 +1,21 @@
 // DTO
-type UserBriefDTO = {
-  id: string;
-  username: string;
-  isAdmin: boolean;
-};
+type UserRole = "NORMAL" | "CURATOR";
 
 type UserDTO = {
   id: string;
+  name: string;
+  createdAt?: string;
+  updatedAt?: string;
+  userRole: UserRole;
   snuMail: string;
-  username: string;
   phoneNumber?: string;
-  isAdmin: boolean;
+  resumes: ResumeDTO[];
+  posts: PostDTO[];
+  profileImageLink: string;
+  isMerged: boolean;
 };
+
+type UserBriefDTO = Omit<UserDTO, "createdAt" | "updatedAt">;
 
 type AuthorBriefDTO = {
   id: string;
@@ -53,13 +57,12 @@ type PostDTO = {
 
   // post 정보
   title: string;
-  isAlways: boolean;
   employmentEndDate: string;
+  isAlways: boolean;
   createdAt: string;
   updatedAt: string;
   isActive: boolean;
   category: JobCategory;
-
   detail: string;
   headcount: number;
 };
@@ -89,14 +92,22 @@ export type PostBriefDTO = {
 
 type ResumeDTO = {
   id: string;
+  author: {
+    id: string;
+    name: string;
+    userRole: UserRole;
+    snuMail: string;
+    phoneNumber?: string;
+    profileImageLink: string;
+  };
   postId: string;
-  author: UserDTO;
   content: string;
   phoneNumber: string;
   createdAt: string;
 };
 
 type LocalApplicantInfo = {
+  type: "LOCAL_NORMAL";
   name: string;
   localLoginId: string;
   snuMail: string;
@@ -104,6 +115,7 @@ type LocalApplicantInfo = {
 };
 
 type PostAdminInfo = {
+  type: "LOCAL_CURATOR";
   secretPassword: string;
   name: string;
   localLoginId: string;
@@ -111,6 +123,7 @@ type PostAdminInfo = {
 };
 
 type SocialApplicantInfo = {
+  type: "SOCIAL_NORMAL";
   provider: "google";
   snuMail: string;
   token: string;
@@ -140,7 +153,7 @@ export type PretotypeUserSubmitRequest = {
 };
 
 export type SignUpRequest = {
-  authType: "LOCAL_APPLICANT" | "SOCIAL_APPLICANT" | "POST_ADMIN";
+  authType: "LOCAL_NORMAL" | "SOCIAL_NORMAL" | "LOCAL_CURATOR";
   info: LocalApplicantInfo | PostAdminInfo | SocialApplicantInfo;
 };
 
@@ -148,10 +161,12 @@ export type SignInRequest = {
   authType: "LOCAL" | "SOCIAL";
   info:
     | {
+        type: "LOCAL";
         localLoginId: string;
         password: string;
       }
     | {
+        type: "SOCIAL";
         provider: "google";
         token: string;
       };
@@ -195,17 +210,11 @@ export type PretotypeUserSubmitResponse = {
   createdAt: string;
 };
 
-export type UserResponse = {
-  id: string;
-  snuMail: string;
-  username: string;
-  phoneNumber?: string;
-  isAdmin: boolean;
-};
+export type UserResponse = Omit<UserDTO, "isMerged">;
 
 export type UserWithTokenResponse = {
   user: UserBriefDTO;
-  accessToken: string;
+  token: string;
 };
 
 export type PostsResponse = {

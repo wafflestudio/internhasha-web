@@ -84,7 +84,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
 
   getPostDetail: async ({
@@ -104,7 +104,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
 
   createPost: async ({ token, postContents }) => {
@@ -119,7 +119,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
 
   updatePost: async ({ token, postId, postContents }) => {
@@ -136,6 +136,6 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
 });

@@ -57,7 +57,7 @@ export const implResumeService = ({ apis }: { apis: Apis }): ResumeService => ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
   getResumeList: async ({ token }: { token: string }) => {
     const { status, data } = await apis['GET /resume']({
@@ -70,7 +70,7 @@ export const implResumeService = ({ apis }: { apis: Apis }): ResumeService => ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
   applyResume: async ({
     token,
@@ -98,7 +98,7 @@ export const implResumeService = ({ apis }: { apis: Apis }): ResumeService => ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
   deleteResume: async ({
     token,
@@ -119,6 +119,6 @@ export const implResumeService = ({ apis }: { apis: Apis }): ResumeService => ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
 });

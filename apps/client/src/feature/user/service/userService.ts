@@ -8,7 +8,7 @@ export type UserService = {
     token,
   }: {
     token: string;
-  }): ServiceResponse<Omit<User, 'localId'>>;
+  }): ServiceResponse<Omit<User, 'isMerged'>>;
 };
 
 export const implUserService = ({ apis }: { apis: Apis }): UserService => ({
@@ -21,6 +21,6 @@ export const implUserService = ({ apis }: { apis: Apis }): UserService => ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
 });

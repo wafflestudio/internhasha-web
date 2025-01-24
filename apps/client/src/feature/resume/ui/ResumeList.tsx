@@ -25,7 +25,7 @@ export const ResumeListView = () => {
         {resumeList.map((resume) => (
           <li key={resume.id}>
             <p>{resume.content}</p>
-            <p>{resume.author.username}</p>
+            <p>{resume.author.name}</p>
             <p>{resume.phoneNumber}</p>
             <p>{resume.createdAt}</p>
           </li>

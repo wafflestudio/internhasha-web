@@ -41,7 +41,7 @@ export const implFileService = ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
   uploadImage: async ({ presignedUrl, file }) => {
     const body = { file };
@@ -57,6 +57,6 @@ export const implFileService = ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
 });

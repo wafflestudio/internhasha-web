@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { ICON_SRC } from '@/entities/asset';
+import { createErrorMessage } from '@/entities/errors';
 import { AddGoogleSignUpModal } from '@/feature/auth';
 import { RedirectSignInModal } from '@/feature/auth';
 import { useGuardContext } from '@/shared/context/hooks';
@@ -60,8 +61,8 @@ export const GoogleSocialSignUpButton = () => {
         구글 계정으로 간편 회원가입
       </Button>
       {responseMessage !== undefined && (
-        <div>
-          <span>{responseMessage}</span>
+        <div className="text-red-500 text-sm mt-2">
+          <span>{createErrorMessage(responseMessage)}</span>
         </div>
       )}
       {showModal === 'ADD' && <AddGoogleSignUpModal />}
@@ -127,8 +128,9 @@ const useGoogleSignUp = ({
   const { mutate: googleSignUp, isPending } = useMutation({
     mutationFn: ({ snuMail, token }: { snuMail: string; token: string }) => {
       return authService.signUp({
-        authType: 'SOCIAL_APPLICANT',
+        authType: 'SOCIAL_NORMAL',
         info: {
+          type: 'SOCIAL_NORMAL',
           provider: 'google',
           snuMail,
           token,
@@ -139,12 +141,9 @@ const useGoogleSignUp = ({
       if (response.type === 'success') {
         toSignUpComplete();
       } else {
-        if (
-          response.status === 409 &&
-          response.message === '동일한 스누메일로 등록된 계정이 존재합니다.'
-        ) {
+        if (response.code === 'USER_001') {
           setShowModal('ADD');
-        } else if (response.status === 409) {
+        } else if (response.code === 'USER-003') {
           setShowModal('REDIRECT');
         }
         setResponseMessage(response.message);

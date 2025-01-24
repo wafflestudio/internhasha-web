@@ -1,4 +1,4 @@
-import type { Author } from '@/entities/author';
+import type { AuthorBriefDTO } from '@/entities/author';
 
 export type JobMajorCategory =
   | 'DEVELOPMENT'
@@ -42,7 +42,7 @@ type Link = {
 
 export type Post = {
   id: string;
-  author: Author;
+  author: AuthorBriefDTO;
 
   // 회사 정보
   companyName: string;
@@ -59,8 +59,8 @@ export type Post = {
 
   // post 정보
   title: string;
-  isAlways: boolean;
   employmentEndDate: string;
+  isAlways: boolean;
   createdAt: string;
   updatedAt: string;
   isActive: boolean;

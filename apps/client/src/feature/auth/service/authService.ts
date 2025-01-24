@@ -10,22 +10,31 @@ export type AuthService = {
     authType,
     info,
   }: {
-    authType: 'LOCAL_APPLICANT' | 'SOCIAL_APPLICANT';
+    authType: 'LOCAL_NORMAL' | 'SOCIAL_NORMAL' | 'LOCAL_CURATOR';
     info:
       | {
+          type: 'LOCAL_NORMAL';
           name: string;
           localLoginId: string;
           snuMail: string;
           password: string;
         }
       | {
+          type: 'SOCIAL_NORMAL';
           provider: 'google';
           snuMail: string;
           token: string;
+        }
+      | {
+          type: 'LOCAL_CURATOR';
+          secretPassword: string;
+          name: string;
+          localLoginId: string;
+          password: string;
         };
   }): ServiceResponse<{
-    user: Pick<User, 'id' | 'username' | 'isAdmin'>;
-    accessToken: string;
+    user: Omit<User, 'createdAt' | 'updatedAt' | 'resumes' | 'posts'>;
+    token: string;
   }>;
   signIn({
     authType,
@@ -34,16 +43,18 @@ export type AuthService = {
     authType: 'LOCAL' | 'SOCIAL';
     info:
       | {
+          type: 'LOCAL';
           localLoginId: string;
           password: string;
         }
       | {
+          type: 'SOCIAL';
           provider: 'google';
           token: string;
         };
   }): ServiceResponse<{
-    user: Pick<User, 'id' | 'username' | 'isAdmin'>;
-    accessToken: string;
+    user: Omit<User, 'createdAt' | 'updatedAt' | 'resumes' | 'posts'>;
+    token: string;
   }>;
   checkGoogleEmail({
     token,
@@ -81,7 +92,7 @@ export const implAuthService = ({
     const { status, data } = await apis['POST /user/signup']({ body });
 
     if (status === 200) {
-      const token = data.accessToken;
+      const token = data.token;
 
       tokenLocalStorage.setToken({ token });
       tokenState.setToken({ token });
@@ -91,14 +102,14 @@ export const implAuthService = ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
   signIn: async ({ authType, info }) => {
     const body = { authType, info };
     const { status, data } = await apis['POST /user/signin']({ body });
 
     if (status === 200) {
-      const token = data.accessToken;
+      const token = data.token;
 
       tokenLocalStorage.setToken({ token });
       tokenState.setToken({ token });
@@ -108,7 +119,7 @@ export const implAuthService = ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
   sendEmailCode: async ({ snuMail }) => {
     const body = { snuMail };
@@ -124,7 +135,7 @@ export const implAuthService = ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
   verifyCode: async ({ code, snuMail }) => {
     const body = { snuMail, code };
@@ -140,7 +151,7 @@ export const implAuthService = ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
   checkLocalIdDuplicate: async ({ localId }) => {
     const body = { id: localId };
@@ -154,7 +165,7 @@ export const implAuthService = ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
   reissueAccessToken: async () => {
     const { status, data } = await apis['POST /user/refresh-token']();
@@ -170,7 +181,7 @@ export const implAuthService = ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
   checkGoogleEmail: async ({ token }) => {
     const body = { accessToken: token };
@@ -186,7 +197,7 @@ export const implAuthService = ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
   logout: async ({ token }) => {
     const { status, data } = await apis['POST /user/signout']({ token });
@@ -198,6 +209,6 @@ export const implAuthService = ({
         data,
       };
     }
-    return { type: 'error', status, message: data.error };
+    return { type: 'error', code: data.code, message: data.message };
   },
 });
