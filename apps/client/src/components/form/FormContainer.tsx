@@ -1,3 +1,5 @@
+import { createErrorMessage } from '@/entities/errors';
+
 interface FormContainerProps extends React.FormHTMLAttributes<HTMLFormElement> {
   handleSubmit(): void;
   response: string;
@@ -22,8 +24,10 @@ export const FormContainer = ({
         {children}
       </form>
       {response !== '' && (
-        <div style={{ marginTop: '20px', fontSize: '18px', color: '#333' }}>
-          <strong>{response}</strong>
+        <div>
+          <span className="text-red-500 text-sm mt-2">
+            {createErrorMessage(response)}
+          </span>
         </div>
       )}
     </>

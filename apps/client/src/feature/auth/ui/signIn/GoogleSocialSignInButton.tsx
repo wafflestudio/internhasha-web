@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { ICON_SRC } from '@/entities/asset';
+import { createErrorMessage } from '@/entities/errors';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
@@ -44,8 +45,8 @@ export const GoogleSocialSignInButton = () => {
         </div>
       )}
       {responseMessage !== '' && (
-        <div>
-          <span>{responseMessage}</span>
+        <div className="text-red-500 text-sm mt-2">
+          <span>{createErrorMessage(responseMessage)}</span>
         </div>
       )}
     </div>
@@ -62,6 +63,7 @@ const useGoogleSignIn = () => {
       return authService.signIn({
         authType: 'SOCIAL',
         info: {
+          type: 'SOCIAL',
           provider: 'google',
           token,
         },
