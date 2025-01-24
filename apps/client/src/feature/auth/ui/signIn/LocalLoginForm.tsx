@@ -2,8 +2,10 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { FormContainer } from '@/components/form';
+import { FormErrorResponse } from '@/components/response/formError';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { createErrorMessage } from '@/entities/errors';
 import { authPresentation } from '@/feature/auth/presentation/authPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -14,7 +16,7 @@ export const LocalLogInForm = () => {
   const { localId, password } = authPresentation.useValidator({});
 
   const onSubmit = () => {
-    if (!localId.isError && !password.isError) {
+    if (localId.value !== '' || password.value !== '') {
       localSignIn({
         localId: localId.value,
         password: password.value,
@@ -54,14 +56,21 @@ export const LocalLogInForm = () => {
             disabled={isPending}
             className="mt-1"
           />
+          {responseMessage !== '' && (
+            <FormErrorResponse>
+              {createErrorMessage(responseMessage)}
+            </FormErrorResponse>
+          )}
         </div>
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isPending || blockButton}
-        >
-          로그인
-        </Button>
+        <div className="flex flex-col">
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isPending || blockButton}
+          >
+            로그인
+          </Button>
+        </div>
       </FormContainer>
     </>
   );

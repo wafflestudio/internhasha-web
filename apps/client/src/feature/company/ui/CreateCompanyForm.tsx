@@ -117,7 +117,6 @@ export const CreateCompanyForm = () => {
       });
     }
     if (imageResponseMessage !== '' || pdfResponseMessage !== '') {
-      console.log('here');
       return;
     }
     if (
@@ -524,7 +523,7 @@ const useGetPresignedUrl = ({
       if (response.type === 'success') {
         onSuccess({ presignedUrl: response.data.presignedUrl });
       } else {
-        setResponseMessage(response.message);
+        setResponseMessage(response.code);
       }
     },
     onError: () => {
@@ -566,7 +565,7 @@ const useUploadFile = ({
       if (response.type === 'success') {
         setResponseMessage('');
       } else {
-        setResponseMessage(response.message);
+        setResponseMessage(response.code);
       }
     },
     onError: () => {

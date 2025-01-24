@@ -2,6 +2,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { FormErrorResponse } from '@/components/response/formError';
 import { Button } from '@/components/ui/button';
 import { ICON_SRC } from '@/entities/asset';
 import { createErrorMessage } from '@/entities/errors';
@@ -62,7 +63,9 @@ export const GoogleSocialSignUpButton = () => {
       </Button>
       {responseMessage !== undefined && (
         <div className="text-red-500 text-sm mt-2">
-          <span>{createErrorMessage(responseMessage)}</span>
+          <FormErrorResponse>
+            {createErrorMessage(responseMessage)}
+          </FormErrorResponse>
         </div>
       )}
       {showModal === 'ADD' && <AddGoogleSignUpModal />}
@@ -99,7 +102,7 @@ const useCheckGoogleMail = ({
           });
         }
       } else {
-        setResponseMessage(response.message);
+        setResponseMessage(response.code);
       }
     },
     onError: () => {
@@ -146,7 +149,7 @@ const useGoogleSignUp = ({
         } else if (response.code === 'USER-003') {
           setShowModal('REDIRECT');
         }
-        setResponseMessage(response.message);
+        setResponseMessage(response.code);
       }
     },
     onError: () => {

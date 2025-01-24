@@ -2,12 +2,17 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useLocation } from 'react-router';
 
-import { SubmitButton } from '@/components/button';
-import { Button } from '@/components/button';
 import { FormContainer } from '@/components/form';
-import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
 import { ProgressBar } from '@/components/progressBar/ProgressBar';
+import {
+  FormErrorResponse,
+  FormInfoResponse,
+} from '@/components/response/formError';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { ICON_SRC } from '@/entities/asset';
+import { createErrorMessage } from '@/entities/errors';
 import { authPresentation } from '@/feature/auth/presentation/authPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -57,6 +62,7 @@ export const LocalSignUpForm = () => {
   const handleClickUsernameDuplicateCheck = () => {
     if (checkLocalIdDisable) return;
     checkLocalId({ localId: localId.value });
+    setResponseMessage('');
   };
 
   const onSubmit = () => {
@@ -96,16 +102,16 @@ export const LocalSignUpForm = () => {
   };
 
   return (
-    <div>
+    <>
       <FormContainer
         id="SignUpForm"
         handleSubmit={onSubmit}
         response={responseMessage}
       >
         <ProgressBar totalProgress={2} present={1} />
-        <div>
+        <div className="flex flex-col gap-6">
           <LabelContainer label="이름" id="username">
-            <TextInput
+            <Input
               id="username"
               value={username.value}
               onChange={(e) => {
@@ -121,33 +127,40 @@ export const LocalSignUpForm = () => {
               disabled={isPending}
             />
             {isUsernameFocused && username.isError && (
-              <div>한글명 또는 영문명을 작성해주세요.</div>
+              <FormErrorResponse>
+                한글명 또는 영문명을 작성해주세요.
+              </FormErrorResponse>
             )}
           </LabelContainer>
           <LabelContainer label="아이디" id="localId">
-            <TextInput
-              id="localId"
-              value={localId.value}
-              onChange={(e) => {
-                setLocalIdCheckSuccess(false);
-                localId.onChange(e.target.value);
-              }}
-              placeholder="아이디를 입력해주세요."
-              disabled={isPending}
-            />
-            <Button
-              onClick={(event) => {
-                event.preventDefault();
-                handleClickUsernameDuplicateCheck();
-              }}
-              disabled={isPending || checkLocalIdDisable}
-            >
-              중복확인
-            </Button>
-            {localIdCheckSuccess && <div>사용할 수 있는 아이디입니다.</div>}
+            <div className="flex gap-2">
+              <Input
+                id="localId"
+                value={localId.value}
+                onChange={(e) => {
+                  setLocalIdCheckSuccess(false);
+                  localId.onChange(e.target.value);
+                }}
+                placeholder="아이디를 입력해주세요."
+                disabled={isPending}
+              />
+              <Button
+                variant="outline"
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleClickUsernameDuplicateCheck();
+                }}
+                disabled={isPending || checkLocalIdDisable}
+              >
+                중복확인
+              </Button>
+            </div>
+            {localIdCheckSuccess && (
+              <FormInfoResponse>사용할 수 있는 아이디입니다.</FormInfoResponse>
+            )}
           </LabelContainer>
           <LabelContainer label="비밀번호" id="password">
-            <TextInput
+            <Input
               id="password"
               type="password"
               value={password.value}
@@ -164,30 +177,44 @@ export const LocalSignUpForm = () => {
               disabled={isPending}
             />
             {isPasswordFocused && password.isError && (
-              <div>
-                <p>
-                  {password.detailedError.englishError === false ? '✅' : '❌'}{' '}
-                  영문 대소문자 각각 1개 이상
-                </p>
-                <p>
-                  {password.detailedError.numberError === false ? '✅' : '❌'}{' '}
-                  숫자 1개 이상
-                </p>
-                <p>
-                  {password.detailedError.specialCharError === false
-                    ? '✅'
-                    : '❌'}{' '}
-                  특수문자(@, #, $, !, ^, *) 1개 이상
-                </p>
-                <p>
-                  {password.detailedError.lengthError === false ? '✅' : '❌'}{' '}
-                  길이는 8~20자리
-                </p>
+              <div className="flex flex-col gap-1">
+                <div className="flex gap-1">
+                  {password.detailedError.englishError === false ? (
+                    <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
+                  ) : (
+                    <img src={ICON_SRC.CLOSE} alt="재작성 아이콘" />
+                  )}{' '}
+                  <span>영문 대소문자 각각 1개 이상</span>
+                </div>
+                <div className="flex gap-1">
+                  {password.detailedError.numberError === false ? (
+                    <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
+                  ) : (
+                    <img src={ICON_SRC.CLOSE} alt="재작성 아이콘" />
+                  )}{' '}
+                  <span>숫자 1개 이상</span>
+                </div>
+                <div className="flex gap-1">
+                  {password.detailedError.specialCharError === false ? (
+                    <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
+                  ) : (
+                    <img src={ICON_SRC.CLOSE} alt="재작성 아이콘" />
+                  )}{' '}
+                  <span>특수문자(@, #, $, !, ^, *) 1개 이상</span>
+                </div>
+                <div className="flex gap-1">
+                  {password.detailedError.lengthError === false ? (
+                    <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
+                  ) : (
+                    <img src={ICON_SRC.CLOSE} alt="재작성 아이콘" />
+                  )}{' '}
+                  <span>길이는 8~20자리</span>
+                </div>
               </div>
             )}
           </LabelContainer>
           <LabelContainer label="비밀번호 확인" id="passwordConfirm">
-            <TextInput
+            <Input
               id="passwordCheck"
               type="password"
               value={passwordConfirm.value}
@@ -203,16 +230,24 @@ export const LocalSignUpForm = () => {
               disabled={isPending}
             />
             {isPasswordConfirmFocused && passwordConfirm.isError && (
-              <div>비밀번호가 일치하지 않습니다.</div>
+              <FormErrorResponse>
+                비밀번호가 일치하지 않습니다.
+              </FormErrorResponse>
             )}
           </LabelContainer>
-          {responseMessage !== '' && <div></div>}
         </div>
-        <SubmitButton form="SignUpForm" disabled={isPending || signUpDisable}>
+        <div>
+          {responseMessage !== '' && (
+            <FormErrorResponse>
+              {createErrorMessage(responseMessage)}
+            </FormErrorResponse>
+          )}
+        </div>
+        <Button form="SignUpForm" disabled={isPending || signUpDisable}>
           다음
-        </SubmitButton>
+        </Button>
       </FormContainer>
-    </div>
+    </>
   );
 };
 
@@ -234,7 +269,7 @@ const useCheckLocalId = ({
         setLocalIdCheckSuccess(true);
       } else {
         setLocalIdCheckSuccess(false);
-        setResponseMessage(response.message);
+        setResponseMessage(response.code);
       }
     },
     onError: () => {

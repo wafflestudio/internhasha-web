@@ -8,8 +8,10 @@ export const LabelContainer = ({
   id,
 }: LabelContainertProps) => {
   return (
-    <div>
-      <label htmlFor={id}>{label}</label>
+    <div className="flex flex-col gap-2">
+      <label htmlFor={id} className="font-semibold">
+        {label}
+      </label>
       {children}
     </div>
   );
