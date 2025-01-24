@@ -184,7 +184,15 @@ export const LocalSignUpForm = () => {
                   ) : (
                     <img src={ICON_SRC.CLOSE} alt="재작성 아이콘" />
                   )}{' '}
-                  <span>영문 대소문자 각각 1개 이상</span>
+                  <span
+                    className={
+                      password.detailedError.englishError === false
+                        ? 'text-sm text-black'
+                        : 'text-sm text-grey-normal'
+                    }
+                  >
+                    영문 대소문자 각각 1개 이상
+                  </span>
                 </div>
                 <div className="flex gap-1">
                   {password.detailedError.numberError === false ? (
@@ -192,7 +200,15 @@ export const LocalSignUpForm = () => {
                   ) : (
                     <img src={ICON_SRC.CLOSE} alt="재작성 아이콘" />
                   )}{' '}
-                  <span>숫자 1개 이상</span>
+                  <span
+                    className={
+                      password.detailedError.numberError === false
+                        ? 'text-sm text-black'
+                        : 'text-sm text-grey-normal'
+                    }
+                  >
+                    숫자 1개 이상
+                  </span>
                 </div>
                 <div className="flex gap-1">
                   {password.detailedError.specialCharError === false ? (
@@ -200,7 +216,15 @@ export const LocalSignUpForm = () => {
                   ) : (
                     <img src={ICON_SRC.CLOSE} alt="재작성 아이콘" />
                   )}{' '}
-                  <span>특수문자(@, #, $, !, ^, *) 1개 이상</span>
+                  <span
+                    className={
+                      password.detailedError.specialCharError === false
+                        ? 'text-sm text-black'
+                        : 'text-sm text-grey-normal'
+                    }
+                  >
+                    특수문자(@, #, $, !, ^, *) 1개 이상
+                  </span>
                 </div>
                 <div className="flex gap-1">
                   {password.detailedError.lengthError === false ? (
@@ -208,7 +232,15 @@ export const LocalSignUpForm = () => {
                   ) : (
                     <img src={ICON_SRC.CLOSE} alt="재작성 아이콘" />
                   )}{' '}
-                  <span>길이는 8~20자리</span>
+                  <span
+                    className={
+                      password.detailedError.lengthError === false
+                        ? 'text-sm text-black'
+                        : 'text-sm text-grey-normal'
+                    }
+                  >
+                    길이는 8~20자리
+                  </span>
                 </div>
               </div>
             )}
