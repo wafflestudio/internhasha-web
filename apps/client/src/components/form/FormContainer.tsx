@@ -9,17 +9,15 @@ export const FormContainer = ({
   children,
 }: FormContainerProps) => {
   return (
-    <>
-      <form
-        id={id}
-        onSubmit={(event) => {
-          event.preventDefault();
-          handleSubmit();
-        }}
-        className="flex flex-col gap-[30px]"
-      >
-        {children}
-      </form>
-    </>
+    <form
+      id={id}
+      onSubmit={(event) => {
+        event.preventDefault();
+        handleSubmit();
+      }}
+      className="flex flex-col gap-[30px]"
+    >
+      {children}
+    </form>
   );
 };
