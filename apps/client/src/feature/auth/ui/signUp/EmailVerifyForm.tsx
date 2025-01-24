@@ -2,13 +2,15 @@ import { useMutation } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 
-import { Button } from '@/components/button';
-import { SubmitButton } from '@/components/button';
 import { FormContainer } from '@/components/form';
-import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
 import { ProgressBar } from '@/components/progressBar/ProgressBar';
-import { FormErrorResponse } from '@/components/response/formError';
+import {
+  FormErrorResponse,
+  FormInfoResponse,
+} from '@/components/response/formError';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { createErrorMessage } from '@/entities/errors';
 import { authPresentation } from '@/feature/auth/presentation/authPresentation';
 import {
@@ -144,23 +146,28 @@ export const EmailVerifyForm = () => {
           <ProgressBar totalProgress={2} present={2} />
         )}
         <LabelContainer label="이메일" id="email">
-          <TextInput
-            id="email"
-            value={snuMail.value}
-            onChange={(e) => {
-              snuMail.onChange(e.target.value);
-            }}
-            disabled={isPending}
-          />
-          <span>@snu.ac.kr</span>
-          {!verifySuccess && (
-            <Button
-              onClick={handleClickSendEmailCodeButton}
-              disabled={isPending || sendCodeDisable}
-            >
-              인증코드 받기
-            </Button>
-          )}
+          <div className="flex relative gap-2 items-center">
+            <div className="flex w-full gap-1 items-center">
+              <Input
+                id="email"
+                value={snuMail.value}
+                onChange={(e) => {
+                  snuMail.onChange(e.target.value);
+                }}
+                placeholder="마이스누 아이디"
+                disabled={isPending}
+              />
+              <span className="text-grey-dark">@snu.ac.kr</span>
+            </div>
+            {!verifySuccess && (
+              <Button
+                onClick={handleClickSendEmailCodeButton}
+                disabled={isPending || sendCodeDisable}
+              >
+                인증코드 받기
+              </Button>
+            )}
+          </div>
           {showSendCodeError && snuMail.isError && (
             <div>유효하지 않은 스누메일입니다.</div>
           )}
@@ -169,47 +176,73 @@ export const EmailVerifyForm = () => {
         {sendSuccess && (
           <>
             <LabelContainer label="인증 코드" id="code">
-              <TextInput
-                id="code"
-                value={code.value}
-                onChange={(e) => {
-                  code.onChange(e.target.value);
-                }}
-                disabled={isPending}
-              />
-              <ShowVerifyEmailButton
-                timeLeft={timeLeft}
-                verifySuccess={verifySuccess}
-                isCodeExpired={isCodeExpired}
-                handleClickVerifyEmailButton={handleClickVerifyEmailButton}
-                isPending={isPending}
-                disabled={verifyEmailDisable}
-              />
-              <div>{emailResponseMessage}</div>
+              <div className="flex relative gap-2">
+                <Input
+                  id="code"
+                  value={code.value}
+                  placeholder="인증코드"
+                  onChange={(e) => {
+                    code.onChange(e.target.value);
+                  }}
+                  disabled={isPending}
+                />
+                {timeLeft !== null && !verifySuccess && (
+                  <div className="absolute top-[9px] left-[210px]">
+                    <FormErrorResponse>
+                      {formatNumberToTime({ time: timeLeft })}
+                    </FormErrorResponse>
+                  </div>
+                )}
+                {!verifySuccess && !isCodeExpired && (
+                  <Button
+                    onClick={handleClickVerifyEmailButton}
+                    disabled={isPending || verifyEmailDisable}
+                  >
+                    인증코드 확인
+                  </Button>
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                {verifySuccess && (
+                  <FormInfoResponse>인증 성공</FormInfoResponse>
+                )}
+                {!verifySuccess && isCodeExpired && (
+                  <FormErrorResponse>
+                    인증코드가 만료되었습니다.
+                  </FormErrorResponse>
+                )}
+                <FormErrorResponse>{emailResponseMessage}</FormErrorResponse>
+              </div>
             </LabelContainer>
           </>
         )}
-        <p>
-          인증코드가 오지 않았다면?{' '}
-          <a
-            onClick={handleClickSendEmailCodeButton}
-            style={{
-              textDecoration: 'underline',
-              cursor: 'pointer',
-            }}
+        {sendSuccess && (
+          <p className="text-center">
+            <span className="text-grey-normal">인증코드가 오지 않았다면? </span>
+            <a
+              onClick={handleClickSendEmailCodeButton}
+              className=" underline-offset-4 hover:cursor-pointer hover:underline"
+            >
+              재발송
+            </a>
+          </p>
+        )}
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={hanldeClickPreviousButton}
+            className="flex-1"
           >
-            재발송
-          </a>
-        </p>
-        <div>
-          <Button onClick={hanldeClickPreviousButton}>이전</Button>
-          <SubmitButton
+            이전
+          </Button>
+          <Button
             form="EmailVerifyForm"
             disabled={isPending}
             onSubmit={onSubmit}
+            className="flex-1"
           >
             회원가입 완료
-          </SubmitButton>
+          </Button>
         </div>
         {localSignUpResponseMessage !== '' && (
           <FormErrorResponse>
@@ -231,42 +264,6 @@ export const EmailVerifyForm = () => {
       {showModal === 'REDIRECT' && <RedirectSignInModal />}
     </>
   );
-};
-
-const ShowVerifyEmailButton = ({
-  timeLeft,
-  verifySuccess,
-  isCodeExpired,
-  handleClickVerifyEmailButton,
-  isPending,
-  disabled,
-}: {
-  timeLeft: number | null;
-  verifySuccess: boolean;
-  isCodeExpired: boolean;
-  handleClickVerifyEmailButton(): void;
-  isPending: boolean;
-  disabled: boolean;
-}) => {
-  if (verifySuccess) {
-    return <div>인증 성공</div>;
-  } else if (isCodeExpired) {
-    return <div>인증코드가 만료되었습니다.</div>;
-  } else {
-    return (
-      <>
-        {timeLeft !== null && (
-          <div>{formatNumberToTime({ time: timeLeft })}</div>
-        )}
-        <Button
-          onClick={handleClickVerifyEmailButton}
-          disabled={isPending || disabled}
-        >
-          인증코드 확인
-        </Button>
-      </>
-    );
-  }
 };
 
 const useSendCode = ({
