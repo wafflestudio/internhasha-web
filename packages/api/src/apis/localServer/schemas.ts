@@ -92,6 +92,14 @@ export type PostBriefDTO = {
 
 type ResumeDTO = {
   id: string;
+  author: {
+    id: string;
+    name: string;
+    userRole: UserRole;
+    snuMail: string;
+    phoneNumber?: string;
+    profileImageLink: string;
+  };
   postId: string;
   content: string;
   phoneNumber: string;
