@@ -60,6 +60,7 @@ export type Post = {
   // post 정보
   title: string;
   employmentEndDate: string;
+  isAlways: boolean;
   createdAt: string;
   updatedAt: string;
   isActive: boolean;

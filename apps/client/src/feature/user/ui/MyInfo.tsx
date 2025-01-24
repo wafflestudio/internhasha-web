@@ -17,11 +17,11 @@ export const MyInfo = () => {
     );
   }
 
-  const { username, snuMail, phoneNumber } = myInfoData.data;
+  const { name, snuMail, phoneNumber } = myInfoData.data;
   return (
     <div>
       <p>마이 페이지입니다.</p>
-      <p>이름: {username}</p>
+      <p>이름: {name}</p>
       <p>메일: {snuMail}</p>
       {phoneNumber !== undefined && <p>전화번호: {phoneNumber}</p>}
     </div>
