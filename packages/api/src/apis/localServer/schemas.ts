@@ -58,6 +58,7 @@ type PostDTO = {
   // post 정보
   title: string;
   employmentEndDate: string;
+  isAlways: boolean;
   createdAt: string;
   updatedAt: string;
   isActive: boolean;
@@ -92,7 +93,6 @@ export type PostBriefDTO = {
 type ResumeDTO = {
   id: string;
   postId: string;
-  author: UserDTO;
   content: string;
   phoneNumber: string;
   createdAt: string;
