@@ -1,7 +1,7 @@
 import type { RolesFilterCategory } from '@/entities/filter';
-import type { JobMinorCategory } from '@/entities/post.ts';
-import { useGuardContext } from '@/shared/context/hooks.ts';
-import { RolesFilterContext } from '@/shared/context/RolesFilterContext.tsx';
+import type { JobMinorCategory } from '@/entities/post';
+import { useGuardContext } from '@/shared/context/hooks';
+import { RolesFilterContext } from '@/shared/context/RolesFilterContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 
 type RolesFilterProps = {

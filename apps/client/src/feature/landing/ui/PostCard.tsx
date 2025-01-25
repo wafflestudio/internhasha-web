@@ -1,4 +1,4 @@
-import type { BriefPost } from '@/entities/post.ts';
+import type { BriefPost } from '@/entities/post';
 
 type PostCardProps = {
   post: BriefPost;
