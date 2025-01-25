@@ -9,7 +9,8 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 export const GlobalNavigationBar = () => {
   const { token } = useGuardContext(TokenContext);
   const { logout, isPending } = useLogout();
-  const { toSignUpSelect, toSignInSelect, toMyPage } = useRouteNavigation();
+  const { toSignUpSelect, toSignInSelect, toMyPage, toMain } =
+    useRouteNavigation();
   const handleClickLogoutButton = () => {
     logout();
   };
@@ -17,7 +18,12 @@ export const GlobalNavigationBar = () => {
   return (
     <header className="flex justify-center sticky top-0 z-50 bg-white shadow-md">
       <div className="flex w-full sm:w-screen-sm md:w-screen-md lg:w-scrren-lg xl:w-screen-xl px-6 py-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-gray-800">인턴하샤</h1>
+        <h1
+          onClick={toMain}
+          className="text-xl font-bold text-gray-800 transition-colors duration-150 cursor-pointer hover:text-blue-normal"
+        >
+          인턴하샤
+        </h1>
         <div className="flex gap-5">
           {token == null ? (
             <>

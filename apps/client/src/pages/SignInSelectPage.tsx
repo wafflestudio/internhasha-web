@@ -1,4 +1,4 @@
-import { ModalBackground } from '@/components/ui/layout';
+import { ModalBackgroundWithHeader } from '@/components/ui/layout';
 import { GoogleSocialSignInButton } from '@/feature/auth';
 import { LocalLogInForm } from '@/feature/auth';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
@@ -6,7 +6,7 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 export const SignInSelectPage = () => {
   const { toSignUpSelect } = useRouteNavigation();
   return (
-    <ModalBackground>
+    <ModalBackgroundWithHeader>
       <h2 className="text-2xl font-bold text-center">로그인</h2>
       <div className="flex flex-col gap-[30px]">
         <section className="flex flex-col gap-[10px]">
@@ -39,6 +39,6 @@ export const SignInSelectPage = () => {
           </div>
         </section>
       </div>
-    </ModalBackground>
+    </ModalBackgroundWithHeader>
   );
 };

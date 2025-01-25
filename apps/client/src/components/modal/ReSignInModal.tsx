@@ -1,3 +1,4 @@
+import { ModalBackgroundWithHeader } from '@/components/ui/layout';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const ReSignInModal = () => {
@@ -8,7 +9,7 @@ export const ReSignInModal = () => {
   };
 
   return (
-    <div>
+    <ModalBackgroundWithHeader>
       <div>
         <h2>인증정보가 올바르지 않아요</h2>
         <p>다시 로그인해 주세요</p>
@@ -16,6 +17,6 @@ export const ReSignInModal = () => {
           <button onClick={onClickButton}>로그인 페이지로</button>
         </div>
       </div>
-    </div>
+    </ModalBackgroundWithHeader>
   );
 };

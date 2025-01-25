@@ -113,6 +113,15 @@ export default {
         'screen-lg': '1300px',
         'screen-xl': '1464px',
       },
+      keyframes: {
+        popup: {
+          '0%': { opacity: 0, transform: 'scale(0.8)' },
+          '100%': { opacity: 1, transform: 'scale(1)' },
+        },
+      },
+      animation: {
+        popup: 'popup 0.3s ease-in-out',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],
