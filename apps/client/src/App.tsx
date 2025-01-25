@@ -6,8 +6,10 @@ import { type ExternalCallParams, implApi } from '@waffle/api';
 import { useState } from 'react';
 import { Route, Routes } from 'react-router';
 
+import type { RolesFilterCategory } from '@/entities/filter';
 import { PATH } from '@/entities/route';
 import { implAuthService } from '@/feature/auth';
+import { implLandingService } from '@/feature/landing/service/landingService';
 import { implPostService } from '@/feature/post';
 import { implResumeService } from '@/feature/resume';
 import { implUserService } from '@/feature/user';
@@ -15,7 +17,7 @@ import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
 import { CreateResumePage } from '@/pages/CreateResumePage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
-import { LandingPage } from '@/pages/LandingPage.tsx';
+import { LandingPage } from '@/pages/LandingPage';
 import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
 import { MyPage } from '@/pages/MyPage';
 import { PostDetailPage } from '@/pages/PostDetailPage';
@@ -30,10 +32,12 @@ import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { CompanyProtectedRoute } from '@/shared/auth/CompanyProtectedRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
-import { RolesFilterProvider } from '@/shared/context/RolesFilterContext.tsx';
+import { RolesFilterContext } from '@/shared/context/RolesFilterContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { implFileService } from '@/shared/file/fileService';
+import { implRolesFilterLocalStorageRepository } from '@/shared/rolesFilter/localstorage';
+import { implRolesFilterStateRepository } from '@/shared/rolesFilter/state';
 import { implTokenLocalStorageRepository } from '@/shared/token/localstorage';
 import { implTokenStateRepository } from '@/shared/token/state';
 
@@ -79,10 +83,26 @@ const queryClient = new QueryClient({
 });
 
 export const App = () => {
-  const tokenLocalStorage = implTokenLocalStorageRepository();
-  const [token, setToken] = useState<string | null>(tokenLocalStorage.getToken);
+  const tokenLocalStorageRepository = implTokenLocalStorageRepository();
+  const rolesFilterLocalStorageRepository =
+    implRolesFilterLocalStorageRepository();
+
+  const [token, setToken] = useState<string | null>(
+    tokenLocalStorageRepository.getToken,
+  );
+  const [activeCategory, setActiveCategory] = useState<RolesFilterCategory>(
+    rolesFilterLocalStorageRepository.getActiveJobCategory,
+  );
+  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(
+    rolesFilterLocalStorageRepository.getIsFilterDropdownOpen,
+  );
+
   const ENV = useGuardContext(EnvContext);
-  const tokenState = implTokenStateRepository({ setToken });
+  const tokenStateRepository = implTokenStateRepository({ setToken });
+  const rolesFilterStateRepository = implRolesFilterStateRepository({
+    setActiveCategory,
+    setIsFilterDropdownOpen,
+  });
 
   const localServerCall = async (content: ExternalCallParams) => {
     const response = await fetch(
@@ -114,8 +134,8 @@ export const App = () => {
 
     if (!response.ok) {
       if (response.status === 401) {
-        tokenState.removeToken();
-        tokenLocalStorage.removeToken();
+        tokenStateRepository.removeToken();
+        tokenLocalStorageRepository.removeToken();
       }
     }
     return {
@@ -145,11 +165,19 @@ export const App = () => {
   const externalApis = implApi({ externalCall: externalServerCall });
 
   const services = {
-    authService: implAuthService({ apis, tokenState, tokenLocalStorage }),
+    authService: implAuthService({
+      apis,
+      tokenStateRepository,
+      tokenLocalStorageRepository,
+    }),
     postService: implPostService({ apis }),
     userService: implUserService({ apis }),
     resumeService: implResumeService({ apis }),
     fileService: implFileService({ apis, externalApis }),
+    landingService: implLandingService({
+      rolesFilterLocalStorageRepository,
+      rolesFilterStateRepository,
+    }),
   };
 
   return (
@@ -157,9 +185,11 @@ export const App = () => {
       <ServiceContext.Provider value={services}>
         <TokenContext.Provider value={{ token }}>
           <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID}>
-            <RolesFilterProvider>
+            <RolesFilterContext.Provider
+              value={{ activeCategory, isFilterDropdownOpen }}
+            >
               <RouterProvider />
-            </RolesFilterProvider>
+            </RolesFilterContext.Provider>
           </GoogleOAuthProvider>
         </TokenContext.Provider>
       </ServiceContext.Provider>

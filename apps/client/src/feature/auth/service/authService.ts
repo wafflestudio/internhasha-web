@@ -80,12 +80,12 @@ export type AuthService = {
 
 export const implAuthService = ({
   apis,
-  tokenLocalStorage,
-  tokenState,
+  tokenLocalStorageRepository,
+  tokenStateRepository,
 }: {
   apis: Apis;
-  tokenLocalStorage: TokenLocalStorageRepository;
-  tokenState: TokenStateRepository;
+  tokenLocalStorageRepository: TokenLocalStorageRepository;
+  tokenStateRepository: TokenStateRepository;
 }): AuthService => ({
   signUp: async ({ authType, info }) => {
     const body = { authType, info };
@@ -94,8 +94,8 @@ export const implAuthService = ({
     if (status === 200) {
       const token = data.token;
 
-      tokenLocalStorage.setToken({ token });
-      tokenState.setToken({ token });
+      tokenLocalStorageRepository.setToken({ token });
+      tokenStateRepository.setToken({ token });
 
       return {
         type: 'success',
@@ -111,8 +111,8 @@ export const implAuthService = ({
     if (status === 200) {
       const token = data.token;
 
-      tokenLocalStorage.setToken({ token });
-      tokenState.setToken({ token });
+      tokenLocalStorageRepository.setToken({ token });
+      tokenStateRepository.setToken({ token });
 
       return {
         type: 'success',
@@ -173,8 +173,8 @@ export const implAuthService = ({
     if (status === 200) {
       const accessToken = data.accessToken;
 
-      tokenLocalStorage.setToken({ token: accessToken });
-      tokenState.setToken({ token: accessToken });
+      tokenLocalStorageRepository.setToken({ token: accessToken });
+      tokenStateRepository.setToken({ token: accessToken });
 
       return {
         type: 'success',
@@ -201,8 +201,8 @@ export const implAuthService = ({
   },
   logout: async ({ token }) => {
     const { status, data } = await apis['POST /user/signout']({ token });
-    tokenLocalStorage.removeToken();
-    tokenState.removeToken();
+    tokenLocalStorageRepository.removeToken();
+    tokenStateRepository.removeToken();
     if (status === 200) {
       return {
         type: 'success',

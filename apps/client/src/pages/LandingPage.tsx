@@ -2,16 +2,19 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Button } from '@/components/button';
-import type { FilterElements, JobMinorCategory } from '@/entities/post.ts';
-import { useGetPosts } from '@/feature/landing/index.tsx';
-import { FilterSection } from '@/feature/landing/index.tsx';
-import { Pagination } from '@/feature/landing/index.tsx';
-import { PostCard } from '@/feature/landing/index.tsx';
-import { NarrowRolesFilter, RolesFilter } from '@/feature/landing/index.tsx';
-import { useGuardContext } from '@/shared/context/hooks.ts';
-import { ServiceContext } from '@/shared/context/ServiceContext.ts';
-import { TokenContext } from '@/shared/context/TokenContext.ts';
-import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
+import type { FilterElements, JobMinorCategory } from '@/entities/post';
+import {
+  FilterSection,
+  NarrowRolesFilter,
+  Pagination,
+  PostCard,
+  RolesFilter,
+  useGetPosts,
+} from '@/feature/landing';
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
+import { TokenContext } from '@/shared/context/TokenContext';
+import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LandingPage = () => {
   const { toSignUpSelect, toSignInSelect, toPost, toResumeList } =

@@ -1,6 +1,8 @@
+import type { RolesFilterCategory } from '@/entities/filter';
 import type { JobMinorCategory } from '@/entities/post.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { RolesFilterContext } from '@/shared/context/RolesFilterContext.tsx';
+import { ServiceContext } from '@/shared/context/ServiceContext';
 
 type RolesFilterProps = {
   roles: JobMinorCategory[] | undefined;
@@ -18,8 +20,8 @@ export const RolesFilter = ({
   roles = [],
   onChangeRoles,
 }: RolesFilterProps) => {
-  const { activeCategory, setActiveCategory } =
-    useGuardContext(RolesFilterContext);
+  const { landingService } = useGuardContext(ServiceContext);
+  const { activeCategory } = useGuardContext(RolesFilterContext);
 
   const handleCheckboxChange = (role: JobMinorCategory) => {
     const updatedRoles = roles.includes(role)
@@ -28,10 +30,8 @@ export const RolesFilter = ({
     onChangeRoles(updatedRoles);
   };
 
-  const handleCategoryClick = (category: keyof typeof jobCategoryList) => {
-    setActiveCategory((prev: '개발' | '기획' | '디자인' | '마케팅' | null) =>
-      prev === category ? null : category,
-    );
+  const handleCategoryClick = (category: RolesFilterCategory) => {
+    landingService.saveRolesFilter({ rolesFilter: category });
   };
 
   return (
@@ -96,8 +96,8 @@ export const NarrowRolesFilter = ({
   roles = [],
   onChangeRoles,
 }: RolesFilterProps) => {
-  const { isFilterDropdownOpen, setIsFilterDropdownOpen } =
-    useGuardContext(RolesFilterContext);
+  const { isFilterDropdownOpen } = useGuardContext(RolesFilterContext);
+  const { landingService } = useGuardContext(ServiceContext);
 
   const handleCheckboxChange = (role: JobMinorCategory) => {
     const updatedRoles = roles.includes(role)
@@ -106,13 +106,17 @@ export const NarrowRolesFilter = ({
     onChangeRoles(updatedRoles);
   };
 
+  const handleClickDropdown = () => {
+    landingService.saveIsFilterDropdownOpen({
+      isFilterDropdownOpen: !isFilterDropdownOpen,
+    });
+  };
+
   return (
     <div className="block lg:hidden w-full p-2 rounded-lg">
       {/* Dropdown Toggle */}
       <button
-        onClick={() => {
-          setIsFilterDropdownOpen((prev) => !prev);
-        }}
+        onClick={handleClickDropdown}
         className="w-full flex justify-between items-center px-6 py-3 bg-white rounded-lg shadow-sm"
       >
         <span className="text-lg font-bold text-gray-800">직무 유형 선택</span>
