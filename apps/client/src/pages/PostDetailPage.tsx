@@ -1,5 +1,6 @@
 import { useParams } from 'react-router';
 
+import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { PATH } from '@/entities/route';
 import { PostDetailView } from '@/feature/post';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
@@ -13,7 +14,7 @@ export const PostDetailPage = () => {
 
   return (
     <div>
-      {/* TODO: GNB 넣기 */}
+      <GlobalNavigationBar />
       <PostDetailView postId={postId} />
     </div>
   );

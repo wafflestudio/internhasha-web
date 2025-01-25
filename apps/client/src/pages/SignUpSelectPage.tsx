@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { ModalBackground } from '@/components/ui/layout';
+import { ModalBackgroundWithHeader } from '@/components/ui/layout';
 import { GoogleSocialSignUpButton } from '@/feature/auth';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
@@ -7,7 +7,7 @@ export const SignUpSelectPage = () => {
   const { toSignInSelect, toSignUpLocal } = useRouteNavigation();
 
   return (
-    <ModalBackground>
+    <ModalBackgroundWithHeader>
       <div className="flex flex-col gap-[46px]">
         <h2 className="text-2xl font-bold text-center">회원가입</h2>
         <div className="flex flex-col gap-[10px]">
@@ -33,6 +33,6 @@ export const SignUpSelectPage = () => {
           </p>
         </div>
       </div>
-    </ModalBackground>
+    </ModalBackgroundWithHeader>
   );
 };
