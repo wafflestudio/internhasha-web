@@ -270,9 +270,7 @@ export const LocalSignUpForm = () => {
         </div>
         <div>
           {responseMessage !== '' && (
-            <FormErrorResponse>
-              {createErrorMessage(responseMessage)}
-            </FormErrorResponse>
+            <FormErrorResponse>{responseMessage}</FormErrorResponse>
           )}
         </div>
         <Button form="SignUpForm" disabled={isPending || signUpDisable}>
@@ -301,7 +299,7 @@ const useCheckLocalId = ({
         setLocalIdCheckSuccess(true);
       } else {
         setLocalIdCheckSuccess(false);
-        setResponseMessage(response.code);
+        setResponseMessage(createErrorMessage(response.code));
       }
     },
     onError: () => {

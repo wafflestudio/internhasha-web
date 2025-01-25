@@ -57,9 +57,7 @@ export const LocalLogInForm = () => {
             className="mt-1"
           />
           {responseMessage !== '' && (
-            <FormErrorResponse>
-              {createErrorMessage(responseMessage)}
-            </FormErrorResponse>
+            <FormErrorResponse>{responseMessage}</FormErrorResponse>
           )}
         </div>
         <div className="flex flex-col">
@@ -98,7 +96,7 @@ const useLocalSignIn = () => {
       if (response.type === 'success') {
         toMain();
       } else {
-        setResponseMessage(response.code);
+        setResponseMessage(createErrorMessage(response.code));
       }
     },
     onError: () => {

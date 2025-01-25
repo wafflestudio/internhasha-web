@@ -63,9 +63,7 @@ export const GoogleSocialSignUpButton = () => {
       </Button>
       {responseMessage !== undefined && (
         <div className="text-red-500 text-sm mt-2">
-          <FormErrorResponse>
-            {createErrorMessage(responseMessage)}
-          </FormErrorResponse>
+          <FormErrorResponse>{responseMessage}</FormErrorResponse>
         </div>
       )}
       {showModal === 'ADD' && <AddGoogleSignUpModal />}
@@ -102,7 +100,7 @@ const useCheckGoogleMail = ({
           });
         }
       } else {
-        setResponseMessage(response.code);
+        setResponseMessage(createErrorMessage(response.code));
       }
     },
     onError: () => {
@@ -151,7 +149,7 @@ const useGoogleSignUp = ({
         if (response.code === 'USER-003') {
           setShowModal('REDIRECT');
         }
-        setResponseMessage(response.code);
+        setResponseMessage(createErrorMessage(response.code));
       }
     },
     onError: () => {

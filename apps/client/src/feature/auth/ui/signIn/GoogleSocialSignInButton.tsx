@@ -47,9 +47,7 @@ export const GoogleSocialSignInButton = () => {
       )}
       {responseMessage !== '' && (
         <div className="text-red-500 text-sm mt-2">
-          <FormErrorResponse>
-            {createErrorMessage(responseMessage)}
-          </FormErrorResponse>
+          <FormErrorResponse>{responseMessage}</FormErrorResponse>
         </div>
       )}
     </div>
@@ -76,7 +74,7 @@ const useGoogleSignIn = () => {
       if (response.type === 'success') {
         toMain();
       } else {
-        setResponseMessage(response.code);
+        setResponseMessage(createErrorMessage(response.code));
       }
     },
     onError: () => {

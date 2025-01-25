@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
+import { createErrorMessage } from '@/entities/errors';
 import type { Series } from '@/entities/post';
 import { seriesList } from '@/feature/company/presentation/companypresentation';
 import { companyPresentation } from '@/feature/company/presentation/companypresentation';
@@ -523,7 +524,7 @@ const useGetPresignedUrl = ({
       if (response.type === 'success') {
         onSuccess({ presignedUrl: response.data.presignedUrl });
       } else {
-        setResponseMessage(response.code);
+        setResponseMessage(createErrorMessage(response.code));
       }
     },
     onError: () => {
@@ -565,7 +566,7 @@ const useUploadFile = ({
       if (response.type === 'success') {
         setResponseMessage('');
       } else {
-        setResponseMessage(response.code);
+        setResponseMessage(createErrorMessage(response.code));
       }
     },
     onError: () => {
