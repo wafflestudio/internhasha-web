@@ -318,7 +318,7 @@ const useSendCode = ({
       } else {
         stopTimer();
         if (response.code === 'USER_001') {
-          setShowModal('ADD');
+          setShowModal('REDIRECT');
           return;
         }
         setResponseMessage(response.code);
@@ -364,7 +364,7 @@ const useEmailVerify = ({
         setVerifySuccess(true);
       } else {
         if (response.code === 'USER_001') {
-          setShowModal('ADD');
+          setShowModal('REDIRECT');
           return;
         }
         setResponseMessage(response.code);
@@ -411,7 +411,7 @@ const useGoogleSignUp = ({
         }
         toSignUpComplete();
       } else {
-        if (response.code === 'USER-003') {
+        if (response.code === 'USER_001' || response.code === 'USER-003') {
           setShowModal('REDIRECT');
           return;
         }
@@ -468,7 +468,7 @@ const useLocalSignUp = ({
         }
         toSignUpComplete();
       } else {
-        if (response.code === 'USER_002') {
+        if (response.code === 'USER_001' || response.code === 'USER_002') {
           setShowModal('REDIRECT');
           return;
         }
