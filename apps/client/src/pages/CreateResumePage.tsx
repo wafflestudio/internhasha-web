@@ -1,10 +1,9 @@
 import { useParams } from 'react-router';
 
+import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { PATH } from '@/entities/route.ts';
 import { CreateResumeForm } from '@/feature/resume/ui/CreateResumeForm.tsx';
 import { RouteNavigator } from '@/shared/route/RouteNavigator.tsx';
-
-import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 
 export const CreateResumePage = () => {
   const { postId } = useParams<{ postId: string }>();

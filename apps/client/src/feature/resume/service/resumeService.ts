@@ -1,7 +1,11 @@
 import type { Apis } from '@waffle/api';
 
 import type { ServiceResponse } from '@/entities/response';
-import type { Resume, ResumeListResponse, ResumeRequest } from '@/entities/resume';
+import type {
+  Resume,
+  ResumeListResponse,
+  ResumeRequest,
+} from '@/entities/resume';
 
 export type ResumeService = {
   getResumeDetail: ({
@@ -76,7 +80,7 @@ export const implResumeService = ({ apis }: { apis: Apis }): ResumeService => ({
     postId,
   }: {
     token: string;
-    resumeContents: ResumeRequest
+    resumeContents: ResumeRequest;
     postId: string;
   }) => {
     const body = resumeContents;

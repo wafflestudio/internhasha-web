@@ -22,8 +22,8 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
     setResponseMessage,
     postId,
   });
-  
-  const { phoneNumber, contents } = resumePresentation.useValidator({})
+
+  const { phoneNumber, contents } = resumePresentation.useValidator({});
 
   const { toPost } = useRouteNavigation();
 
@@ -40,7 +40,7 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
     createResume({
       resume: { phoneNumber: phoneNumber.value, content: contents.value },
     });
-  }
+  };
 
   const handleClickCancelButton = () => {
     setIsCancel(true);
@@ -68,7 +68,7 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
             placeholder="010-0000-0000"
           />
           {isSubmit && phoneNumber.isError && (
-          <p>전화번호 양식에 맞게 작성해주세요. (예시: 010-0000-0000)</p>
+            <p>전화번호 양식에 맞게 작성해주세요. (예시: 010-0000-0000)</p>
           )}
         </LabelContainer>
 
@@ -90,7 +90,8 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
         <div>
           <Button
             type="button"
-            onClick={handleClickCancelButton} disabled={isPending}
+            onClick={handleClickCancelButton}
+            disabled={isPending}
           >
             이전으로
           </Button>
@@ -106,13 +107,15 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
         </div>
         {isCancel && (
           <CancelCheckModal
-            onClose={() => { toPost({ postId }); }}
-            onCancel={closeCancelModal}/>
+            onClose={() => {
+              toPost({ postId });
+            }}
+            onCancel={closeCancelModal}
+          />
         )}
       </FormContainer>
     </>
   );
-  
 };
 
 const useCreateResume = ({
@@ -122,7 +125,6 @@ const useCreateResume = ({
   setResponseMessage(input: string): void;
   postId: string;
 }) => {
-
   const { resumeService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
   const { toPost } = useRouteNavigation();
@@ -132,7 +134,11 @@ const useCreateResume = ({
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return resumeService.createResume({ token, resumeContents: resume, postId })
+      return resumeService.createResume({
+        token,
+        resumeContents: resume,
+        postId,
+      });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
@@ -142,11 +148,11 @@ const useCreateResume = ({
       }
     },
     onError: () => {
-    setResponseMessage(
-      '공고 생성에 실패했습니다. 잠시 후에 다시 실행해주세요.',
-    );
-  },
-  })
+      setResponseMessage(
+        '공고 생성에 실패했습니다. 잠시 후에 다시 실행해주세요.',
+      );
+    },
+  });
   return {
     createResume,
     isPending,

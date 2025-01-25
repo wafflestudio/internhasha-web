@@ -14,9 +14,9 @@ export type Resume = {
 
 export type ResumeListResponse = {
   resumeList: Resume[];
-}
+};
 
 export type ResumeRequest = {
   phoneNumber: string;
   content: string;
-}
+};

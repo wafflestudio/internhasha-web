@@ -18,7 +18,7 @@ const PHONE_NUMBER_REGEX = /^010-\d{4}-\d{4}$/;
 const CONTENTS_MAX_LENGTH = 10000;
 
 export const resumePresentation: ResumePresentation = {
-  useValidator: ({ initialState= {} }) => {
+  useValidator: ({ initialState = {} }) => {
     const [phoneNumber, setPhoneNumber] = useState(
       initialState.phoneNumber !== undefined ? initialState.phoneNumber : '',
     );
@@ -27,24 +27,24 @@ export const resumePresentation: ResumePresentation = {
     );
 
     const handlePhoneNumberChange = (input: string) => {
-      setPhoneNumber(input)
+      setPhoneNumber(input);
     };
 
     const handleContentsChange = (input: string) => {
-      setContents(input)
+      setContents(input);
     };
 
     return {
       phoneNumber: {
         isError: !PHONE_NUMBER_REGEX.test(phoneNumber),
         value: phoneNumber,
-        onChange:handlePhoneNumberChange
+        onChange: handlePhoneNumberChange,
       },
-      contents:  {
+      contents: {
         isError: contents.length > CONTENTS_MAX_LENGTH || contents.length === 0,
         value: contents,
-        onChange:handleContentsChange
-      }
-    }
-  }
+        onChange: handleContentsChange,
+      },
+    };
+  },
 };
