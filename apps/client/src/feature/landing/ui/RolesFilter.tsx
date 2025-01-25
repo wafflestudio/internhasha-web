@@ -25,6 +25,27 @@ export const RolesFilter = ({
   const { landingService } = useGuardContext(ServiceContext);
   const { activeCategory } = useGuardContext(RolesFilterContext);
 
+  // 카테고리별 전체 선택 여부 확인
+  const isAllSelected = (category: keyof typeof jobCategoryList) => {
+    return jobCategoryList[category].every((role) => roles.includes(role));
+  };
+
+  // 전체 선택/해제 로직
+  const handleSelectAll = (
+    category: keyof typeof jobCategoryList,
+    checked: boolean,
+  ) => {
+    const checkedCategory = [
+      ...jobCategoryList[category],
+    ] as JobMinorCategory[];
+
+    const updatedRoles = checked
+      ? [...new Set([...roles, ...checkedCategory])]
+      : roles.filter((role) => !checkedCategory.includes(role));
+
+    onChangeRoles(updatedRoles);
+  };
+
   const handleCheckboxChange = (role: JobMinorCategory, checked: boolean) => {
     const updatedRoles = checked
       ? [...roles, role]
@@ -41,6 +62,7 @@ export const RolesFilter = ({
       <div className="flex flex-col gap-2.5">
         {Object.keys(jobCategoryList).map((category: string) => {
           const typedCategory = category as keyof typeof jobCategoryList;
+          const allSelected = isAllSelected(typedCategory);
 
           return (
             <div key={typedCategory}>
@@ -64,6 +86,24 @@ export const RolesFilter = ({
                 }`}
               >
                 <div className="flex flex-col gap-3 mt-2 pl-4">
+                  {/* 전체 선택 체크박스 */}
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id={`select-all-${typedCategory}`}
+                      checked={allSelected}
+                      onCheckedChange={(checked) => {
+                        if (checked === false || checked === true) {
+                          handleSelectAll(typedCategory, checked);
+                        }
+                      }}
+                    />
+                    <label
+                      htmlFor={`select-all-${typedCategory}`}
+                      className="text-grey-darker cursor-pointer hover:text-grey-dark-hover font-semibold"
+                    >
+                      전체 선택
+                    </label>
+                  </div>
                   {jobCategoryList[typedCategory].map((role) => (
                     <div key={role} className="flex items-center gap-2">
                       <Checkbox
