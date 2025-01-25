@@ -20,6 +20,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+import { formatMajorJobToLabel, formatMinorJobToLabel } from '@/util/format';
 
 type CompanyBody = {
   companyName: string;
@@ -44,43 +45,6 @@ export const CreatePostForm = () => {
   const state = location.state as CompanyBody | undefined;
 
   const { createPost, isPending } = useCreatePost({ setResponseMessage });
-
-  const formatMajorValueToLabel = (input: string) => {
-    switch (input) {
-      case 'DEVELOPMENT':
-        return '개발';
-      case 'PLANNER':
-        return '기획';
-      case 'DESIGN':
-        return '디자인';
-      case 'MARKETING':
-        return '마케팅';
-      default:
-        return null;
-    }
-  };
-  const formatMinorValueToLabel = (input: string) => {
-    switch (input) {
-      case 'FRONT':
-        return '프론트엔드 개발';
-      case 'BACKEND':
-        return '백엔드 개발';
-      case 'APP':
-        return '앱 개발';
-      case 'DATA':
-        return '데이터 분석';
-      case 'OTHERS':
-        return '기타';
-      case 'PLANNER':
-        return '기획';
-      case 'DESIGN':
-        return '디자인';
-      case 'MARKETING':
-        return '마케팅';
-      default:
-        return null;
-    }
-  };
 
   const {
     title,
@@ -163,7 +127,7 @@ export const CreatePostForm = () => {
                   }}
                 >
                   {JOB_MAJOR_CATEGORIES.map((category) => {
-                    const label = formatMajorValueToLabel(category);
+                    const label = formatMajorJobToLabel(category);
 
                     if (label === null) return null;
 
@@ -172,7 +136,7 @@ export const CreatePostForm = () => {
                         key={`major-category-${category}`}
                         value={category}
                       >
-                        {formatMajorValueToLabel(category)}
+                        {formatMajorJobToLabel(category)}
                       </option>
                     );
                   })}
@@ -195,7 +159,7 @@ export const CreatePostForm = () => {
                         key={`sub-category-${subCategory}`}
                         value={subCategory}
                       >
-                        {formatMinorValueToLabel(subCategory)}
+                        {formatMinorJobToLabel(subCategory)}
                       </option>
                     ),
                   )}
