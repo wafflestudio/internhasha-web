@@ -11,3 +11,8 @@ export type Resume = {
   phoneNumber: string;
   createdAt: string;
 };
+
+export type ResumeRequest = {
+  phoneNumber: string;
+  content: string;
+}
