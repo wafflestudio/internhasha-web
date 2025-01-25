@@ -10,6 +10,10 @@ export const ResumeListView = () => {
   if (resumeListData === undefined) {
     return <div>로딩중...</div>;
   }
+
+  console.log(resumeListData)
+
+
   if (resumeListData.type === 'error') {
     return (
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>

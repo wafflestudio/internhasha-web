@@ -1,7 +1,7 @@
 import type { Apis } from '@waffle/api';
 
 import type { ServiceResponse } from '@/entities/response';
-import type { Resume, ResumeRequest } from '@/entities/resume';
+import type { Resume, ResumeListResponse, ResumeRequest } from '@/entities/resume';
 
 export type ResumeService = {
   getResumeDetail: ({
@@ -15,7 +15,7 @@ export type ResumeService = {
     token,
   }: {
     token: string;
-  }) => ServiceResponse<{ resumeList: Resume[] }>;
+  }) => ServiceResponse<ResumeListResponse>;
   createResume: ({
     token,
     resumeContents,
