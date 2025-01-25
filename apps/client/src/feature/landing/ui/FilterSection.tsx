@@ -38,62 +38,60 @@ export const FilterSection = ({
   };
 
   return (
-    <div className="filter-section">
-      <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-        <SelectContainerWithOptions
-          id="pathStatus"
-          value={filterElements.pathStatus}
-          options={[
-            { value: 0, label: '모집 중' },
-            { value: 1, label: '모집 완료' },
-            { value: 2, label: '전체' },
-          ]}
-          onChange={(value) => {
-            onChangeFilters({
-              ...filterElements,
-              pathStatus: typeof value === 'number' ? value : undefined,
-            });
-          }}
-          label="모집 상태"
-        />
+    <div className="flex gap-5 items-center">
+      <SelectContainerWithOptions
+        id="pathStatus"
+        value={filterElements.pathStatus}
+        options={[
+          { value: 0, label: '모집 중' },
+          { value: 1, label: '모집 완료' },
+          { value: 2, label: '전체' },
+        ]}
+        onChange={(value) => {
+          onChangeFilters({
+            ...filterElements,
+            pathStatus: typeof value === 'number' ? value : undefined,
+          });
+        }}
+        label="모집 상태"
+      />
 
-        <SelectContainerWithOptions
-          id="investmentRange"
-          value={getCurrentInvestmentRange()}
-          options={INVESTMENT_RANGES.map((range) => ({
-            value: range.label,
-            label: range.label,
-          }))}
-          onChange={(value) => {
-            const range = INVESTMENT_RANGES.find((r) => r.label === value);
-            onChangeFilters({
-              ...filterElements,
-              investmentMin: range?.min,
-              investmentMax: range?.max,
-            });
-          }}
-          label="투자금액"
-        />
+      <SelectContainerWithOptions
+        id="investmentRange"
+        value={getCurrentInvestmentRange()}
+        options={INVESTMENT_RANGES.map((range) => ({
+          value: range.label,
+          label: range.label,
+        }))}
+        onChange={(value) => {
+          const range = INVESTMENT_RANGES.find((r) => r.label === value);
+          onChangeFilters({
+            ...filterElements,
+            investmentMin: range?.min,
+            investmentMax: range?.max,
+          });
+        }}
+        label="투자금액"
+      />
 
-        <SelectContainerWithOptions
-          id="series"
-          value={filterElements.series}
-          options={[
-            { value: 'SEED', label: 'Seed' },
-            { value: 'PRE_A', label: 'Pre-Series A' },
-            { value: 'B', label: 'Series B' },
-            { value: 'C', label: 'Series C' },
-            { value: 'D', label: 'Series D' },
-          ]}
-          onChange={(value) => {
-            onChangeFilters({
-              ...filterElements,
-              series: typeof value === 'string' ? value : undefined,
-            });
-          }}
-          label="시리즈"
-        />
-      </div>
+      <SelectContainerWithOptions
+        id="series"
+        value={filterElements.series}
+        options={[
+          { value: 'SEED', label: 'Seed' },
+          { value: 'PRE_A', label: 'Pre-Series A' },
+          { value: 'B', label: 'Series B' },
+          { value: 'C', label: 'Series C' },
+          { value: 'D', label: 'Series D' },
+        ]}
+        onChange={(value) => {
+          onChangeFilters({
+            ...filterElements,
+            series: typeof value === 'string' ? value : undefined,
+          });
+        }}
+        label="시리즈"
+      />
     </div>
   );
 };

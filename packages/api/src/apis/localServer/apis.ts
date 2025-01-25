@@ -80,7 +80,7 @@ export const getLocalServerApis = ({
     }) =>
       callWithoutToken<SuccessResponse<GoogleEmailResponse>>({
         method: "POST",
-        path: "user/snu—mail-verification/google-email",
+        path: "user/snu-mail-verification/google-email",
         body,
       }),
     "POST /user/snu-mail-verification/request": ({
