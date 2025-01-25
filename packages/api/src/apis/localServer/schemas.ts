@@ -15,8 +15,6 @@ type UserDTO = {
   isMerged: boolean;
 };
 
-type UserBriefDTO = Omit<UserDTO, "createdAt" | "updatedAt">;
-
 type AuthorBriefDTO = {
   id: string;
   name: string;
@@ -213,7 +211,7 @@ export type PretotypeUserSubmitResponse = {
 export type UserResponse = Omit<UserDTO, "isMerged">;
 
 export type UserWithTokenResponse = {
-  user: UserBriefDTO;
+  user: UserDTO;
   token: string;
 };
 
