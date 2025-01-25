@@ -101,6 +101,18 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      screens: {
+        sm: '580px',
+        md: '760px',
+        lg: '984px',
+        xl: '1344px',
+      },
+      width: {
+        'screen-sm': '715px',
+        'screen-md': '940px',
+        'screen-lg': '1300px',
+        'screen-xl': '1464px',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

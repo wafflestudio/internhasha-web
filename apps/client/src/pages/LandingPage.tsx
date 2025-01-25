@@ -1,7 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { Button } from '@/components/button';
+import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import type { FilterElements, JobMinorCategory } from '@/entities/post';
 import {
   FilterSection,
@@ -11,15 +10,10 @@ import {
   RolesFilter,
   useGetPosts,
 } from '@/feature/landing';
-import { useGuardContext } from '@/shared/context/hooks';
-import { ServiceContext } from '@/shared/context/ServiceContext';
-import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LandingPage = () => {
-  const { toSignUpSelect, toSignInSelect, toPost, toResumeList } =
-    useRouteNavigation();
-
+  const { toPost } = useRouteNavigation();
   const [filterElements, setFilterElements] = useState<FilterElements>({
     roles: undefined,
     investmentMax: undefined,
@@ -40,13 +34,6 @@ export const LandingPage = () => {
     ...filterElements,
   });
 
-  const { logout, isPending } = useLogout();
-  const { token } = useGuardContext(TokenContext);
-
-  const handleClickLogoutButton = () => {
-    logout();
-  };
-
   if (postsData === undefined) {
     return <p>로딩 중...</p>;
   }
@@ -58,40 +45,7 @@ export const LandingPage = () => {
     <div>
       <div className="min-h-screen bg-gray-100">
         {/* 헤더 */}
-        <header className="bg-white shadow-md">
-          <div className="container px-6 py-4 flex justify-between items-center">
-            <h1 className="text-xl font-bold text-gray-800">랜딩페이지</h1>
-            <div className="flex gap-4">
-              {token == null ? (
-                <>
-                  <Button onClick={toSignUpSelect} className="text-blue-600">
-                    회원가입
-                  </Button>
-                  <Button onClick={toSignInSelect} className="text-blue-600">
-                    로그인
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button
-                    onClick={handleClickLogoutButton}
-                    disabled={isPending}
-                    className="text-red-600"
-                  >
-                    로그아웃
-                  </Button>
-                  <Button
-                    onClick={toResumeList}
-                    disabled={isPending}
-                    className="text-blue-600"
-                  >
-                    커피챗 목록
-                  </Button>
-                </>
-              )}
-            </div>
-          </div>
-        </header>
+        <GlobalNavigationBar />
 
         {/* 메인 컨텐츠 */}
         <div className="container mx-auto py-6 flex flex-col lg:flex-row gap-2">
@@ -105,7 +59,7 @@ export const LandingPage = () => {
           </div>
 
           {/* NarrowRolesFilter */}
-          <div className="block lg:hidden w-full order-1 lg:order-none">
+          <div className="block  w-full order-1 lg:hidden lg:order-none">
             <NarrowRolesFilter
               roles={filterElements.roles}
               onChangeRoles={handleRolesChange}
@@ -157,20 +111,4 @@ export const LandingPage = () => {
       </div>
     </div>
   );
-};
-
-const useLogout = () => {
-  const { authService } = useGuardContext(ServiceContext);
-  const { token } = useGuardContext(TokenContext);
-
-  const { mutate: logout, isPending } = useMutation({
-    mutationFn: () => {
-      if (token === null) {
-        throw new Error('토큰이 존재하지 않습니다.');
-      }
-      return authService.logout({ token });
-    },
-  });
-
-  return { logout, isPending };
 };

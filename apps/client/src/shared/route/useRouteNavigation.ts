@@ -57,6 +57,7 @@ export const useRouteNavigation = () => {
     RESUME_LIST,
     CREATE_COMPANY,
     CREATE_POST,
+    MY_PAGE,
   } = PATH;
   const { POST_DETAIL, CREATE_RESUME, RESUME_DETAIL } = PATH.MAKE;
 
@@ -102,6 +103,9 @@ export const useRouteNavigation = () => {
       postBody?: PostBody;
     }) => {
       void navigate(CREATE_POST, { state: { companyBody, postBody } });
+    },
+    toMyPage: () => {
+      void navigate(MY_PAGE);
     },
   };
 };

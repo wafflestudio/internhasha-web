@@ -27,8 +27,8 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
       }}
     >
       {/* 직군 & 마감일 */}
-      <div className="relative">
-        <div className="flex justify-between items-center rounded-t-lg pl-5 pr-5 p-3 bg-gray-200 relative">
+      <div>
+        <div className="flex relative justify-between items-center rounded-t-lg pl-5 pr-5 p-3 bg-gray-200">
           <div className="flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -56,17 +56,18 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
             </svg>
             <span className="text-lg text-gray-600">{title}</span>
           </div>
+
           <span className="text-lg text-gray-400">
             {getEmploymentStatus(employmentEndDate)}
           </span>
+          {/* 삼각형 */}
+          <div
+            className="absolute text-lg bottom-[-8px] right-6
+                  w-0 h-0 border-l-[10px] border-l-transparent
+                  border-r-[10px] border-r-transparent
+                  border-t-[10px] border-t-gray-200"
+          ></div>
         </div>
-        {/* 삼각형 */}
-        <div
-          className="text-lg absolute bottom-[-10px] right-4 transform -translate-x-1/2
-      w-0 h-0 border-l-[10px] border-l-transparent
-      border-r-[10px] border-r-transparent
-      border-t-[10px] border-t-gray-200"
-        ></div>
       </div>
 
       {/* 회사 정보 */}
