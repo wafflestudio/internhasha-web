@@ -245,14 +245,10 @@ export const EmailVerifyForm = () => {
           </Button>
         </div>
         {localSignUpResponseMessage !== '' && (
-          <FormErrorResponse>
-            {createErrorMessage(localSignUpResponseMessage)}
-          </FormErrorResponse>
+          <FormErrorResponse>{localSignUpResponseMessage}</FormErrorResponse>
         )}
         {googleSignUpResponseMessage !== '' && (
-          <FormErrorResponse>
-            {createErrorMessage(googleSignUpResponseMessage)}
-          </FormErrorResponse>
+          <FormErrorResponse>{googleSignUpResponseMessage}</FormErrorResponse>
         )}
       </FormContainer>
       {showModal === 'ADD' && body.authProvider === 'GOOGLE' && (
@@ -321,7 +317,7 @@ const useSendCode = ({
           setShowModal('REDIRECT');
           return;
         }
-        setResponseMessage(response.code);
+        setResponseMessage(createErrorMessage(response.code));
       }
     },
     onError: () => {
@@ -367,7 +363,7 @@ const useEmailVerify = ({
           setShowModal('REDIRECT');
           return;
         }
-        setResponseMessage(response.code);
+        setResponseMessage(createErrorMessage(response.code));
         setVerifySuccess(false);
       }
     },
@@ -415,7 +411,7 @@ const useGoogleSignUp = ({
           setShowModal('REDIRECT');
           return;
         }
-        setResponseMessage(response.code);
+        setResponseMessage(createErrorMessage(response.code));
       }
     },
     onError: () => {
@@ -472,7 +468,7 @@ const useLocalSignUp = ({
           setShowModal('REDIRECT');
           return;
         }
-        setResponseMessage(response.code);
+        setResponseMessage(createErrorMessage(response.code));
       }
     },
     onError: () => {

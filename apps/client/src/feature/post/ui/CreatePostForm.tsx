@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useLocation } from 'react-router';
 
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
+import { createErrorMessage } from '@/entities/errors';
 import type { PostRequest, Series } from '@/entities/post';
 import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
 import { JOB_CATEGORY_MAP, JOB_MAJOR_CATEGORIES } from '@/entities/post';
@@ -303,7 +304,7 @@ const useCreatePost = ({
       if (response.type === 'success') {
         toMain();
       } else {
-        setResponseMessage(response.code);
+        setResponseMessage(createErrorMessage(response.code));
       }
     },
     onError: () => {
