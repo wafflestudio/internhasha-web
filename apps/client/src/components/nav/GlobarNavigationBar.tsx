@@ -9,7 +9,7 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 export const GlobalNavigationBar = () => {
   const { token } = useGuardContext(TokenContext);
   const { logout, isPending } = useLogout();
-  const { toSignUpSelect, toSignInSelect, toMyPage, toMain } =
+  const { toSignUpSelect, toSignInSelect, toMyPage, toMain, toResumeList } =
     useRouteNavigation();
   const handleClickLogoutButton = () => {
     logout();
@@ -17,7 +17,7 @@ export const GlobalNavigationBar = () => {
 
   return (
     <header className="flex justify-center sticky top-0 z-50 bg-white shadow-md">
-      <div className="flex w-full sm:w-screen-sm md:w-screen-md lg:w-scrren-lg xl:w-screen-xl px-6 py-4 flex justify-between items-center">
+      <div className="flex w-full sm:w-screen-sm md:w-screen-md lg:w-scrren-lg xl:w-screen-xl px-6 py-4 justify-between items-center">
         <h1
           onClick={toMain}
           className="text-xl font-bold text-gray-800 transition-colors duration-150 cursor-pointer hover:text-blue-normal"
@@ -38,6 +38,13 @@ export const GlobalNavigationBar = () => {
             <>
               <Button onClick={toMyPage} disabled={isPending} variant="ghost">
                 마이페이지
+              </Button>
+              <Button
+                onClick={toResumeList}
+                disabled={isPending}
+                variant="ghost"
+              >
+                커피챗 리스트
               </Button>
               <Button
                 onClick={handleClickLogoutButton}

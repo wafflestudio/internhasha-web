@@ -1,8 +1,13 @@
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Button = ({ children, disabled, onClick }: ButtonProps) => {
+export const Button = ({
+  children,
+  disabled,
+  onClick,
+  type = 'button',
+}: ButtonProps) => {
   return (
-    <button onClick={onClick} disabled={disabled}>
+    <button type={type} onClick={onClick} disabled={disabled}>
       {children}
     </button>
   );

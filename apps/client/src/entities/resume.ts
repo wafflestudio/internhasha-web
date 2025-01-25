@@ -11,3 +11,12 @@ export type Resume = {
   phoneNumber: string;
   createdAt: string;
 };
+
+export type ResumeListResponse = {
+  resumeList: Resume[];
+};
+
+export type ResumeRequest = {
+  phoneNumber: string;
+  content: string;
+};

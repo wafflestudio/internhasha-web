@@ -1,7 +1,11 @@
 import type { Apis } from '@waffle/api';
 
 import type { ServiceResponse } from '@/entities/response';
-import type { Resume } from '@/entities/resume';
+import type {
+  Resume,
+  ResumeListResponse,
+  ResumeRequest,
+} from '@/entities/resume';
 
 export type ResumeService = {
   getResumeDetail: ({
@@ -15,16 +19,14 @@ export type ResumeService = {
     token,
   }: {
     token: string;
-  }) => ServiceResponse<{ resumeList: Resume[] }>;
-  applyResume: ({
+  }) => ServiceResponse<ResumeListResponse>;
+  createResume: ({
     token,
-    phoneNumber,
-    content,
+    resumeContents,
     postId,
   }: {
     token: string;
-    phoneNumber: string;
-    content: string;
+    resumeContents: ResumeRequest;
     postId: string;
   }) => ServiceResponse<Resume>;
   deleteResume: ({
@@ -72,18 +74,16 @@ export const implResumeService = ({ apis }: { apis: Apis }): ResumeService => ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-  applyResume: async ({
+  createResume: async ({
     token,
-    phoneNumber,
-    content,
+    resumeContents,
     postId,
   }: {
     token: string;
-    phoneNumber: string;
-    content: string;
+    resumeContents: ResumeRequest;
     postId: string;
   }) => {
-    const body = { phoneNumber, content };
+    const body = resumeContents;
     const params = { postId };
 
     const { status, data } = await apis['POST /resume/:postId']({
