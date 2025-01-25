@@ -142,11 +142,13 @@ const useGoogleSignUp = ({
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
+        if (response.data.user.isMerged) {
+          setShowModal('ADD');
+          return;
+        }
         toSignUpComplete();
       } else {
-        if (response.code === 'USER_001') {
-          setShowModal('ADD');
-        } else if (response.code === 'USER-003') {
+        if (response.code === 'USER-003') {
           setShowModal('REDIRECT');
         }
         setResponseMessage(response.code);
