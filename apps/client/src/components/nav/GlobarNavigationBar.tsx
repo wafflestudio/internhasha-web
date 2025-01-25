@@ -9,7 +9,7 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 export const GlobalNavigationBar = () => {
   const { token } = useGuardContext(TokenContext);
   const { logout, isPending } = useLogout();
-  const { toSignUpSelect, toSignInSelect, toMyPage, toMain } =
+  const { toSignUpSelect, toSignInSelect, toMyPage, toMain, toResumeList } =
     useRouteNavigation();
   const handleClickLogoutButton = () => {
     logout();
@@ -38,6 +38,9 @@ export const GlobalNavigationBar = () => {
             <>
               <Button onClick={toMyPage} disabled={isPending} variant="ghost">
                 마이페이지
+              </Button>
+              <Button onClick={toResumeList} disabled={isPending} variant="ghost">
+                커피챗 리스트
               </Button>
               <Button
                 onClick={handleClickLogoutButton}
