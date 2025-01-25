@@ -1,6 +1,7 @@
 import { createContext } from 'react';
 
 import type { AuthService } from '@/feature/auth';
+import type { LandingService } from '@/feature/landing/service/landingService';
 import type { PostService } from '@/feature/post';
 import type { ResumeService } from '@/feature/resume';
 import type { UserService } from '@/feature/user';
@@ -12,6 +13,7 @@ export type ServiceContext = {
   userService: UserService;
   resumeService: ResumeService;
   fileService: FileService;
+  landingService: LandingService;
 };
 
 export const ServiceContext = createContext<ServiceContext | null>(null);

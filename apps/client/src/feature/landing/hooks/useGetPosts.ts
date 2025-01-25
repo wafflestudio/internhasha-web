@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { Series } from '@/entities/post.ts';
-import { useGuardContext } from '@/shared/context/hooks.ts';
-import { ServiceContext } from '@/shared/context/ServiceContext.ts';
+import type { Series } from '@/entities/post';
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
 
 interface UseGetPostsProps {
   page?: number;

@@ -86,7 +86,6 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-
   getPostDetail: async ({
     token,
     postId,
