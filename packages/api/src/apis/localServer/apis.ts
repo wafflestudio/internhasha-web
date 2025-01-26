@@ -126,10 +126,10 @@ export const getLocalServerApis = ({
         path: "user/signout",
         token,
       }),
-    "GET /user/info": ({ token }: { token: string }) =>
+    "GET /user/me": ({ token }: { token: string }) =>
       callWithToken<SuccessResponse<UserResponse>>({
         method: "GET",
-        path: "user/info",
+        path: "user/me",
         token,
       }),
     "GET /post": ({ params }: { params: PostPathParams }) =>
