@@ -36,6 +36,10 @@ const VALID_RECRUITING_FILTER_VALUE = RECRUITING_FILTER_VALUE.map(
   (item) => item.value,
 );
 
+const VALID_RECRUITING_OPTION_VALUE = RECRUITING_FILTER_VALUE.map(
+  (item) => item.label,
+);
+
 type VALID_RECRUITING_FILTER_TYPE = 0 | 1 | undefined;
 
 const SERIES_FILTER_VALUE = [
@@ -167,7 +171,10 @@ export const FilterSection = ({
             }
             className="bg-white"
           >
-            모집 중 <img src={ICON_SRC.ARROW} className="w-4 h-4 rotate-180" />
+            {filterElements.pathStatus !== undefined
+              ? VALID_RECRUITING_OPTION_VALUE[filterElements.pathStatus]
+              : '모집 상태'}{' '}
+            <img src={ICON_SRC.ARROW} className="w-4 h-4 rotate-180" />
           </Button>
         </PopoverTrigger>
         <PopoverContent>
@@ -227,7 +234,8 @@ export const FilterSection = ({
             }
             className="bg-white"
           >
-            시리즈 <img src={ICON_SRC.ARROW} className="w-4 h-4 rotate-180" />
+            시리즈
+            <img src={ICON_SRC.ARROW} className="w-4 h-4 rotate-180" />
           </Button>
         </PopoverTrigger>
         <PopoverContent>
@@ -263,9 +271,17 @@ export const FilterSection = ({
                 </div>
               ))}
             </div>
-            <div>
-              <Button onClick={handleClickResetSeriesButton}>초기화</Button>
-              <Button onClick={handleClickApplySeriesFilter}>적용</Button>
+            <div className="flex justify-end gap-[6px]">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleClickResetSeriesButton}
+              >
+                초기화
+              </Button>
+              <Button size="sm" onClick={handleClickApplySeriesFilter}>
+                적용
+              </Button>
             </div>
           </div>
         </PopoverContent>
