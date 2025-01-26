@@ -17,7 +17,7 @@ export type PostService = {
     roles?: string[];
     investmentMax?: number;
     investmentMin?: number;
-    series?: Series;
+    series?: Series[];
     pathStatus?: number;
   }) => ServiceResponse<{
     posts: BriefPost[];
@@ -69,7 +69,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
       postPath.append('investmentMax', investmentMax.toString());
     if (investmentMin !== undefined)
       postPath.append('investmentMin', investmentMin.toString());
-    if (series !== undefined) postPath.append('series', series);
+    if (series !== undefined) postPath.append('series', series.toString());
     if (pathStatus !== undefined)
       postPath.append('status', pathStatus.toString());
 
