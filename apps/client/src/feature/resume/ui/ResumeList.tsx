@@ -28,8 +28,8 @@ export const ResumeListView = () => {
 
   return (
     <div>
-      <div className="max-w-screen-lg mx-auto px-4 py-10">
-        <div className="mt-6 space-y-4">
+      <div className="max-w-screen-lg">
+        <div className="space-y-4 w-3/5">
           {resumeList.map((resume) => (
             <Card key={resume.id} className="shadow-md">
               <CardHeader>
