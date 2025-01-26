@@ -76,7 +76,7 @@ export const LandingPage = () => {
 
           {/* 게시글 리스트 */}
           <main>
-            <div className="grid w-full grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pr-2">
+            <div className="grid w-full grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 pr-2">
               {postsData.posts.map((post, idx) => (
                 <PostCard
                   key={`post-${idx}`}
