@@ -31,7 +31,7 @@ export type FilterElements = {
   roles?: JobMinorCategory[];
   investmentMax?: number;
   investmentMin?: number;
-  pathStatus?: 0 | 1 | 2;
+  pathStatus?: 0 | 1;
   series?: Series[];
 };
 

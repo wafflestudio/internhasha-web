@@ -1,4 +1,4 @@
-import { SelectContainerWithOptions } from '@waffle/design-system';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -12,15 +12,15 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ICON_SRC } from '@/entities/asset';
 import { type FilterElements, type Series } from '@/entities/post';
 
-const INVESTMENT_RANGES = [
-  { label: '전체', min: undefined, max: undefined },
-  { label: '1억 미만', min: 0, max: 10000 },
-  { label: '1억 ~ 5억', min: 10000, max: 50000 },
-  { label: '5억~ 10억', min: 50000, max: 100000 },
-  { label: '10억~ 50억', min: 100000, max: 500000 },
-  { label: '50억~ 100억', min: 500000, max: 1000000 },
-  { label: '100억~ 500억', min: 1000000, max: 5000000 },
-] as const;
+// const INVESTMENT_RANGES = [
+//   { label: '전체', min: undefined, max: undefined },
+//   { label: '1억 미만', min: 0, max: 10000 },
+//   { label: '1억 ~ 5억', min: 10000, max: 50000 },
+//   { label: '5억~ 10억', min: 50000, max: 100000 },
+//   { label: '10억~ 50억', min: 100000, max: 500000 },
+//   { label: '50억~ 100억', min: 500000, max: 1000000 },
+//   { label: '100억~ 500억', min: 1000000, max: 5000000 },
+// ] as const;
 
 type FilterSectionProps = {
   filterElements: FilterElements;
@@ -28,7 +28,6 @@ type FilterSectionProps = {
 };
 
 const RECRUITING_FILTER_VALUE = [
-  { value: 2, label: '전체' },
   { value: 0, label: '모집 중' },
   { value: 1, label: '모집 완료' },
 ];
@@ -36,6 +35,8 @@ const RECRUITING_FILTER_VALUE = [
 const VALID_RECRUITING_FILTER_VALUE = RECRUITING_FILTER_VALUE.map(
   (item) => item.value,
 );
+
+type VALID_RECRUITING_FILTER_TYPE = 0 | 1 | undefined;
 
 const SERIES_FILTER_VALUE = [
   { value: 'SEED', label: 'Seed' },
@@ -47,113 +48,148 @@ const SERIES_FILTER_VALUE = [
 
 const VALID_SERIES_FILTER_VALUE = SERIES_FILTER_VALUE.map((item) => item.value);
 
+type VALID_SERIES_FILTER_TYPE = Series[] | undefined;
+
 export const FilterSection = ({
   filterElements,
   onChangeFilters,
 }: FilterSectionProps) => {
-  console.log(filterElements);
-  const handleRecruitingFilter = (input: string) => {
+  const [recruitingSelect, setRecruitingSelect] =
+    useState<VALID_RECRUITING_FILTER_TYPE>(filterElements.pathStatus);
+  const [seriesSelect, setSeriesSelect] = useState<VALID_SERIES_FILTER_TYPE>(
+    filterElements.series,
+  );
+
+  const handleChangeRecruitingFilter = (input: string) => {
+    if (input === 'ALL') {
+      setRecruitingSelect(undefined);
+      return;
+    }
+
     const inputToNumber = Number(input);
 
-    const isValidRecruitingValue = (value: number): value is 0 | 1 | 2 => {
+    const isValidRecruitingValue = (value: number): value is 0 | 1 => {
       return (
         !isNaN(inputToNumber) && VALID_RECRUITING_FILTER_VALUE.includes(value)
       );
     };
 
     if (isValidRecruitingValue(inputToNumber)) {
-      onChangeFilters({
-        ...filterElements,
-        pathStatus: inputToNumber,
-      });
+      setRecruitingSelect(inputToNumber);
     }
+  };
+
+  const handleClickApplyRecruitingFilter = () => {
+    onChangeFilters({
+      ...filterElements,
+      pathStatus: recruitingSelect,
+    });
   };
 
   const isAllSeriesSelected =
-    filterElements.series?.length === SERIES_FILTER_VALUE.length;
+    seriesSelect?.length === SERIES_FILTER_VALUE.length;
 
-  const handleSeriesFilter = (input: string) => {
-    console.log('here');
-    const isValidSeriesValue = (value: string): value is Series | 'ALL' => {
-      return value === 'ALL' || VALID_SERIES_FILTER_VALUE.includes(value);
+  const handleChangeSeriesFilter = (input: string) => {
+    const isValidSeriesValue = (value: string): value is Series => {
+      return VALID_SERIES_FILTER_VALUE.includes(value);
     };
 
+    if (input === 'ALL') {
+      if (isAllSeriesSelected) {
+        setSeriesSelect(undefined);
+      } else {
+        setSeriesSelect(VALID_SERIES_FILTER_VALUE as Series[]);
+      }
+      return;
+    }
+
     if (isValidSeriesValue(input)) {
-      if (input === 'ALL') {
-        if (isAllSeriesSelected) {
-          onChangeFilters({
-            ...filterElements,
-            series: undefined,
-          });
-          console.log('here2');
-        } else {
-          onChangeFilters({
-            ...filterElements,
-            series: VALID_SERIES_FILTER_VALUE as Series[],
-          });
-        }
+      if (seriesSelect === undefined) {
+        setSeriesSelect([input]);
         return;
       }
 
-      if (filterElements.series === undefined) {
-        onChangeFilters({
-          ...filterElements,
-          series: [input],
-        });
+      if (seriesSelect.includes(input)) {
+        setSeriesSelect(seriesSelect.filter((item) => item !== input));
         return;
       }
 
-      if (filterElements.series.includes(input)) {
-        onChangeFilters({
-          ...filterElements,
-          series: filterElements.series.filter((item) => item !== input),
-        });
-        return;
-      }
-
-      onChangeFilters({
-        ...filterElements,
-        series: [...filterElements.series, input],
-      });
+      setSeriesSelect([...seriesSelect, input]);
     }
   };
 
-  const getCurrentInvestmentRange = () => {
-    if (
-      filterElements.investmentMin == null &&
-      filterElements.investmentMax == null
-    )
-      return '전체';
-
-    const currentRange = INVESTMENT_RANGES.find(
-      (range) =>
-        range.min === filterElements.investmentMin &&
-        range.max === filterElements.investmentMax,
-    );
-
-    return currentRange?.label ?? '전체';
+  const handleClickApplySeriesFilter = () => {
+    onChangeFilters({
+      ...filterElements,
+      series: seriesSelect,
+    });
   };
+
+  const handleClickResetRecruitButton = () => {
+    setRecruitingSelect(undefined);
+    onChangeFilters({
+      ...filterElements,
+      pathStatus: undefined,
+    });
+  };
+
+  const handleClickResetSeriesButton = () => {
+    setSeriesSelect(undefined);
+    onChangeFilters({
+      ...filterElements,
+      series: undefined,
+    });
+  };
+
+  // const getCurrentInvestmentRange = () => {
+  //   if (
+  //     filterElements.investmentMin == null &&
+  //     filterElements.investmentMax == null
+  //   )
+  //     return '전체';
+
+  //   const currentRange = INVESTMENT_RANGES.find(
+  //     (range) =>
+  //       range.min === filterElements.investmentMin &&
+  //       range.max === filterElements.investmentMax,
+  //   );
+
+  //   return currentRange?.label ?? '전체';
+  // };
 
   return (
     <div className="flex gap-5 items-center">
       <Popover>
-        <PopoverTrigger>
+        <PopoverTrigger asChild>
           <Button
-          // variant={
-          //   selectedFilter.includes('RECRUITING') ? 'selected' : 'secondary'
-          // }
+            variant={
+              filterElements.pathStatus !== undefined ? 'selected' : 'secondary'
+            }
+            className="bg-white"
           >
             모집 중 <img src={ICON_SRC.ARROW} className="w-4 h-4 rotate-180" />
           </Button>
         </PopoverTrigger>
         <PopoverContent>
-          <div>
+          <div className="flex flex-col px-2.5 py-5 gap-[30px]">
             <RadioGroup
-              onValueChange={handleRecruitingFilter}
-              defaultValue={String(RECRUITING_FILTER_VALUE[0]?.value)}
+              onValueChange={handleChangeRecruitingFilter}
+              defaultValue={
+                recruitingSelect === undefined
+                  ? 'ALL'
+                  : String(filterElements.pathStatus)
+              }
+              className="flex flex-col gap-[10px]"
             >
+              <div className="flex gap-[10px] text-sm text-grey-darker">
+                <RadioGroupItem value="ALL" id="recruiting-all" />
+                <Label htmlFor="recruiting-all">전체</Label>
+              </div>
               {RECRUITING_FILTER_VALUE.map((option, idx) => (
-                <div key={`recruiting-filter-${idx}`}>
+                <div
+                  key={`recruiting-filter-${idx}`}
+                  className="flex gap-[10px] text-sm text-grey-darker"
+                >
                   <RadioGroupItem
                     value={String(option.value)}
                     id={`recruiting-${option.value}`}
@@ -164,48 +200,61 @@ export const FilterSection = ({
                 </div>
               ))}
             </RadioGroup>
-            <div>
-              <Button>초기화</Button>
-              <Button>적용</Button>
+            <div className="flex justify-end gap-[6px]">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleClickResetRecruitButton}
+              >
+                초기화
+              </Button>
+              <Button size="sm" onClick={handleClickApplyRecruitingFilter}>
+                적용
+              </Button>
             </div>
           </div>
         </PopoverContent>
       </Popover>
 
       <Popover>
-        <PopoverTrigger>
+        <PopoverTrigger asChild>
           <Button
-          // variant={
-          //   selectedFilter.includes('SERIES') ? 'selected' : 'secondary'
-          // }
+            variant={
+              filterElements.series !== undefined &&
+              filterElements.series.length !== 0
+                ? 'selected'
+                : 'secondary'
+            }
+            className="bg-white"
           >
             시리즈 <img src={ICON_SRC.ARROW} className="w-4 h-4 rotate-180" />
           </Button>
         </PopoverTrigger>
         <PopoverContent>
-          <div>
-            <div>
-              <div key="series-filter-all">
+          <div className="flex flex-col px-2.5 py-5 gap-[30px]">
+            <div className="flex flex-col gap-[10px]">
+              <div className="flex gap-[10px] text-sm text-grey-darker">
                 <Checkbox
                   value="ALL"
                   id="series-all"
                   checked={isAllSeriesSelected}
                   onCheckedChange={() => {
-                    handleSeriesFilter('ALL');
+                    handleChangeSeriesFilter('ALL');
                   }}
                 />
                 <Label htmlFor="seires-all">전체</Label>
               </div>
               {SERIES_FILTER_VALUE.map((option, idx) => (
-                <div key={`series-filter-${idx}`}>
+                <div
+                  key={`series-filter-${idx}`}
+                  className="flex gap-[10px] text-sm text-grey-darker"
+                >
                   <Checkbox
                     value={option.value}
                     id={`series-${option.value}`}
-                    checked={filterElements.series?.includes(
-                      option.value as Series,
-                    )}
+                    checked={seriesSelect?.includes(option.value as Series)}
                     onCheckedChange={() => {
-                      handleSeriesFilter(option.value);
+                      handleChangeSeriesFilter(option.value);
                     }}
                   />
                   <Label htmlFor={`series-${option.value}`}>
@@ -215,21 +264,23 @@ export const FilterSection = ({
               ))}
             </div>
             <div>
-              <Button>초기화</Button>
-              <Button>적용</Button>
+              <Button onClick={handleClickResetSeriesButton}>초기화</Button>
+              <Button onClick={handleClickApplySeriesFilter}>적용</Button>
             </div>
           </div>
         </PopoverContent>
       </Popover>
 
       <Popover>
-        <PopoverTrigger>
+        <PopoverTrigger asChild>
           <Button
-          // variant={
-          //   selectedFilter.includes('INVEST_AMOUNT')
-          //     ? 'selected'
-          //     : 'secondary'
-          // }
+            variant={
+              filterElements.investmentMax !== undefined ||
+              filterElements.investmentMin !== undefined
+                ? 'selected'
+                : 'secondary'
+            }
+            className="bg-white"
           >
             투자 금액{' '}
             <img src={ICON_SRC.ARROW} className="w-4 h-4 rotate-180" />
