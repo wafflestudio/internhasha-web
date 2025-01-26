@@ -9,7 +9,7 @@ interface UseGetPostsProps {
   roles?: string[];
   investmentMax?: number;
   investmentMin?: number;
-  series?: Series;
+  series?: Series[];
   pathStatus?: number;
 }
 
