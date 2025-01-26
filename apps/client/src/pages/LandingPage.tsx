@@ -47,7 +47,7 @@ export const LandingPage = () => {
       <GlobalNavigationBar />
 
       {/* 메인 컨텐츠 */}
-      <div className="flex flex-col w-full sm:w-screen-sm md:w-screen-md lg:w-scrren-lg xl:w-screen-xl md:flex-row m-auto px-2 pt-10 gap-2">
+      <div className="flex flex-col w-full sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl md:flex-row m-auto px-2 pt-10 gap-2">
         {/* RolesFilter */}
         <div className="hidden md:block md:flex-col order-1 md:order-none">
           <RolesFilter
