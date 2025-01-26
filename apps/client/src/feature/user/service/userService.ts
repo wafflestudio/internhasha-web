@@ -13,7 +13,7 @@ export type UserService = {
 
 export const implUserService = ({ apis }: { apis: Apis }): UserService => ({
   getMyInfo: async ({ token }) => {
-    const { status, data } = await apis['GET /user/info']({ token });
+    const { status, data } = await apis['GET /user/me']({ token });
 
     if (status === 200) {
       return {
