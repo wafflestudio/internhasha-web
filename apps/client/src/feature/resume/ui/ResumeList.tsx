@@ -21,17 +21,21 @@ export const ResumeListView = () => {
 
   return (
     <div>
-      <h1>Resumes</h1>
-      <ul>
-        {resumeList.map((resume) => (
-          <li key={resume.id}>
-            <p>{resume.content}</p>
-            <p>{resume.author.name}</p>
-            <p>{resume.phoneNumber}</p>
-            <p>{resume.createdAt}</p>
-          </li>
-        ))}
-      </ul>
+      <div className="max-w-screen-lg mx-auto px-4 py-10">
+        <ul className="mt-6 space-y-4">
+          {resumeList.map((resume) => (
+            <li
+              key={resume.id}
+              className="flex justify-between items-center p-4 bg-white shadow rounded-lg"
+            >
+              <p>{resume.content}</p>
+              <p>{resume.author.name}</p>
+              <p>{resume.phoneNumber}</p>
+              <p>{resume.createdAt}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
