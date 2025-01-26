@@ -102,10 +102,11 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
       },
       screens: {
-        sm: '580px',
-        md: '760px',
-        lg: '984px',
-        xl: '1344px',
+        xs: '580px',
+        sm: '760px',
+        md: '984px',
+        lg: '1344px',
+        xl: '1500px',
       },
       width: {
         'screen-sm': '715px',
