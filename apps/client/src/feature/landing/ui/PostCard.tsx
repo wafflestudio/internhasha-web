@@ -38,7 +38,9 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
         </div>
 
         <span className="text-grey-normal-hover">
-          {getEmploymentStatus(employmentEndDate)}
+          {employmentEndDate === undefined
+            ? '상시 채용'
+            : getEmploymentStatus(employmentEndDate)}
         </span>
         {/* 삼각형 */}
         <div

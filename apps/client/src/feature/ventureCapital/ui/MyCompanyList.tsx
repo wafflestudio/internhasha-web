@@ -5,6 +5,7 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const MyCompanyList = () => {
   const { toCreatePost } = useRouteNavigation();
+  // TODO: 서버 API와 연결
   const mockCompanyList = [
     {
       companyName: 'AAA',
@@ -14,6 +15,7 @@ export const MyCompanyList = () => {
       imageLink: '...',
       investAmount: 12,
       investCompany: ['연우의 투자사'],
+      explanation: '나는 회사 1',
     },
     {
       companyName: 'bbb',
@@ -23,6 +25,7 @@ export const MyCompanyList = () => {
       imageLink: '...',
       investAmount: 3,
       investCompany: ['연우의 투자사', '카카오 투자사'],
+      explanation: '나는 회사 2',
     },
   ];
   return (

@@ -30,8 +30,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
     series,
     employmentEndDate,
     isActive,
-    isAlways,
-    IRDeckLink,
+    irDeckLink,
     landingPageLink,
     externalDescriptionLink,
     category,
@@ -183,7 +182,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           {/* 채용 정보 */}
           <p style={{ marginBottom: '8px' }}>
             <strong>채용 상태:</strong>{' '}
-            {isAlways
+            {employmentEndDate === undefined
               ? '상시 채용'
               : `마감일: ${new Date(employmentEndDate).toLocaleDateString()}`}
           </p>
@@ -234,9 +233,9 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               회사 홈페이지
             </a>
           )}
-          {IRDeckLink != null && (
+          {irDeckLink != null && (
             <a
-              href={IRDeckLink}
+              href={irDeckLink}
               target="_blank"
               rel="noopener noreferrer"
               style={{

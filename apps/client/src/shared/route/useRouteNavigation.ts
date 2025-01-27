@@ -34,6 +34,7 @@ type CompanyBody = {
   IRDeckLink?: string;
   landingPageLink?: string;
   externalDescriptionLink?: { link: string; description: string }[];
+  explanation: string;
 };
 
 type PostBody = {

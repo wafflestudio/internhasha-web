@@ -22,18 +22,14 @@ type PostDTO = {
   imageLink: string;
   investAmount: number;
   investCompany: string[];
-  IRDeckLink: string;
-  landingPageLink: string;
-  externalDescriptionLink: string[];
+  IRDeckLink?: string;
+  landingPageLink?: string;
+  externalDescriptionLink?: string[];
   isActive: boolean;
   employmentEndDate: Date;
-  isBookmarked: boolean;
 };
 
-type PostBriefDTO = Omit<
-  PostDTO,
-  'createdAt' | 'updatedAt' | 'isActive'
->;
+type PostBriefDTO = Omit<PostDTO, 'createdAt' | 'updatedAt' | 'isActive'>;
 
 export type PostsResponse = {
   posts: PostBriefDTO[];

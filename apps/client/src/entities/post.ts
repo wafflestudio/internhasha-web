@@ -60,7 +60,7 @@ export type Post = {
 
   // post 정보
   title: string;
-  employmentEndDate: string;
+  employmentEndDate?: string;
   createdAt: string;
   updatedAt: string;
   isActive: boolean;
@@ -72,7 +72,7 @@ export type Post = {
 
 export type PostRequest = Omit<
   Post,
-  'id' | 'createdAt' | 'updatedAt' | 'isActive'
+  'id' | 'createdAt' | 'updatedAt' | 'isActive' | 'isBookmarked'
 >;
 
 export type BriefPost = Omit<
