@@ -10,6 +10,18 @@ type PostCardProps = {
 
 export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
   const { token } = useGuardContext(TokenContext);
+  const onClickAddBookmark = ({ postId }: { postId: string }) => {
+    if (token === null) {
+      // TODO: 로그인 유도 모달 띄우기
+      return;
+    }
+  };
+  const onClickDeleteBookmark = ({ postId }: { postId: string }) => {
+    if (token === null) {
+      // TODO: 로그인 유도 모달 띄우기
+      return;
+    }
+  };
   const {
     id,
     companyName,
@@ -74,6 +86,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
         {/* 시리즈 및 투자 정보 */}
         <div className="flex w-full justify-between py-1 mt-[30px]">
           <div className="flex items-center gap-2">
+            {/* TODO: 삼항 연산자 variant로 정리 */}
             <span
               className={`px-2 py-1 text-sm rounded ${
                 series === 'PRE_A' || series === 'A'
@@ -105,17 +118,28 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
             )}
           </div>
           <div>
-            {token !== null && isBookmarked && (
-              <img
-                src={ICON_SRC.BOOKMARK.SELECTED}
-                className="w-[30px] h-[30px]"
-              />
-            )}
-            {token !== null && !isBookmarked && (
-              <img
-                src={ICON_SRC.BOOKMARK.UNSELECTED}
-                className="w-[30px] h-[30px]"
-              />
+            {isBookmarked ? (
+              <button
+                onClick={() => {
+                  onClickDeleteBookmark({ postId: id });
+                }}
+              >
+                <img
+                  src={ICON_SRC.BOOKMARK.SELECTED}
+                  className="w-[30px] h-[30px]"
+                />
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  onClickAddBookmark({ postId: id });
+                }}
+              >
+                <img
+                  src={ICON_SRC.BOOKMARK.UNSELECTED}
+                  className="w-[30px] h-[30px]"
+                />
+              </button>
             )}
           </div>
         </div>
