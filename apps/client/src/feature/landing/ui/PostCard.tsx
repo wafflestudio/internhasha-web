@@ -8,10 +8,15 @@ import { TokenContext } from '@/shared/context/TokenContext';
 
 type PostCardProps = {
   post: BriefPost;
-  onDetailClick: (postId: string) => void;
+  onDetailClick(postId: string): void;
+  setShowSignInModal(input: boolean): void;
 };
 
-export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
+export const PostCard = ({
+  post,
+  onDetailClick,
+  setShowSignInModal,
+}: PostCardProps) => {
   const { token } = useGuardContext(TokenContext);
   const { addBookmark, isPending: isAddBookmarkPending } = useAddBookmark();
   const { deleteBookmark, isPending: isDeleteBookmarkPending } =
@@ -19,14 +24,14 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
 
   const onClickAddBookmark = ({ postId }: { postId: string }) => {
     if (token === null) {
-      // TODO: 로그인 유도 모달 띄우기
+      setShowSignInModal(true);
       return;
     }
     addBookmark({ postId });
   };
   const onClickDeleteBookmark = ({ postId }: { postId: string }) => {
     if (token === null) {
-      // TODO: 로그인 유도 모달 띄우기
+      setShowSignInModal(true);
       return;
     }
     deleteBookmark({ postId });
