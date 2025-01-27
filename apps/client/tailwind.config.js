@@ -119,9 +119,14 @@ export default {
           '0%': { opacity: 0, transform: 'scale(0.8)' },
           '100%': { opacity: 1, transform: 'scale(1)' },
         },
+        popout: {
+          '0%': { opacity: 1, transform: 'scale(1)' },
+          '100%': { opacity: 0, transform: 'scale(0.8)' },
+        },
       },
       animation: {
         popup: 'popup 0.3s ease-in-out',
+        popout: 'popout 0.3s ease-in-out forwards',
       },
     },
   },

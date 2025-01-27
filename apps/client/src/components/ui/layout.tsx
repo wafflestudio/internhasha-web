@@ -21,12 +21,28 @@ const backgroundVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof backgroundVariants> {}
+    VariantProps<typeof backgroundVariants> {
+  isVisible: boolean;
+  onOutSlideClick?: () => void;
+}
 
-export const ModalFloatBackground = ({ children, variant }: ButtonProps) => {
+export const ModalFloatBackground = ({
+  children,
+  variant,
+  isVisible,
+  onOutSlideClick,
+}: ButtonProps) => {
   return (
-    <div className={cn(backgroundVariants({ variant }))}>
-      <div className="flex flex-col gap-[60px] bg-white rounded-2xl shadow-lg max-w-sm w-full p-6 text-center animate-popup">
+    <div
+      className={cn(backgroundVariants({ variant }))}
+      onClick={onOutSlideClick}
+    >
+      <div
+        className={`flex flex-col gap-[60px] bg-white rounded-2xl shadow-lg max-w-sm w-full p-6 text-center ${isVisible ? 'animate-popup' : 'animate-popout'}`}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         {children}
       </div>
     </div>
