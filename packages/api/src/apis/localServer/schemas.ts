@@ -42,12 +42,13 @@ type PostDTO = {
 
   // 회사 정보
   companyName: string;
+  explanation: string;
   email: string;
   slogan: string;
   investAmount?: number;
   investCompany: string[];
   series: "SEED" | "PRE_A" | "A" | "B" | "C" | "D";
-  IRDeckLink?: string;
+  irDeckLink?: string;
   landingPageLink?: string;
   imageLink?: string;
   externalDescriptionLink?: Link[];
@@ -56,37 +57,26 @@ type PostDTO = {
   // post 정보
   title: string;
   employmentEndDate: string;
-  isAlways: boolean;
   createdAt: string;
   updatedAt: string;
   isActive: boolean;
   category: JobCategory;
   detail: string;
   headcount: number;
+  isBookmarked: boolean;
 };
 
-export type PostBriefDTO = {
-  id: string;
-  author: AuthorBriefDTO;
-
-  // 회사 정보
-  companyName: string;
-  slogan: string;
-  investAmount?: number;
-  investCompany: string[];
-  series: "SEED" | "PRE_A" | "A" | "B" | "C" | "D";
-  imageLink: string;
-
-  // 포스트 정보
-  title: string;
-  isAlways: boolean;
-  employmentEndDate: string;
-  createdAt: string;
-  updatedAt: string;
-  isActive: boolean;
-  category: JobCategory;
-  headcount: number;
-};
+export type PostBriefDTO = Omit<
+  PostDTO,
+  | "explanation"
+  | "irDeckLink"
+  | "landingPageLink"
+  | "externalDescriptionLink"
+  | "tags"
+  | "createdAt"
+  | "updatedAt"
+  | "detail"
+>;
 
 type ResumeDTO = {
   id: string;

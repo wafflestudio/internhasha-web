@@ -1,5 +1,7 @@
 import { ICON_SRC } from '@/entities/asset';
 import type { BriefPost } from '@/entities/post';
+import { useGuardContext } from '@/shared/context/hooks';
+import { TokenContext } from '@/shared/context/TokenContext';
 
 type PostCardProps = {
   post: BriefPost;
@@ -7,6 +9,7 @@ type PostCardProps = {
 };
 
 export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
+  const { token } = useGuardContext(TokenContext);
   const {
     id,
     companyName,
@@ -17,6 +20,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
     imageLink,
     investAmount,
     employmentEndDate,
+    isBookmarked,
   } = post;
 
   return (
@@ -99,10 +103,18 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
             )}
           </div>
           <div>
-            <img
-              src={ICON_SRC.BOOKMARK.UNSELECTED}
-              className="w-[30px] h-[30px]"
-            />
+            {token !== null && isBookmarked && (
+              <img
+                src={ICON_SRC.BOOKMARK.SELECTED}
+                className="w-[30px] h-[30px]"
+              />
+            )}
+            {token !== null && !isBookmarked && (
+              <img
+                src={ICON_SRC.BOOKMARK.UNSELECTED}
+                className="w-[30px] h-[30px]"
+              />
+            )}
           </div>
         </div>
       </section>

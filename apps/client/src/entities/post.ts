@@ -46,12 +46,13 @@ export type Post = {
 
   // 회사 정보
   companyName: string;
+  explanation: string;
   email: string;
   slogan: string;
   investAmount?: number;
   investCompany: string[];
   series: Series;
-  IRDeckLink?: string;
+  irDeckLink?: string;
   landingPageLink?: string;
   imageLink?: string;
   externalDescriptionLink?: Link[];
@@ -60,13 +61,13 @@ export type Post = {
   // post 정보
   title: string;
   employmentEndDate: string;
-  isAlways: boolean;
   createdAt: string;
   updatedAt: string;
   isActive: boolean;
   category: JobMinorCategory;
   detail: string;
   headcount: number;
+  isBookmarked: boolean;
 };
 
 export type PostRequest = Omit<
@@ -76,10 +77,12 @@ export type PostRequest = Omit<
 
 export type BriefPost = Omit<
   Post,
-  | 'email'
-  | 'IRDeckLink'
+  | 'explanation'
+  | 'irDeckLink'
   | 'landingPageLink'
   | 'externalDescriptionLink'
   | 'tags'
+  | 'createdAt'
+  | 'updatedAt'
   | 'detail'
 >;

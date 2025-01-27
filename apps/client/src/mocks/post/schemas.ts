@@ -27,22 +27,13 @@ type PostDTO = {
   externalDescriptionLink: string[];
   isActive: boolean;
   employmentEndDate: Date;
+  isBookmarked: boolean;
 };
 
-type PostBriefDTO = {
-  id: string;
-  companyName: string;
-  email: string;
-  author: AuthorBriefDTO;
-  explanation: string;
-  tags: string[];
-  roles: RoleDTO[];
-  imageLink: string;
-  investAmount: number;
-  investCompany: string[];
-  isActive: boolean;
-  employmentEndDate: Date;
-};
+type PostBriefDTO = Omit<
+  PostDTO,
+  'createdAt' | 'updatedAt' | 'isActive'
+>;
 
 export type PostsResponse = {
   posts: PostBriefDTO[];
