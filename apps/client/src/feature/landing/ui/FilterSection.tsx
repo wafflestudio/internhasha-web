@@ -9,6 +9,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Slider } from '@/components/ui/slider';
 import { ICON_SRC } from '@/entities/asset';
 import { type FilterElements, type Series } from '@/entities/post';
 
@@ -178,7 +179,7 @@ export const FilterSection = ({
           </Button>
         </PopoverTrigger>
         <PopoverContent>
-          <div className="flex flex-col px-2.5 py-5 gap-[30px]">
+          <div className="flex flex-col p-5 gap-[30px]">
             <RadioGroup
               onValueChange={handleChangeRecruitingFilter}
               defaultValue={
@@ -239,7 +240,7 @@ export const FilterSection = ({
           </Button>
         </PopoverTrigger>
         <PopoverContent>
-          <div className="flex flex-col px-2.5 py-5 gap-[30px]">
+          <div className="flex flex-col p-5 gap-[30px]">
             <div className="flex flex-col gap-[10px]">
               <div className="flex gap-[10px] text-sm text-grey-darker">
                 <Checkbox
@@ -304,6 +305,11 @@ export const FilterSection = ({
         </PopoverTrigger>
         <PopoverContent>
           <div>
+            <Slider
+              defaultValue={[20, 80]} // 두 개의 핸들 (하한, 상한)
+              max={100}
+              step={1}
+            />
             <p>전체</p>
             <p>시드</p>
             <p>프리 시리즈 A</p>
