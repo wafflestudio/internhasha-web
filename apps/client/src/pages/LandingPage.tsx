@@ -6,7 +6,7 @@ import type { FilterElements, JobMinorCategory } from '@/entities/post';
 import {
   FilterSection,
   NarrowRolesFilter,
-  Pagination,
+  PaginationBar,
   PostCard,
   RolesFilter,
   useGetPosts,
@@ -54,7 +54,7 @@ export const LandingPage = () => {
         <GlobalNavigationBar />
 
         {/* 메인 컨텐츠 */}
-        <div className="flex flex-col w-full sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl md:flex-row m-auto px-2 pt-10 gap-2">
+        <div className="flex flex-col w-full sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl md:flex-row m-auto px-2 py-10 gap-2">
           {/* RolesFilter */}
           <div className="hidden md:block md:flex-col order-1 md:order-none">
             <RolesFilter
@@ -99,7 +99,7 @@ export const LandingPage = () => {
 
             {/* 페이지네이션 */}
             <footer className="mt-6 flex justify-center">
-              <Pagination
+              <PaginationBar
                 totalPages={TOTAL_PAGES}
                 pagesPerGroup={PAGES_PER_GROUP}
                 currentPage={currentPage}
