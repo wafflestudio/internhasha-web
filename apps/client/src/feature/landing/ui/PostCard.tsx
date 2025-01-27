@@ -84,11 +84,15 @@ export const PostCard = ({
         <div className="flex items-center gap-[14px]">
           {/* 회사 이미지 */}
           <div className="w-[40px] h-[40px] rounded-lg bg-gray-100 overflow-hidden">
-            <img
-              src={imageLink}
-              alt={companyName}
-              className="w-full h-full object-cover"
-            />
+            {imageLink !== undefined ? (
+              <img
+                src={imageLink}
+                alt={companyName}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-grey-light-hover"></div>
+            )}
           </div>
           <div>
             <h3 className="text-xl font-semibold text-gray-800">
