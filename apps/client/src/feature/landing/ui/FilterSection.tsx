@@ -257,10 +257,10 @@ export const FilterSection = ({
           <div className="flex flex-col p-5 gap-[30px]">
             <RadioGroup
               onValueChange={handleChangeRecruitingFilter}
-              defaultValue={
-                filterElements.pathStatus === undefined
+              value={
+                recruitingSelect === undefined
                   ? 'ALL'
-                  : String(filterElements.pathStatus)
+                  : String(recruitingSelect)
               }
               className="flex flex-col gap-[10px]"
             >
@@ -382,10 +382,7 @@ export const FilterSection = ({
           <div className="flex flex-col p-5 gap-[30px]">
             <RadioGroup
               onValueChange={handleChangeInvestAmountFilter}
-              defaultValue={formatLowerAndUpperToInvestAmount({
-                lower: filterElements.investmentMin,
-                upper: filterElements.investmentMax,
-              })}
+              value={investAmountSelect}
               className="flex flex-col gap-[10px]"
             >
               <div className="flex gap-[10px] text-sm text-grey-darker">
