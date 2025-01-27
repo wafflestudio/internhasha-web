@@ -277,8 +277,8 @@ const useGetPostDetail = ({ postId }: { postId: string }) => {
   const { postService } = useGuardContext(ServiceContext);
 
   const { data: postDetailData } = useQuery({
-    queryKey: ['post', token] as const,
-    queryFn: ({ queryKey: [, t] }) => {
+    queryKey: ['postServicce', 'getPostDetail', token] as const,
+    queryFn: ({ queryKey: [, , t] }) => {
       if (t === null) {
         return postService.getPostDetail({ token: '', postId: postId });
       }

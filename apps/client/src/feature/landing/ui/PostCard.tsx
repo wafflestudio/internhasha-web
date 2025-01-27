@@ -1,6 +1,9 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { ICON_SRC } from '@/entities/asset';
 import type { BriefPost } from '@/entities/post';
 import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 
 type PostCardProps = {
@@ -10,18 +13,26 @@ type PostCardProps = {
 
 export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
   const { token } = useGuardContext(TokenContext);
+  const { addBookmark, isPending: isAddBookmarkPending } = useAddBookmark();
+  const { deleteBookmark, isPending: isDeleteBookmarkPending } =
+    useDeleteBookmark();
+
   const onClickAddBookmark = ({ postId }: { postId: string }) => {
     if (token === null) {
       // TODO: 로그인 유도 모달 띄우기
       return;
     }
+    addBookmark({ postId });
   };
   const onClickDeleteBookmark = ({ postId }: { postId: string }) => {
     if (token === null) {
       // TODO: 로그인 유도 모달 띄우기
       return;
     }
+    deleteBookmark({ postId });
   };
+
+  const isPending = isAddBookmarkPending || isDeleteBookmarkPending;
   const {
     id,
     companyName,
@@ -120,6 +131,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
           <div>
             {isBookmarked ? (
               <button
+                disabled={isPending}
                 onClick={() => {
                   onClickDeleteBookmark({ postId: id });
                 }}
@@ -131,6 +143,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
               </button>
             ) : (
               <button
+                disabled={isPending}
                 onClick={() => {
                   onClickAddBookmark({ postId: id });
                 }}
@@ -157,4 +170,72 @@ const getEmploymentStatus = (employmentEndDate: string): string => {
   );
 
   return daysLeft >= 0 ? `D-${daysLeft}` : '마감';
+};
+
+const useAddBookmark = () => {
+  const { postService } = useGuardContext(ServiceContext);
+  const { token } = useGuardContext(TokenContext);
+
+  const queryClient = useQueryClient();
+
+  const { mutate: addBookmark, isPending } = useMutation({
+    mutationFn: ({ postId }: { postId: string }) => {
+      if (token === null) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+      return postService.addBookmark({ token, postId });
+    },
+    onSuccess: async (response) => {
+      if (response.type === 'success') {
+        await queryClient.invalidateQueries({ queryKey: ['postService'] });
+        return;
+      } else {
+        // TODO: 북마크 생성 실패 시 하단에 토스트 띄우기
+        return;
+      }
+    },
+    onError: () => {
+      // TODO: 북마크 생성 실패 시 하단에 토스트 띄우기
+      return;
+    },
+  });
+
+  return {
+    addBookmark,
+    isPending,
+  };
+};
+
+const useDeleteBookmark = () => {
+  const { postService } = useGuardContext(ServiceContext);
+  const { token } = useGuardContext(TokenContext);
+
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteBookmark, isPending } = useMutation({
+    mutationFn: ({ postId }: { postId: string }) => {
+      if (token === null) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+      return postService.deleteBookmark({ token, postId });
+    },
+    onSuccess: async (response) => {
+      if (response.type === 'success') {
+        await queryClient.invalidateQueries({ queryKey: ['postService'] });
+        return;
+      } else {
+        // TODO: 북마크 생성 실패 시 하단에 토스트 띄우기
+        return;
+      }
+    },
+    onError: () => {
+      // TODO: 북마크 생성 실패 시 하단에 토스트 띄우기
+      return;
+    },
+  });
+
+  return {
+    deleteBookmark,
+    isPending,
+  };
 };
