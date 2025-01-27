@@ -9,19 +9,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Slider } from '@/components/ui/slider';
 import { ICON_SRC } from '@/entities/asset';
 import { type FilterElements, type Series } from '@/entities/post';
-
-// const INVESTMENT_RANGES = [
-//   { label: '전체', min: undefined, max: undefined },
-//   { label: '1억 미만', min: 0, max: 10000 },
-//   { label: '1억 ~ 5억', min: 10000, max: 50000 },
-//   { label: '5억~ 10억', min: 50000, max: 100000 },
-//   { label: '10억~ 50억', min: 100000, max: 500000 },
-//   { label: '50억~ 100억', min: 500000, max: 1000000 },
-//   { label: '100억~ 500억', min: 1000000, max: 5000000 },
-// ] as const;
 
 type FilterSectionProps = {
   filterElements: FilterElements;
@@ -55,6 +44,64 @@ const VALID_SERIES_FILTER_VALUE = SERIES_FILTER_VALUE.map((item) => item.value);
 
 type VALID_SERIES_FILTER_TYPE = Series[] | undefined;
 
+const INVEST_AMOUNT_VALUE = [
+  { label: '1억 미만', value: 'UNDER_1', min: 0, max: 10 },
+  { label: '1억 ~ 10억', value: '1_TO_10', min: 10, max: 100 },
+  { label: '10억~ 100억', value: '10_TO_100', min: 100, max: 1000 },
+  { label: '100억 이상', value: 'OVER_100', min: 1000, max: undefined },
+];
+
+const VALID_INVEST_AMOUNT_VALUE = INVEST_AMOUNT_VALUE.map((item) => item.value);
+
+type VALID_INVEST_AMOUNT_TYPE =
+  | 'UNDER_1'
+  | '1_TO_10'
+  | '10_TO_100'
+  | 'OVER_100'
+  | 'ALL';
+
+const formatLowerAndUpperToInvestAmount = ({
+  lower,
+  upper,
+}: {
+  lower: number | undefined;
+  upper: number | undefined;
+}) => {
+  if ((lower === 0 || lower === undefined) && upper === 10) {
+    return 'UNDER_1';
+  }
+  if (lower === 10 && upper === 100) {
+    return '1_TO_10';
+  }
+  if (lower === 100 && upper === 1000) {
+    return '10_TO_100';
+  }
+  if (lower === 1000 && upper === undefined) {
+    return 'OVER_100';
+  }
+  return 'ALL';
+};
+
+const formatInvestAmountToLowerAndUpper = ({
+  investAmount,
+}: {
+  investAmount: VALID_INVEST_AMOUNT_TYPE;
+}) => {
+  if (investAmount === 'UNDER_1') {
+    return { lower: 0, upper: 10 };
+  }
+  if (investAmount === '1_TO_10') {
+    return { lower: 10, upper: 100 };
+  }
+  if (investAmount === '10_TO_100') {
+    return { lower: 100, upper: 1000 };
+  }
+  if (investAmount === 'OVER_100') {
+    return { lower: 1000, upper: undefined };
+  }
+  return { lower: undefined, upper: undefined };
+};
+
 export const FilterSection = ({
   filterElements,
   onChangeFilters,
@@ -64,6 +111,13 @@ export const FilterSection = ({
   const [seriesSelect, setSeriesSelect] = useState<VALID_SERIES_FILTER_TYPE>(
     filterElements.series,
   );
+  const [investAmountSelect, setInvestAmountSelect] =
+    useState<VALID_INVEST_AMOUNT_TYPE>(
+      formatLowerAndUpperToInvestAmount({
+        lower: filterElements.investmentMin,
+        upper: filterElements.investmentMax,
+      }),
+    );
 
   const handleChangeRecruitingFilter = (input: string) => {
     if (input === 'ALL') {
@@ -82,13 +136,6 @@ export const FilterSection = ({
     if (isValidRecruitingValue(inputToNumber)) {
       setRecruitingSelect(inputToNumber);
     }
-  };
-
-  const handleClickApplyRecruitingFilter = () => {
-    onChangeFilters({
-      ...filterElements,
-      pathStatus: recruitingSelect,
-    });
   };
 
   const isAllSeriesSelected =
@@ -123,10 +170,45 @@ export const FilterSection = ({
     }
   };
 
+  const handleChangeInvestAmountFilter = (input: string) => {
+    const isValidInvestAmountValue = (
+      value: string,
+    ): value is VALID_INVEST_AMOUNT_TYPE => {
+      return VALID_INVEST_AMOUNT_VALUE.includes(value);
+    };
+
+    if (input === 'ALL') {
+      setInvestAmountSelect('ALL');
+      return;
+    }
+
+    if (isValidInvestAmountValue(input)) {
+      setInvestAmountSelect(input);
+    }
+  };
+
+  const handleClickApplyRecruitingFilter = () => {
+    onChangeFilters({
+      ...filterElements,
+      pathStatus: recruitingSelect,
+    });
+  };
+
   const handleClickApplySeriesFilter = () => {
     onChangeFilters({
       ...filterElements,
       series: seriesSelect,
+    });
+  };
+
+  const handleClickApplyInvestAmountingFilter = () => {
+    const { lower, upper } = formatInvestAmountToLowerAndUpper({
+      investAmount: investAmountSelect,
+    });
+    onChangeFilters({
+      ...filterElements,
+      investmentMin: lower,
+      investmentMax: upper,
     });
   };
 
@@ -146,21 +228,14 @@ export const FilterSection = ({
     });
   };
 
-  // const getCurrentInvestmentRange = () => {
-  //   if (
-  //     filterElements.investmentMin == null &&
-  //     filterElements.investmentMax == null
-  //   )
-  //     return '전체';
-
-  //   const currentRange = INVESTMENT_RANGES.find(
-  //     (range) =>
-  //       range.min === filterElements.investmentMin &&
-  //       range.max === filterElements.investmentMax,
-  //   );
-
-  //   return currentRange?.label ?? '전체';
-  // };
+  const handleClickResetInvestAmountButton = () => {
+    onChangeFilters({
+      ...filterElements,
+      investmentMin: undefined,
+      investmentMax: undefined,
+    });
+    setInvestAmountSelect('ALL');
+  };
 
   return (
     <div className="flex gap-5 items-center">
@@ -182,10 +257,10 @@ export const FilterSection = ({
           <div className="flex flex-col p-5 gap-[30px]">
             <RadioGroup
               onValueChange={handleChangeRecruitingFilter}
-              defaultValue={
+              value={
                 recruitingSelect === undefined
                   ? 'ALL'
-                  : String(filterElements.pathStatus)
+                  : String(recruitingSelect)
               }
               className="flex flex-col gap-[10px]"
             >
@@ -304,45 +379,46 @@ export const FilterSection = ({
           </Button>
         </PopoverTrigger>
         <PopoverContent>
-          <div>
-            <Slider
-              defaultValue={[20, 80]} // 두 개의 핸들 (하한, 상한)
-              max={100}
-              step={1}
-            />
-            <p>전체</p>
-            <p>시드</p>
-            <p>프리 시리즈 A</p>
-            <p>시리즈 A</p>
-            <p>시리즈 B</p>
-            <p>시리즈 C</p>
-            <p>시리즈 D</p>
-            <div>
-              <Button>초기화</Button>
-              <Button>적용</Button>
+          <div className="flex flex-col p-5 gap-[30px]">
+            <RadioGroup
+              onValueChange={handleChangeInvestAmountFilter}
+              value={investAmountSelect}
+              className="flex flex-col gap-[10px]"
+            >
+              <div className="flex gap-[10px] text-sm text-grey-darker">
+                <RadioGroupItem value="ALL" id="invest-amount-all" />
+                <Label htmlFor="invest-amount-all">전체</Label>
+              </div>
+              {INVEST_AMOUNT_VALUE.map((option, idx) => (
+                <div
+                  key={`invest-amount-filter-${idx}`}
+                  className="flex gap-[10px] text-sm text-grey-darker"
+                >
+                  <RadioGroupItem
+                    value={option.value}
+                    id={`invest-amount-${option.value}`}
+                  />
+                  <Label htmlFor={`invest-amount-${option.value}`}>
+                    {option.label}
+                  </Label>
+                </div>
+              ))}
+            </RadioGroup>
+            <div className="flex justify-end gap-[6px]">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleClickResetInvestAmountButton}
+              >
+                초기화
+              </Button>
+              <Button size="sm" onClick={handleClickApplyInvestAmountingFilter}>
+                적용
+              </Button>
             </div>
           </div>
         </PopoverContent>
       </Popover>
-
-      {/* <SelectContainerWithOptions
-        id="series"
-        value={filterElements.series}
-        options={[
-          { value: 'SEED', label: 'Seed' },
-          { value: 'PRE_A', label: 'Pre-Series A' },
-          { value: 'B', label: 'Series B' },
-          { value: 'C', label: 'Series C' },
-          { value: 'D', label: 'Series D' },
-        ]}
-        onChange={(value) => {
-          onChangeFilters({
-            ...filterElements,
-            series: typeof value === 'string' ? value : undefined,
-          });
-        }}
-        label="시리즈"
-      /> */}
     </div>
   );
 };

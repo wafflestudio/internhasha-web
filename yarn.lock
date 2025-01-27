@@ -763,13 +763,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/number@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@radix-ui/number@npm:1.1.0"
-  checksum: 10c0/a48e34d5ff1484de1b7cf5d7317fefc831d49e96a2229f300fd37b657bd8cfb59c922830c00ec02838ab21de3b299a523474592e4f30882153412ed47edce6a4
-  languageName: node
-  linkType: hard
-
 "@radix-ui/primitive@npm:1.1.1":
   version: 1.1.1
   resolution: "@radix-ui/primitive@npm:1.1.1"
@@ -1146,35 +1139,6 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 10c0/ee41eb60b0c300ef3bb130f7ca6c7333148669f2a50b841027910158c06be215967880da932ac14b83d130a9ca5ffb33d6a1a0f067d5048f8db2c3884bbd9b85
-  languageName: node
-  linkType: hard
-
-"@radix-ui/react-slider@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "@radix-ui/react-slider@npm:1.2.2"
-  dependencies:
-    "@radix-ui/number": "npm:1.1.0"
-    "@radix-ui/primitive": "npm:1.1.1"
-    "@radix-ui/react-collection": "npm:1.1.1"
-    "@radix-ui/react-compose-refs": "npm:1.1.1"
-    "@radix-ui/react-context": "npm:1.1.1"
-    "@radix-ui/react-direction": "npm:1.1.0"
-    "@radix-ui/react-primitive": "npm:2.0.1"
-    "@radix-ui/react-use-controllable-state": "npm:1.1.0"
-    "@radix-ui/react-use-layout-effect": "npm:1.1.0"
-    "@radix-ui/react-use-previous": "npm:1.1.0"
-    "@radix-ui/react-use-size": "npm:1.1.0"
-  peerDependencies:
-    "@types/react": "*"
-    "@types/react-dom": "*"
-    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-    "@types/react-dom":
-      optional: true
-  checksum: 10c0/cd57454a20739523cba8762a6cc0a5beeaa1393e7aed5cb00ce1fdaa5b821c710865d2e746a639feac69025a4e02ff0b211cf515b02bfcf37dc9b633aa63ed70
   languageName: node
   linkType: hard
 
@@ -2514,7 +2478,6 @@ __metadata:
     "@radix-ui/react-label": "npm:^2.1.1"
     "@radix-ui/react-popover": "npm:^1.1.5"
     "@radix-ui/react-radio-group": "npm:^1.2.2"
-    "@radix-ui/react-slider": "npm:^1.2.2"
     "@radix-ui/react-slot": "npm:^1.1.1"
     "@react-oauth/google": "npm:0.12.1"
     "@tanstack/react-query": "npm:5.62.11"
