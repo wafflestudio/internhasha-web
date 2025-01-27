@@ -1,11 +1,49 @@
+import type { VariantProps } from 'class-variance-authority';
+import { cva } from 'class-variance-authority';
 import type { ReactNode } from 'react';
 
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
+import { cn } from '@/lib/utils';
 
-export const ModalFloatBackground = ({ children }: { children: ReactNode }) => {
+const backgroundVariants = cva(
+  'fixed inset-0 flex items-center justify-center',
+  {
+    variants: {
+      variant: {
+        default: 'bg-grey-light-active',
+        transparent: 'bg-grey-light-active/50',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  },
+);
+
+export interface ModalProps
+  extends React.ButtonHTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof backgroundVariants> {
+  isVisible?: boolean;
+  onOutSlideClick?: () => void;
+}
+
+export const ModalFloatBackground = ({
+  children,
+  variant,
+  isVisible,
+  onOutSlideClick,
+}: ModalProps) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
-      <div className="flex flex-col gap-[60px] bg-white rounded-2xl shadow-lg max-w-sm w-full p-6 text-center animate-popup">
+    <div
+      className={cn(backgroundVariants({ variant }))}
+      onClick={onOutSlideClick}
+    >
+      <div
+        className={`flex flex-col gap-[60px] bg-white rounded-2xl shadow-lg max-w-sm w-full p-6 text-center ${isVisible === undefined || isVisible ? 'animate-popup' : 'animate-popout'}`}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         {children}
       </div>
     </div>

@@ -240,4 +240,30 @@ export const getLocalServerApis = ({
         body,
       });
     },
+    "POST /post/:postId/bookmark": ({
+      token,
+      params,
+    }: {
+      token: string;
+      params: PostIdParams;
+    }) => {
+      return callWithToken<SuccessResponse<void>>({
+        method: "POST",
+        path: `post/${params.postId}/bookmark`,
+        token,
+      });
+    },
+    "DELETE /post/:postId/bookmark": ({
+      token,
+      params,
+    }: {
+      token: string;
+      params: PostIdParams;
+    }) => {
+      return callWithToken<SuccessResponse<void>>({
+        method: "DELETE",
+        path: `post/${params.postId}/bookmark`,
+        token,
+      });
+    },
   }) satisfies Record<string, Api>;
