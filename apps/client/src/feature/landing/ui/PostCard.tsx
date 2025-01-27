@@ -132,7 +132,8 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
             {isBookmarked ? (
               <button
                 disabled={isPending}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   onClickDeleteBookmark({ postId: id });
                 }}
               >
@@ -144,7 +145,8 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
             ) : (
               <button
                 disabled={isPending}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   onClickAddBookmark({ postId: id });
                 }}
               >
