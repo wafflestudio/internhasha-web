@@ -1,5 +1,6 @@
 import type { VariantProps } from 'class-variance-authority';
 import { cva } from 'class-variance-authority';
+import type { ReactNode } from 'react';
 
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { cn } from '@/lib/utils';
@@ -19,10 +20,10 @@ const backgroundVariants = cva(
   },
 );
 
-export interface ButtonProps
+export interface ModalProps
   extends React.ButtonHTMLAttributes<HTMLDivElement>,
     VariantProps<typeof backgroundVariants> {
-  isVisible: boolean;
+  isVisible?: boolean;
   onOutSlideClick?: () => void;
 }
 
@@ -31,14 +32,14 @@ export const ModalFloatBackground = ({
   variant,
   isVisible,
   onOutSlideClick,
-}: ButtonProps) => {
+}: ModalProps) => {
   return (
     <div
       className={cn(backgroundVariants({ variant }))}
       onClick={onOutSlideClick}
     >
       <div
-        className={`flex flex-col gap-[60px] bg-white rounded-2xl shadow-lg max-w-sm w-full p-6 text-center ${isVisible ? 'animate-popup' : 'animate-popout'}`}
+        className={`flex flex-col gap-[60px] bg-white rounded-2xl shadow-lg max-w-sm w-full p-6 text-center ${isVisible === undefined || isVisible ? 'animate-popup' : 'animate-popout'}`}
         onClick={(e) => {
           e.stopPropagation();
         }}
@@ -49,7 +50,11 @@ export const ModalFloatBackground = ({
   );
 };
 
-export const ModalBackgroundWithHeader = ({ children }: ButtonProps) => {
+export const ModalBackgroundWithHeader = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   return (
     <div className="flex flex-col min-h-screen">
       <GlobalNavigationBar />
