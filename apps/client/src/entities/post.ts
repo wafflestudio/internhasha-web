@@ -49,7 +49,7 @@ export type Post = {
   email: string;
   slogan: string;
   investAmount?: number;
-  investCompany: string[];
+  investCompany: string;
   series: Series;
   IRDeckLink?: string;
   landingPageLink?: string;

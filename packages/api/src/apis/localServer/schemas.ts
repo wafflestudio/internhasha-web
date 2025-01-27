@@ -45,7 +45,7 @@ type PostDTO = {
   email: string;
   slogan: string;
   investAmount?: number;
-  investCompany: string[];
+  investCompany: string;
   series: "SEED" | "PRE_A" | "A" | "B" | "C" | "D";
   IRDeckLink?: string;
   landingPageLink?: string;
@@ -73,7 +73,7 @@ export type PostBriefDTO = {
   companyName: string;
   slogan: string;
   investAmount?: number;
-  investCompany: string[];
+  investCompany: string;
   series: "SEED" | "PRE_A" | "A" | "B" | "C" | "D";
   imageLink: string;
 
