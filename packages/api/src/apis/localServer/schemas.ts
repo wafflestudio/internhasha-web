@@ -48,7 +48,7 @@ type PostDTO = {
   email: string;
   slogan: string;
   investAmount?: number;
-  investCompany: string[];
+  investCompany: string;
   series: Series;
   irDeckLink?: string;
   landingPageLink?: string;
@@ -201,7 +201,7 @@ export type CreateCompanyRequest = {
   email: string;
   slogan: string;
   investAmount?: number;
-  investCompany: string[];
+  investCompany: string;
   series: Series;
   irDeckLink?: string;
   landingPageLink?: string;

@@ -44,8 +44,7 @@ export const formatMinorJobToLabel = (input: string) => {
   }
 };
 
-export const formatDate = (dateString: string | undefined): string => {
-  if (dateString === undefined) return '';
+export const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
@@ -53,8 +52,7 @@ export const formatDate = (dateString: string | undefined): string => {
   return `${year}.${month}.${day}`;
 };
 
-export const calculateDDay = (dateString: string | undefined): number => {
-  if (dateString === undefined) return 0;
+export const calculateDDay = (dateString: string): number => {
   const today = new Date(); // 현재 날짜
   const targetDate = new Date(dateString);
   const diffTime = targetDate.getTime() - today.getTime(); // 밀리초 단위 차이 계산

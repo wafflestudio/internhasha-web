@@ -1,10 +1,8 @@
 import { Button } from '@waffle/design-system';
 
 import type { Series } from '@/entities/post';
-import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const MyCompanyList = () => {
-  const { toCreatePost } = useRouteNavigation();
   // TODO: 서버 API와 연결
   const mockCompanyList = [
     {
@@ -33,13 +31,7 @@ export const MyCompanyList = () => {
       {mockCompanyList.map((item, idx) => (
         <div key={`company-list-${idx}`}>
           <span>{item.companyName}</span>
-          <Button
-            onClick={() => {
-              toCreatePost({ companyBody: item });
-            }}
-          >
-            공고 작성
-          </Button>
+          <Button>공고 작성</Button>
         </div>
       ))}
     </div>

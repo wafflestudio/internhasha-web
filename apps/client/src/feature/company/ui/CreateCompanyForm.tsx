@@ -145,7 +145,7 @@ export const CreateCompanyForm = () => {
         email: email.value,
         slogan: slogan.value,
         investAmount: Number(investAmount.value),
-        investCompany: investCompanyFilter(investCompany.value),
+        investCompany: investCompanyFilter(investCompany.value).join(','),
         series: series.value,
         irDeckLink:
           IRDeckPreview.value !== null ? IRDeckPreview.value.url : undefined,
