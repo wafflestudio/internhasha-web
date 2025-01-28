@@ -43,3 +43,18 @@ export const formatMinorJobToLabel = (input: string) => {
       return null;
   }
 };
+
+export const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 +1
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}.${month}.${day}`;
+};
+
+export const calculateDDay = (dateString: string): number => {
+  const today = new Date(); // 현재 날짜
+  const targetDate = new Date(dateString);
+  const diffTime = targetDate.getTime() - today.getTime(); // 밀리초 단위 차이 계산
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 단위로 변환
+};

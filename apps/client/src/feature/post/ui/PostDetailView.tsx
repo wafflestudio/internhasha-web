@@ -8,6 +8,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+import { calculateDDay, formatDate } from '@/util/format.ts';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
@@ -40,27 +41,14 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   } = postDetailData.data;
 
   const investCompanyList = investCompany.split(",")
-
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 +1
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}.${month}.${day}`;
-  };
   
-  const calculateDDay = (dateString: string): number => {
-    const today = new Date(); // 현재 날짜
-    const targetDate = new Date(dateString);
-    const diffTime = targetDate.getTime() - today.getTime(); // 밀리초 단위 차이 계산
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 단위로 변환
-  };
+
 
   const formattedEndDate = formatDate(employmentEndDate);
   const dDay = calculateDDay(employmentEndDate);
 
   return (
-    <div className="max-w-screen-md mx-auto gap-12 py-10 flex">
+    <div className="max-w-screen-md mx-auto gap-12 p-10 flex">
       <div className="flex flex-col gap-12 flex-1">
         {/* 헤더 */}
         <div className="flex flex-col justify-between items-start gap-2">
@@ -340,7 +328,9 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
       <div className="flex flex-col flex-[0.5] w-80 gap-5 my-36">
         <div className="text-sm text-gray-900 font-medium flex items-center gap-3">
           <span>채용 마감일 : {formattedEndDate}</span>
-          <span className="bg-gray-600 text-white py-1 px-2 rounded-md">D-{dDay}</span>
+          <span className="bg-gray-600 text-white py-1 px-2 rounded-md">
+            {dDay > 0 ? `D - ${ dDay }` : `종료`}
+          </span>
         </div>
         <div className="flex flex-col gap-3">
           <Button

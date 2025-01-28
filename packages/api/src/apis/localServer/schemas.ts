@@ -90,6 +90,8 @@ export type PostBriefDTO = {
 
 type ResumeDTO = {
   id: string;
+  positionTitle: string;
+  companyName: string;
   author: {
     id: string;
     name: string;
