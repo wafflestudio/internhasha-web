@@ -5,9 +5,15 @@ export const Button = ({
   disabled,
   onClick,
   type = 'button',
+  className,
 }: ButtonProps) => {
   return (
-    <button type={type} onClick={onClick} disabled={disabled}>
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={className}
+    >
       {children}
     </button>
   );

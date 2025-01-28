@@ -46,7 +46,7 @@ type PostDTO = {
   email: string;
   slogan: string;
   investAmount?: number;
-  investCompany: string[];
+  investCompany: string;
   series: "SEED" | "PRE_A" | "A" | "B" | "C" | "D";
   irDeckLink?: string;
   landingPageLink?: string;
@@ -80,6 +80,8 @@ export type PostBriefDTO = Omit<
 
 type ResumeDTO = {
   id: string;
+  positionTitle: string;
+  companyName: string;
   author: {
     id: string;
     name: string;

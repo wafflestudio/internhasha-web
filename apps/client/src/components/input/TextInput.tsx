@@ -11,6 +11,7 @@ export const TextInput = ({
   onFocus,
   onBlur,
   placeholder,
+  className,
 }: TextInputProps) => {
   return (
     <input
@@ -22,7 +23,8 @@ export const TextInput = ({
       onFocus={onFocus}
       onBlur={onBlur}
       placeholder={placeholder}
-      style={{ padding: '10px', width: '300px', fontSize: '16px' }}
+      style={{ padding: '10px', fontSize: '16px' }}
+      className={className}
     ></input>
   );
 };
