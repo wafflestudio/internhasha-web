@@ -43,4 +43,3 @@ export const formatMinorJobToLabel = (input: string) => {
       return null;
   }
 };
-

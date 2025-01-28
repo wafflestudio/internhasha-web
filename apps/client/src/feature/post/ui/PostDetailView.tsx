@@ -13,7 +13,10 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { getEmploymentStatus, getFormatDate } from '@/util/postFormatFunctions.ts';
+import {
+  getEmploymentStatus,
+  getFormatDate,
+} from '@/util/postFormatFunctions.ts';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
@@ -335,7 +338,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           </span>
 
           <span className="bg-gray-600 text-white py-1 px-2 rounded-md">
-            {employmentEndDate !== undefined && getEmploymentStatus(employmentEndDate)}
+            {employmentEndDate !== undefined &&
+              getEmploymentStatus(employmentEndDate)}
           </span>
         </div>
         <div className="flex flex-col gap-3">

@@ -67,7 +67,7 @@ export type PostService = {
   getBookmarkList: ({
     token,
     bookmarkPage,
-                  }:{
+  }: {
     token: string;
     bookmarkPage?: string;
   }) => ServiceResponse<{
@@ -75,7 +75,7 @@ export type PostService = {
     paginator: {
       lastPage: number;
     };
-  }>
+  }>;
 };
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
@@ -208,5 +208,5 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
       };
     }
     return { type: 'error', code: data.code, message: data.message };
-  }
+  },
 });

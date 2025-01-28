@@ -5,9 +5,9 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/tabs/tabs.tsx';
+import { BookmarkListView } from '@/feature/post/ui/BookmarkListView.tsx';
 import { ResumeListView } from '@/feature/resume';
 import { MyInfo } from '@/feature/user';
-import { BookmarkListView } from '@/feature/post/ui/BookmarkListView.tsx';
 
 export const MyPage = () => {
   return (
@@ -35,7 +35,7 @@ export const MyPage = () => {
             <ResumeListView />
           </TabsContent>
           <TabsContent value="favorites">
-            <BookmarkListView/>
+            <BookmarkListView />
           </TabsContent>
           <TabsContent value="myInfo">
             <MyInfo />

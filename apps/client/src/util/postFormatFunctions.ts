@@ -13,7 +13,7 @@ export const getEmploymentStatus = (employmentEndDate: string): string => {
 
   const daysLeft = Math.ceil(
     (new Date(employmentEndDate).getTime() - new Date().getTime()) /
-    (1000 * 60 * 60 * 24),
+      (1000 * 60 * 60 * 24),
   );
 
   return daysLeft >= 0 ? (daysLeft === 0 ? 'D-day' : `D-${daysLeft}`) : '마감';

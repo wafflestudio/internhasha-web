@@ -1,16 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { Button } from '@/components/ui/button';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
-import { getFormatDate } from '@/util/postFormatFunctions.ts';
-import { Button } from '@/components/ui/button';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
+import { getFormatDate } from '@/util/postFormatFunctions.ts';
 
 export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
   const { resumeDetailData } = useGetResumeDetail({ resumeId });
-  const { toMyPage } = useRouteNavigation()
-
+  const { toMyPage } = useRouteNavigation();
 
   if (resumeDetailData === undefined) {
     return <div>로딩중...</div>;

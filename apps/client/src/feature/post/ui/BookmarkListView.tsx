@@ -2,16 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Button } from '@/components/button';
 import { Card } from '@/components/card/card.tsx';
+import { ICON_SRC } from '@/entities/asset.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { TokenContext } from '@/shared/context/TokenContext.ts';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
 import { getEmploymentStatus } from '@/util/postFormatFunctions.ts';
-import { ICON_SRC } from '@/entities/asset.ts';
 
 export const BookmarkListView = () => {
-
-  const { bookmarkListData }= useGetBookmarkList();
+  const { bookmarkListData } = useGetBookmarkList();
   const { toPost } = useRouteNavigation();
 
   if (bookmarkListData === undefined) {
@@ -43,13 +42,12 @@ export const BookmarkListView = () => {
                 <div className="flex gap-8">
                   <span>{post.companyName}</span>
                   <span className="text-gray-400">
-                  {post.isActive
-                    ? post.employmentEndDate !== undefined &&
-                    getEmploymentStatus(post.employmentEndDate)
-                    : '모집 완료'}
-                </span>
+                    {post.isActive
+                      ? post.employmentEndDate !== undefined &&
+                        getEmploymentStatus(post.employmentEndDate)
+                      : '모집 완료'}
+                  </span>
                 </div>
-
               </Button>
             </Card>
           ))}
@@ -57,23 +55,22 @@ export const BookmarkListView = () => {
       </div>
     </div>
   );
-}
-
+};
 
 const useGetBookmarkList = () => {
   const { token } = useGuardContext(TokenContext);
   const { postService } = useGuardContext(ServiceContext);
 
-  const {data: bookmarkListData} = useQuery({
+  const { data: bookmarkListData } = useQuery({
     queryKey: ['post', 'getBookmarkList', token] as const,
     queryFn: ({ queryKey: [, , t] }) => {
       if (t === null) {
-        throw new Error('토큰이 존재하지 않습니다.')
+        throw new Error('토큰이 존재하지 않습니다.');
       }
       return postService.getBookmarkList({ token: t });
     },
     enabled: token !== null,
-  })
+  });
 
   return { bookmarkListData };
 };
