@@ -11,10 +11,11 @@ export const PATH = {
   RESUME_LIST: '/resume',
   RESUME_DETAIL: '/resume/:resumeId',
   CREATE_COMPANY: '/company/create',
-  CREATE_POST: '/post/create',
+  CREATE_POST: '/post/create/:companyId',
   MAKE: {
     POST_DETAIL: (postId: string) => `/post/${postId}`,
     CREATE_RESUME: (postId: string) => `/post/${postId}/resume/create`,
     RESUME_DETAIL: (resumeId: string) => `/resume/${resumeId}`,
+    CREATE_POST: (companyId: string) => `/post/create/${companyId}`,
   },
 };

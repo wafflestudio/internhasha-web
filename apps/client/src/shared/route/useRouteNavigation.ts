@@ -59,10 +59,9 @@ export const useRouteNavigation = () => {
     SIGN_UP_COMPLETE,
     RESUME_LIST,
     CREATE_COMPANY,
-    CREATE_POST,
     MY_PAGE,
   } = PATH;
-  const { POST_DETAIL, CREATE_RESUME, RESUME_DETAIL } = PATH.MAKE;
+  const { POST_DETAIL, CREATE_RESUME, RESUME_DETAIL, CREATE_POST } = PATH.MAKE;
 
   return {
     toMain: () => {
@@ -105,10 +104,13 @@ export const useRouteNavigation = () => {
       companyId: string;
       postBody?: PostBody;
     }) => {
-      void navigate(CREATE_POST, { state: { companyId, postBody } });
+      void navigate(CREATE_POST(companyId), { state: { postBody } });
     },
     toMyPage: () => {
       void navigate(MY_PAGE);
+    },
+    refreshPage: () => {
+      void navigate(0);
     },
   };
 };

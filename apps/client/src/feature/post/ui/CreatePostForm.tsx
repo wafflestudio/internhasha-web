@@ -1,16 +1,15 @@
 import { useMutation } from '@tanstack/react-query';
 import MDEditor from '@uiw/react-md-editor';
 import {
-  Button,
   FormContainer,
   LabelContainer,
-  SubmitButton,
   TextInput,
 } from '@waffle/design-system';
 import { useState } from 'react';
 
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { RewritePostModal } from '@/components/modal/RewritePostModal';
+import { Button } from '@/components/ui/button';
 import { createErrorMessage } from '@/entities/errors';
 import type { CreatePostRequest } from '@/entities/post';
 import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
@@ -220,22 +219,28 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           )}
         </LabelContainer>
         <div>
-          <Button onClick={handleClickCancelButton} disabled={isPending}>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              handleClickCancelButton();
+            }}
+            disabled={isPending}
+          >
             이전으로
           </Button>
-          <SubmitButton
+          <Button
             form="CreatePostForm"
             onClick={handleSubmit}
             disabled={isPending}
           >
             제출하기
-          </SubmitButton>
+          </Button>
         </div>
       </FormContainer>
       {showModal === 'CANCEL' && (
         <CancelCheckModal onClose={toMain} onCancel={closeCancelModal} />
       )}
-      {showModal === 'NEXT' && <RewritePostModal companyId={companyId} />}
+      {showModal === 'NEXT' && <RewritePostModal />}
     </>
   );
 };

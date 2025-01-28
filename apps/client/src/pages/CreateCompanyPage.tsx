@@ -26,7 +26,6 @@ type Body = {
 export const CreateCompanyPage = () => {
   const location = useLocation();
   const state = location.state as Body | null;
-  console.log(state);
 
   if (state === null) {
     return (
