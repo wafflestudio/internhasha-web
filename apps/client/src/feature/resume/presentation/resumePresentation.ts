@@ -15,7 +15,7 @@ type ResumePresentation = {
 };
 
 const PHONE_NUMBER_REGEX = /^010-\d{4}-\d{4}$/;
-const CONTENTS_MAX_LENGTH = 10000;
+export const CONTENTS_MAX_LENGTH = 10000;
 
 export const resumePresentation: ResumePresentation = {
   useValidator: ({ initialState = {} }) => {

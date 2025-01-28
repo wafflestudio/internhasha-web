@@ -6,7 +6,10 @@ import { FormContainer } from '@/components/form';
 import { LabelContainer } from '@/components/input/LabelContainer.tsx';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal.tsx';
 import type { ResumeRequest } from '@/entities/resume.ts';
-import { resumePresentation } from '@/feature/resume/presentation/resumePresentation.ts';
+import {
+  CONTENTS_MAX_LENGTH,
+  resumePresentation,
+} from '@/feature/resume/presentation/resumePresentation.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { TokenContext } from '@/shared/context/TokenContext.ts';
@@ -76,8 +79,8 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
               placeholder="010-0000-0000"
               className="w-full border border-gray-300 rounded-md
                 focus:ring-blue-500 focus:border-blue-500
-      placeholder:text-gray-400 placeholder:top-0 placeholder:left-0
-      p-3 resize-none overflow-auto"
+                placeholder:text-gray-400 placeholder:top-0 placeholder:left-0
+                p-3 resize-none overflow-auto"
             />
             {isSubmit && phoneNumber.isError && (
               <p className="text-gray-500">
@@ -100,15 +103,23 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
               }}
               placeholder="간단한 자기소개, 커피챗 신청 사유, 가능한 시간대를 작성해주세요"
               className="w-full h-full border border-gray-300 rounded-md
-      focus:ring-blue-500 focus:border-blue-500
-      placeholder:text-gray-400 placeholder:top-0 placeholder:left-0
-      p-3 resize-none overflow-auto"
+                focus:ring-blue-500 focus:border-blue-500
+                placeholder:text-gray-400 placeholder:top-0 placeholder:left-0
+                p-3 resize-none overflow-auto"
             />
-            {isSubmit && contents.isError && (
-              <p className="text-gray-500">
-                내용은 10,000자 이하로 작성해주세요.
-              </p>
-            )}
+            <div className="flex flex-col w-full gap-2">
+              <span
+                className={`text-sm text-right ${contents.value.length > CONTENTS_MAX_LENGTH ? 'text-red' : 'text-grey-normal'}`}
+              >
+                {contents.value.length}/{CONTENTS_MAX_LENGTH}
+              </span>
+
+              {isSubmit && contents.isError && (
+                <p className="text-gray-500">
+                  내용은 10,000자 이하로 작성해주세요.
+                </p>
+              )}
+            </div>
           </LabelContainer>
 
           <div className="flex">
