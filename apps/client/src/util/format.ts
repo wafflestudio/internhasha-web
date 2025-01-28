@@ -53,8 +53,21 @@ export const formatDate = (dateString: string): string => {
 };
 
 export const calculateDDay = (dateString: string): number => {
-  const today = new Date(); // 현재 날짜
-  const targetDate = new Date(dateString);
-  const diffTime = targetDate.getTime() - today.getTime(); // 밀리초 단위 차이 계산
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 단위로 변환
+  // 현재 날짜
+  // 밀리초 단위 차이 계산
+  return Math.ceil(
+    (new Date(dateString).getTime() - new Date().getTime()) /
+      (1000 * 60 * 60 * 24),
+  ); // 일 단위로 변환
+};
+
+export const getEmploymentStatus = (employmentEndDate: string): string => {
+  if (employmentEndDate === '') return '상시';
+
+  const daysLeft = Math.ceil(
+    (new Date(employmentEndDate).getTime() - new Date().getTime()) /
+    (1000 * 60 * 60 * 24),
+  );
+
+  return daysLeft >= 0 ? `D-${daysLeft}` : '마감';
 };

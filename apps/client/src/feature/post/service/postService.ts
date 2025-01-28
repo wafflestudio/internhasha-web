@@ -64,6 +64,18 @@ export type PostService = {
     postId: string;
     token: string;
   }): ServiceResponse<void>;
+  getBookmarkList: ({
+    token,
+    bookmarkPage,
+                  }:{
+    token: string;
+    bookmarkPage?: string;
+  }) => ServiceResponse<{
+    posts: BriefPost[];
+    paginator: {
+      lastPage: number;
+    };
+  }>
 };
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
@@ -182,4 +194,19 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
+  getBookmarkList: async ({ token, bookmarkPage }) => {
+    const params = { bookmarkPage };
+    const { status, data } = await apis['GET /post/bookmarks']({
+      token: token,
+      params: params,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', code: data.code, message: data.message };
+  }
 });

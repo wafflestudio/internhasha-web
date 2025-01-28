@@ -7,6 +7,7 @@ import {
 } from '@/components/tabs/tabs.tsx';
 import { ResumeListView } from '@/feature/resume';
 import { MyInfo } from '@/feature/user';
+import { BookmarkListView } from '@/feature/post/ui/BookmarkListView.tsx';
 
 export const MyPage = () => {
   return (
@@ -34,7 +35,7 @@ export const MyPage = () => {
             <ResumeListView />
           </TabsContent>
           <TabsContent value="favorites">
-            <span>관심 공고</span>
+            <BookmarkListView/>
           </TabsContent>
           <TabsContent value="myInfo">
             <MyInfo />

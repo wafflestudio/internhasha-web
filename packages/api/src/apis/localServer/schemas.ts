@@ -138,6 +138,10 @@ export type ResumeIdParams = {
   resumeId: string;
 };
 
+export type BookmarkPageParams = {
+  bookmarkPage?: string;
+}
+
 // Request
 export type PretotypeUserSubmitRequest = {
   email: string;
