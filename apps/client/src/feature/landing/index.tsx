@@ -1,5 +1,3 @@
-export { useGetPosts } from '@/feature/landing/hooks/useGetPosts';
-
 export {
   RolesFilter,
   NarrowRolesFilter,
