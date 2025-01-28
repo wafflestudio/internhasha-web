@@ -13,7 +13,11 @@ import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { createErrorMessage } from '@/entities/errors';
 import type { Series } from '@/entities/post';
 import type { CreateCompanyRequest } from '@/entities/post';
-import { seriesList } from '@/feature/company/presentation/companypresentation';
+import {
+  MAX_EXPLANATION_LENGTH,
+  MAX_SLOGAN_LENGTH,
+  seriesList,
+} from '@/feature/company/presentation/companypresentation';
 import { companyPresentation } from '@/feature/company/presentation/companypresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -198,8 +202,13 @@ export const CreateCompanyForm = () => {
               slogan.onChange(e.target.value);
             }}
           />
-          {isSubmit && email.isError && (
-            <p>한 줄 소개는 500자 이내로 작성해주세요.</p>
+          <span
+            className={`text-sm ${slogan.value.length > MAX_SLOGAN_LENGTH ? 'text-red' : 'texy-grey-normal'}`}
+          >
+            {slogan.value.length}/{MAX_SLOGAN_LENGTH}
+          </span>
+          {isSubmit && slogan.isError && (
+            <p>한 줄 소개는 {MAX_SLOGAN_LENGTH}자 이내로 작성해주세요.</p>
           )}
         </LabelContainer>
         <LabelContainer label="회사 상세 소개">
@@ -210,6 +219,14 @@ export const CreateCompanyForm = () => {
                 explanation.onChange(value ?? '');
               }}
             />
+            <span
+              className={`text-sm ${explanation.value.length > MAX_EXPLANATION_LENGTH ? 'text-red' : 'texy-grey-normal'}`}
+            >
+              {explanation.value.length}/{MAX_EXPLANATION_LENGTH}
+            </span>
+            {isSubmit && explanation.isError && (
+              <p>상세 소개는 {MAX_EXPLANATION_LENGTH}자 이내로 작성해주세요.</p>
+            )}
           </div>
         </LabelContainer>
         <LabelContainer label="대표 사진" id="imageLink">
