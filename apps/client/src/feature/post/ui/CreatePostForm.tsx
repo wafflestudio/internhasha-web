@@ -8,11 +8,10 @@ import {
   TextInput,
 } from '@waffle/design-system';
 import { useState } from 'react';
-import { useLocation } from 'react-router';
 
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { createErrorMessage } from '@/entities/errors';
-import type { PostRequest, Series } from '@/entities/post';
+import type { CreatePostRequest } from '@/entities/post';
 import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
 import { JOB_CATEGORY_MAP, JOB_MAJOR_CATEGORIES } from '@/entities/post';
 import { postPresentation } from '@/feature/post/presentation/postPresentation';
@@ -22,29 +21,11 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatMajorJobToLabel, formatMinorJobToLabel } from '@/util/format';
 
-type CompanyBody = {
-  companyName: string;
-  email: string;
-  slogan: string;
-  series: Series;
-  imageLink: string;
-  investAmount: number;
-  investCompany: string;
-  tags?: string[];
-  IRDeckLink?: string;
-  landingPageLink?: string;
-  externalDescriptionLink?: { link: string; description: string }[];
-  explanation: string;
-};
-
-export const CreatePostForm = () => {
+export const CreatePostForm = ({ companyId }: { companyId: string }) => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [isCancel, setIsCancel] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
-
-  const location = useLocation();
-  const state = location.state as CompanyBody | undefined;
-
+  const { toMain } = useRouteNavigation();
   const { createPost, isPending } = useCreatePost({ setResponseMessage });
 
   const {
@@ -59,26 +40,19 @@ export const CreatePostForm = () => {
   const { rawHeadcount, employmentEndDate, employmentEndTime } =
     postPresentation.useUtilState();
 
-  const { toMain } = useRouteNavigation();
-
   const handleSubmit = () => {
     setIsSubmit(true);
-    if (jobMinorCategory.value === 'NONE' || state === undefined) {
+    if (jobMinorCategory.value === 'NONE') {
       return;
     }
     createPost({
       post: {
-        // TODO: athor 정보 불러오기
-        author: {
-          id: '...',
-          name: '...',
-        },
-        ...state,
+        companyId: companyId,
         title: title.value,
+        employmentEndDate: employmentEndDateTime.value,
         category: jobMinorCategory.value,
         headcount: headcount.value,
         detail: detail.value,
-        employmentEndDate: employmentEndDateTime.value,
       },
     });
   };
@@ -257,7 +231,7 @@ const useCreatePost = ({
   const { toMain } = useRouteNavigation();
 
   const { mutate: createPost, isPending } = useMutation({
-    mutationFn: ({ post }: { post: PostRequest }) => {
+    mutationFn: ({ post }: { post: CreatePostRequest }) => {
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }

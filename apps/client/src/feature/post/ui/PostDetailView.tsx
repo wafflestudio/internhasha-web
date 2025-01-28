@@ -47,8 +47,16 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
 
   const investCompanyList = investCompany.split(',');
 
-  const formattedEndDate = formatDate(employmentEndDate);
-  const dDay = calculateDDay(employmentEndDate);
+  const formatDday = (input: string | undefined) => {
+    if (input === undefined) {
+      return '상시';
+    }
+    const dDay = calculateDDay(input);
+    if (dDay < 0) {
+      return '마감';
+    }
+    return `D-${dDay}`;
+  };
 
   return (
     <div className="max-w-screen-md mx-auto gap-12 p-10 flex">
@@ -330,9 +338,15 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
 
       <div className="flex flex-col flex-[0.5] w-80 gap-5 my-36">
         <div className="text-sm text-gray-900 font-medium flex items-center gap-3">
-          <span>채용 마감일 : {formattedEndDate}</span>
+          <span>
+            채용 마감일 :{' '}
+            {employmentEndDate !== undefined
+              ? formatDate(employmentEndDate)
+              : '상시'}
+          </span>
+
           <span className="bg-gray-600 text-white py-1 px-2 rounded-md">
-            {dDay > 0 ? `D - ${dDay}` : `종료`}
+            {formatDday(employmentEndDate)}
           </span>
         </div>
         <div className="flex flex-col gap-3">

@@ -30,7 +30,7 @@ export const implFileService = ({
 }): FileService => ({
   getPresignedUrl: async ({ token, fileName, fileType }) => {
     const body = { fileName, fileType };
-    const { status, data } = await apis['POST /admin/post/upload/presigned']({
+    const { status, data } = await apis['POST /post/upload/presigned']({
       token,
       body,
     });

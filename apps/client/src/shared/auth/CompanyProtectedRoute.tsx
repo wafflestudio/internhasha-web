@@ -28,6 +28,7 @@ export const CompanyProtectedRoute = () => {
 
   try {
     const decoded = jwtDecode<DecodedToken>(token);
+    console.log(decoded);
     if (decoded.role === 'ROLE_POST_ADMIN') {
       return <Outlet />;
     }

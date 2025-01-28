@@ -23,27 +23,29 @@ type PreviousForm = {
 };
 
 type CompanyBody = {
+  id: string;
   companyName: string;
+  explanation: string;
   email: string;
   slogan: string;
-  series: Series;
-  imageLink: string;
   investAmount: number;
-  investCompany: string[];
-  tags?: string[];
-  IRDeckLink?: string;
+  investCompany: string;
+  series: Series;
+  irDeckLink?: string;
   landingPageLink?: string;
+  imageLink?: string;
   externalDescriptionLink?: { link: string; description: string }[];
-  explanation: string;
+  tags?: string[];
 };
 
 type PostBody = {
+  id: string;
   title: string;
+  employmentEndDateTime?: string;
   jobMajorCategory: string;
   jobMinorCategory: string;
+  detail: string;
   headcount: number;
-  content: string;
-  employmentEndDateTime: string;
 };
 
 export const useRouteNavigation = () => {
@@ -97,13 +99,13 @@ export const useRouteNavigation = () => {
       void navigate(CREATE_COMPANY, { state: { companyBody } });
     },
     toCreatePost: ({
-      companyBody,
+      companyId,
       postBody,
     }: {
-      companyBody: CompanyBody;
+      companyId: string;
       postBody?: PostBody;
     }) => {
-      void navigate(CREATE_POST, { state: { companyBody, postBody } });
+      void navigate(CREATE_POST, { state: { companyId, postBody } });
     },
     toMyPage: () => {
       void navigate(MY_PAGE);
