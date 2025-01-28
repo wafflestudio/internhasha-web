@@ -55,7 +55,7 @@ export const LandingPage = () => {
         {/* 메인 컨텐츠 */}
         <div className="flex flex-col w-full sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl md:flex-row m-auto px-2 py-10 gap-2">
           {/* RolesFilter */}
-          <div className="hidden md:block md:flex-col order-1 md:order-none">
+          <div className="hidden md:block md:flex-col order-1 md:order-none md:mt-[58px]">
             <RolesFilter
               roles={filterElements.roles}
               onChangeRoles={handleRolesChange}
@@ -71,9 +71,10 @@ export const LandingPage = () => {
           </div>
 
           {/* 게시글 리스트 및 상단 필터 */}
-          <div className="flex-1 order-2 lg:order-none">
+          <div className="flex-1 order-2 px-2 lg:order-none">
+            <h2 className="text-2xl font-bold mb-6">인턴 공고</h2>
             {/* 상단 필터 섹션 */}
-            <div className="flex justify-between items-center mb-2 pl-2">
+            <div className="flex justify-between items-center py-2">
               <FilterSection
                 filterElements={filterElements}
                 onChangeFilters={setFilterElements}
@@ -82,7 +83,7 @@ export const LandingPage = () => {
 
             {/* 게시글 리스트 */}
             <main>
-              <div className="grid w-full grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pr-2">
+              <div className="grid w-full grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {postsData !== undefined &&
                   postsData.posts.map((post, idx) => (
                     <PostCard
