@@ -5,7 +5,7 @@ import type {
   SuccessResponse,
 } from "../../entities";
 import type {
-  AccessTokenRequest,
+  AccessTokenRequest, BookmarkPageParams,
   CreateAndUpdatePostRequest,
   CreateCompanyRequest,
   CreatePostRequest,
@@ -31,7 +31,7 @@ import type {
   TokenResponse,
   UserResponse,
   UserWithTokenResponse,
-} from "./schemas";
+} from './schemas';
 
 type GetApisProps = {
   callWithToken: <R extends ResponseNecessary>(
@@ -254,6 +254,26 @@ export const getLocalServerApis = ({
         path: `post/${params.postId}/bookmark`,
         token,
       });
+    },
+    "GET /post/bookmarks": ({
+      token,
+      params,
+    }: {
+      token: string;
+      params: BookmarkPageParams;
+    }) => {
+      if (params.bookmarkPage === undefined) {
+        return callWithToken<SuccessResponse<PostsResponse>>({
+          method: "GET",
+          path: `post/bookmarks`,
+          token,
+        })
+      }
+      return callWithToken<SuccessResponse<PostsResponse>>({
+        method: "GET",
+        path: `post/bookmarks?${params.bookmarkPage}`,
+        token,
+      })
     },
     "DELETE /post/:postId/bookmark": ({
       token,

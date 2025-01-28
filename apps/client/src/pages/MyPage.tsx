@@ -5,6 +5,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/tabs/tabs.tsx';
+import { BookmarkListView } from '@/feature/post/ui/BookmarkListView.tsx';
 import { ResumeListView } from '@/feature/resume';
 import { MyInfo } from '@/feature/user';
 
@@ -34,7 +35,7 @@ export const MyPage = () => {
             <ResumeListView />
           </TabsContent>
           <TabsContent value="favorites">
-            <span>관심 공고</span>
+            <BookmarkListView />
           </TabsContent>
           <TabsContent value="myInfo">
             <MyInfo />

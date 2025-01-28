@@ -13,7 +13,10 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { calculateDDay, formatDate } from '@/util/format.ts';
+import {
+  getEmploymentStatus,
+  getFormatDate,
+} from '@/util/postFormatFunctions.ts';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
@@ -46,17 +49,6 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   } = postDetailData.data;
 
   const investCompanyList = investCompany.split(',');
-
-  const formatDday = (input: string | undefined) => {
-    if (input === undefined) {
-      return '상시';
-    }
-    const dDay = calculateDDay(input);
-    if (dDay < 0) {
-      return '마감';
-    }
-    return `D-${dDay}`;
-  };
 
   return (
     <div className="max-w-screen-md mx-auto gap-12 p-10 flex">
@@ -341,12 +333,13 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           <span>
             채용 마감일 :{' '}
             {employmentEndDate !== undefined
-              ? formatDate(employmentEndDate)
+              ? getFormatDate(employmentEndDate)
               : '상시'}
           </span>
 
           <span className="bg-gray-600 text-white py-1 px-2 rounded-md">
-            {formatDday(employmentEndDate)}
+            {employmentEndDate !== undefined &&
+              getEmploymentStatus(employmentEndDate)}
           </span>
         </div>
         <div className="flex flex-col gap-3">
@@ -368,7 +361,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   );
 };
 
-const useGetPostDetail = ({ postId }: { postId: string }) => {
+export const useGetPostDetail = ({ postId }: { postId: string }) => {
   const { token } = useGuardContext(TokenContext);
   const { postService } = useGuardContext(ServiceContext);
 
