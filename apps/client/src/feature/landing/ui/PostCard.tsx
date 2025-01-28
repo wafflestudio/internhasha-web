@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { SeriesBadge } from '@/components/ui/badge';
 import { ICON_SRC } from '@/entities/asset';
-import type { Series } from '@/entities/post';
 import type { BriefPost } from '@/entities/post';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
+import { formatSeriesBadge, getEmploymentStatus } from '@/util/postFormatFunctions.ts';
 
 type PostCardProps = {
   post: BriefPost;
@@ -52,16 +52,6 @@ export const PostCard = ({
     investCompany,
     isBookmarked,
   } = post;
-
-  const formatSeriesBadge = (input: Series) => {
-    if (input === 'SEED') {
-      return 'Seed';
-    }
-    if (input === 'PRE_A') {
-      return 'Pre-Series A';
-    }
-    return `Series ${input}`;
-  };
 
   const firstInvestCompany = investCompany.split(',')[0];
 
@@ -168,17 +158,6 @@ export const PostCard = ({
       </section>
     </div>
   );
-};
-
-const getEmploymentStatus = (employmentEndDate: string): string => {
-  if (employmentEndDate === '') return '상시';
-
-  const daysLeft = Math.ceil(
-    (new Date(employmentEndDate).getTime() - new Date().getTime()) /
-      (1000 * 60 * 60 * 24),
-  );
-
-  return daysLeft >= 0 ? `D-${daysLeft}` : '마감';
 };
 
 const useAddBookmark = () => {

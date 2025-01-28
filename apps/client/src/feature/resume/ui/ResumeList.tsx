@@ -6,7 +6,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
-import { formatDate } from '@/util/format.ts';
+import { getFormatDate } from '@/util/postFormatFunctions.ts';
 
 export const ResumeListView = () => {
   const { resumeListData } = useGetResumeList();
@@ -38,7 +38,7 @@ export const ResumeListView = () => {
               >
                 <span>{resume.companyName}</span>
                 <span className="text-gray-400">
-                  {formatDate(resume.createdAt)}
+                  {getFormatDate(resume.createdAt)}
                 </span>
               </Button>
             </Card>
