@@ -12,6 +12,7 @@ import {
   PostCard,
   RolesFilter,
 } from '@/feature/landing';
+import { SkeletonPostCard } from '@/feature/landing/ui/SkeletonPostCard';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
@@ -84,17 +85,20 @@ export const LandingPage = () => {
             {/* 게시글 리스트 */}
             <main>
               <div className="grid w-full grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {postsData !== undefined &&
-                  postsData.posts.map((post, idx) => (
-                    <PostCard
-                      key={`post-${idx}`}
-                      post={post}
-                      onDetailClick={(postId) => {
-                        toPost({ postId });
-                      }}
-                      setShowSignInModal={setShowSignInModal}
-                    />
-                  ))}
+                {postsData !== undefined
+                  ? postsData.posts.map((post, idx) => (
+                      <PostCard
+                        key={`post-${idx}`}
+                        post={post}
+                        onDetailClick={(postId) => {
+                          toPost({ postId });
+                        }}
+                        setShowSignInModal={setShowSignInModal}
+                      />
+                    ))
+                  : Array.from({ length: 10 }).map((_, index) => (
+                      <SkeletonPostCard key={index} />
+                    ))}
               </div>
             </main>
 
