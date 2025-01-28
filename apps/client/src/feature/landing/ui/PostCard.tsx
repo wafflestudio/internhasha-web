@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { SeriesBadge } from '@/components/ui/badge';
 import { ICON_SRC } from '@/entities/asset';
+import type { Series } from '@/entities/post';
 import type { BriefPost } from '@/entities/post';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -44,12 +46,24 @@ export const PostCard = ({
     slogan,
     title,
     series,
-    isActive,
     imageLink,
     investAmount,
     employmentEndDate,
+    investCompany,
     isBookmarked,
   } = post;
+
+  const formatSeriesBadge = (input: Series) => {
+    if (input === 'SEED') {
+      return 'Seed';
+    }
+    if (input === 'PRE_A') {
+      return 'Pre-Series A';
+    }
+    return `Series ${input}`;
+  };
+
+  const firstInvestCompany = investCompany.split(',')[0];
 
   return (
     <div
@@ -94,47 +108,31 @@ export const PostCard = ({
               <div className="w-full h-full bg-grey-light-hover"></div>
             )}
           </div>
-          <div>
+          <div className="flex flex-col gap-1">
             <h3 className="text-lg font-semibold text-grey-darker">
               {companyName}
             </h3>
+            <span className="text-sm text-grey-normal">
+              {firstInvestCompany} 추천
+            </span>
           </div>
         </div>
 
         <div className="w-full min-h-[62px] text-grey-dark-hover">{slogan}</div>
 
         {/* 시리즈 및 투자 정보 */}
-        <div className="flex w-full justify-between py-1">
+        <div className="flex w-full justify-between py-1 gap-3">
           <div className="flex items-center gap-2">
-            {/* TODO: 삼항 연산자 variant로 정리 */}
-            <span
-              className={`px-2 py-1 text-sm rounded ${
-                series === 'PRE_A' || series === 'A'
-                  ? 'bg-blue-100 text-blue-900'
-                  : series === 'B'
-                    ? 'bg-red-100 text-red-900'
-                    : series === 'C'
-                      ? 'bg-green-100 text-green-900'
-                      : series === 'D'
-                        ? 'bg-yellow-100 text-yellow-900'
-                        : 'bg-gray-100 text-gray-800'
-              }`}
-            >
-              {series === 'PRE_A'
-                ? 'Pre-Series A'
-                : series.length === 1
-                  ? `Series ${series}`
-                  : 'Seed'}
-            </span>
+            <SeriesBadge variant={series}>
+              {formatSeriesBadge(series)}
+            </SeriesBadge>
             {investAmount != null && (
-              <span className="px-2 py-1 bg-gray-200 text-xs rounded">
+              <SeriesBadge>
                 투자 누적 {investAmount.toLocaleString()}억
-              </span>
+              </SeriesBadge>
             )}
-            {isActive && (
-              <span className="px-2 py-1 bg-gray-200 text-xs rounded">
-                추천
-              </span>
+            {firstInvestCompany !== undefined && firstInvestCompany !== '' && (
+              <SeriesBadge></SeriesBadge>
             )}
           </div>
           <div>
