@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
+import { RewritePostModal } from '@/components/modal/RewritePostModal';
 import { createErrorMessage } from '@/entities/errors';
 import type { CreatePostRequest } from '@/entities/post';
 import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
@@ -26,10 +27,19 @@ import { formatMajorJobToLabel, formatMinorJobToLabel } from '@/util/format';
 
 export const CreatePostForm = ({ companyId }: { companyId: string }) => {
   const [isSubmit, setIsSubmit] = useState(false);
-  const [isCancel, setIsCancel] = useState(false);
+  const [showModal, setShowModal] = useState<'NONE' | 'CANCEL' | 'NEXT'>(
+    'NONE',
+  );
   const [responseMessage, setResponseMessage] = useState('');
   const { toMain } = useRouteNavigation();
-  const { createPost, isPending } = useCreatePost({ setResponseMessage });
+
+  const onSuccessSubmit = () => {
+    setShowModal('NEXT');
+  };
+  const { createPost, isPending } = useCreatePost({
+    setResponseMessage,
+    onSuccess: onSuccessSubmit,
+  });
 
   const {
     title,
@@ -61,11 +71,11 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
   };
 
   const handleClickCancelButton = () => {
-    setIsCancel(true);
+    setShowModal('CANCEL');
   };
 
   const closeCancelModal = () => {
-    setIsCancel(false);
+    setShowModal('NONE');
   };
 
   return (
@@ -222,21 +232,23 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           </SubmitButton>
         </div>
       </FormContainer>
-      {isCancel && (
+      {showModal === 'CANCEL' && (
         <CancelCheckModal onClose={toMain} onCancel={closeCancelModal} />
       )}
+      {showModal === 'NEXT' && <RewritePostModal companyId={companyId} />}
     </>
   );
 };
 
 const useCreatePost = ({
   setResponseMessage,
+  onSuccess,
 }: {
   setResponseMessage(input: string): void;
+  onSuccess(): void;
 }) => {
   const { postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
-  const { toMain } = useRouteNavigation();
 
   const { mutate: createPost, isPending } = useMutation({
     mutationFn: ({ post }: { post: CreatePostRequest }) => {
@@ -247,7 +259,7 @@ const useCreatePost = ({
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        toMain();
+        onSuccess();
       } else {
         setResponseMessage(createErrorMessage(response.code));
       }
