@@ -30,7 +30,7 @@ type PostPresentation = {
 };
 
 const TITLE_MAX_LENGTH = 500;
-const CONTENT_MAX_LENGTH = 10000;
+export const CONTENT_MAX_LENGTH = 10000;
 const HEADCOUNT_REGEX = /^\d+$/;
 const DATE_TIME_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;

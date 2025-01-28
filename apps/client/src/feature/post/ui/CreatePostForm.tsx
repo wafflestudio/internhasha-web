@@ -14,7 +14,10 @@ import { createErrorMessage } from '@/entities/errors';
 import type { CreatePostRequest } from '@/entities/post';
 import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
 import { JOB_CATEGORY_MAP, JOB_MAJOR_CATEGORIES } from '@/entities/post';
-import { postPresentation } from '@/feature/post/presentation/postPresentation';
+import {
+  CONTENT_MAX_LENGTH,
+  postPresentation,
+} from '@/feature/post/presentation/postPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -168,8 +171,13 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
               }}
             />
           </div>
+          <span
+            className={`text-sm ${detail.value.length > CONTENT_MAX_LENGTH ? 'text-red' : 'texy-grey-normal'}`}
+          >
+            {detail.value.length}/{CONTENT_MAX_LENGTH}
+          </span>
           {isSubmit && detail.isError && (
-            <p>상세 공고 글은 10,000자 이상 작성하실 수 없습니다.</p>
+            <p>공고 글은 {CONTENT_MAX_LENGTH}자 이내로 작성해주세요.</p>
           )}
         </LabelContainer>
         <LabelContainer label="채용 마감일" id="employmentEndDate">
