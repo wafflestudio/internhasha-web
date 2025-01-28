@@ -59,10 +59,10 @@ export const PostCard = ({
       }}
     >
       {/* 직군 & 마감일 */}
-      <div className="flex relative justify-between items-center rounded-t-lg pl-5 pr-5 p-3 bg-gray-200">
+      <div className="flex h-[50px] relative justify-between items-center rounded-t-lg px-[22px] bg-gray-200">
         <div className="flex items-center gap-2">
           <img src={ICON_SRC.PERSON} className="w-6 h-6" />
-          <span className="text-lg text-gray-600">{title}</span>
+          <span className="text-grey-darker">{title}</span>
         </div>
 
         <span className="text-grey-normal-hover">
@@ -95,7 +95,7 @@ export const PostCard = ({
             )}
           </div>
           <div>
-            <h3 className="text-xl font-semibold text-gray-800">
+            <h3 className="text-lg font-semibold text-grey-darker">
               {companyName}
             </h3>
           </div>
@@ -104,7 +104,7 @@ export const PostCard = ({
         <div className="w-full min-h-[62px] text-grey-dark-hover">{slogan}</div>
 
         {/* 시리즈 및 투자 정보 */}
-        <div className="flex w-full justify-between py-1 mt-[30px]">
+        <div className="flex w-full justify-between py-1">
           <div className="flex items-center gap-2">
             {/* TODO: 삼항 연산자 variant로 정리 */}
             <span

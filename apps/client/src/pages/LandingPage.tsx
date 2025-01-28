@@ -56,7 +56,7 @@ export const LandingPage = () => {
         {/* 메인 컨텐츠 */}
         <div className="flex flex-col w-full sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl md:flex-row m-auto px-2 py-10 gap-2">
           {/* RolesFilter */}
-          <div className="hidden md:block md:flex-col order-1 md:order-none md:mt-[58px]">
+          <div className="hidden md:block md:flex-col order-1 md:order-none md:mt-[50px]">
             <RolesFilter
               roles={filterElements.roles}
               onChangeRoles={handleRolesChange}
@@ -73,9 +73,9 @@ export const LandingPage = () => {
 
           {/* 게시글 리스트 및 상단 필터 */}
           <div className="flex-1 order-2 px-2 lg:order-none">
-            <h2 className="text-2xl font-bold mb-6">인턴 공고</h2>
+            <h2 className="text-2xl font-bold">인턴 공고</h2>
             {/* 상단 필터 섹션 */}
-            <div className="flex justify-between items-center py-2">
+            <div className="flex justify-between items-center py-6">
               <FilterSection
                 filterElements={filterElements}
                 onChangeFilters={setFilterElements}
