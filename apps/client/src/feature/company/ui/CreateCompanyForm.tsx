@@ -133,21 +133,21 @@ export const CreateCompanyForm = () => {
     toCreatePost({
       companyBody: {
         companyName: companyName.value,
+        // TODO: explanation form 추가
+        explanation: '',
         email: email.value,
         slogan: slogan.value,
-        series: series.value,
-        imageLink: thumbnail.value.url,
         investAmount: Number(investAmount.value),
         investCompany: investCompanyFilter(investCompany.value),
-        tags: tagsFilter(tags.value),
-        IRDeckLink:
+        series: series.value,
+        irDeckLink:
           IRDeckPreview.value !== null ? IRDeckPreview.value.url : undefined,
         landingPageLink: landingPageLink.value,
+        imageLink: thumbnail.value.url,
         externalDescriptionLink: externalDescriptionLinkFilter(
           externalDescriptionLink.value,
         ),
-        // TODO: explanation form 추가
-        explanation: '',
+        tags: tagsFilter(tags.value),
       },
     });
   };

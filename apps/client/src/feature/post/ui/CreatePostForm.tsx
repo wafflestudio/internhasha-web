@@ -24,17 +24,17 @@ import { formatMajorJobToLabel, formatMinorJobToLabel } from '@/util/format';
 
 type CompanyBody = {
   companyName: string;
+  explanation: string;
   email: string;
   slogan: string;
-  series: Series;
-  imageLink: string;
   investAmount: number;
   investCompany: string[];
-  tags?: string[];
-  IRDeckLink?: string;
+  series: Series;
+  irDeckLink?: string;
   landingPageLink?: string;
+  imageLink?: string;
   externalDescriptionLink?: { link: string; description: string }[];
-  explanation: string;
+  tags?: string[];
 };
 
 export const CreatePostForm = () => {
@@ -75,10 +75,10 @@ export const CreatePostForm = () => {
         },
         ...state,
         title: title.value,
+        employmentEndDate: employmentEndDateTime.value,
         category: jobMinorCategory.value,
         headcount: headcount.value,
         detail: detail.value,
-        employmentEndDate: employmentEndDateTime.value,
       },
     });
   };

@@ -24,26 +24,26 @@ type PreviousForm = {
 
 type CompanyBody = {
   companyName: string;
+  explanation: string;
   email: string;
   slogan: string;
-  series: Series;
-  imageLink: string;
   investAmount: number;
   investCompany: string[];
-  tags?: string[];
-  IRDeckLink?: string;
+  series: Series;
+  irDeckLink?: string;
   landingPageLink?: string;
+  imageLink?: string;
   externalDescriptionLink?: { link: string; description: string }[];
-  explanation: string;
+  tags?: string[];
 };
 
 type PostBody = {
   title: string;
+  employmentEndDateTime?: string;
   jobMajorCategory: string;
   jobMinorCategory: string;
+  detail: string;
   headcount: number;
-  content: string;
-  employmentEndDateTime: string;
 };
 
 export const useRouteNavigation = () => {
