@@ -1,7 +1,7 @@
 interface FormContainerProps extends React.FormHTMLAttributes<HTMLFormElement> {
   handleSubmit(): void;
   response: string;
-  className: string;
+  className?: string;
 }
 
 export const FormContainer = ({
@@ -17,7 +17,7 @@ export const FormContainer = ({
         event.preventDefault();
         handleSubmit();
       }}
-      className={`flex flex-col gap-[30px] ${className}`}
+      className={`flex flex-col gap-[30px] ${className !== undefined ? className : ''}`}
     >
       {children}
     </form>

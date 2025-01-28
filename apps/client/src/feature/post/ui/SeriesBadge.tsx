@@ -1,6 +1,12 @@
 import type { Series } from '@/entities/post.ts';
 
-export const SeriesBadge = ({ series, className }: { series: Series, className?: string }) => {
+export const SeriesBadge = ({
+  series,
+  className,
+}: {
+  series: Series;
+  className?: string;
+}) => {
   return (
     <>
       <span
@@ -14,7 +20,7 @@ export const SeriesBadge = ({ series, className }: { series: Series, className?:
                 : series === 'D'
                   ? 'bg-yellow-100 text-yellow-900'
                   : 'bg-gray-200 text-gray-800'
-        } ${className}`}
+        } ${className !== undefined ? className : ''}`}
       >
         {series === 'PRE_A'
           ? 'Pre-Series A'

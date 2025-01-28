@@ -3,11 +3,9 @@ import { Button } from '@waffle/design-system';
 export const CancelCheckModal = ({
   onClose,
   onCancel,
-  className,
 }: {
   onClose(): void;
   onCancel(): void;
-  className?: string;
 }) => {
   return (
     <div>

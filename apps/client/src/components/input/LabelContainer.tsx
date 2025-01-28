@@ -1,6 +1,6 @@
 interface LabelContainertProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string;
-  className: string;
+  className?: string;
 }
 
 export const LabelContainer = ({
@@ -10,7 +10,9 @@ export const LabelContainer = ({
   className,
 }: LabelContainertProps) => {
   return (
-    <div className={`flex flex-col gap-2 ${className}`}>
+    <div
+      className={`flex flex-col gap-2 ${className !== undefined ? className : ''}`}
+    >
       <label htmlFor={id} className="font-semibold">
         {label}
       </label>

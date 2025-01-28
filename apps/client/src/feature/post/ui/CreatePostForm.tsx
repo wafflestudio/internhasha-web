@@ -29,7 +29,7 @@ type CompanyBody = {
   series: Series;
   imageLink: string;
   investAmount: number;
-  investCompany: string[];
+  investCompany: string;
   tags?: string[];
   IRDeckLink?: string;
   landingPageLink?: string;

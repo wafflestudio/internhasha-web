@@ -1,6 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/card/card.tsx';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/card/card.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { SeriesBadge } from '@/feature/post/ui/SeriesBadge.tsx';
@@ -40,9 +45,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
     employmentEndDate,
   } = postDetailData.data;
 
-  const investCompanyList = investCompany.split(",")
-  
-
+  const investCompanyList = investCompany.split(',');
 
   const formattedEndDate = formatDate(employmentEndDate);
   const dDay = calculateDDay(employmentEndDate);
@@ -329,7 +332,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
         <div className="text-sm text-gray-900 font-medium flex items-center gap-3">
           <span>채용 마감일 : {formattedEndDate}</span>
           <span className="bg-gray-600 text-white py-1 px-2 rounded-md">
-            {dDay > 0 ? `D - ${ dDay }` : `종료`}
+            {dDay > 0 ? `D - ${dDay}` : `종료`}
           </span>
         </div>
         <div className="flex flex-col gap-3">

@@ -1,16 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { Button } from '@/components/button';
 import { Card } from '@/components/card/card.tsx';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
-import { Button } from '@/components/button';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
 import { formatDate } from '@/util/format.ts';
 
 export const ResumeListView = () => {
   const { resumeListData } = useGetResumeList();
-  const { toResumeDetail } = useRouteNavigation()
+  const { toResumeDetail } = useRouteNavigation();
 
   if (resumeListData === undefined) {
     return <div>로딩중...</div>;
@@ -37,7 +37,9 @@ export const ResumeListView = () => {
                 className="flex justify-between w-full h-full p-5"
               >
                 <span>{resume.companyName}</span>
-                <span className="text-gray-400">{formatDate(resume.createdAt)}</span>
+                <span className="text-gray-400">
+                  {formatDate(resume.createdAt)}
+                </span>
               </Button>
             </Card>
           ))}

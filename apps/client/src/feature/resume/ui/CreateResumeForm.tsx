@@ -91,19 +91,19 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
             id="contents"
             className="font-medium text-gray-700 h-80"
           >
-           <textarea
-             id="contents"
-             value={contents.value}
-             disabled={isPending}
-             onChange={(e) => {
-               contents.onChange(e.target.value);
-             }}
-             placeholder="간단한 자기소개, 커피챗 신청 사유, 가능한 시간대를 작성해주세요"
-             className="w-full h-full border border-gray-300 rounded-md
+            <textarea
+              id="contents"
+              value={contents.value}
+              disabled={isPending}
+              onChange={(e) => {
+                contents.onChange(e.target.value);
+              }}
+              placeholder="간단한 자기소개, 커피챗 신청 사유, 가능한 시간대를 작성해주세요"
+              className="w-full h-full border border-gray-300 rounded-md
       focus:ring-blue-500 focus:border-blue-500
       placeholder:text-gray-400 placeholder:top-0 placeholder:left-0
       p-3 resize-none overflow-auto"
-           />
+            />
             {isSubmit && contents.isError && (
               <p className="text-gray-500">
                 내용은 10,000자 이하로 작성해주세요.
