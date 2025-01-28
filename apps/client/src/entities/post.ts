@@ -50,7 +50,7 @@ export type Post = {
   email: string;
   slogan: string;
   investAmount?: number;
-  investCompany: string[];
+  investCompany: string;
   series: Series;
   irDeckLink?: string;
   landingPageLink?: string;

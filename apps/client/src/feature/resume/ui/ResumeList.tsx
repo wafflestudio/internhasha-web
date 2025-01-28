@@ -1,11 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { Button } from '@/components/button';
+import { Card } from '@/components/card/card.tsx';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
+import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
+import { formatDate } from '@/util/format.ts';
 
 export const ResumeListView = () => {
   const { resumeListData } = useGetResumeList();
+  const { toResumeDetail } = useRouteNavigation();
 
   if (resumeListData === undefined) {
     return <div>로딩중...</div>;
@@ -21,17 +26,25 @@ export const ResumeListView = () => {
 
   return (
     <div>
-      <h1>Resumes</h1>
-      <ul>
-        {resumeList.map((resume) => (
-          <li key={resume.id}>
-            <p>{resume.content}</p>
-            <p>{resume.author.name}</p>
-            <p>{resume.phoneNumber}</p>
-            <p>{resume.createdAt}</p>
-          </li>
-        ))}
-      </ul>
+      <div className="max-w-screen-lg">
+        <div className="space-y-4 w-2/3">
+          {resumeList.map((resume) => (
+            <Card key={resume.id} className="">
+              <Button
+                onClick={() => {
+                  toResumeDetail({ resumeId: resume.id });
+                }}
+                className="flex justify-between w-full h-full p-5"
+              >
+                <span>{resume.companyName}</span>
+                <span className="text-gray-400">
+                  {formatDate(resume.createdAt)}
+                </span>
+              </Button>
+            </Card>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
