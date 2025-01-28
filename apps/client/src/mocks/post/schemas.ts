@@ -4,45 +4,62 @@ type AuthorBriefDTO = {
   profileImageLink?: string;
 };
 
-type RoleDTO = {
-  id: string;
-  category: string;
-  detail: string;
-  headcount: string;
+type JobCategory =
+  | 'PLANNER'
+  | 'FRONT'
+  | 'APP'
+  | 'BACKEND'
+  | 'OTHERS'
+  | 'DESIGN'
+  | 'DATA'
+  | 'MARKETING';
+
+type Link = {
+  link: string;
+  description: string;
 };
 
 type PostDTO = {
   id: string;
-  companyName: string;
-  email: string;
   author: AuthorBriefDTO;
+
+  // 회사 정보
+  companyName: string;
   explanation: string;
-  tags: string[];
-  roles: RoleDTO[];
-  imageLink: string;
-  investAmount: number;
+  email: string;
+  slogan: string;
+  investAmount?: number;
   investCompany: string[];
-  IRDeckLink: string;
-  landingPageLink: string;
-  externalDescriptionLink: string[];
+  series: 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
+  irDeckLink?: string;
+  landingPageLink?: string;
+  imageLink?: string;
+  externalDescriptionLink?: Link[];
+  tags?: string[];
+
+  // post 정보
+  title: string;
+  employmentEndDate?: string;
+  createdAt: string;
+  updatedAt: string;
   isActive: boolean;
-  employmentEndDate: Date;
+  category: JobCategory;
+  detail: string;
+  headcount: number;
+  isBookmarked: boolean;
 };
 
-type PostBriefDTO = {
-  id: string;
-  companyName: string;
-  email: string;
-  author: AuthorBriefDTO;
-  explanation: string;
-  tags: string[];
-  roles: RoleDTO[];
-  imageLink: string;
-  investAmount: number;
-  investCompany: string[];
-  isActive: boolean;
-  employmentEndDate: Date;
-};
+export type PostBriefDTO = Omit<
+  PostDTO,
+  | 'explanation'
+  | 'irDeckLink'
+  | 'landingPageLink'
+  | 'externalDescriptionLink'
+  | 'tags'
+  | 'createdAt'
+  | 'updatedAt'
+  | 'detail'
+>;
 
 export type PostsResponse = {
   posts: PostBriefDTO[];

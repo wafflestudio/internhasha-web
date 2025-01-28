@@ -1,116 +1,88 @@
 import type { PostDetailResponse, PostsResponse } from '@/mocks/post/schemas';
 
-const mockPostsResponse = Array.from({ length: 100 }, (_, index) => ({
-  id: `${index + 1}`,
-  companyName: `Company ${index + 1}`,
-  email: `contact${index + 1}@company.com`,
-  author: {
-    id: `author-${index + 1}`,
-    name: `Author ${index + 1}`,
-    profileImageLink:
-      index % 2 === 0
-        ? `https://example.com/profile${index + 1}.jpg`
-        : undefined,
-  },
-  explanation: `This is a brief explanation for Company ${index + 1}.`,
-  tags: [`tag${index + 1}-1`, `tag${index + 1}-2`, `tag${index + 1}-3`],
-  roles: [
-    {
-      id: `role-${index + 1}-1`,
-      category: 'Engineering',
-      detail: 'Frontend Developer',
-      headcount: '5',
-    },
-    {
-      id: `role-${index + 1}-2`,
-      category: 'Engineering',
-      detail: 'Backend Developer',
-      headcount: '3',
-    },
-  ],
-  imageLink: `https://example.com/image${index + 1}.jpg`,
-  investAmount: (index + 1) * 1000,
-  investCompany: [`Investor ${index + 1}`, `Investor ${index + 2}`],
-  isActive: index % 2 === 0,
-  employmentEndDate: new Date(2025, index % 12, (index % 28) + 1), // 날짜를 동적으로 생성
-}));
+const mockPostsResponse: PostDetailResponse[] = Array.from(
+  { length: 100 },
+  (_, index) => ({
+    id: index.toString(),
+    author: { id: `a${index}`, name: `홍길동${index}` },
+    companyName: `스타트업 ${String.fromCharCode(index)}`,
+    explanation: `혁신적인 서비스 ${index}`,
+    email: `info@startup${index}.com`,
+    slogan: `미래를 여는 기술 ${index}`,
+    investAmount: index % 2 === 0 ? 3000000 : undefined,
+    investCompany: [`VC ${index}`],
+    series: index % 5 === 0 ? 'C' : 'SEED',
+    irDeckLink: `https://example.com/deck${index}.pdf`,
+    landingPageLink: `https://startup${index}.com`,
+    imageLink: `https://example.com/startup${index}.jpg`,
+    externalDescriptionLink: [
+      {
+        link: `https://news${index}.com`,
+        description: `관련 기사 ${index}`,
+      },
+    ],
+    tags: [`태그${index}`, '스타트업'],
+    title: `개발자 모집 ${index}`,
+    employmentEndDate: index % 3 === 0 ? '2025-04-01' : undefined,
+    createdAt: `2024-01-${10 + index}`,
+    updatedAt: `2024-01-${15 + index}`,
+    isActive: index % 2 === 0,
+    category: index % 3 === 0 ? 'APP' : 'PLANNER',
+    detail: `프로젝트 관리 및 실행 ${index}`,
+    headcount: index + 1,
+    isBookmarked: index % 2 !== 0,
+  }),
+);
 
 export const mockPost1: PostDetailResponse = {
   id: '1',
-  companyName: 'Mock Company Inc.', // 수정된 회사 이름
-  email: 'contact@mockcompany.com',
   author: {
-    id: 'author123',
-    name: 'John Doe',
-    profileImageLink: 'https://example.com/profile.jpg',
+    id: 'a1',
+    name: '김철수',
+    profileImageLink: 'https://example.com/profile1.jpg',
   },
-  explanation:
-    'This is a mock company providing innovative solutions for businesses.',
-  tags: ['Innovation', 'Technology', 'Solutions'],
-  roles: [
-    {
-      id: 'role1',
-      category: 'Engineering',
-      detail: 'Frontend Developer',
-      headcount: '5',
-    },
-    {
-      id: 'role2',
-      category: 'Engineering',
-      detail: 'Backend Developer',
-      headcount: '3',
-    },
-  ],
-  imageLink: 'https://example.com/company-image.jpg',
+  companyName: '스타트업 A',
+  explanation: '혁신적인 AI 솔루션을 제공합니다.',
+  email: 'contact@startupA.com',
+  slogan: 'AI로 더 나은 세상을',
   investAmount: 5000000,
-  investCompany: ['Mock Ventures', 'Tech Angels'],
-  IRDeckLink: 'https://example.com/ir-deck.pdf',
-  landingPageLink: 'https://mockcompany.com',
+  investCompany: ['VC Alpha', 'VC Beta'],
+  series: 'A',
+  irDeckLink: 'https://example.com/deckA.pdf',
+  landingPageLink: 'https://startupA.com',
+  imageLink: 'https://example.com/startupA.jpg',
   externalDescriptionLink: [
-    'https://linkedin.com/mockcompany',
-    'https://twitter.com/mockcompany',
+    { link: 'https://newsA.com', description: '스타트업 A 관련 기사' },
   ],
+  tags: ['AI', '혁신', '스타트업'],
+  title: 'AI 개발자 모집',
+  employmentEndDate: '2025-03-01',
+  createdAt: '2024-01-01',
+  updatedAt: '2024-01-10',
   isActive: true,
-  employmentEndDate: new Date('2024-12-31T23:59:59'),
+  category: 'BACKEND',
+  detail: 'AI 모델 개발 및 운영',
+  headcount: 3,
+  isBookmarked: false,
 };
 
 export const mockPost2: PostDetailResponse = {
   id: '2',
-  companyName: 'Mock Company Inc.', // 수정된 회사 이름
-  email: 'contact@mockcompany.com',
-  author: {
-    id: 'author123',
-    name: 'John Doe',
-    profileImageLink: 'https://example.com/profile.jpg',
-  },
-  explanation:
-    'This is a mock company providing innovative solutions for businesses.',
-  tags: ['Innovation', 'Technology', 'Solutions'],
-  roles: [
-    {
-      id: 'role1',
-      category: 'Engineering',
-      detail: 'Frontend Developer',
-      headcount: '5',
-    },
-    {
-      id: 'role2',
-      category: 'Engineering',
-      detail: 'Backend Developer',
-      headcount: '3',
-    },
-  ],
-  imageLink: 'https://example.com/company-image.jpg',
-  investAmount: 5000000,
-  investCompany: ['Mock Ventures', 'Tech Angels'],
-  IRDeckLink: 'https://example.com/ir-deck.pdf',
-  landingPageLink: 'https://mockcompany.com',
-  externalDescriptionLink: [
-    'https://linkedin.com/mockcompany',
-    'https://twitter.com/mockcompany',
-  ],
+  author: { id: 'a2', name: '이영희' },
+  companyName: '핀테크 B',
+  explanation: '차세대 금융 서비스 제공',
+  email: 'info@fintechB.com',
+  slogan: '금융의 새로운 패러다임',
+  investCompany: ['VC Gamma'],
+  series: 'SEED',
+  title: '프론트엔드 개발자 모집',
+  createdAt: '2024-01-05',
+  updatedAt: '2024-01-15',
   isActive: true,
-  employmentEndDate: new Date('2024-12-31T23:59:59'),
+  category: 'FRONT',
+  detail: 'React 기반 웹앱 개발',
+  headcount: 5,
+  isBookmarked: true,
 };
 
 // 페이지당 게시글 수

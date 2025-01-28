@@ -5,7 +5,7 @@ import type { BriefPost, Post, PostRequest, Series } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 
 export type PostService = {
-  getPosts: ({
+  getPosts({
     page,
     roles,
     investmentMax,
@@ -17,27 +17,27 @@ export type PostService = {
     roles?: string[];
     investmentMax?: number;
     investmentMin?: number;
-    series?: Series;
+    series?: Series[];
     pathStatus?: number;
-  }) => ServiceResponse<{
+  }): ServiceResponse<{
     posts: BriefPost[];
     paginator: Paginator;
   }>;
-  getPostDetail: ({
+  getPostDetail({
     postId,
     token,
   }: {
     postId: string;
     token: string;
-  }) => ServiceResponse<Post>;
-  createPost: ({
+  }): ServiceResponse<Post>;
+  createPost({
     token,
     postContents,
   }: {
     token: string;
     postContents: PostRequest;
-  }) => ServiceResponse<Post>;
-  updatePost: ({
+  }): ServiceResponse<Post>;
+  updatePost({
     postId,
     token,
     postContents,
@@ -45,7 +45,21 @@ export type PostService = {
     postId: string;
     token: string;
     postContents: PostRequest;
-  }) => ServiceResponse<Post>;
+  }): ServiceResponse<Post>;
+  addBookmark({
+    postId,
+    token,
+  }: {
+    postId: string;
+    token: string;
+  }): ServiceResponse<void>;
+  deleteBookmark({
+    postId,
+    token,
+  }: {
+    postId: string;
+    token: string;
+  }): ServiceResponse<void>;
 };
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
@@ -69,7 +83,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
       postPath.append('investmentMax', investmentMax.toString());
     if (investmentMin !== undefined)
       postPath.append('investmentMin', investmentMin.toString());
-    if (series !== undefined) postPath.append('series', series);
+    if (series !== undefined) postPath.append('series', series.toString());
     if (pathStatus !== undefined)
       postPath.append('status', pathStatus.toString());
 
@@ -127,6 +141,36 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
       token: token,
       params: params,
       body: postContents,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', code: data.code, message: data.message };
+  },
+  addBookmark: async ({ token, postId }) => {
+    const params = { postId };
+    const { status, data } = await apis['POST /post/:postId/bookmark']({
+      token: token,
+      params: params,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', code: data.code, message: data.message };
+  },
+  deleteBookmark: async ({ token, postId }) => {
+    const params = { postId };
+    const { status, data } = await apis['DELETE /post/:postId/bookmark']({
+      token: token,
+      params: params,
     });
 
     if (status === 200) {

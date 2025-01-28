@@ -54,8 +54,8 @@ const useGetResumeList = () => {
   const { resumeService } = useGuardContext(ServiceContext);
 
   const { data: resumeListData } = useQuery({
-    queryKey: ['user', 'resume', 'post', token] as const,
-    queryFn: ({ queryKey: [, , , t] }) => {
+    queryKey: ['resumeService', 'getResumeList', token] as const,
+    queryFn: ({ queryKey: [, , t] }) => {
       if (t === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }

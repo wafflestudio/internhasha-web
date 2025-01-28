@@ -50,7 +50,7 @@ const useMyInfo = () => {
   const { token } = useGuardContext(TokenContext);
   const { userService } = useGuardContext(ServiceContext);
   const { data: myInfoData } = useQuery({
-    queryKey: ['user', 'info', token] as const,
+    queryKey: ['userService', 'getMyInfo', token] as const,
     queryFn: ({ queryKey: [, , t] }) => {
       if (t === null) {
         throw new Error('토큰이 존재하지 않습니다.');

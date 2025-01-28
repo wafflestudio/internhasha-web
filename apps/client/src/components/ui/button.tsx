@@ -16,10 +16,12 @@ const buttonVariants = cva(
         outline:
           'border border-input bg-white text-black shadow-sm hover:bg-grey-light diabled:text-bg-grey-light disabled:text-grey-normal',
         secondary:
-          'bg-grey-light-active text-grey-normal-active hover:bg-grey-light-hover disabled:bg-grey-light',
+          'bg-grey-light text-black hover:bg-grey-light-active disabled:bg-grey-light',
         ghost:
           'text-grey-normal-active hover:bg-grey-light hover:text-grey-darker',
         link: 'text-primary underline-offset-4 hover:underline',
+        selected:
+          'border border-2 border-grey-dark bg-grey-light-hover text-black hover:bg-grey-light-active diabled:text-bg-grey-light disabled:text-grey-normal',
       },
       size: {
         default: 'h-[42px] px-4 py-2 items-center',

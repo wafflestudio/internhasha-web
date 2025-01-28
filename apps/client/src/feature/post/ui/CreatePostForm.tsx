@@ -34,6 +34,7 @@ type CompanyBody = {
   IRDeckLink?: string;
   landingPageLink?: string;
   externalDescriptionLink?: { link: string; description: string }[];
+  explanation: string;
 };
 
 export const CreatePostForm = () => {
@@ -77,8 +78,6 @@ export const CreatePostForm = () => {
         category: jobMinorCategory.value,
         headcount: headcount.value,
         detail: detail.value,
-        // TODO: isAlways 설정 방식 포함하기 (달력 폼 생성 시 함께 처리)
-        isAlways: false,
         employmentEndDate: employmentEndDateTime.value,
       },
     });

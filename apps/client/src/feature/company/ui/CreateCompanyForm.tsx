@@ -146,6 +146,8 @@ export const CreateCompanyForm = () => {
         externalDescriptionLink: externalDescriptionLinkFilter(
           externalDescriptionLink.value,
         ),
+        // TODO: explanation form 추가
+        explanation: '',
       },
     });
   };
