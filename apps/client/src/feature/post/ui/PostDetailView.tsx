@@ -357,7 +357,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   );
 };
 
-const useGetPostDetail = ({ postId }: { postId: string }) => {
+export const useGetPostDetail = ({ postId }: { postId: string }) => {
   const { token } = useGuardContext(TokenContext);
   const { postService } = useGuardContext(ServiceContext);
 

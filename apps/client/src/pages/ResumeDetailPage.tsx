@@ -12,7 +12,7 @@ export const ResumeDetailPage = () => {
     return <RouteNavigator link={PATH.RESUME_LIST} />;
   }
   return (
-    <div>
+    <div className="min-h-screen bg-gray-50">
       <GlobalNavigationBar />
       <ResumeDetailView resumeId={resumeId} />
     </div>

@@ -6,6 +6,8 @@ import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { TokenContext } from '@/shared/context/TokenContext.ts';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
+import { getEmploymentStatus } from '@/util/postFormatFunctions.ts';
+import { ICON_SRC } from '@/entities/asset.ts';
 
 export const BookmarkListView = () => {
 
@@ -27,7 +29,7 @@ export const BookmarkListView = () => {
   return (
     <div>
       <div className="max-w-screen-lg">
-        <div className="space-y-4 w-2/3">
+        <div className="space-y-4 w-3/5">
           {bookmarkList.map((post) => (
             <Card key={post.id} className="">
               <Button
@@ -36,11 +38,18 @@ export const BookmarkListView = () => {
                 }}
                 className="flex justify-between w-full h-full p-5"
               >
+                <img src={ICON_SRC.BOOKMARK.SELECTED} />
                 <span>{post.title}</span>
-                <span>{post.companyName}</span>
-                <span className="text-gray-400">
-
+                <div className="flex gap-8">
+                  <span>{post.companyName}</span>
+                  <span className="text-gray-400">
+                  {post.isActive
+                    ? post.employmentEndDate !== undefined &&
+                    getEmploymentStatus(post.employmentEndDate)
+                    : '모집 완료'}
                 </span>
+                </div>
+
               </Button>
             </Card>
           ))}

@@ -27,7 +27,7 @@ export const ResumeListView = () => {
   return (
     <div>
       <div className="max-w-screen-lg">
-        <div className="space-y-4 w-2/3">
+        <div className="space-y-4 w-3/5">
           {resumeList.map((resume) => (
             <Card key={resume.id} className="">
               <Button
