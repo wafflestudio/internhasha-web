@@ -1,15 +1,15 @@
 import { useMutation } from '@tanstack/react-query';
 import MDEditor from '@uiw/react-md-editor';
 import {
-  Button,
   FormContainer,
   LabelContainer,
-  SubmitButton,
   TextInput,
 } from '@waffle/design-system';
 import { useState } from 'react';
 
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
+import { RewritePostModal } from '@/components/modal/RewritePostModal';
+import { Button } from '@/components/ui/button';
 import { createErrorMessage } from '@/entities/errors';
 import type { CreatePostRequest } from '@/entities/post';
 import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
@@ -26,10 +26,19 @@ import { formatMajorJobToLabel, formatMinorJobToLabel } from '@/util/format';
 
 export const CreatePostForm = ({ companyId }: { companyId: string }) => {
   const [isSubmit, setIsSubmit] = useState(false);
-  const [isCancel, setIsCancel] = useState(false);
+  const [showModal, setShowModal] = useState<'NONE' | 'CANCEL' | 'NEXT'>(
+    'NONE',
+  );
   const [responseMessage, setResponseMessage] = useState('');
   const { toMain } = useRouteNavigation();
-  const { createPost, isPending } = useCreatePost({ setResponseMessage });
+
+  const onSuccessSubmit = () => {
+    setShowModal('NEXT');
+  };
+  const { createPost, isPending } = useCreatePost({
+    setResponseMessage,
+    onSuccess: onSuccessSubmit,
+  });
 
   const {
     title,
@@ -61,11 +70,11 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
   };
 
   const handleClickCancelButton = () => {
-    setIsCancel(true);
+    setShowModal('CANCEL');
   };
 
   const closeCancelModal = () => {
-    setIsCancel(false);
+    setShowModal('NONE');
   };
 
   return (
@@ -210,33 +219,41 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           )}
         </LabelContainer>
         <div>
-          <Button onClick={handleClickCancelButton} disabled={isPending}>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              handleClickCancelButton();
+            }}
+            disabled={isPending}
+          >
             이전으로
           </Button>
-          <SubmitButton
+          <Button
             form="CreatePostForm"
             onClick={handleSubmit}
             disabled={isPending}
           >
             제출하기
-          </SubmitButton>
+          </Button>
         </div>
       </FormContainer>
-      {isCancel && (
+      {showModal === 'CANCEL' && (
         <CancelCheckModal onClose={toMain} onCancel={closeCancelModal} />
       )}
+      {showModal === 'NEXT' && <RewritePostModal />}
     </>
   );
 };
 
 const useCreatePost = ({
   setResponseMessage,
+  onSuccess,
 }: {
   setResponseMessage(input: string): void;
+  onSuccess(): void;
 }) => {
   const { postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
-  const { toMain } = useRouteNavigation();
 
   const { mutate: createPost, isPending } = useMutation({
     mutationFn: ({ post }: { post: CreatePostRequest }) => {
@@ -247,7 +264,7 @@ const useCreatePost = ({
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        toMain();
+        onSuccess();
       } else {
         setResponseMessage(createErrorMessage(response.code));
       }
