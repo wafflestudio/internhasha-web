@@ -31,7 +31,7 @@ type LocalSignUpInitialBody = {
 
 export const LocalSignUpForm = () => {
   const location = useLocation();
-  const state = location.state as LocalSignUpInitialBody | undefined;
+  const state = location.state as LocalSignUpInitialBody | null;
 
   const { toVerifyEmail } = useRouteNavigation();
   const { password, passwordConfirm, localId, username } =
@@ -47,10 +47,6 @@ export const LocalSignUpForm = () => {
     setLocalIdCheckSuccess,
     setResponseMessage,
   });
-
-  if (state === undefined) {
-    return <div>유효하지 않은 접근입니다.</div>;
-  }
 
   const checkLocalIdDisable = localId.isError || localIdCheckSuccess;
   const signUpDisable =

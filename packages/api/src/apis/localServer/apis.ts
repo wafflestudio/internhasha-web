@@ -228,7 +228,7 @@ export const getLocalServerApis = ({
         token,
       });
     },
-    "POST /admin/post/upload/presigned": ({
+    "POST /post/upload/presigned": ({
       token,
       body,
     }: {
@@ -237,7 +237,7 @@ export const getLocalServerApis = ({
     }) => {
       return callWithToken<SuccessResponse<PresignedUrlResponse>>({
         method: "POST",
-        path: "admin/post/upload/presigned",
+        path: "post/upload/presigned",
         token,
         body,
       });

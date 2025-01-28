@@ -20,9 +20,9 @@ type Body = {
 
 export const CreatePostPage = () => {
   const location = useLocation();
-  const state = location.state as Body | undefined;
+  const state = location.state as Body | null;
 
-  if (state === undefined) {
+  if (state === null) {
     return <RouteNavigator link={PATH.INDEX} />;
   }
 

@@ -2,10 +2,8 @@ import { useLocation } from 'react-router';
 
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import type { Link, Series } from '@/entities/post';
-import { PATH } from '@/entities/route';
 import { CreateCompanyForm } from '@/feature/company';
 import { PatchCompanyForm } from '@/feature/company/ui/PatchCompanyForm';
-import { RouteNavigator } from '@/shared/route/RouteNavigator';
 
 type Body = {
   companyBody?: {
@@ -27,15 +25,10 @@ type Body = {
 
 export const CreateCompanyPage = () => {
   const location = useLocation();
-  const state = location.state as Body | undefined;
+  const state = location.state as Body | null;
+  console.log(state);
 
-  if (state === undefined) {
-    return <RouteNavigator link={PATH.INDEX} />;
-  }
-
-  const { companyBody } = state;
-
-  if (companyBody === undefined) {
+  if (state === null) {
     return (
       <div>
         <GlobalNavigationBar />
@@ -48,7 +41,7 @@ export const CreateCompanyPage = () => {
   return (
     <div>
       <GlobalNavigationBar />
-      <h1>채용 공고 작성하기</h1>
+      <h1>회사 정보 수정하기</h1>
       <PatchCompanyForm />
     </div>
   );

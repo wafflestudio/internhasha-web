@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { createErrorMessage } from '@/entities/errors';
+import { PATH } from '@/entities/route';
 import { authPresentation } from '@/feature/auth/presentation/authPresentation';
 import {
   AddGoogleSignUpModal,
@@ -20,6 +21,7 @@ import {
 } from '@/feature/auth/ui/signUp/AddSignUpModal';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
+import { RouteNavigator } from '@/shared/route/RouteNavigator';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatNumberToTime } from '@/util/format';
 
@@ -41,7 +43,7 @@ type EmailVerifyLocationState = {
 
 export const EmailVerifyForm = () => {
   const location = useLocation();
-  const state = location.state as EmailVerifyLocationState | undefined;
+  const state = location.state as EmailVerifyLocationState | null;
 
   const { toSignUpLocal, toSignUpSelect } = useRouteNavigation();
   const [showSendCodeError, setShowSendCodeError] = useState(false);
@@ -86,8 +88,8 @@ export const EmailVerifyForm = () => {
     isPendingGoogleSignup ||
     isPendingLocalSignUp;
 
-  if (state === undefined) {
-    return <div>유효하지 않은 접근입니다.</div>;
+  if (state === null) {
+    return <RouteNavigator link={PATH.SIGN_IN_SELECT} />;
   }
   const { body } = state;
 
