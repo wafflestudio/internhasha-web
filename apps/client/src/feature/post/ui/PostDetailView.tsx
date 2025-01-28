@@ -36,7 +36,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
     investAmount,
     series,
     investCompany,
-    IRDeckLink,
+    irDeckLink,
     landingPageLink,
     externalDescriptionLink,
     title,
@@ -174,7 +174,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             <div className="flex gap-5 items-center">
               <span>IR Deck 자료</span>
               <a
-                href={IRDeckLink}
+                href={irDeckLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center px-4 py-2 gap-1 rounded-lg bg-gray-100"
