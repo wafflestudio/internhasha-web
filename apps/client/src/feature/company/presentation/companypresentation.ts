@@ -12,6 +12,7 @@ type ExternalLink = {
 
 type InitialState = {
   companyName?: string;
+  explanation?: string;
   email?: string;
   slogan?: string;
   imageLink?: string;
@@ -27,6 +28,7 @@ type InitialState = {
 type CompanyPresentation = {
   useValidator({ initialState }: { initialState?: InitialState }): {
     companyName: Input<string>;
+    explanation: Input<string>;
     email: Input<string>;
     slogan: Input<string>;
     imageLink: Input<string>;
@@ -58,6 +60,8 @@ type CompanyPresentation = {
 const MAX_TAGS = 10;
 const MAX_TAG_LENGTH = 8;
 const MAX_COMPANY_LENGTH = 30;
+const MAX_SLOGAN_LENGTH = 100;
+const MAX_EXPLANATION_LENGTH = 5000;
 const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
 const MAX_FILE_SIZE = 5 * 1024 * 2024;
 const IMAGE_EXTENSIONS = [
@@ -84,6 +88,9 @@ export const companyPresentation: CompanyPresentation = {
   useValidator: ({ initialState = {} }) => {
     const [companyName, setCompanyName] = useState(
       initialState.companyName !== undefined ? initialState.companyName : '',
+    );
+    const [explanation, setExplanation] = useState(
+      initialState.explanation !== undefined ? initialState.explanation : '',
     );
     const [email, setEmail] = useState(
       initialState.email !== undefined ? initialState.email : '',
@@ -303,12 +310,23 @@ export const companyPresentation: CompanyPresentation = {
         }
       });
     };
+    const handleExplanationChange = (input: string) => {
+      setExplanation(input);
+    };
 
     return {
       companyName: {
-        isError: !CONTENT_REGEX.test(companyName),
+        isError:
+          companyName.length > MAX_COMPANY_LENGTH || companyName.length === 0,
         value: companyName,
         onChange: handleCompanyNameChange,
+      },
+      explanation: {
+        isError:
+          explanation.length > MAX_EXPLANATION_LENGTH ||
+          explanation.length === 0,
+        value: explanation,
+        onChange: handleExplanationChange,
       },
       email: {
         isError: !EMAIL_REGEX.test(email),
@@ -316,7 +334,7 @@ export const companyPresentation: CompanyPresentation = {
         onChange: handleEmailChange,
       },
       slogan: {
-        isError: !CONTENT_REGEX.test(slogan),
+        isError: slogan.length > MAX_SLOGAN_LENGTH || slogan.length === 0,
         value: slogan,
         onChange: handleSloganChange,
       },

@@ -37,6 +37,7 @@ export const CreateCompanyForm = () => {
     investCompany,
     landingPageLink,
     externalDescriptionLink,
+    explanation,
   } = companyPresentation.useValidator({});
   const { rawTags, thumbnail, IRDeckPreview } =
     companyPresentation.useUtilState();
@@ -140,8 +141,7 @@ export const CreateCompanyForm = () => {
     createCompany({
       company: {
         companyName: companyName.value,
-        // TODO: explanation form 추가
-        explanation: '',
+        explanation: explanation.value,
         email: email.value,
         slogan: slogan.value,
         investAmount: Number(investAmount.value),
@@ -204,7 +204,12 @@ export const CreateCompanyForm = () => {
         </LabelContainer>
         <LabelContainer label="회사 상세 소개">
           <div data-color-mode="light">
-            <MDEditor />
+            <MDEditor
+              value={explanation.value}
+              onChange={(value) => {
+                explanation.onChange(value ?? '');
+              }}
+            />
           </div>
         </LabelContainer>
         <LabelContainer label="대표 사진" id="imageLink">
