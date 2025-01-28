@@ -15,7 +15,6 @@ export const CreateResumePage = () => {
   return (
     <div>
       <GlobalNavigationBar />
-      <h2>커피챗 신청 페이지</h2>
       <CreateResumeForm postId={postId} />
     </div>
   );

@@ -337,7 +337,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
         </section>
       </div>
 
-      <div className="flex flex-col flex-[0.5] w-80 gap-5 my-40">
+      <div className="flex flex-col flex-[0.5] w-80 gap-5 my-36">
         <div className="text-sm text-gray-900 font-medium flex items-center gap-3">
           <span>채용 마감일 : {formattedEndDate}</span>
           <span className="bg-gray-600 text-white py-1 px-2 rounded-md">D-{dDay}</span>

@@ -5,6 +5,7 @@ export const SubmitButton = ({
   children,
   disabled,
   onClick,
+  className,
 }: SubmitButtonProps) => {
   return (
     <button
@@ -18,6 +19,7 @@ export const SubmitButton = ({
         fontSize: '16px',
         cursor: 'pointer',
       }}
+      className={className}
     >
       {children}
     </button>
