@@ -33,4 +33,37 @@ function Badge({ className, variant, ...props }: BadgeProps) {
   );
 }
 
-export { Badge, badgeVariants };
+const seriesBadgeVariants = cva(
+  'inline-flex items-center text-center rounded-md px-1.5 py-1 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  {
+    variants: {
+      variant: {
+        default: 'bg-grey-light-hover text-grey-dark-active',
+        SEED: 'bg-grey-light-active text-grey-darker',
+        PRE_A: 'bg-blue-light-hover text-blue-darker',
+        A: 'bg-blue-light-hover text-blue-darker',
+        B: 'bg-red-light-hover text-red-darker',
+        C: 'bg-green-light-hover text-green-darker',
+        D: 'bg-yellow-light-hover text-yellow-darker',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  },
+);
+
+export interface SeriesBadgeProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof seriesBadgeVariants> {}
+
+function SeriesBadge({ className, variant, ...props }: SeriesBadgeProps) {
+  return (
+    <div
+      className={cn(seriesBadgeVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+export { Badge, SeriesBadge, badgeVariants };
