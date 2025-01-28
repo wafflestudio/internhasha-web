@@ -35,7 +35,7 @@ export type FilterElements = {
   series?: Series[];
 };
 
-type Link = {
+export type Link = {
   link: string;
   description: string;
 };
@@ -70,10 +70,26 @@ export type Post = {
   isBookmarked: boolean;
 };
 
-export type PostRequest = Omit<
+export type CreateCompanyRequest = Pick<
   Post,
-  'id' | 'createdAt' | 'updatedAt' | 'isActive' | 'isBookmarked'
+  | 'companyName'
+  | 'explanation'
+  | 'email'
+  | 'slogan'
+  | 'investAmount'
+  | 'investCompany'
+  | 'series'
+  | 'irDeckLink'
+  | 'landingPageLink'
+  | 'imageLink'
+  | 'externalDescriptionLink'
+  | 'tags'
 >;
+
+export type CreatePostRequest = Pick<
+  Post,
+  'title' | 'employmentEndDate' | 'category' | 'detail' | 'headcount'
+> & { companyId: string };
 
 export type BriefPost = Omit<
   Post,

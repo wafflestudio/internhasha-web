@@ -36,6 +36,8 @@ type Link = {
   description: string;
 };
 
+type Series = "SEED" | "PRE_A" | "A" | "B" | "C" | "D";
+
 type PostDTO = {
   id: string;
   author: AuthorBriefDTO;
@@ -47,7 +49,7 @@ type PostDTO = {
   slogan: string;
   investAmount?: number;
   investCompany: string[];
-  series: "SEED" | "PRE_A" | "A" | "B" | "C" | "D";
+  series: Series;
   irDeckLink?: string;
   landingPageLink?: string;
   imageLink?: string;
@@ -189,6 +191,30 @@ export type CreateResumeRequest = {
 export type FileUploadRequest = {
   fileName: string;
   fileType: string;
+};
+
+export type CreateCompanyRequest = {
+  companyName: string;
+  explanation: string;
+  email: string;
+  slogan: string;
+  investAmount?: number;
+  investCompany: string[];
+  series: Series;
+  irDeckLink?: string;
+  landingPageLink?: string;
+  imageLink?: string;
+  externalDescriptionLink?: Link[];
+  tags?: string[];
+};
+
+export type CreatePostRequest = {
+  companyId: string;
+  title: string;
+  employmentEndDate?: string;
+  category: JobCategory;
+  detail: string;
+  headcount: number;
 };
 
 // Response

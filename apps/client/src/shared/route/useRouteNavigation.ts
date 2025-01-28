@@ -23,6 +23,7 @@ type PreviousForm = {
 };
 
 type CompanyBody = {
+  id: string;
   companyName: string;
   explanation: string;
   email: string;
@@ -38,6 +39,7 @@ type CompanyBody = {
 };
 
 type PostBody = {
+  id: string;
   title: string;
   employmentEndDateTime?: string;
   jobMajorCategory: string;
@@ -97,13 +99,13 @@ export const useRouteNavigation = () => {
       void navigate(CREATE_COMPANY, { state: { companyBody } });
     },
     toCreatePost: ({
-      companyBody,
+      companyId,
       postBody,
     }: {
-      companyBody: CompanyBody;
+      companyId: string;
       postBody?: PostBody;
     }) => {
-      void navigate(CREATE_POST, { state: { companyBody, postBody } });
+      void navigate(CREATE_POST, { state: { companyId, postBody } });
     },
     toMyPage: () => {
       void navigate(MY_PAGE);

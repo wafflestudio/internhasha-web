@@ -7,6 +7,8 @@ import type {
 import type {
   AccessTokenRequest,
   CreateAndUpdatePostRequest,
+  CreateCompanyRequest,
+  CreatePostRequest,
   CreateResumeRequest,
   EchoParams,
   EmailVerifyRequest,
@@ -264,6 +266,34 @@ export const getLocalServerApis = ({
         method: "DELETE",
         path: `post/${params.postId}/bookmark`,
         token,
+      });
+    },
+    "POST /curator/company": ({
+      token,
+      body,
+    }: {
+      token: string;
+      body: CreateCompanyRequest;
+    }) => {
+      return callWithToken<SuccessResponse<void>>({
+        method: "POST",
+        path: "curator/company",
+        token,
+        body,
+      });
+    },
+    "POST /curator/post": ({
+      token,
+      body,
+    }: {
+      token: string;
+      body: CreatePostRequest;
+    }) => {
+      return callWithToken<SuccessResponse<void>>({
+        method: "POST",
+        path: "curator/post",
+        token,
+        body,
       });
     },
   }) satisfies Record<string, Api>;

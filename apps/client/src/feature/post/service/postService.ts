@@ -1,7 +1,13 @@
 import type { Apis } from '@waffle/api';
 
 import type { Paginator } from '@/entities/paginator';
-import type { BriefPost, Post, PostRequest, Series } from '@/entities/post';
+import type {
+  BriefPost,
+  CreateCompanyRequest,
+  CreatePostRequest,
+  Post,
+  Series,
+} from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 
 export type PostService = {
@@ -30,22 +36,20 @@ export type PostService = {
     postId: string;
     token: string;
   }): ServiceResponse<Post>;
+  createCompany({
+    token,
+    companyContents,
+  }: {
+    token: string;
+    companyContents: CreateCompanyRequest;
+  }): ServiceResponse<void>;
   createPost({
     token,
     postContents,
   }: {
     token: string;
-    postContents: PostRequest;
-  }): ServiceResponse<Post>;
-  updatePost({
-    postId,
-    token,
-    postContents,
-  }: {
-    postId: string;
-    token: string;
-    postContents: PostRequest;
-  }): ServiceResponse<Post>;
+    postContents: CreatePostRequest;
+  }): ServiceResponse<void>;
   addBookmark({
     postId,
     token,
@@ -119,11 +123,10 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-
-  createPost: async ({ token, postContents }) => {
-    const { status, data } = await apis['POST /admin/post']({
+  createCompany: async ({ token, companyContents }) => {
+    const { status, data } = await apis['POST /curator/company']({
       token: token,
-      body: postContents,
+      body: companyContents,
     });
 
     if (status === 200) {
@@ -135,11 +138,9 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     return { type: 'error', code: data.code, message: data.message };
   },
 
-  updatePost: async ({ token, postId, postContents }) => {
-    const params = { postId };
-    const { status, data } = await apis['PATCH /admin/post/:postId']({
+  createPost: async ({ token, postContents }) => {
+    const { status, data } = await apis['POST /curator/post']({
       token: token,
-      params: params,
       body: postContents,
     });
 

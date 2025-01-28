@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { createErrorMessage } from '@/entities/errors';
 import type { Series } from '@/entities/post';
+import type { CreateCompanyRequest } from '@/entities/post';
 import { seriesList } from '@/feature/company/presentation/companypresentation';
 import { companyPresentation } from '@/feature/company/presentation/companypresentation';
 import { useGuardContext } from '@/shared/context/hooks';
@@ -42,7 +43,7 @@ export const CreateCompanyForm = () => {
   const { tagValidator, tagInputValidator } = companyPresentation.validator;
   const { tagsFilter, investCompanyFilter, externalDescriptionLinkFilter } =
     companyPresentation.filter;
-  const { toMain, toCreatePost } = useRouteNavigation();
+  const { toMain } = useRouteNavigation();
 
   const addThumbnailImage = (file: File | undefined) => {
     if (file !== undefined && file.type.startsWith('image/')) {
@@ -99,9 +100,15 @@ export const CreateCompanyForm = () => {
       },
       setResponseMessage: handleChangePdfResponseMessage,
     });
+  const { createCompany, isPending: isCreateCompanyPending } = useCreateCompany(
+    { setResponseMessage },
+  );
 
   const isPending =
-    isUploadFilePending || isUploadImagePending || isUploadPdfPending;
+    isUploadFilePending ||
+    isUploadImagePending ||
+    isUploadPdfPending ||
+    isCreateCompanyPending;
 
   const handleSubmit = () => {
     setIsSubmit(true);
@@ -130,8 +137,8 @@ export const CreateCompanyForm = () => {
     ) {
       return;
     }
-    toCreatePost({
-      companyBody: {
+    createCompany({
+      company: {
         companyName: companyName.value,
         // TODO: explanation form 추가
         explanation: '',
@@ -578,6 +585,42 @@ const useUploadFile = ({
 
   return {
     uploadFile,
+    isPending,
+  };
+};
+
+const useCreateCompany = ({
+  setResponseMessage,
+}: {
+  setResponseMessage(input: string): void;
+}) => {
+  const { postService } = useGuardContext(ServiceContext);
+  const { token } = useGuardContext(TokenContext);
+  const { toMain } = useRouteNavigation();
+
+  const { mutate: createCompany, isPending } = useMutation({
+    mutationFn: ({ company }: { company: CreateCompanyRequest }) => {
+      if (token === null) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+      return postService.createCompany({ token, companyContents: company });
+    },
+    onSuccess: (response) => {
+      if (response.type === 'success') {
+        toMain();
+      } else {
+        setResponseMessage(createErrorMessage(response.code));
+      }
+    },
+    onError: () => {
+      setResponseMessage(
+        '회사 생성에 실패했습니다. 잠시 후에 다시 실행해주세요.',
+      );
+    },
+  });
+
+  return {
+    createCompany,
     isPending,
   };
 };
