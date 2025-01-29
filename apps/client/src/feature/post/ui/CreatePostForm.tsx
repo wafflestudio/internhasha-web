@@ -181,7 +181,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
             />
           </div>
           <span
-            className={`text-sm ${detail.value.length > CONTENT_MAX_LENGTH ? 'text-red' : 'texy-grey-normal'}`}
+            className={`text-sm ${detail.value.length > CONTENT_MAX_LENGTH ? 'text-red' : 'text-grey-normal'}`}
           >
             {detail.value.length}/{CONTENT_MAX_LENGTH}
           </span>
