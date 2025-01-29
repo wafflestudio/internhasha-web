@@ -167,7 +167,7 @@ export const CreateCompanyForm = () => {
         response={responseMessage}
         className="gap-10"
       >
-        <LabelContainer label="회사명" id="companyName">
+        <LabelContainer label="회사명" id="companyName" required>
           <Input
             id="companyName"
             value={companyName.value}
@@ -181,7 +181,7 @@ export const CreateCompanyForm = () => {
             <p>올바른 회사명을 입력해주세요.</p>
           )}
         </LabelContainer>
-        <LabelContainer label="회사 이메일" id="companyEmail">
+        <LabelContainer label="회사 이메일" id="companyEmail" required>
           <Input
             id="companyEmail"
             value={email.value}
@@ -193,7 +193,7 @@ export const CreateCompanyForm = () => {
           />
           {isSubmit && email.isError && <p>올바르지 않은 이메일 형식입니다.</p>}
         </LabelContainer>
-        <LabelContainer label="한 줄 소개" id="slogan">
+        <LabelContainer label="한 줄 소개" id="slogan" required>
           <Input
             id="slogan"
             value={slogan.value}
@@ -212,7 +212,7 @@ export const CreateCompanyForm = () => {
             <p>한 줄 소개는 {MAX_SLOGAN_LENGTH}자 이내로 작성해주세요.</p>
           )}
         </LabelContainer>
-        <LabelContainer label="회사 상세 소개">
+        <LabelContainer label="회사 상세 소개" required>
           <div data-color-mode="light">
             <MDEditor
               value={explanation.value}
@@ -230,7 +230,7 @@ export const CreateCompanyForm = () => {
             )}
           </div>
         </LabelContainer>
-        <LabelContainer label="대표 사진" id="imageLink">
+        <LabelContainer label="대표 사진" id="imageLink" required>
           {thumbnail.value !== null ? (
             <div>
               <img src={thumbnail.value.url} alt="회사 대표 이미지 썸네일" />
@@ -260,7 +260,7 @@ export const CreateCompanyForm = () => {
           )}
           {imageResponseMessage !== '' && <p>{imageResponseMessage}</p>}
         </LabelContainer>
-        <LabelContainer label="투자 단계" id="series">
+        <LabelContainer label="투자 단계" id="series" required>
           <select
             disabled={isPending}
             onChange={(e) => {
@@ -278,7 +278,7 @@ export const CreateCompanyForm = () => {
           </select>
           {isSubmit && series.isError && <p>투자 단계를 선택해주세요.</p>}
         </LabelContainer>
-        <LabelContainer label="누적 투자액" id="investAmount">
+        <LabelContainer label="누적 투자액" id="investAmount" required>
           <Input
             id="investAmount"
             value={investAmount.value}
@@ -293,7 +293,7 @@ export const CreateCompanyForm = () => {
             <p>0 이상의 양의 정수로 입력해주세요.</p>
           )}
         </LabelContainer>
-        <LabelContainer label="투자사 정보" id="investCompany">
+        <LabelContainer label="투자사 정보" id="investCompany" required>
           {investCompany.value.map((company, index) => (
             <div key={`invest-company-${index}`}>
               <Input
