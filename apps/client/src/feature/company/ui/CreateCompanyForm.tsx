@@ -1,15 +1,16 @@
 import { useMutation } from '@tanstack/react-query';
 import MDEditor from '@uiw/react-md-editor';
-import {
-  Button,
-  FormContainer,
-  LabelContainer,
-  SubmitButton,
-  TextInput,
-} from '@waffle/design-system';
 import { useState } from 'react';
 
+import { FormContainer } from '@/components/form';
+import { LabelContainer } from '@/components/input/LabelContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
+import {
+  FormErrorResponse,
+  FormInfoResponse,
+} from '@/components/response/formResponse';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { createErrorMessage } from '@/entities/errors';
 import type { Series } from '@/entities/post';
 import type { CreateCompanyRequest } from '@/entities/post';
@@ -165,9 +166,13 @@ export const CreateCompanyForm = () => {
 
   return (
     <>
-      <FormContainer handleSubmit={handleSubmit} response={responseMessage}>
-        <LabelContainer label="회사명" id="companyName">
-          <TextInput
+      <FormContainer
+        handleSubmit={handleSubmit}
+        response={responseMessage}
+        className="gap-10"
+      >
+        <LabelContainer label="회사명" id="companyName" required>
+          <Input
             id="companyName"
             value={companyName.value}
             placeholder="회사명을 입력해주세요."
@@ -177,11 +182,11 @@ export const CreateCompanyForm = () => {
             }}
           />
           {isSubmit && companyName.isError && (
-            <p>올바른 회사명을 입력해주세요.</p>
+            <FormErrorResponse>올바른 회사명을 입력해주세요.</FormErrorResponse>
           )}
         </LabelContainer>
-        <LabelContainer label="회사 이메일" id="companyEmail">
-          <TextInput
+        <LabelContainer label="회사 이메일" id="companyEmail" required>
+          <Input
             id="companyEmail"
             value={email.value}
             placeholder="회사 이메일을 입력해주세요."
@@ -190,10 +195,14 @@ export const CreateCompanyForm = () => {
               email.onChange(e.target.value);
             }}
           />
-          {isSubmit && email.isError && <p>올바르지 않은 이메일 형식입니다.</p>}
+          {isSubmit && email.isError && (
+            <FormErrorResponse>
+              올바르지 않은 이메일 형식입니다.
+            </FormErrorResponse>
+          )}
         </LabelContainer>
-        <LabelContainer label="한 줄 소개" id="slogan">
-          <TextInput
+        <LabelContainer label="한 줄 소개" id="slogan" required>
+          <Input
             id="slogan"
             value={slogan.value}
             placeholder="한 줄 소개를 입력해주세요."
@@ -202,16 +211,25 @@ export const CreateCompanyForm = () => {
               slogan.onChange(e.target.value);
             }}
           />
-          <span
-            className={`text-sm ${slogan.value.length > MAX_SLOGAN_LENGTH ? 'text-red' : 'texy-grey-normal'}`}
-          >
-            {slogan.value.length}/{MAX_SLOGAN_LENGTH}
-          </span>
-          {isSubmit && slogan.isError && (
-            <p>한 줄 소개는 {MAX_SLOGAN_LENGTH}자 이내로 작성해주세요.</p>
-          )}
+          <div className="flex flex-col gap-1">
+            <div className="flex w-full justify-between">
+              <FormInfoResponse>
+                한 줄 소개는 공고 카드에 보여져요.
+              </FormInfoResponse>
+              <span
+                className={`text-sm ${slogan.value.length > MAX_SLOGAN_LENGTH ? 'text-red' : 'text-grey-normal'}`}
+              >
+                {slogan.value.length}/{MAX_SLOGAN_LENGTH}
+              </span>
+            </div>
+            {isSubmit && slogan.isError && (
+              <FormErrorResponse>
+                한 줄 소개는 {MAX_SLOGAN_LENGTH}자 이내로 작성해주세요.
+              </FormErrorResponse>
+            )}
+          </div>
         </LabelContainer>
-        <LabelContainer label="회사 상세 소개">
+        <LabelContainer label="회사 상세 소개" required>
           <div data-color-mode="light">
             <MDEditor
               value={explanation.value}
@@ -219,17 +237,27 @@ export const CreateCompanyForm = () => {
                 explanation.onChange(value ?? '');
               }}
             />
-            <span
-              className={`text-sm ${explanation.value.length > MAX_EXPLANATION_LENGTH ? 'text-red' : 'texy-grey-normal'}`}
-            >
-              {explanation.value.length}/{MAX_EXPLANATION_LENGTH}
-            </span>
-            {isSubmit && explanation.isError && (
-              <p>상세 소개는 {MAX_EXPLANATION_LENGTH}자 이내로 작성해주세요.</p>
-            )}
+            <div className="flex flex-col gap-1 mt-1">
+              <div className="flex w-full justify-between">
+                <FormInfoResponse>
+                  상세 소개는 공고 글에 보여져요.
+                </FormInfoResponse>
+                <span
+                  className={`text-sm ${explanation.value.length > MAX_EXPLANATION_LENGTH ? 'text-red' : 'text-grey-normal'}`}
+                >
+                  {explanation.value.length}/{MAX_EXPLANATION_LENGTH}
+                </span>
+              </div>
+
+              {isSubmit && explanation.isError && (
+                <FormErrorResponse>
+                  상세 소개는 {MAX_EXPLANATION_LENGTH}자 이내로 작성해주세요.
+                </FormErrorResponse>
+              )}
+            </div>
           </div>
         </LabelContainer>
-        <LabelContainer label="대표 사진" id="imageLink">
+        <LabelContainer label="대표 사진" id="imageLink" required>
           {thumbnail.value !== null ? (
             <div>
               <img src={thumbnail.value.url} alt="회사 대표 이미지 썸네일" />
@@ -254,12 +282,21 @@ export const CreateCompanyForm = () => {
               }
             }}
           />
-          {isSubmit && thumbnail.isError && (
-            <p>1MB 이하의 이미지 파일을 올려주세요.</p>
-          )}
-          {imageResponseMessage !== '' && <p>{imageResponseMessage}</p>}
+          <div className="flex flex-col gap-1">
+            <FormInfoResponse>
+              회사 썸네일 이미지는 정사각형 비율(1:1)로 보여져요.
+            </FormInfoResponse>
+            {isSubmit && thumbnail.isError && (
+              <FormErrorResponse>
+                1MB 이하의 이미지 파일을 올려주세요.
+              </FormErrorResponse>
+            )}
+            {imageResponseMessage !== '' && (
+              <FormErrorResponse>{imageResponseMessage}</FormErrorResponse>
+            )}
+          </div>
         </LabelContainer>
-        <LabelContainer label="투자 단계" id="series">
+        <LabelContainer label="투자 단계" id="series" required>
           <select
             disabled={isPending}
             onChange={(e) => {
@@ -275,27 +312,34 @@ export const CreateCompanyForm = () => {
               </option>
             ))}
           </select>
-          {isSubmit && series.isError && <p>투자 단계를 선택해주세요.</p>}
-        </LabelContainer>
-        <LabelContainer label="누적 투자액" id="investAmount">
-          <TextInput
-            id="investAmount"
-            value={investAmount.value}
-            placeholder="100"
-            disabled={isPending}
-            onChange={(e) => {
-              investAmount.onChange(e.target.value);
-            }}
-          />
-          <span>천만원</span>
-          {isSubmit && investAmount.isError && (
-            <p>0 이상의 양의 정수로 입력해주세요.</p>
+          {isSubmit && series.isError && (
+            <FormErrorResponse>투자 단계를 선택해주세요.</FormErrorResponse>
           )}
         </LabelContainer>
-        <LabelContainer label="투자사 정보" id="investCompany">
+        <LabelContainer label="누적 투자액" id="investAmount" required>
+          <div className="flex items-center gap-2">
+            <Input
+              id="investAmount"
+              value={investAmount.value}
+              placeholder="100"
+              disabled={isPending}
+              onChange={(e) => {
+                investAmount.onChange(e.target.value);
+              }}
+              className="w-[190px]"
+            />
+            <span>천만원</span>
+          </div>
+          {isSubmit && investAmount.isError && (
+            <FormErrorResponse>
+              0 이상의 양의 정수로 입력해주세요.
+            </FormErrorResponse>
+          )}
+        </LabelContainer>
+        <LabelContainer label="투자사 정보" id="investCompany" required>
           {investCompany.value.map((company, index) => (
             <div key={`invest-company-${index}`}>
-              <TextInput
+              <Input
                 value={company}
                 placeholder="투자사 이름을 입력해주세요."
                 disabled={isPending}
@@ -314,6 +358,7 @@ export const CreateCompanyForm = () => {
                 }}
               />
               <Button
+                variant="outline"
                 disabled={isPending}
                 onClick={(e) => {
                   e.preventDefault();
@@ -325,6 +370,7 @@ export const CreateCompanyForm = () => {
             </div>
           ))}
           <Button
+            variant="secondary"
             disabled={isPending}
             onClick={(e) => {
               e.preventDefault();
@@ -334,9 +380,9 @@ export const CreateCompanyForm = () => {
             추가
           </Button>
           {isSubmit && investCompany.isError && (
-            <p>
+            <FormErrorResponse>
               투자사 정보는 1개 이상, 10개 이하로 중복되지 않게 입력해주세요.
-            </p>
+            </FormErrorResponse>
           )}
         </LabelContainer>
         <LabelContainer label="해시태그" id="tags">
@@ -354,7 +400,7 @@ export const CreateCompanyForm = () => {
               </Button>
             </div>
           ))}
-          <TextInput
+          <Input
             value={rawTags.value}
             placeholder="회사를 소개하는 태그를 입력해주세요. (최대 10개)"
             disabled={isPending}
@@ -373,18 +419,24 @@ export const CreateCompanyForm = () => {
               }
             }}
           />
-          <p>
-            엔터를 치면 태그가 생성되며 한 개당 최대 8자까지 입력할 수 있어요.
-          </p>
-          {!tagInputValidator({
-            tag: rawTags.value.trim(),
-            tags: tags.value,
-          }) && (
-            <p>입력한 태그와 중복되지 않는 8자 이하의 태그를 작성해주세요.</p>
-          )}
-          {isSubmit && tags.isError && (
-            <p>하나의 태그는 8자 이하, 총 10개까지 작성 가능합니다.</p>
-          )}
+          <div className="flex flex-col gap-1">
+            <FormInfoResponse>
+              엔터를 치면 태그가 생성되며 한 개당 최대 8자까지 입력할 수 있어요.
+            </FormInfoResponse>
+            {!tagInputValidator({
+              tag: rawTags.value.trim(),
+              tags: tags.value,
+            }) && (
+              <FormErrorResponse>
+                입력한 태그와 중복되지 않는 8자 이하의 태그를 작성해주세요.
+              </FormErrorResponse>
+            )}
+            {isSubmit && tags.isError && (
+              <FormErrorResponse>
+                하나의 태그는 8자 이하, 총 10개까지 작성 가능합니다.
+              </FormErrorResponse>
+            )}
+          </div>
         </LabelContainer>
         <LabelContainer label="IR Deck 자료" id="IRDeckLink">
           {IRDeckPreview.value !== null ? (
@@ -411,13 +463,17 @@ export const CreateCompanyForm = () => {
               }
             }}
           />
-          {isSubmit && IRDeckPreview.isError && (
-            <p>5MB 이하의 PDF 파일을 올려주세요.</p>
-          )}
-          {pdfResponseMessage !== '' && <p>{pdfResponseMessage}</p>}
+          <div className="flex flex-col gap-1">
+            {isSubmit && IRDeckPreview.isError && (
+              <FormErrorResponse>
+                5MB 이하의 PDF 파일을 올려주세요.
+              </FormErrorResponse>
+            )}
+            {pdfResponseMessage !== '' && <p>{pdfResponseMessage}</p>}
+          </div>
         </LabelContainer>
         <LabelContainer label="기업 소개 홈페이지">
-          <TextInput
+          <Input
             id="landingPageLink"
             value={landingPageLink.value}
             placeholder="https://"
@@ -427,7 +483,9 @@ export const CreateCompanyForm = () => {
             }}
           />
           {isSubmit && landingPageLink.isError && (
-            <p>https로 시작하는 홈페이지 링크를 입력해주세요.</p>
+            <FormErrorResponse>
+              https로 시작하는 홈페이지 링크를 입력해주세요.
+            </FormErrorResponse>
           )}
         </LabelContainer>
         <LabelContainer label="외부 소개 링크" id="externalDescriptionLink">
@@ -435,7 +493,7 @@ export const CreateCompanyForm = () => {
             <div key={`external-link-${index}`}>
               <div>
                 <LabelContainer label="제목">
-                  <TextInput
+                  <Input
                     value={input.description}
                     placeholder="링크 제목을 작성해주세요. (e.g. OO 프로젝트 성과 기사)"
                     disabled={isPending}
@@ -452,7 +510,7 @@ export const CreateCompanyForm = () => {
                   />
                 </LabelContainer>
                 <LabelContainer label="링크">
-                  <TextInput
+                  <Input
                     value={input.link}
                     placeholder="https://"
                     disabled={isPending}
@@ -489,7 +547,12 @@ export const CreateCompanyForm = () => {
               </div>
             </div>
           ))}
+          <FormInfoResponse>
+            더벤처스, 잡코리아, 기사 링크 등 회사를 소개할 수 있는 기타 링크를
+            첨부해주세요.
+          </FormInfoResponse>
           <Button
+            variant="secondary"
             disabled={isPending}
             onClick={(e) => {
               e.preventDefault();
@@ -501,24 +564,31 @@ export const CreateCompanyForm = () => {
           >
             추가
           </Button>
-          <p>
-            더벤처스, 잡코리아, 기사 링크 등 회사를 소개할 수 있는 기타 링크를
-            첨부해주세요.
-          </p>
           {isSubmit && externalDescriptionLink.isError && (
             <div>
-              <p>유효한 링크를 입력해주세요.</p>
-              <p>외부 소개 링크는 최대 5개까지 입력 가능합니다.</p>
+              <FormErrorResponse>유효한 링크를 입력해주세요.</FormErrorResponse>
+              <FormErrorResponse>
+                외부 소개 링크는 최대 5개까지 입력 가능합니다.
+              </FormErrorResponse>
             </div>
           )}
         </LabelContainer>
-        <div>
-          <Button onClick={handleClickCancelButton} disabled={isPending}>
-            이전으로
+        <div className="flex gap-2">
+          <Button
+            variant="secondary"
+            onClick={handleClickCancelButton}
+            disabled={isPending}
+            className="flex-1"
+          >
+            뒤로가기
           </Button>
-          <SubmitButton onClick={handleSubmit} disabled={isPending}>
-            다음으로
-          </SubmitButton>
+          <Button
+            onClick={handleSubmit}
+            disabled={isPending}
+            className="flex-1"
+          >
+            저장
+          </Button>
         </div>
       </FormContainer>
       {isCancel && (

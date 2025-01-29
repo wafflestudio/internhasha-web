@@ -8,7 +8,7 @@ import { ProgressBar } from '@/components/progressBar/ProgressBar';
 import {
   FormErrorResponse,
   FormInfoResponse,
-} from '@/components/response/formError';
+} from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ICON_SRC } from '@/entities/asset';

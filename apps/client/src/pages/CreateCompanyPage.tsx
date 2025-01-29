@@ -29,10 +29,12 @@ export const CreateCompanyPage = () => {
 
   if (state === null) {
     return (
-      <div>
+      <div className="min-h-screen">
         <GlobalNavigationBar />
-        <h1>회사 정보 작성하기</h1>
-        <CreateCompanyForm />
+        <div className="flex flex-col w-[280px] sm:w-[460px] justify-center gap-[50px] mx-auto my-[30px]">
+          <h2 className="text-2xl font-bold">회사 정보 작성</h2>
+          <CreateCompanyForm />
+        </div>
       </div>
     );
   }

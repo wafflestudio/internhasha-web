@@ -1,3 +1,5 @@
+import { cn } from '@/lib/utils';
+
 interface FormContainerProps extends React.FormHTMLAttributes<HTMLFormElement> {
   handleSubmit(): void;
   response: string;
@@ -17,7 +19,7 @@ export const FormContainer = ({
         event.preventDefault();
         handleSubmit();
       }}
-      className={`flex flex-col gap-[30px] ${className !== undefined ? className : ''}`}
+      className={cn('flex flex-col gap-[30px]', className)}
     >
       {children}
     </form>

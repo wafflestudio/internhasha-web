@@ -2,7 +2,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { FormErrorResponse } from '@/components/response/formError';
+import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { ICON_SRC } from '@/entities/asset';
 import { createErrorMessage } from '@/entities/errors';
