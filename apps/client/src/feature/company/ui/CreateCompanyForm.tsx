@@ -1,15 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 import MDEditor from '@uiw/react-md-editor';
-import {
-  Button,
-  FormContainer,
-  LabelContainer,
-  SubmitButton,
-  TextInput,
-} from '@waffle/design-system';
 import { useState } from 'react';
 
+import { FormContainer } from '@/components/form';
+import { LabelContainer } from '@/components/input/LabelContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { createErrorMessage } from '@/entities/errors';
 import type { Series } from '@/entities/post';
 import type { CreateCompanyRequest } from '@/entities/post';
@@ -165,9 +162,13 @@ export const CreateCompanyForm = () => {
 
   return (
     <>
-      <FormContainer handleSubmit={handleSubmit} response={responseMessage}>
+      <FormContainer
+        handleSubmit={handleSubmit}
+        response={responseMessage}
+        className="gap-10"
+      >
         <LabelContainer label="회사명" id="companyName">
-          <TextInput
+          <Input
             id="companyName"
             value={companyName.value}
             placeholder="회사명을 입력해주세요."
@@ -181,7 +182,7 @@ export const CreateCompanyForm = () => {
           )}
         </LabelContainer>
         <LabelContainer label="회사 이메일" id="companyEmail">
-          <TextInput
+          <Input
             id="companyEmail"
             value={email.value}
             placeholder="회사 이메일을 입력해주세요."
@@ -193,7 +194,7 @@ export const CreateCompanyForm = () => {
           {isSubmit && email.isError && <p>올바르지 않은 이메일 형식입니다.</p>}
         </LabelContainer>
         <LabelContainer label="한 줄 소개" id="slogan">
-          <TextInput
+          <Input
             id="slogan"
             value={slogan.value}
             placeholder="한 줄 소개를 입력해주세요."
@@ -278,7 +279,7 @@ export const CreateCompanyForm = () => {
           {isSubmit && series.isError && <p>투자 단계를 선택해주세요.</p>}
         </LabelContainer>
         <LabelContainer label="누적 투자액" id="investAmount">
-          <TextInput
+          <Input
             id="investAmount"
             value={investAmount.value}
             placeholder="100"
@@ -295,7 +296,7 @@ export const CreateCompanyForm = () => {
         <LabelContainer label="투자사 정보" id="investCompany">
           {investCompany.value.map((company, index) => (
             <div key={`invest-company-${index}`}>
-              <TextInput
+              <Input
                 value={company}
                 placeholder="투자사 이름을 입력해주세요."
                 disabled={isPending}
@@ -314,6 +315,7 @@ export const CreateCompanyForm = () => {
                 }}
               />
               <Button
+                variant="outline"
                 disabled={isPending}
                 onClick={(e) => {
                   e.preventDefault();
@@ -325,6 +327,7 @@ export const CreateCompanyForm = () => {
             </div>
           ))}
           <Button
+            variant="secondary"
             disabled={isPending}
             onClick={(e) => {
               e.preventDefault();
@@ -354,7 +357,7 @@ export const CreateCompanyForm = () => {
               </Button>
             </div>
           ))}
-          <TextInput
+          <Input
             value={rawTags.value}
             placeholder="회사를 소개하는 태그를 입력해주세요. (최대 10개)"
             disabled={isPending}
@@ -417,7 +420,7 @@ export const CreateCompanyForm = () => {
           {pdfResponseMessage !== '' && <p>{pdfResponseMessage}</p>}
         </LabelContainer>
         <LabelContainer label="기업 소개 홈페이지">
-          <TextInput
+          <Input
             id="landingPageLink"
             value={landingPageLink.value}
             placeholder="https://"
@@ -435,7 +438,7 @@ export const CreateCompanyForm = () => {
             <div key={`external-link-${index}`}>
               <div>
                 <LabelContainer label="제목">
-                  <TextInput
+                  <Input
                     value={input.description}
                     placeholder="링크 제목을 작성해주세요. (e.g. OO 프로젝트 성과 기사)"
                     disabled={isPending}
@@ -452,7 +455,7 @@ export const CreateCompanyForm = () => {
                   />
                 </LabelContainer>
                 <LabelContainer label="링크">
-                  <TextInput
+                  <Input
                     value={input.link}
                     placeholder="https://"
                     disabled={isPending}
@@ -490,6 +493,7 @@ export const CreateCompanyForm = () => {
             </div>
           ))}
           <Button
+            variant="secondary"
             disabled={isPending}
             onClick={(e) => {
               e.preventDefault();
@@ -512,13 +516,22 @@ export const CreateCompanyForm = () => {
             </div>
           )}
         </LabelContainer>
-        <div>
-          <Button onClick={handleClickCancelButton} disabled={isPending}>
+        <div className="flex gap-2">
+          <Button
+            variant="secondary"
+            onClick={handleClickCancelButton}
+            disabled={isPending}
+            className="flex-1"
+          >
             이전으로
           </Button>
-          <SubmitButton onClick={handleSubmit} disabled={isPending}>
+          <Button
+            onClick={handleSubmit}
+            disabled={isPending}
+            className="flex-1"
+          >
             다음으로
-          </SubmitButton>
+          </Button>
         </div>
       </FormContainer>
       {isCancel && (
