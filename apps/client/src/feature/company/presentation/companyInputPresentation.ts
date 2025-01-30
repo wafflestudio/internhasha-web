@@ -48,8 +48,8 @@ export type CompanyInputPresentation = {
 };
 
 const MAX_COMPANY_NAME_LENGTH = 30;
-const MAX_EXPLANATION_LENGTH = 5000;
-const MAX_SLOGAN_LENGTH = 100;
+export const MAX_EXPLANATION_LENGTH = 5000;
+export const MAX_SLOGAN_LENGTH = 100;
 const MAX_RAW_INVEST_COMPANY_LENGTH = 100;
 const MAX_DESCRIPTION_LENGTH = 30;
 const MAX_TAG_LENGTH = 8;
@@ -148,8 +148,16 @@ export const companyInputPresentation: CompanyInputPresentation = {
       if (trimmedInput.length > MAX_RAW_INVEST_COMPANY_LENGTH) {
         return false;
       }
+
+      const filteredInvestCompanies = investCompany.filter(
+        (company) => company.trim() !== trimmedInput,
+      );
+
       // 공백인 input이 여러개 발생할 수 있도록 설정
-      if (trimmedInput.length !== 0 && investCompany.includes(trimmedInput)) {
+      if (
+        trimmedInput.length !== 0 &&
+        filteredInvestCompanies.length !== investCompany.length - 1
+      ) {
         return false;
       }
       return true;
@@ -174,19 +182,23 @@ export const companyInputPresentation: CompanyInputPresentation = {
       const trimmedDescription = input.description.trim();
       const trimmedLink = input.link.trim();
 
-      if (trimmedDescription.trim().length > MAX_DESCRIPTION_LENGTH) {
+      if (trimmedDescription.length > MAX_DESCRIPTION_LENGTH) {
         return false;
       }
-      if (!URL_REGEX.test(trimmedLink)) {
+      if (trimmedLink.length !== 0 && !URL_REGEX.test(trimmedLink)) {
         return false;
       }
+
+      const filteredExternalDescriptionLink = externalDescriptionLink.filter(
+        (item) =>
+          item.link.trim() !== trimmedLink &&
+          item.description.trim() !== trimmedDescription,
+      );
       if (
         trimmedDescription.length !== 0 &&
         trimmedLink.length !== 0 &&
-        externalDescriptionLink.some(
-          (item) =>
-            item.link === input.link && item.description === input.description,
-        )
+        filteredExternalDescriptionLink.length !==
+          externalDescriptionLink.length - 1
       ) {
         return false;
       }
@@ -285,23 +297,26 @@ export const companyInputPresentation: CompanyInputPresentation = {
     }:
       | {
           input: string;
-          mode: 'ADD' | 'REMOVE';
+          mode: 'ADD';
           index?: never;
         }
       | {
           input: string;
-          mode: 'PATCH';
+          mode: 'PATCH' | 'REMOVE';
           index: number;
         }) => {
       setInvestCompany((prevState) => {
         switch (mode) {
           case 'ADD':
             return isRawInvestCompanyValid(input)
-              ? prevState
-              : [...prevState, input];
+              ? [...prevState, input]
+              : prevState;
 
           case 'REMOVE':
-            return prevState.filter((item) => item !== input);
+            return [
+              ...prevState.slice(0, index),
+              ...prevState.slice(index + 1),
+            ];
 
           case 'PATCH':
             if (index < 0 || index >= prevState.length) {
@@ -322,28 +337,25 @@ export const companyInputPresentation: CompanyInputPresentation = {
       | {
           input: ExternalLink;
           index?: never;
-          mode: 'ADD' | 'REMOVE';
+          mode: 'ADD';
         }
       | {
           input: ExternalLink;
           index: number;
-          mode: 'PATCH';
+          mode: 'PATCH' | 'REMOVE';
         }) => {
       setExternalDescriptionLink((prevState) => {
         switch (mode) {
           case 'ADD':
             return isRawExternalDescriptionLinkValid(input)
-              ? prevState
-              : [...prevState, input];
+              ? [...prevState, input]
+              : prevState;
 
           case 'REMOVE':
-            return prevState.filter(
-              (item) =>
-                !(
-                  item.link === input.link &&
-                  item.description === input.description
-                ),
-            );
+            return [
+              ...prevState.slice(0, index),
+              ...prevState.slice(index + 1),
+            ];
 
           case 'PATCH':
             if (index < 0 || index >= prevState.length) {
@@ -364,19 +376,22 @@ export const companyInputPresentation: CompanyInputPresentation = {
       | {
           input: string;
           index?: never;
-          mode: 'ADD' | 'REMOVE';
+          mode: 'ADD';
         }
       | {
           input: string;
           index: number;
-          mode: 'PATCH';
+          mode: 'PATCH' | 'REMOVE';
         }) => {
       setTags((prevState) => {
         switch (mode) {
           case 'ADD':
             return [...prevState, input];
           case 'REMOVE':
-            return prevState.filter((item) => item !== input);
+            return [
+              ...prevState.slice(0, index),
+              ...prevState.slice(index + 1),
+            ];
           case 'PATCH':
             if (index < 0 || index >= prevState.length) {
               return prevState;
@@ -425,7 +440,7 @@ export const companyInputPresentation: CompanyInputPresentation = {
         onChange: handleInvestCompanyChange,
       },
       series: {
-        isError: series === 'NONE',
+        isError: false,
         value: series,
         onChange: setSeries,
       },

@@ -5,14 +5,16 @@ import {
 } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import type { ListInput } from '@/entities/input';
+import type { Input as InputType, ListInput } from '@/entities/input';
 
 type InvestCompanyFieldProps = {
   label: string;
   input: ListInput<string>;
+  rawInput: InputType<string>;
   isPending: boolean;
   isSubmit: boolean;
   errorMessage: string;
+  inputErrorMessage: string;
   infoMessage?: string;
   required?: boolean;
   placeholder?: string;
@@ -21,9 +23,11 @@ type InvestCompanyFieldProps = {
 export const InvestCompanyField = ({
   label,
   input,
+  rawInput,
   isPending,
   isSubmit,
   errorMessage,
+  inputErrorMessage,
   infoMessage,
   required,
   placeholder,
@@ -42,6 +46,7 @@ export const InvestCompanyField = ({
                 index,
                 mode: 'PATCH',
               });
+              rawInput.onChange(e.target.value);
             }}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
@@ -55,7 +60,7 @@ export const InvestCompanyField = ({
             disabled={isPending}
             onClick={(e) => {
               e.preventDefault();
-              input.onChange({ input: company, mode: 'REMOVE' });
+              input.onChange({ input: company, index, mode: 'REMOVE' });
             }}
           >
             삭제
@@ -75,6 +80,9 @@ export const InvestCompanyField = ({
       <div className="flex flex-col gap-1">
         {infoMessage !== undefined && (
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
+        )}
+        {rawInput.isError && (
+          <FormErrorResponse>{inputErrorMessage}</FormErrorResponse>
         )}
         {isSubmit && input.isError && (
           <FormErrorResponse>{errorMessage}</FormErrorResponse>

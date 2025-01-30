@@ -47,8 +47,10 @@ type CompanyFormPresentation = {
       investCompany: ListInput<string>;
       series: SelectInput<Series | 'NONE'>;
       irDeckPreview: Input<{ file: File; url: string } | null>;
+      irDeckLink: Input<string>;
       landingPageLink: Input<string>;
       imagePreview: Input<{ file: File; url: string } | null>;
+      imageLink: Input<string>;
       rawExternalDescriptionLink: Input<ExternalLink>;
       externalDescriptionLink: ListInput<ExternalLink>;
       rawTag: Input<string>;
@@ -60,7 +62,7 @@ type CompanyFormPresentation = {
       email: InputForForm<string>;
       slogan: InputForForm<string>;
       investAmount: InputForForm<number>;
-      investCompany: InputForForm<string[]>;
+      investCompany: InputForForm<string>;
       series: InputForForm<Series | 'NONE'>;
       irDeckLink: InputForForm<string>;
       landingPageLink: InputForForm<string>;
@@ -78,7 +80,10 @@ export const companyFormPresentation: CompanyFormPresentation = {
       explanation: initialState?.explanation,
       email: initialState?.email,
       slogan: initialState?.slogan,
-      investAmount: String(initialState?.investAmount),
+      investAmount:
+        initialState !== undefined
+          ? String(initialState.investAmount)
+          : undefined,
       investCompany: initialState?.investCompany,
       series: initialState?.series,
       irDeckPreview: initialState?.irDeckPreview,
@@ -121,27 +126,49 @@ export const companyFormPresentation: CompanyFormPresentation = {
         investCompany,
         series,
         irDeckPreview,
+        irDeckLink,
         landingPageLink,
         imagePreview,
+        imageLink,
         rawExternalDescriptionLink,
         externalDescriptionLink,
         rawTag,
         tags,
       },
       formStates: {
-        companyName: companyName,
-        explanation: explanation,
-        email: email,
-        slogan: slogan,
-        imageLink: imageLink,
-        series: series,
+        companyName: {
+          isError: companyName.isError || companyName.value.trim().length === 0,
+          value: companyName.value,
+        },
+        explanation: {
+          isError: explanation.isError || explanation.value.trim().length === 0,
+          value: explanation.value,
+        },
+        email: {
+          isError: email.isError || email.value.trim().length === 0,
+          value: email.value,
+        },
+        slogan: {
+          isError: slogan.isError || slogan.value.trim().length === 0,
+          value: slogan.value,
+        },
+        imageLink: {
+          isError: imageLink.isError || imageLink.value.trim().length === 0,
+          value: imageLink.value,
+        },
+        series: {
+          isError: series.isError || series.value === 'NONE',
+          value: series.value,
+        },
         investAmount: {
           isError: isNaN(Number(investAmount)) || Number(investAmount) < 0,
           value: Number(investAmount),
         },
         investCompany: {
-          isError: investCompany.isError,
-          value: investCompany.value.filter((item) => item.trim().length !== 0),
+          isError: investCompany.isError || investCompany.value.length === 0,
+          value: investCompany.value
+            .filter((item) => item.trim().length !== 0)
+            .join(','),
         },
         tags: tags,
         irDeckLink: irDeckLink,
