@@ -29,10 +29,7 @@ export const LocalLogInForm = () => {
 
   return (
     <>
-      <FormContainer
-        id="SignInForm"
-        handleSubmit={onSubmit}
-      >
+      <FormContainer id="SignInForm" handleSubmit={onSubmit}>
         <div className="flex flex-col gap-[10px]">
           <Input
             id="localId"
