@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 import type { Input, ListInput, SelectInput } from '@/entities/input';
-import type { Series } from '@/entities/post';
+import type { Series, seriesList } from '@/entities/post';
 
-export const seriesList = ['SEED', 'PRE_A', 'A', 'B', 'C', 'D'];
+import type { CompanyInputPresentation } from './companyInputPresentation';
 
 type ExternalLink = {
   link: string;
@@ -25,35 +25,43 @@ type InitialState = {
   externalDescriptionLink?: ExternalLink[];
 };
 
-type CompanyPresentation = {
-  useValidator({ initialState }: { initialState?: InitialState }): {
-    companyName: Input<string>;
-    explanation: Input<string>;
-    email: Input<string>;
-    slogan: Input<string>;
-    imageLink: Input<string>;
-    series: SelectInput<Series | 'NONE'>;
-    investAmount: Input<string>;
-    investCompany: ListInput<string>;
-    tag: Input<string>;
-    tags: ListInput<string>;
-    IRDeckLink: Input<string>;
-    landingPageLink: Input<string>;
-    externalDescriptionLink: ListInput<ExternalLink>;
-  };
-  useUtilState(): {
-    rawTags: Input<string>;
-    thumbnail: Input<{ file: File; url: string } | null>;
-    IRDeckPreview: Input<{ file: File; url: string } | null>;
-  };
-  validator: {
-    tagValidator({ tag, tags }: { tag: string; tags: string[] }): boolean;
-    tagInputValidator({ tag, tags }: { tag: string; tags: string[] }): boolean;
-  };
-  filter: {
-    tagsFilter: (input: string[]) => string[];
-    investCompanyFilter: (input: string[]) => string[];
-    externalDescriptionLinkFilter: (input: ExternalLink[]) => ExternalLink[];
+type CompanyFormPresentation = {
+  useValidator({
+    initialState,
+    companyInputPresentation,
+  }: {
+    initialState?: InitialState;
+    companyInputPresentation: CompanyInputPresentation;
+  }): {
+    input: {
+      companyName: Input<string>;
+      explanation: Input<string>;
+      email: Input<string>;
+      slogan: Input<string>;
+      investAmount: Input<string>;
+      investCompany: ListInput<string>;
+      series: SelectInput<Series | 'NONE'>;
+      irDeckPreview: Input<{ file: File; url: string } | null>;
+      landingPageLink: Input<string>;
+      imagePreview: Input<{ file: File; url: string } | null>;
+      externalDescriptionLink: ListInput<ExternalLink>;
+      rawTag: Input<string>;
+      tags: ListInput<string>;
+    };
+    form: {
+      companyName: Input<string>;
+      explanation: Input<string>;
+      email: Input<string>;
+      slogan: Input<string>;
+      investAmount: Input<number>;
+      investCompany: ListInput<string>;
+      series: SelectInput<Series | 'NONE'>;
+      irDeckLink: Input<string>;
+      landingPageLink: Input<string>;
+      imageLink: Input<string>;
+      externalDescriptionLink: ListInput<ExternalLink>;
+      tags: ListInput<string>;
+    };
   };
 };
 
@@ -84,8 +92,8 @@ const TAG_REGEX = /^(?!\s*$).{1,8}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const URL_REGEX = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;
 
-export const companyPresentation: CompanyPresentation = {
-  useValidator: ({ initialState = {} }) => {
+export const companyFormPresentation: CompanyFormPresentation = {
+  useValidator: ({ initialState = {}, companyInputPresentation }) => {
     const [companyName, setCompanyName] = useState(
       initialState.companyName !== undefined ? initialState.companyName : '',
     );

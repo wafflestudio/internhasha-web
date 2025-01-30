@@ -11,14 +11,13 @@ import { FormContainer } from '@/components/form';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { Button } from '@/components/ui/button';
 import { createErrorMessage } from '@/entities/errors';
-import type { Series } from '@/entities/post';
+import type { Series, seriesList } from '@/entities/post';
 import type { CreateCompanyRequest } from '@/entities/post';
 import {
   MAX_EXPLANATION_LENGTH,
   MAX_SLOGAN_LENGTH,
-  seriesList,
-} from '@/feature/company/presentation/companyPresentation';
-import { companyPresentation } from '@/feature/company/presentation/companyPresentation';
+} from '@/feature/company/presentation/companyInputPresentation';
+import { companyPresentation } from '@/feature/company/presentation/companyInputPresentation';
 import { ExternalLinkField } from '@/feature/company/ui/fields/ExternalLinkField';
 import { HashtagField } from '@/feature/company/ui/fields/HashtagField';
 import { InvestAmountField } from '@/feature/company/ui/fields/InvestAmountField';
@@ -100,7 +99,6 @@ export const CreateCompanyForm = () => {
 
   const handleSubmit = () => {
     setIsSubmit(true);
-    console.log(series);
     if (thumbnail.value !== null) {
       uploadImage({
         fileName: thumbnail.value.file.name,
