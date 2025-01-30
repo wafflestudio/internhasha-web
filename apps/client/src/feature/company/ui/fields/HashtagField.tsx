@@ -13,6 +13,7 @@ type HashtagFieldProps = {
   rawInput: InputType<string>;
   isPending: boolean;
   isSubmit: boolean;
+  isSubmitError: boolean;
   errorMessage: string;
   inputErrorMessage?: string;
   infoMessage?: string;
@@ -26,6 +27,7 @@ export const HashtagField = ({
   rawInput,
   isPending,
   isSubmit,
+  isSubmitError,
   errorMessage,
   inputErrorMessage,
   infoMessage,
@@ -99,7 +101,7 @@ export const HashtagField = ({
             tag: rawInput.value.trim(),
             tags: input.value,
           }) && <FormErrorResponse>{inputErrorMessage}</FormErrorResponse>}
-        {isSubmit && input.isError && (
+        {isSubmit && isSubmitError && (
           <FormErrorResponse>{errorMessage}</FormErrorResponse>
         )}
       </div>

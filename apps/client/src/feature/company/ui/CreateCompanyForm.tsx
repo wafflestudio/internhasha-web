@@ -60,7 +60,6 @@ export const CreateCompanyForm = () => {
     tags,
   } = inputStates;
 
-  console.log(rawExternalDescriptionLink, externalDescriptionLink);
   const { toMain } = useRouteNavigation();
 
   const handleClickCancelButton = () => {
@@ -178,6 +177,7 @@ export const CreateCompanyForm = () => {
           input={companyName}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.companyName.isError}
           placeholder="회사명을 입력해주세요."
           errorMessage="올바른 회사명을 입력해주세요."
           required={true}
@@ -187,6 +187,7 @@ export const CreateCompanyForm = () => {
           input={email}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.email.isError}
           placeholder="회사 이메일을 입력해주세요."
           errorMessage="올바르지 않은 이메일 형식입니다."
           required={true}
@@ -196,6 +197,7 @@ export const CreateCompanyForm = () => {
           input={slogan}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.slogan.isError}
           maxLength={MAX_SLOGAN_LENGTH}
           errorMessage={`한 줄 소개는 ${MAX_SLOGAN_LENGTH}자 이내로 작성해주세요.`}
           infoMessage="한 줄 소개는 공고 카드에 보여져요."
@@ -206,6 +208,7 @@ export const CreateCompanyForm = () => {
           input={explanation}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.explanation.isError}
           maxLength={MAX_EXPLANATION_LENGTH}
           errorMessage={`상세 소개는 ${MAX_EXPLANATION_LENGTH}자 이내로 작성해주세요.`}
           infoMessage="상세 소개는 공고 글에 보여져요."
@@ -216,6 +219,7 @@ export const CreateCompanyForm = () => {
           input={imagePreview}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.imageLink.isError}
           errorMessage="1MB 이하의 이미지 파일을 올려주세요."
           responseErrorMessage={imageResponseMessage}
           infoMessage="회사 썸네일 이미지는 정사각형 비율(1:1)로 보여져요."
@@ -227,6 +231,7 @@ export const CreateCompanyForm = () => {
           inputList={seriesList}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.series.isError}
           errorMessage="투자 단계를 선택해주세요."
           required={true}
         />
@@ -236,6 +241,7 @@ export const CreateCompanyForm = () => {
           unit="천만원"
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.investAmount.isError}
           errorMessage="0 이상의 양의 정수로 입력해주세요."
           required={true}
         />
@@ -245,6 +251,7 @@ export const CreateCompanyForm = () => {
           rawInput={rawInvestCompany}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.investCompany.isError}
           placeholder="투자사 이름을 입력해주세요."
           errorMessage="투자사 정보는 1개 이상, 10개 이하로 중복되지 않게 입력해주세요."
           inputErrorMessage="중복되지 않는 100자 이내의 투자사 이름을 작성해주세요."
@@ -256,6 +263,7 @@ export const CreateCompanyForm = () => {
           rawInput={rawTag}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.tags.isError}
           placeholder="회사를 소개하는 태그를 입력해주세요. (최대 10개)"
           infoMessage="엔터를 치면 태그가 생성되며 한 개당 최대 8자까지 입력할 수 있어요."
           inputErrorMessage="입력한 태그와 중복되지 않는 8자 이하의 태그를 작성해주세요."
@@ -266,15 +274,16 @@ export const CreateCompanyForm = () => {
           input={irDeckPreview}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.irDeckLink.isError}
           errorMessage="5MB 이하의 PDF 파일을 올려주세요."
           responseErrorMessage={pdfResponseMessage}
-          required={true}
         />
         <StringField
           label="기업 소개 홈페이지"
           input={landingPageLink}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.landingPageLink.isError}
           placeholder="https://"
           errorMessage="https로 시작하는 홈페이지 링크를 입력해주세요."
         />
@@ -288,6 +297,7 @@ export const CreateCompanyForm = () => {
           rawInput={rawExternalDescriptionLink}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.externalDescriptionLink.isError}
           placeholder={{
             description:
               '링크 제목을 작성해주세요. (e.g. OO 프로젝트 성과 기사)',

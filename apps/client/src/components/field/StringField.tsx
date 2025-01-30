@@ -11,6 +11,7 @@ type StringFieldProps = {
   input: InputType<string>;
   isPending: boolean;
   isSubmit: boolean;
+  isSubmitError: boolean;
   errorMessage: string;
   infoMessage?: string;
   required?: boolean;
@@ -22,6 +23,7 @@ export const StringField = ({
   input,
   isPending,
   isSubmit,
+  isSubmitError,
   errorMessage,
   infoMessage,
   required,
@@ -39,7 +41,7 @@ export const StringField = ({
       />
       <div className="flex flex-col gap-1">
         <FormInfoResponse>{infoMessage}</FormInfoResponse>
-        {isSubmit && input.isError && (
+        {isSubmit && isSubmitError && (
           <FormErrorResponse>{errorMessage}</FormErrorResponse>
         )}
       </div>

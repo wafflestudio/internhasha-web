@@ -11,6 +11,7 @@ type PdfFieldProps = {
   input: InputType<{ file: File; url: string } | null>;
   isPending: boolean;
   isSubmit: boolean;
+  isSubmitError: boolean;
   errorMessage: string;
   responseErrorMessage?: string;
   infoMessage?: string;
@@ -22,13 +23,14 @@ export const PdfField = ({
   input,
   isPending,
   isSubmit,
+  isSubmitError,
   errorMessage,
   responseErrorMessage,
   infoMessage,
   required,
 }: PdfFieldProps) => {
   const addPdfPreview = (file: File | undefined) => {
-    if (file !== undefined && file.type === 'application/pdf') {
+    if (file !== undefined) {
       input.onChange({ file, url: URL.createObjectURL(file) });
     }
   };
@@ -36,6 +38,9 @@ export const PdfField = ({
   const removePdf = () => {
     input.onChange(null);
   };
+
+  const showError = (!isSubmit && input.isError) || (isSubmit && isSubmitError);
+
   return (
     <LabelContainer label={label} required={required}>
       {input.value !== null ? (
@@ -66,9 +71,7 @@ export const PdfField = ({
         {infoMessage !== undefined && (
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
         )}
-        {isSubmit && input.isError && (
-          <FormErrorResponse>{errorMessage}</FormErrorResponse>
-        )}
+        {showError && <FormErrorResponse>{errorMessage}</FormErrorResponse>}
         {responseErrorMessage !== '' && <p>{responseErrorMessage}</p>}
       </div>
     </LabelContainer>

@@ -148,11 +148,9 @@ export const companyInputPresentation: CompanyInputPresentation = {
       if (trimmedInput.length > MAX_RAW_INVEST_COMPANY_LENGTH) {
         return false;
       }
-
       const filteredInvestCompanies = investCompany.filter(
         (company) => company.trim() !== trimmedInput,
       );
-
       // 공백인 input이 여러개 발생할 수 있도록 설정
       if (
         trimmedInput.length !== 0 &&
@@ -246,6 +244,9 @@ export const companyInputPresentation: CompanyInputPresentation = {
       } | null,
     ) => {
       if (input === null) {
+        return true;
+      }
+      if (!input.file.type.startsWith('application/pdf')) {
         return false;
       }
 
@@ -271,6 +272,9 @@ export const companyInputPresentation: CompanyInputPresentation = {
       } | null,
     ) => {
       if (input === null) {
+        return true;
+      }
+      if (!input.file.type.startsWith('image/')) {
         return false;
       }
 
@@ -311,19 +315,16 @@ export const companyInputPresentation: CompanyInputPresentation = {
             return isRawInvestCompanyValid(input)
               ? [...prevState, input]
               : prevState;
-
           case 'REMOVE':
             return [
               ...prevState.slice(0, index),
               ...prevState.slice(index + 1),
             ];
-
           case 'PATCH':
             if (index < 0 || index >= prevState.length) {
               return prevState;
             }
             return prevState.map((item, idx) => (idx === index ? input : item));
-
           default:
             return prevState;
         }
@@ -350,19 +351,16 @@ export const companyInputPresentation: CompanyInputPresentation = {
             return isRawExternalDescriptionLinkValid(input)
               ? [...prevState, input]
               : prevState;
-
           case 'REMOVE':
             return [
               ...prevState.slice(0, index),
               ...prevState.slice(index + 1),
             ];
-
           case 'PATCH':
             if (index < 0 || index >= prevState.length) {
               return prevState;
             }
             return prevState.map((item, idx) => (idx === index ? input : item));
-
           default:
             return prevState;
         }
@@ -415,7 +413,7 @@ export const companyInputPresentation: CompanyInputPresentation = {
         onChange: setExplanation,
       },
       email: {
-        isError: !EMAIL_REGEX.test(email),
+        isError: email.trim().length !== 0 && !EMAIL_REGEX.test(email),
         value: email,
         onChange: setEmail,
       },
@@ -450,12 +448,14 @@ export const companyInputPresentation: CompanyInputPresentation = {
         onChange: setIrDeckPreview,
       },
       irDeckLink: {
-        isError: irDeckLink.trim().length === 0,
+        isError: false,
         value: irDeckLink,
         onChange: setIrDeckLink,
       },
       landingPageLink: {
-        isError: !URL_REGEX.test(landingPageLink),
+        isError:
+          landingPageLink.trim().length !== 0 &&
+          !URL_REGEX.test(landingPageLink),
         value: landingPageLink,
         onChange: setLandingPageLink,
       },

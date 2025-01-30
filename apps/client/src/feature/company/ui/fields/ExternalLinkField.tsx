@@ -23,6 +23,7 @@ type ExternalLinkFieldProps = {
   }>;
   isPending: boolean;
   isSubmit: boolean;
+  isSubmitError: boolean;
   errorMessage: string;
   inputErrorMessage: string;
   infoMessage?: string;
@@ -39,6 +40,7 @@ export const ExternalLinkField = ({
   rawInput,
   isPending,
   isSubmit,
+  isSubmitError,
   errorMessage,
   inputErrorMessage,
   infoMessage,
@@ -120,7 +122,7 @@ export const ExternalLinkField = ({
         {rawInput.isError && (
           <FormErrorResponse>{inputErrorMessage}</FormErrorResponse>
         )}
-        {isSubmit && input.isError && (
+        {isSubmit && isSubmitError && (
           <FormErrorResponse>{errorMessage}</FormErrorResponse>
         )}
       </div>

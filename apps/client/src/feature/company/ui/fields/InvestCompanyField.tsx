@@ -13,6 +13,7 @@ type InvestCompanyFieldProps = {
   rawInput: InputType<string>;
   isPending: boolean;
   isSubmit: boolean;
+  isSubmitError: boolean;
   errorMessage: string;
   inputErrorMessage: string;
   infoMessage?: string;
@@ -26,6 +27,7 @@ export const InvestCompanyField = ({
   rawInput,
   isPending,
   isSubmit,
+  isSubmitError,
   errorMessage,
   inputErrorMessage,
   infoMessage,
@@ -84,7 +86,7 @@ export const InvestCompanyField = ({
         {rawInput.isError && (
           <FormErrorResponse>{inputErrorMessage}</FormErrorResponse>
         )}
-        {isSubmit && input.isError && (
+        {isSubmit && isSubmitError && (
           <FormErrorResponse>{errorMessage}</FormErrorResponse>
         )}
       </div>

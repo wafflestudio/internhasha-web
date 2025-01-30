@@ -115,6 +115,11 @@ export const companyFormPresentation: CompanyFormPresentation = {
       initialState: initialStateForInput,
     });
 
+    const isEmptyElementsInFilteredStringList = (input: string[]) => {
+      const filteredInput = input.filter((item) => item.trim().length !== 0);
+      return filteredInput.length === 0;
+    };
+
     return {
       inputStates: {
         companyName,
@@ -165,7 +170,9 @@ export const companyFormPresentation: CompanyFormPresentation = {
           value: Number(investAmount),
         },
         investCompany: {
-          isError: investCompany.isError || investCompany.value.length === 0,
+          isError:
+            investCompany.isError ||
+            isEmptyElementsInFilteredStringList(investCompany.value),
           value: investCompany.value
             .filter((item) => item.trim().length !== 0)
             .join(','),
