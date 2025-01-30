@@ -11,6 +11,7 @@ type ImageFieldProps = {
   input: InputType<{ file: File; url: string } | null>;
   isPending: boolean;
   isSubmit: boolean;
+  isSubmitError: boolean;
   errorMessage: string;
   responseErrorMessage?: string;
   infoMessage?: string;
@@ -22,13 +23,14 @@ export const ImageField = ({
   input,
   isPending,
   isSubmit,
+  isSubmitError,
   errorMessage,
   responseErrorMessage,
   infoMessage,
   required,
 }: ImageFieldProps) => {
   const addImage = (file: File | undefined) => {
-    if (file !== undefined && file.type.startsWith('image/')) {
+    if (file !== undefined) {
       input.onChange({ file, url: URL.createObjectURL(file) });
     }
   };
@@ -37,9 +39,11 @@ export const ImageField = ({
     input.onChange(null);
   };
 
+  const showError = (!isSubmit && input.isError) || (isSubmit && isSubmitError);
+
   return (
     <LabelContainer label={label} required={required}>
-      {input.value !== null ? (
+      {input.value !== null && !input.isError ? (
         <div>
           <img src={input.value.url} alt="썸네일" />
           <Button onClick={removeImage} disabled={isPending}>
@@ -67,9 +71,7 @@ export const ImageField = ({
         {infoMessage !== undefined && (
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
         )}
-        {isSubmit && input.isError && (
-          <FormErrorResponse>{errorMessage}</FormErrorResponse>
-        )}
+        {showError && <FormErrorResponse>{errorMessage}</FormErrorResponse>}
         {responseErrorMessage !== '' && (
           <FormErrorResponse>{responseErrorMessage}</FormErrorResponse>
         )}

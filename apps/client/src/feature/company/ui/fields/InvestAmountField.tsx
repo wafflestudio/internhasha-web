@@ -12,6 +12,7 @@ type InvestAmountFieldProps = {
   unit: string;
   isPending: boolean;
   isSubmit: boolean;
+  isSubmitError: boolean;
   errorMessage: string;
   infoMessage?: string;
   required?: boolean;
@@ -23,6 +24,7 @@ export const InvestAmountField = ({
   unit,
   isPending,
   isSubmit,
+  isSubmitError,
   errorMessage,
   infoMessage,
   required,
@@ -46,7 +48,7 @@ export const InvestAmountField = ({
         {infoMessage !== undefined && (
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
         )}
-        {isSubmit && input.isError && (
+        {isSubmit && isSubmitError && (
           <FormErrorResponse>{errorMessage}</FormErrorResponse>
         )}
       </div>

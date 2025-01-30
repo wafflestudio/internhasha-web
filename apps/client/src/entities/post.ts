@@ -26,6 +26,7 @@ export const JOB_MAJOR_CATEGORIES = Object.keys(JOB_CATEGORY_MAP);
 export const JOB_MINOR_CATEGORIES = Object.values(JOB_CATEGORY_MAP).flat();
 
 export type Series = 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
+export const seriesList = ['SEED', 'PRE_A', 'A', 'B', 'C', 'D'];
 
 export type FilterElements = {
   roles?: JobMinorCategory[];

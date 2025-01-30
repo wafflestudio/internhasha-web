@@ -5,9 +5,9 @@ import {
 } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import type { ListInput } from '@/entities/input';
+import type { Input as InputType, ListInput } from '@/entities/input';
 
-type HashtagFieldProps = {
+type ExternalLinkFieldProps = {
   label: {
     main: string;
     link: string;
@@ -17,9 +17,15 @@ type HashtagFieldProps = {
     link: string;
     description: string;
   }>;
+  rawInput: InputType<{
+    link: string;
+    description: string;
+  }>;
   isPending: boolean;
   isSubmit: boolean;
+  isSubmitError: boolean;
   errorMessage: string;
+  inputErrorMessage: string;
   infoMessage?: string;
   required?: boolean;
   placeholder?: {
@@ -31,18 +37,21 @@ type HashtagFieldProps = {
 export const ExternalLinkField = ({
   label,
   input,
+  rawInput,
   isPending,
   isSubmit,
+  isSubmitError,
   errorMessage,
+  inputErrorMessage,
   infoMessage,
   required,
   placeholder,
-}: HashtagFieldProps) => {
+}: ExternalLinkFieldProps) => {
   return (
     <LabelContainer label={label.main} required={required}>
       {input.value.map((item, index) => (
         <div key={`external-link-${index}`}>
-          <div>
+          <div className="flex flex-col gap-2">
             <LabelContainer label={label.description}>
               <Input
                 value={item.description}
@@ -56,6 +65,10 @@ export const ExternalLinkField = ({
                     },
                     index,
                     mode: 'PATCH',
+                  });
+                  rawInput.onChange({
+                    link: item.link,
+                    description: e.target.value,
                   });
                 }}
               />
@@ -74,6 +87,10 @@ export const ExternalLinkField = ({
                     index,
                     mode: 'PATCH',
                   });
+                  rawInput.onChange({
+                    link: e.target.value,
+                    description: item.description,
+                  });
                 }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
@@ -90,7 +107,7 @@ export const ExternalLinkField = ({
               disabled={isPending}
               onClick={(e) => {
                 e.preventDefault();
-                input.onChange({ input: item, mode: 'REMOVE' });
+                input.onChange({ input: item, index, mode: 'REMOVE' });
               }}
             >
               삭제
@@ -102,7 +119,10 @@ export const ExternalLinkField = ({
         {infoMessage !== undefined && (
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
         )}
-        {isSubmit && input.isError && (
+        {rawInput.isError && (
+          <FormErrorResponse>{inputErrorMessage}</FormErrorResponse>
+        )}
+        {isSubmit && isSubmitError && (
           <FormErrorResponse>{errorMessage}</FormErrorResponse>
         )}
       </div>

@@ -21,11 +21,16 @@ export type ListInput<TElement> = {
     | {
         input: TElement;
         index?: never;
-        mode: 'ADD' | 'REMOVE';
+        mode: 'ADD';
       }
     | {
         input: TElement;
         index: number;
-        mode: 'PATCH';
+        mode: 'PATCH' | 'REMOVE';
       }) => void;
+};
+
+export type InputForForm<TInput> = {
+  isError: boolean;
+  value: TInput;
 };

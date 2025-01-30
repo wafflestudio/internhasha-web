@@ -13,6 +13,7 @@ type HashtagFieldProps = {
   rawInput: InputType<string>;
   isPending: boolean;
   isSubmit: boolean;
+  isSubmitError: boolean;
   errorMessage: string;
   inputErrorMessage?: string;
   infoMessage?: string;
@@ -26,6 +27,7 @@ export const HashtagField = ({
   rawInput,
   isPending,
   isSubmit,
+  isSubmitError,
   errorMessage,
   inputErrorMessage,
   infoMessage,
@@ -57,14 +59,14 @@ export const HashtagField = ({
 
   return (
     <LabelContainer label={label} required={required}>
-      {input.value.map((tag) => (
+      {input.value.map((tag, index) => (
         <div key={`tag-${tag}`}>
           <span>{tag}</span>
           <Button
             disabled={isPending}
             onClick={(e) => {
               e.preventDefault();
-              input.onChange({ input: tag, mode: 'REMOVE' });
+              input.onChange({ input: tag, index, mode: 'REMOVE' });
             }}
           >
             삭제
@@ -99,7 +101,7 @@ export const HashtagField = ({
             tag: rawInput.value.trim(),
             tags: input.value,
           }) && <FormErrorResponse>{inputErrorMessage}</FormErrorResponse>}
-        {isSubmit && input.isError && (
+        {isSubmit && isSubmitError && (
           <FormErrorResponse>{errorMessage}</FormErrorResponse>
         )}
       </div>

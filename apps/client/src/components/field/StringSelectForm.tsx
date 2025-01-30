@@ -11,6 +11,7 @@ type StringSelectFormProps<T extends string> = {
   inputList: string[];
   isPending: boolean;
   isSubmit: boolean;
+  isSubmitError: boolean;
   errorMessage: string;
   infoMessage?: string;
   required?: boolean;
@@ -22,6 +23,7 @@ export const StringSelectForm = <T extends string>({
   inputList,
   isPending,
   isSubmit,
+  isSubmitError,
   errorMessage,
   infoMessage,
   required,
@@ -52,7 +54,7 @@ export const StringSelectForm = <T extends string>({
         {infoMessage !== undefined && (
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
         )}
-        {isSubmit && input.isError && (
+        {isSubmit && isSubmitError && (
           <FormErrorResponse>{errorMessage}</FormErrorResponse>
         )}
       </div>

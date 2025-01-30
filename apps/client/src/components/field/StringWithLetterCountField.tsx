@@ -11,6 +11,7 @@ type StringWithLetterCountFieldProps = {
   input: InputType<string>;
   isPending: boolean;
   isSubmit: boolean;
+  isSubmitError: boolean;
   errorMessage: string;
   maxLength: number;
   infoMessage?: string;
@@ -23,6 +24,7 @@ export const StringWithLetterCountField = ({
   input,
   isPending,
   isSubmit,
+  isSubmitError,
   errorMessage,
   infoMessage,
   required,
@@ -48,7 +50,7 @@ export const StringWithLetterCountField = ({
             {input.value.length}/{maxLength}
           </span>
         </div>
-        {isSubmit && input.isError && (
+        {isSubmit && isSubmitError && (
           <FormErrorResponse>{errorMessage}</FormErrorResponse>
         )}
       </div>

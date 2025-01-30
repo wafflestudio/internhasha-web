@@ -13,12 +13,13 @@ import { Button } from '@/components/ui/button';
 import { createErrorMessage } from '@/entities/errors';
 import type { Series } from '@/entities/post';
 import type { CreateCompanyRequest } from '@/entities/post';
+import { seriesList } from '@/entities/post';
+import { companyFormPresentation } from '@/feature/company/presentation/companyFormPresentation';
 import {
+  companyInputPresentation,
   MAX_EXPLANATION_LENGTH,
   MAX_SLOGAN_LENGTH,
-  seriesList,
-} from '@/feature/company/presentation/companyPresentation';
-import { companyPresentation } from '@/feature/company/presentation/companyPresentation';
+} from '@/feature/company/presentation/companyInputPresentation';
 import { ExternalLinkField } from '@/feature/company/ui/fields/ExternalLinkField';
 import { HashtagField } from '@/feature/company/ui/fields/HashtagField';
 import { InvestAmountField } from '@/feature/company/ui/fields/InvestAmountField';
@@ -35,22 +36,30 @@ export const CreateCompanyForm = () => {
   const [imageResponseMessage, setImageResponseMessage] = useState('');
   const [pdfResponseMessage, setPdfResponseMessage] = useState('');
 
+  const { inputStates, formStates } = companyFormPresentation.useValidator({
+    companyInputPresentation,
+  });
+
   const {
     companyName,
+    explanation,
     email,
     slogan,
-    tags,
-    series,
     investAmount,
+    rawInvestCompany,
     investCompany,
+    series,
+    irDeckPreview,
+    irDeckLink,
     landingPageLink,
+    imagePreview,
+    imageLink,
+    rawExternalDescriptionLink,
     externalDescriptionLink,
-    explanation,
-  } = companyPresentation.useValidator({});
-  const { rawTags, thumbnail, IRDeckPreview } =
-    companyPresentation.useUtilState();
-  const { tagsFilter, investCompanyFilter, externalDescriptionLinkFilter } =
-    companyPresentation.filter;
+    rawTag,
+    tags,
+  } = inputStates;
+
   const { toMain } = useRouteNavigation();
 
   const handleClickCancelButton = () => {
@@ -77,16 +86,18 @@ export const CreateCompanyForm = () => {
   const { getPresignedUrl: uploadImage, isPending: isUploadImagePending } =
     useGetPresignedUrl({
       onSuccess: ({ presignedUrl }: { presignedUrl: string }) => {
-        uploadFile({ file: thumbnail.value?.file, presignedUrl });
+        uploadFile({ file: imagePreview.value?.file, presignedUrl });
       },
       setResponseMessage: handleChangeImageResponseMessage,
+      setLink: irDeckLink.onChange,
     });
   const { getPresignedUrl: uploadPdf, isPending: isUploadPdfPending } =
     useGetPresignedUrl({
       onSuccess: ({ presignedUrl }: { presignedUrl: string }) => {
-        uploadFile({ file: IRDeckPreview.value?.file, presignedUrl });
+        uploadFile({ file: irDeckPreview.value?.file, presignedUrl });
       },
       setResponseMessage: handleChangePdfResponseMessage,
+      setLink: imageLink.onChange,
     });
   const { createCompany, isPending: isCreateCompanyPending } = useCreateCompany(
     { setResponseMessage },
@@ -100,49 +111,56 @@ export const CreateCompanyForm = () => {
 
   const handleSubmit = () => {
     setIsSubmit(true);
-    console.log(series);
-    if (thumbnail.value !== null) {
+    // TODO: 불가능한 타입이지만 isError를 사용할 시 타입스크립트가 인식하지 못함.
+    if (!imagePreview.isError && imagePreview.value !== null) {
       uploadImage({
-        fileName: thumbnail.value.file.name,
-        fileType: thumbnail.value.file.type,
+        fileName: imagePreview.value.file.name,
+        fileType: imagePreview.value.file.type,
       });
     }
-    if (IRDeckPreview.value !== null) {
+    if (irDeckPreview.isError && irDeckPreview.value !== null) {
       uploadPdf({
-        fileName: IRDeckPreview.value.file.name,
-        fileType: IRDeckPreview.value.file.type,
+        fileName: irDeckPreview.value.file.name,
+        fileType: irDeckPreview.value.file.type,
       });
     }
     if (imageResponseMessage !== '' || pdfResponseMessage !== '') {
       return;
     }
     if (
-      companyName.isError ||
-      email.isError ||
-      slogan.isError ||
-      investAmount.isError ||
-      thumbnail.value === null ||
-      series.value === 'NONE'
+      formStates.companyName.isError ||
+      formStates.explanation.isError ||
+      formStates.email.isError ||
+      formStates.slogan.isError ||
+      formStates.investAmount.isError ||
+      formStates.investCompany.isError ||
+      formStates.series.isError ||
+      formStates.irDeckLink.isError ||
+      formStates.landingPageLink.isError ||
+      formStates.imageLink.isError ||
+      formStates.externalDescriptionLink.isError ||
+      formStates.tags.isError
     ) {
+      return;
+    }
+    // TODO: 불가능한 타입이지만 isError를 사용할 시 타입스크립트가 인식하지 못함.
+    if (formStates.series.value === 'NONE') {
       return;
     }
     createCompany({
       company: {
-        companyName: companyName.value,
-        explanation: explanation.value,
-        email: email.value,
-        slogan: slogan.value,
-        investAmount: Number(investAmount.value),
-        investCompany: investCompanyFilter(investCompany.value).join(','),
-        series: series.value,
-        irDeckLink:
-          IRDeckPreview.value !== null ? IRDeckPreview.value.url : undefined,
+        companyName: formStates.companyName.value,
+        explanation: formStates.explanation.value,
+        email: formStates.email.value,
+        slogan: formStates.slogan.value,
+        investAmount: formStates.investAmount.value,
+        investCompany: formStates.investCompany.value,
+        series: formStates.series.value,
+        irDeckLink: formStates.irDeckLink.value,
         landingPageLink: landingPageLink.value,
-        imageLink: thumbnail.value.url,
-        externalDescriptionLink: externalDescriptionLinkFilter(
-          externalDescriptionLink.value,
-        ),
-        tags: tagsFilter(tags.value),
+        imageLink: formStates.imageLink.value,
+        externalDescriptionLink: formStates.externalDescriptionLink.value,
+        tags: formStates.tags.value,
       },
     });
   };
@@ -159,6 +177,7 @@ export const CreateCompanyForm = () => {
           input={companyName}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.companyName.isError}
           placeholder="회사명을 입력해주세요."
           errorMessage="올바른 회사명을 입력해주세요."
           required={true}
@@ -168,6 +187,7 @@ export const CreateCompanyForm = () => {
           input={email}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.email.isError}
           placeholder="회사 이메일을 입력해주세요."
           errorMessage="올바르지 않은 이메일 형식입니다."
           required={true}
@@ -177,6 +197,7 @@ export const CreateCompanyForm = () => {
           input={slogan}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.slogan.isError}
           maxLength={MAX_SLOGAN_LENGTH}
           errorMessage={`한 줄 소개는 ${MAX_SLOGAN_LENGTH}자 이내로 작성해주세요.`}
           infoMessage="한 줄 소개는 공고 카드에 보여져요."
@@ -187,6 +208,7 @@ export const CreateCompanyForm = () => {
           input={explanation}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.explanation.isError}
           maxLength={MAX_EXPLANATION_LENGTH}
           errorMessage={`상세 소개는 ${MAX_EXPLANATION_LENGTH}자 이내로 작성해주세요.`}
           infoMessage="상세 소개는 공고 글에 보여져요."
@@ -194,9 +216,10 @@ export const CreateCompanyForm = () => {
         />
         <ImageField
           label="대표 사진"
-          input={thumbnail}
+          input={imagePreview}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.imageLink.isError}
           errorMessage="1MB 이하의 이미지 파일을 올려주세요."
           responseErrorMessage={imageResponseMessage}
           infoMessage="회사 썸네일 이미지는 정사각형 비율(1:1)로 보여져요."
@@ -208,6 +231,7 @@ export const CreateCompanyForm = () => {
           inputList={seriesList}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.series.isError}
           errorMessage="투자 단계를 선택해주세요."
           required={true}
         />
@@ -217,24 +241,29 @@ export const CreateCompanyForm = () => {
           unit="천만원"
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.investAmount.isError}
           errorMessage="0 이상의 양의 정수로 입력해주세요."
           required={true}
         />
         <InvestCompanyField
           label="투자사 정보"
           input={investCompany}
+          rawInput={rawInvestCompany}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.investCompany.isError}
           placeholder="투자사 이름을 입력해주세요."
           errorMessage="투자사 정보는 1개 이상, 10개 이하로 중복되지 않게 입력해주세요."
+          inputErrorMessage="중복되지 않는 100자 이내의 투자사 이름을 작성해주세요."
           required={true}
         />
         <HashtagField
           label="해시태그"
           input={tags}
-          rawInput={rawTags}
+          rawInput={rawTag}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.tags.isError}
           placeholder="회사를 소개하는 태그를 입력해주세요. (최대 10개)"
           infoMessage="엔터를 치면 태그가 생성되며 한 개당 최대 8자까지 입력할 수 있어요."
           inputErrorMessage="입력한 태그와 중복되지 않는 8자 이하의 태그를 작성해주세요."
@@ -242,18 +271,19 @@ export const CreateCompanyForm = () => {
         />
         <PdfField
           label="IR Deck 자료"
-          input={IRDeckPreview}
+          input={irDeckPreview}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.irDeckLink.isError}
           errorMessage="5MB 이하의 PDF 파일을 올려주세요."
           responseErrorMessage={pdfResponseMessage}
-          required={true}
         />
         <StringField
           label="기업 소개 홈페이지"
           input={landingPageLink}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.landingPageLink.isError}
           placeholder="https://"
           errorMessage="https로 시작하는 홈페이지 링크를 입력해주세요."
         />
@@ -264,8 +294,10 @@ export const CreateCompanyForm = () => {
             link: '링크',
           }}
           input={externalDescriptionLink}
+          rawInput={rawExternalDescriptionLink}
           isPending={isPending}
           isSubmit={isSubmit}
+          isSubmitError={formStates.externalDescriptionLink.isError}
           placeholder={{
             description:
               '링크 제목을 작성해주세요. (e.g. OO 프로젝트 성과 기사)',
@@ -273,6 +305,7 @@ export const CreateCompanyForm = () => {
           }}
           infoMessage="더벤처스, 잡코리아, 기사 링크 등 회사를 소개할 수 있는 기타 링크를 첨부해주세요."
           errorMessage="외부 소개 링크는 최대 5개까지 입력 가능하며 링크는 https로 시작해야 합니다."
+          inputErrorMessage="중복되지 않는 유효한 링크와 100자 이내의 설명글을 입력해주세요."
         />
         <div className="flex gap-2">
           <Button
@@ -302,9 +335,11 @@ export const CreateCompanyForm = () => {
 const useGetPresignedUrl = ({
   onSuccess,
   setResponseMessage,
+  setLink,
 }: {
   onSuccess({ presignedUrl }: { presignedUrl: string }): void;
   setResponseMessage(input: string): void;
+  setLink(input: string): void;
 }) => {
   const { fileService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
@@ -325,12 +360,15 @@ const useGetPresignedUrl = ({
     onSuccess: (response) => {
       if (response.type === 'success') {
         onSuccess({ presignedUrl: response.data.presignedUrl });
+        setLink(response.data.presignedUrl);
       } else {
         setResponseMessage(createErrorMessage(response.code));
+        setLink('');
       }
     },
     onError: () => {
       setResponseMessage('업로드에 실패했습니다. 잠시 후에 다시 실행해주세요.');
+      setLink('');
     },
   });
 
