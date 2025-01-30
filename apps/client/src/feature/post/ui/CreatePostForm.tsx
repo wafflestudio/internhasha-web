@@ -8,11 +8,13 @@ import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { RewritePostModal } from '@/components/modal/RewritePostModal';
+import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { createErrorMessage } from '@/entities/errors';
 import type { CreatePostRequest } from '@/entities/post';
 import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
 import { JOB_CATEGORY_MAP, JOB_MAJOR_CATEGORIES } from '@/entities/post';
+import { postFormPresentation } from '@/feature/post/presentation/postFormPresentation';
 import {
   CONTENT_MAX_LENGTH,
   postInputPresentation,
@@ -22,8 +24,6 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatMajorJobToLabel, formatMinorJobToLabel } from '@/util/format';
-import { postFormPresentation } from '../presentation/postFormPresentation';
-import { FormErrorResponse } from '@/components/response/formResponse';
 
 export const CreatePostForm = ({ companyId }: { companyId: string }) => {
   const [isSubmit, setIsSubmit] = useState(false);
