@@ -8,15 +8,17 @@ import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { RewritePostModal } from '@/components/modal/RewritePostModal';
+import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { createErrorMessage } from '@/entities/errors';
 import type { CreatePostRequest } from '@/entities/post';
 import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
 import { JOB_CATEGORY_MAP, JOB_MAJOR_CATEGORIES } from '@/entities/post';
+import { postFormPresentation } from '@/feature/post/presentation/postFormPresentation';
 import {
   CONTENT_MAX_LENGTH,
-  postPresentation,
-} from '@/feature/post/presentation/postPresentation';
+  postInputPresentation,
+} from '@/feature/post/presentation/postInputPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -39,31 +41,42 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
     onSuccess: onSuccessSubmit,
   });
 
+  const { inputStates, formStates } = postFormPresentation.useValidator({
+    postInputPresentation,
+  });
+
   const {
     title,
     jobMajorCategory,
     jobMinorCategory,
     headcount,
     detail,
-    employmentEndDateTime,
-  } = postPresentation.useValidator({});
-
-  const { rawHeadcount, employmentEndDate, employmentEndTime } =
-    postPresentation.useUtilState();
+    employmentEndTime,
+    employmentEndDate,
+  } = inputStates;
 
   const handleSubmit = () => {
     setIsSubmit(true);
-    if (jobMinorCategory.value === 'NONE') {
+    if (
+      formStates.title.isError ||
+      formStates.employmentEndDateTime.isError ||
+      formStates.job.isError ||
+      formStates.headcount.isError ||
+      formStates.detail.isError
+    ) {
+      return;
+    }
+    if (formStates.job.value === 'NONE') {
       return;
     }
     createPost({
       post: {
         companyId: companyId,
-        title: title.value,
-        employmentEndDate: employmentEndDateTime.value,
-        category: jobMinorCategory.value,
-        headcount: headcount.value,
-        detail: detail.value,
+        title: formStates.title.value,
+        employmentEndDate: formStates.employmentEndDateTime.value,
+        category: formStates.job.value,
+        headcount: formStates.headcount.value,
+        detail: formStates.detail.value,
       },
     });
   };
@@ -78,11 +91,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
 
   return (
     <>
-      <FormContainer
-        id="CreatePostForm"
-        handleSubmit={handleSubmit}
-        response={responseMessage}
-      >
+      <FormContainer id="CreatePostForm" handleSubmit={handleSubmit}>
         <StringField
           label="모집 직무 이름"
           input={title}
@@ -152,15 +161,14 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           </LabelContainer>
           <LabelContainer label="모집 인원" id="headcount">
             <TextInput
-              value={rawHeadcount.value}
+              value={headcount.value}
               disabled={isPending}
               onChange={(e) => {
-                rawHeadcount.onChange(e.target.value);
-                headcount.onChange(Number(e.target.value));
+                headcount.onChange(e.target.value);
               }}
               placeholder="모집 인원 수"
             />
-            {isSubmit && headcount.isError && (
+            {isSubmit && formStates.headcount.isError && (
               <p>모집 인원은 0 또는 양의 정수여야 합니다.</p>
             )}
           </LabelContainer>
@@ -183,9 +191,6 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
             disabled={isPending}
             onChange={(e) => {
               employmentEndDate.onChange(e.target.value);
-              employmentEndDateTime.onChange(
-                `${e.target.value}T${employmentEndTime.value}`,
-              );
             }}
           />
           <input
@@ -195,13 +200,13 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
             disabled={isPending}
             onChange={(e) => {
               employmentEndTime.onChange(e.target.value);
-              employmentEndDateTime.onChange(
-                `${employmentEndDate.value}T${e.target.value}`,
-              );
             }}
           />
-          {isSubmit && employmentEndDate.isError && (
+          {isSubmit && formStates.employmentEndDateTime.isError && (
             <p>올바른 채용 마감일을 선택해주세요.</p>
+          )}
+          {responseMessage !== '' && (
+            <FormErrorResponse>{responseMessage}</FormErrorResponse>
           )}
         </LabelContainer>
         <div className="flex gap-2">

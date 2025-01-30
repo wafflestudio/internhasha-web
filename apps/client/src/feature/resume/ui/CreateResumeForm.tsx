@@ -5,6 +5,7 @@ import { Button, SubmitButton } from '@/components/button';
 import { FormContainer } from '@/components/form';
 import { LabelContainer } from '@/components/input/LabelContainer.tsx';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal.tsx';
+import { FormErrorResponse } from '@/components/response/formResponse';
 import type { ResumeRequest } from '@/entities/resume.ts';
 import {
   CONTENTS_MAX_LENGTH,
@@ -61,7 +62,6 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
         <FormContainer
           id="CreateResumeForm"
           handleSubmit={handleSubmit}
-          response={responseMessage}
           className={'text-sm w-full bg-white rounded-lg'}
         >
           <LabelContainer
@@ -142,6 +142,9 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
               등록
             </SubmitButton>
           </div>
+          {responseMessage !== '' && (
+            <FormErrorResponse>{responseMessage}</FormErrorResponse>
+          )}
           {isCancel && (
             <CancelCheckModal
               onClose={() => {

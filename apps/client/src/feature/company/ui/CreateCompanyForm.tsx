@@ -9,6 +9,7 @@ import { StringSelectForm } from '@/components/field/StringSelectForm';
 import { StringWithLetterCountField } from '@/components/field/StringWithLetterCountField';
 import { FormContainer } from '@/components/form';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
+import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { createErrorMessage } from '@/entities/errors';
 import type { Series } from '@/entities/post';
@@ -167,11 +168,7 @@ export const CreateCompanyForm = () => {
 
   return (
     <>
-      <FormContainer
-        handleSubmit={handleSubmit}
-        response={responseMessage}
-        className="gap-10"
-      >
+      <FormContainer handleSubmit={handleSubmit} className="gap-10">
         <StringField
           label="회사명"
           input={companyName}
@@ -307,6 +304,9 @@ export const CreateCompanyForm = () => {
           errorMessage="외부 소개 링크는 최대 5개까지 입력 가능하며 링크는 https로 시작해야 합니다."
           inputErrorMessage="중복되지 않는 유효한 링크와 100자 이내의 설명글을 입력해주세요."
         />
+        {responseMessage !== '' && (
+          <FormErrorResponse>{responseMessage}</FormErrorResponse>
+        )}
         <div className="flex gap-2">
           <Button
             variant="secondary"

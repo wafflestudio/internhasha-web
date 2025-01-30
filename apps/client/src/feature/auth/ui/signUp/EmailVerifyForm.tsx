@@ -135,15 +135,7 @@ export const EmailVerifyForm = () => {
 
   return (
     <>
-      <FormContainer
-        id="EmailVerifyForm"
-        handleSubmit={onSubmit}
-        response={
-          body.authProvider === 'LOCAL'
-            ? localSignUpResponseMessage
-            : googleSignUpResponseMessage
-        }
-      >
+      <FormContainer id="EmailVerifyForm" handleSubmit={onSubmit}>
         {body.authProvider === 'LOCAL' && (
           <ProgressBar totalProgress={2} present={2} />
         )}

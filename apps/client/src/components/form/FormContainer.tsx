@@ -2,7 +2,6 @@ import { cn } from '@/lib/utils';
 
 interface FormContainerProps extends React.FormHTMLAttributes<HTMLFormElement> {
   handleSubmit(): void;
-  response: string;
   className?: string;
 }
 
