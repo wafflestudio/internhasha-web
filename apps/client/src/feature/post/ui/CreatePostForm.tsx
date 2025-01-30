@@ -69,7 +69,6 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
     if (formStates.job.value === 'NONE') {
       return;
     }
-    console.log('here');
     createPost({
       post: {
         companyId: companyId,
@@ -257,7 +256,6 @@ const useCreatePost = ({
       return postService.createPost({ token, postContents: post });
     },
     onSuccess: (response) => {
-      console.log('here');
       if (response.type === 'success') {
         onSuccess();
       } else {
@@ -265,7 +263,6 @@ const useCreatePost = ({
       }
     },
     onError: () => {
-      console.log('failed');
       setResponseMessage(
         '공고 생성에 실패했습니다. 잠시 후에 다시 실행해주세요.',
       );
