@@ -9,21 +9,20 @@ type ExternalLink = {
 };
 
 type InitialInputState = {
-  companyName: string;
-  explanation: string;
-  email: string;
-  slogan: string;
-  investAmount: string;
-  rawInvestCompany: string;
-  investCompany: string[];
-  series: Series | 'NONE';
-  irDeckPreview: { file: File; url: string } | null;
-  landingPageLink: string;
-  imagePreview: { file: File; url: string } | null;
-  rawExternalDescriptionLink: ExternalLink;
-  externalDescriptionLink: ExternalLink[];
-  rawTag: string;
-  tags: string[];
+  companyName?: string;
+  explanation?: string;
+  email?: string;
+  slogan?: string;
+  investAmount?: string;
+  investCompany?: string[];
+  series?: Series | 'NONE';
+  irDeckPreview?: { file: File; url: string } | null;
+  irDeckLink?: string;
+  landingPageLink?: string;
+  imagePreview?: { file: File; url: string } | null;
+  imageLink?: string;
+  externalDescriptionLink?: ExternalLink[];
+  tags?: string[];
 };
 
 export type CompanyInputPresentation = {
@@ -37,8 +36,10 @@ export type CompanyInputPresentation = {
     investCompany: ListInput<string>;
     series: SelectInput<Series | 'NONE'>;
     irDeckPreview: Input<{ file: File; url: string } | null>;
+    irDeckLink: Input<string>;
     landingPageLink: Input<string>;
     imagePreview: Input<{ file: File; url: string } | null>;
+    imageLink: Input<string>;
     rawExternalDescriptionLink: Input<ExternalLink>;
     externalDescriptionLink: ListInput<ExternalLink>;
     rawTag: Input<string>;
@@ -95,11 +96,7 @@ export const companyInputPresentation: CompanyInputPresentation = {
     const [investAmount, setInvestAmount] = useState(
       initialState?.investAmount !== undefined ? initialState.investAmount : '',
     );
-    const [rawInvestCompany, setRawInvestCompany] = useState(
-      initialState?.rawInvestCompany !== undefined
-        ? initialState.rawInvestCompany
-        : '',
-    );
+    const [rawInvestCompany, setRawInvestCompany] = useState('');
     const [investCompany, setInvestCompany] = useState<string[]>(
       initialState?.investCompany !== undefined
         ? initialState.investCompany
@@ -112,6 +109,9 @@ export const companyInputPresentation: CompanyInputPresentation = {
       initialState?.irDeckPreview !== undefined
         ? initialState.irDeckPreview
         : null,
+    );
+    const [irDeckLink, setIrDeckLink] = useState(
+      initialState?.irDeckLink !== undefined ? initialState.irDeckLink : '',
     );
     const [landingPageLink, setLandingPageLink] = useState(
       initialState?.landingPageLink !== undefined
@@ -126,12 +126,11 @@ export const companyInputPresentation: CompanyInputPresentation = {
         ? initialState.imagePreview
         : null,
     );
+    const [imageLink, setImageLink] = useState(
+      initialState?.imageLink !== undefined ? initialState.imageLink : '',
+    );
     const [rawExternalDescriptionLink, setRawExternalDescriptionLink] =
-      useState<ExternalLink>(
-        initialState?.rawExternalDescriptionLink !== undefined
-          ? initialState.rawExternalDescriptionLink
-          : { link: '', description: '' },
-      );
+      useState<ExternalLink>({ link: '', description: '' });
     const [externalDescriptionLink, setExternalDescriptionLink] = useState<
       ExternalLink[]
     >(
@@ -139,43 +138,51 @@ export const companyInputPresentation: CompanyInputPresentation = {
         ? initialState.externalDescriptionLink
         : [{ link: '', description: '' }],
     );
-    const [rawTag, setRawTag] = useState(
-      initialState?.rawTag !== undefined ? initialState.rawTag : '',
-    );
+    const [rawTag, setRawTag] = useState('');
     const [tags, setTags] = useState<string[]>(
       initialState?.tags !== undefined ? initialState.tags : [],
     );
 
     const isRawInvestCompanyValid = (input: string) => {
       const trimmedInput = input.trim();
-      if (
-        trimmedInput.length === 0 ||
-        trimmedInput.length > MAX_RAW_INVEST_COMPANY_LENGTH
-      ) {
+      if (trimmedInput.length > MAX_RAW_INVEST_COMPANY_LENGTH) {
         return false;
       }
-      if (investCompany.includes(trimmedInput)) {
+      // 공백인 input이 여러개 발생할 수 있도록 설정
+      if (trimmedInput.length !== 0 && investCompany.includes(trimmedInput)) {
         return false;
       }
       return true;
     };
     const isInvestCompanyValid = (input: string[]) => {
-      if (input.length > MAX_INVEST_COMPANY_SIZE) {
+      const filteredInvestCompany = input.filter(
+        (item) => item.trim().length !== 0,
+      );
+      if (filteredInvestCompany.length > MAX_INVEST_COMPANY_SIZE) {
+        return false;
+      }
+      if (
+        filteredInvestCompany.some(
+          (item) => item.trim().length > MAX_RAW_INVEST_COMPANY_LENGTH,
+        )
+      ) {
         return false;
       }
       return true;
     };
     const isRawExternalDescriptionLinkValid = (input: ExternalLink) => {
-      if (
-        input.description.trim().length === 0 ||
-        input.description.trim().length > MAX_DESCRIPTION_LENGTH
-      ) {
+      const trimmedDescription = input.description.trim();
+      const trimmedLink = input.link.trim();
+
+      if (trimmedDescription.trim().length > MAX_DESCRIPTION_LENGTH) {
         return false;
       }
-      if (!URL_REGEX.test(input.link)) {
+      if (!URL_REGEX.test(trimmedLink)) {
         return false;
       }
       if (
+        trimmedDescription.length !== 0 &&
+        trimmedLink.length !== 0 &&
         externalDescriptionLink.some(
           (item) =>
             item.link === input.link && item.description === input.description,
@@ -186,16 +193,30 @@ export const companyInputPresentation: CompanyInputPresentation = {
       return true;
     };
     const isExternalLinkValid = (input: ExternalLink[]) => {
-      if (input.length > MAX_EXTERNAL_DESCRIPTION_LINK_SIZE) {
+      const filteredExternalLink = input.filter(
+        (item) =>
+          item.link.trim().length !== 0 && item.description.trim().length !== 0,
+      );
+      if (filteredExternalLink.length > MAX_EXTERNAL_DESCRIPTION_LINK_SIZE) {
+        return false;
+      }
+      if (
+        filteredExternalLink.some(
+          (item) =>
+            item.description.trim().length > MAX_DESCRIPTION_LENGTH ||
+            !URL_REGEX.test(item.link.trim()),
+        )
+      ) {
         return false;
       }
       return true;
     };
     const isRawTagValid = (input: string) => {
-      if (input.trim().length === 0 || input.trim().length > MAX_TAG_LENGTH) {
+      const trimmedInput = input.trim();
+      if (trimmedInput.length === 0 || trimmedInput.length > MAX_TAG_LENGTH) {
         return false;
       }
-      if (tags.includes(input)) {
+      if (tags.includes(trimmedInput)) {
         return false;
       }
       return true;
@@ -413,6 +434,11 @@ export const companyInputPresentation: CompanyInputPresentation = {
         value: irDeckPreview,
         onChange: setIrDeckPreview,
       },
+      irDeckLink: {
+        isError: irDeckLink.trim().length === 0,
+        value: irDeckLink,
+        onChange: setIrDeckLink,
+      },
       landingPageLink: {
         isError: !URL_REGEX.test(landingPageLink),
         value: landingPageLink,
@@ -422,6 +448,11 @@ export const companyInputPresentation: CompanyInputPresentation = {
         isError: !isImagePreviewValid(imagePreview),
         value: imagePreview,
         onChange: setImagePreview,
+      },
+      imageLink: {
+        isError: imageLink.trim().length === 0,
+        value: imageLink,
+        onChange: setImageLink,
       },
       rawExternalDescriptionLink: {
         isError: !isRawExternalDescriptionLinkValid(rawExternalDescriptionLink),

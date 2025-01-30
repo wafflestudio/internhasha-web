@@ -13,11 +13,8 @@ import { Button } from '@/components/ui/button';
 import { createErrorMessage } from '@/entities/errors';
 import type { Series, seriesList } from '@/entities/post';
 import type { CreateCompanyRequest } from '@/entities/post';
-import {
-  MAX_EXPLANATION_LENGTH,
-  MAX_SLOGAN_LENGTH,
-} from '@/feature/company/presentation/companyInputPresentation';
-import { companyPresentation } from '@/feature/company/presentation/companyInputPresentation';
+import { companyFormPresentation } from '@/feature/company/presentation/companyFormPresentation';
+import { companyInputPresentation } from '@/feature/company/presentation/companyInputPresentation';
 import { ExternalLinkField } from '@/feature/company/ui/fields/ExternalLinkField';
 import { HashtagField } from '@/feature/company/ui/fields/HashtagField';
 import { InvestAmountField } from '@/feature/company/ui/fields/InvestAmountField';
@@ -34,22 +31,26 @@ export const CreateCompanyForm = () => {
   const [imageResponseMessage, setImageResponseMessage] = useState('');
   const [pdfResponseMessage, setPdfResponseMessage] = useState('');
 
+  const { inputStates, formStates } = companyFormPresentation.useValidator({
+    companyInputPresentation,
+  });
   const {
     companyName,
+    explanation,
     email,
     slogan,
-    tags,
-    series,
     investAmount,
+    rawInvestCompany,
     investCompany,
+    series,
+    irDeckPreview,
     landingPageLink,
+    imagePreview,
+    rawExternalDescriptionLink,
     externalDescriptionLink,
-    explanation,
-  } = companyPresentation.useValidator({});
-  const { rawTags, thumbnail, IRDeckPreview } =
-    companyPresentation.useUtilState();
-  const { tagsFilter, investCompanyFilter, externalDescriptionLinkFilter } =
-    companyPresentation.filter;
+    rawTag,
+    tags,
+  } = inputStates;
   const { toMain } = useRouteNavigation();
 
   const handleClickCancelButton = () => {

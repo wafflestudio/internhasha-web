@@ -29,3 +29,8 @@ export type ListInput<TElement> = {
         mode: 'PATCH';
       }) => void;
 };
+
+export type InputForForm<TInput> = {
+  isError: boolean;
+  value: TInput;
+};
