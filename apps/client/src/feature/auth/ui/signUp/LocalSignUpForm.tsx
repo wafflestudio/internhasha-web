@@ -99,11 +99,7 @@ export const LocalSignUpForm = () => {
 
   return (
     <>
-      <FormContainer
-        id="SignUpForm"
-        handleSubmit={onSubmit}
-        response={responseMessage}
-      >
+      <FormContainer id="SignUpForm" handleSubmit={onSubmit}>
         <ProgressBar totalProgress={2} present={1} />
         <div className="flex flex-col gap-6">
           <LabelContainer label="이름" id="username">

@@ -32,7 +32,6 @@ export const LocalLogInForm = () => {
       <FormContainer
         id="SignInForm"
         handleSubmit={onSubmit}
-        response={responseMessage}
       >
         <div className="flex flex-col gap-[10px]">
           <Input

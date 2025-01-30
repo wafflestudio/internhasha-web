@@ -10,11 +10,11 @@ type InitialState = {
   jobMinorCategory?: JobMinorCategory | 'NONE';
   headcount?: string;
   detail?: string;
-  employmentEndDate: string;
-  employmentEndTime: string;
+  employmentEndDate?: string;
+  employmentEndTime?: string;
 };
 
-type PostInputPresentation = {
+export type PostInputPresentation = {
   useValidator({ initialState }: { initialState?: InitialState }): {
     title: Input<string>;
     jobMajorCategory: SelectInput<JobMajorCategory>;
@@ -29,9 +29,8 @@ type PostInputPresentation = {
 const TITLE_MAX_LENGTH = 500;
 export const CONTENT_MAX_LENGTH = 10000;
 const HEADCOUNT_REGEX = /^\s*$|^[0-9]+$/;
-const DATE_TIME_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
-const TIME_REGEX = /^\d{2}:\d{2}:\d{2}$/;
+const TIME_REGEX = /^\d{2}:\d{2}$/;
 
 export const postInputPresentation: PostInputPresentation = {
   useValidator: ({ initialState }) => {
@@ -101,7 +100,7 @@ export const postInputPresentation: PostInputPresentation = {
         onChange: setJobMinorCategory,
       },
       headcount: {
-        isError: HEADCOUNT_REGEX.test(headcount),
+        isError: !HEADCOUNT_REGEX.test(headcount),
         value: headcount,
         onChange: setHeadcount,
       },
@@ -113,14 +112,14 @@ export const postInputPresentation: PostInputPresentation = {
       employmentEndDate: {
         isError:
           employmentEndDate.trim().length !== 0 &&
-          DATE_TIME_REGEX.test(employmentEndDate),
+          !DATE_REGEX.test(employmentEndDate),
         value: employmentEndDate,
         onChange: setEmploymentEndDate,
       },
       employmentEndTime: {
         isError:
           employmentEndTime.trim().length !== 0 &&
-          DATE_TIME_REGEX.test(employmentEndTime),
+          !TIME_REGEX.test(employmentEndTime),
         value: employmentEndTime,
         onChange: setEmploymentEndTime,
       },
