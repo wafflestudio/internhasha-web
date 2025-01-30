@@ -310,7 +310,10 @@ export const CreateCompanyForm = () => {
         <div className="flex gap-2">
           <Button
             variant="secondary"
-            onClick={handleClickCancelButton}
+            onClick={(e) => {
+              e.preventDefault();
+              handleClickCancelButton();
+            }}
             disabled={isPending}
             className="flex-1"
           >
