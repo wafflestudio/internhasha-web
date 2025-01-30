@@ -1,12 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
-import MDEditor from '@uiw/react-md-editor';
-import {
-  FormContainer,
-  LabelContainer,
-  TextInput,
-} from '@waffle/design-system';
 import { useState } from 'react';
 
+import { MarkdownEditorField } from '@/components/field/MarkdownEditorField';
+import { StringField } from '@/components/field/StringField';
+import { FormContainer } from '@/components/form';
+import { TextInput } from '@/components/input';
+import { LabelContainer } from '@/components/input/LabelContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { RewritePostModal } from '@/components/modal/RewritePostModal';
 import { Button } from '@/components/ui/button';
@@ -84,20 +83,16 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
         handleSubmit={handleSubmit}
         response={responseMessage}
       >
-        <LabelContainer label="공고명" id="title">
-          <TextInput
-            id="title"
-            value={title.value}
-            disabled={isPending}
-            onChange={(e) => {
-              title.onChange(e.target.value);
-            }}
-            placeholder="공고명을 입력해주세요."
-          />
-          {isSubmit && title.isError && (
-            <p>공고명은 500자 이내로 작성해주세요.</p>
-          )}
-        </LabelContainer>
+        <StringField
+          label="모집 직무 이름"
+          input={title}
+          isPending={isPending}
+          isSubmit={isSubmit}
+          isSubmitError={title.isError}
+          placeholder="모집 직무 이름을 구체적으로 작성해주세요. (e.g. React 프론트엔드 개발자)"
+          errorMessage="공고명은 500자 이내로 작성해주세요."
+          required={true}
+        />
         <div>
           <LabelContainer label="직무 유형" id="job">
             <div>
@@ -170,25 +165,16 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
             )}
           </LabelContainer>
         </div>
-        <LabelContainer label="상세 공고 글" id="detail">
-          <div data-color-mode="light">
-            <MDEditor
-              id="detail"
-              value={detail.value}
-              onChange={(value) => {
-                detail.onChange(value ?? '');
-              }}
-            />
-          </div>
-          <span
-            className={`text-sm ${detail.value.length > CONTENT_MAX_LENGTH ? 'text-red' : 'text-grey-normal'}`}
-          >
-            {detail.value.length}/{CONTENT_MAX_LENGTH}
-          </span>
-          {isSubmit && detail.isError && (
-            <p>공고 글은 {CONTENT_MAX_LENGTH}자 이내로 작성해주세요.</p>
-          )}
-        </LabelContainer>
+        <MarkdownEditorField
+          label="상세 공고 글"
+          input={detail}
+          maxLength={CONTENT_MAX_LENGTH}
+          isPending={isPending}
+          isSubmit={isSubmit}
+          isSubmitError={detail.isError}
+          errorMessage={`공고 글은 ${CONTENT_MAX_LENGTH}자 이내로 작성해주세요.`}
+          required={true}
+        />
         <LabelContainer label="채용 마감일" id="employmentEndDate">
           <input
             id="employmentEndDate"
@@ -218,20 +204,22 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
             <p>올바른 채용 마감일을 선택해주세요.</p>
           )}
         </LabelContainer>
-        <div>
+        <div className="flex gap-2">
           <Button
+            variant="secondary"
             onClick={(e) => {
               e.preventDefault();
               handleClickCancelButton();
             }}
             disabled={isPending}
+            className="flex-1"
           >
             이전으로
           </Button>
           <Button
-            form="CreatePostForm"
             onClick={handleSubmit}
             disabled={isPending}
+            className="flex-1"
           >
             제출하기
           </Button>

@@ -28,10 +28,12 @@ export const CreatePostPage = () => {
 
   if (state?.postBody === undefined) {
     return (
-      <div>
+      <div className="min-h-screen">
         <GlobalNavigationBar />
-        <h1>채용 공고 작성하기</h1>
-        <CreatePostForm companyId={companyId} />
+        <div className="flex flex-col w-[280px] sm:w-[700px] justify-center gap-[50px] mx-auto my-[30px]">
+          <h2 className="text-2xl font-bold">회사 정보 작성</h2>
+          <CreatePostForm companyId={companyId} />
+        </div>
       </div>
     );
   }
