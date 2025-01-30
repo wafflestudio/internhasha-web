@@ -10,6 +10,7 @@ import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { RewritePostModal } from '@/components/modal/RewritePostModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { createErrorMessage } from '@/entities/errors';
 import type { CreatePostRequest } from '@/entities/post';
 import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
@@ -184,6 +185,16 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           required={true}
         />
         <LabelContainer label="채용 마감일" id="employmentEndDate">
+          <Calendar
+            mode="single"
+            selected={new Date(employmentEndDate.value)}
+            onSelect={(input: Date | undefined) => {
+              console.log(input);
+              employmentEndDate.onChange(
+                input !== undefined ? input.toISOString() : '',
+              );
+            }}
+          />
           <input
             id="employmentEndDate"
             type="date"
