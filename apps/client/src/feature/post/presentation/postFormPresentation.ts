@@ -13,7 +13,7 @@ type InitialState = {
   employmentEndDate?: string;
 };
 
-type PostPresentation = {
+type PostFormPresentation = {
   useValidator({ initialState }: { initialState?: InitialState }): {
     title: Input<string>;
     jobMajorCategory: SelectInput<JobMajorCategory>;
@@ -36,7 +36,7 @@ const DATE_TIME_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_REGEX = /^\d{2}:\d{2}:\d{2}$/;
 
-export const postPresentation: PostPresentation = {
+export const postFormPresentation: PostFormPresentation = {
   useValidator: ({ initialState = {} }) => {
     const [title, setTitle] = useState(
       initialState.title !== undefined ? initialState.title : '',

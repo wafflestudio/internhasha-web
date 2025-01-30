@@ -15,8 +15,8 @@ import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
 import { JOB_CATEGORY_MAP, JOB_MAJOR_CATEGORIES } from '@/entities/post';
 import {
   CONTENT_MAX_LENGTH,
-  postPresentation,
-} from '@/feature/post/presentation/postPresentation';
+  postInputPresentation,
+} from '@/feature/post/presentation/postInputPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -46,10 +46,10 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
     headcount,
     detail,
     employmentEndDateTime,
-  } = postPresentation.useValidator({});
+  } = postInputPresentation.useValidator({});
 
   const { rawHeadcount, employmentEndDate, employmentEndTime } =
-    postPresentation.useUtilState();
+    postInputPresentation.useUtilState();
 
   const handleSubmit = () => {
     setIsSubmit(true);
