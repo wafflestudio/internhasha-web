@@ -64,11 +64,11 @@ type CompanyFormPresentation = {
       investAmount: InputForForm<number>;
       investCompany: InputForForm<string>;
       series: InputForForm<Series | 'NONE'>;
-      irDeckLink: InputForForm<string>;
-      landingPageLink: InputForForm<string>;
+      irDeckLink: InputForForm<string | undefined>;
+      landingPageLink: InputForForm<string | undefined>;
       imageLink: InputForForm<string>;
-      externalDescriptionLink: InputForForm<ExternalLink[]>;
-      tags: InputForForm<string[]>;
+      externalDescriptionLink: InputForForm<ExternalLink[] | undefined>;
+      tags: InputForForm<{ tag: string }[] | undefined>;
     };
   };
 };
@@ -166,8 +166,9 @@ export const companyFormPresentation: CompanyFormPresentation = {
           value: series.value,
         },
         investAmount: {
-          isError: isNaN(Number(investAmount)) || Number(investAmount) < 0,
-          value: Number(investAmount),
+          isError:
+            isNaN(Number(investAmount.value)) || Number(investAmount.value) < 0,
+          value: Number(investAmount.value),
         },
         investCompany: {
           isError:
@@ -177,16 +178,33 @@ export const companyFormPresentation: CompanyFormPresentation = {
             .filter((item) => item.trim().length !== 0)
             .join(','),
         },
-        tags: tags,
-        irDeckLink: irDeckLink,
+        tags: {
+          isError: tags.isError,
+          value:
+            tags.value.length !== 0
+              ? tags.value.map((item) => ({ tag: item }))
+              : undefined,
+        },
+        irDeckLink: {
+          isError: irDeckLink.isError,
+          value:
+            irDeckLink.value.trim().length !== 0 ? irDeckLink.value : undefined,
+        },
         landingPageLink: landingPageLink,
         externalDescriptionLink: {
           isError: externalDescriptionLink.isError,
-          value: externalDescriptionLink.value.filter(
-            (item) =>
-              item.link.trim().length !== 0 &&
-              item.description.trim().length !== 0,
-          ),
+          value:
+            externalDescriptionLink.value.filter(
+              (item) =>
+                item.link.trim().length !== 0 &&
+                item.description.trim().length !== 0,
+            ).length !== 0
+              ? externalDescriptionLink.value.filter(
+                  (item) =>
+                    item.link.trim().length !== 0 &&
+                    item.description.trim().length !== 0,
+                )
+              : undefined,
         },
       },
     };

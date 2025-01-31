@@ -49,6 +49,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   } = postDetailData.data;
 
   const investCompanyList = investCompany.split(',');
+  const tagList = tags?.map((item) => item.tag);
 
   return (
     <div className="max-w-screen-md mx-auto gap-12 p-10 flex">
@@ -278,7 +279,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             <section className="space-y-4 border-b-2 pb-10">
               <span className="text-xl font-bold">태그</span>
               <div className="flex flex-wrap gap-2">
-                {tags.map((tag) => (
+                {tagList?.map((tag) => (
                   <Badge
                     key={tag}
                     variant="outline"

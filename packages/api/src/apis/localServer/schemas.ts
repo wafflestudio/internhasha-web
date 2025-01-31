@@ -54,7 +54,7 @@ type PostDTO = {
   landingPageLink?: string;
   imageLink?: string;
   externalDescriptionLink?: Link[];
-  tags?: string[];
+  tags?: { tag: string }[];
 
   // post 정보
   title: string;
@@ -140,7 +140,7 @@ export type ResumeIdParams = {
 
 export type BookmarkPageParams = {
   bookmarkPage?: string;
-}
+};
 
 // Request
 export type PretotypeUserSubmitRequest = {
@@ -211,7 +211,7 @@ export type CreateCompanyRequest = {
   landingPageLink?: string;
   imageLink?: string;
   externalDescriptionLink?: Link[];
-  tags?: string[];
+  tags?: { tag: string }[];
 };
 
 export type CreatePostRequest = {

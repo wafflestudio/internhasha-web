@@ -136,7 +136,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     return { type: 'error', code: data.code, message: data.message };
   },
   createCompany: async ({ token, companyContents }) => {
-    const { status, data } = await apis['POST /curator/company']({
+    const { status, data } = await apis['POST /post/company']({
       token: token,
       body: companyContents,
     });

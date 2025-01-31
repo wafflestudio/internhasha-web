@@ -57,7 +57,7 @@ export type Post = {
   landingPageLink?: string;
   imageLink?: string;
   externalDescriptionLink?: Link[];
-  tags?: string[];
+  tags?: { tag: string }[];
 
   // post 정보
   title: string;
