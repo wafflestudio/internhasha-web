@@ -19,7 +19,6 @@ export const AuthCompanySwitchRoute = ({
 
   try {
     const decoded = jwtDecode<DecodedToken>(token);
-    console.log(decoded);
     if (decoded.role === 'CURATOR') {
       return <>{companyPage}</>;
     }
