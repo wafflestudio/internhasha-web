@@ -1,12 +1,13 @@
+import { useEffect, useRef } from 'react';
+
 import { LabelContainer } from '@/components/input/LabelContainer';
 import {
   FormErrorResponse,
   FormInfoResponse,
 } from '@/components/response/formResponse';
-import { Input } from '@/components/ui/input';
 import type { Input as InputType } from '@/entities/input';
 
-type StringWithLetterCountFieldProps = {
+type SloganFieldProps = {
   label: string;
   input: InputType<string>;
   isPending: boolean;
@@ -19,7 +20,7 @@ type StringWithLetterCountFieldProps = {
   placeholder?: string;
 };
 
-export const StringWithLetterCountField = ({
+export const SloganField = ({
   label,
   input,
   isPending,
@@ -30,12 +31,26 @@ export const StringWithLetterCountField = ({
   required,
   placeholder,
   maxLength,
-}: StringWithLetterCountFieldProps) => {
+}: SloganFieldProps) => {
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  useEffect(() => {
+    if (textareaRef.current !== null) {
+      console.log(textareaRef.current.scrollHeight);
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 내용에 맞춰 자동 조절
+    }
+  }, [input.value]);
+
   return (
     <LabelContainer label={label} required={required}>
-      <Input
-        value={input.value}
+      {/* TODO: 타이핑이 버벅임. */}
+      <textarea
+        ref={textareaRef}
         placeholder={placeholder}
+        className="w-full text-sm min-h-[auto] max-h-[240px] resize-none overflow-hidden border rounded-sm px-[10px] py-[11px] placeholder:text-grey-normal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+        value={input.value}
+        rows={1}
         disabled={isPending}
         onChange={(e) => {
           input.onChange(e.target.value);
