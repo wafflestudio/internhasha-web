@@ -4,26 +4,23 @@ import { useState } from 'react';
 import { MarkdownEditorField } from '@/components/field/MarkdownEditorField';
 import { StringField } from '@/components/field/StringField';
 import { FormContainer } from '@/components/form';
-import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { RewritePostModal } from '@/components/modal/RewritePostModal';
-import {
-  FormErrorResponse,
-  FormInfoResponse,
-} from '@/components/response/formResponse';
+import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import { ICON_SRC } from '@/entities/asset';
 import { createErrorMessage } from '@/entities/errors';
 import type { CreatePostRequest } from '@/entities/post';
-import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
+import type { JobMajorCategory } from '@/entities/post';
 import { JOB_CATEGORY_MAP, JOB_MAJOR_CATEGORIES } from '@/entities/post';
 import { postFormPresentation } from '@/feature/post/presentation/postFormPresentation';
 import {
   CONTENT_MAX_LENGTH,
   postInputPresentation,
 } from '@/feature/post/presentation/postInputPresentation';
+import { EmploymentEndDateField } from '@/feature/post/ui/field/EmploymentEndDateField';
+import { HeadcountField } from '@/feature/post/ui/field/HeadcountField';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -31,7 +28,9 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatMajorJobToLabel, formatMinorJobToLabel } from '@/util/format';
 
 export const CreatePostForm = ({ companyId }: { companyId: string }) => {
-  const [showCalendar, setShowCalendar] = useState(false);
+  const [showFilter, setShowFilter] = useState<
+    'NONE' | 'CALENDAR' | 'CATEGORY'
+  >('NONE');
   const [isSubmit, setIsSubmit] = useState(false);
   const [showModal, setShowModal] = useState<'NONE' | 'CANCEL' | 'NEXT'>(
     'NONE',
@@ -103,81 +102,103 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           input={title}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={title.isError}
+          isSubmitError={formStates.title.isError}
           placeholder="모집 직무 이름을 구체적으로 작성해주세요. (e.g. React 프론트엔드 개발자)"
           errorMessage="공고명은 500자 이내로 작성해주세요."
           required={true}
         />
-        <div>
-          <LabelContainer label="직무 유형" id="job">
-            <div>
-              <div>
-                <select
-                  value={jobMajorCategory.value}
-                  disabled={isPending}
-                  onChange={(e) => {
-                    jobMajorCategory.onChange(
-                      e.target.value as JobMajorCategory,
-                    );
-                  }}
+        <div className="flex w-full gap-2">
+          <div className="flex-1">
+            <LabelContainer label="직무 유형" id="job" required>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (showFilter !== 'CATEGORY') {
+                    setShowFilter('CATEGORY');
+                    return;
+                  }
+                  setShowFilter('NONE');
+                }}
+                variant="outline"
+                className="w-full justify-between"
+              >
+                {jobMinorCategory.value !== 'NONE'
+                  ? formatMinorJobToLabel(jobMinorCategory.value)
+                  : '직무를 선택해주세요.'}
+                <img
+                  src={ICON_SRC.ARROW}
+                  className={`${showFilter === 'CATEGORY' ? 'rotate-180' : 'rotate-0'} transition-rotate ease-in-out duration-300`}
+                />
+              </Button>
+              <section className="relative">
+                <div
+                  className={`absolute left-0 top-0 flex gap-2 w-[364px] z-50 rounded-lg bg-white shadow-lg overflow-hidden transition-all duration-300 ${
+                    showFilter === 'CATEGORY'
+                      ? 'opacity-100 scale-100'
+                      : 'opacity-0 pointer-events-none'
+                  }`}
                 >
-                  {JOB_MAJOR_CATEGORIES.map((category) => {
-                    const label = formatMajorJobToLabel(category);
+                  <div className="flex flex-col gap-2 w-[162px] px-2 border-r">
+                    {JOB_MAJOR_CATEGORIES.map((category) => {
+                      const label = formatMajorJobToLabel(category);
 
-                    if (label === null) return null;
+                      if (label === null) return null;
 
-                    return (
-                      <option
-                        key={`major-category-${category}`}
-                        value={category}
-                      >
-                        {formatMajorJobToLabel(category)}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-              <div>
-                <select
-                  value={jobMinorCategory.value}
-                  disabled={isPending}
-                  onChange={(e) => {
-                    jobMinorCategory.onChange(
-                      e.target.value as JobMinorCategory,
-                    );
-                  }}
-                >
-                  <option value="NONE" selected disabled hidden></option>
-                  {JOB_CATEGORY_MAP[jobMajorCategory.value].map(
-                    (subCategory) => (
-                      <option
-                        key={`sub-category-${subCategory}`}
-                        value={subCategory}
-                      >
-                        {formatMinorJobToLabel(subCategory)}
-                      </option>
-                    ),
-                  )}
-                </select>
-              </div>
-            </div>
-            {isSubmit && jobMinorCategory.isError && (
-              <p>직무를 선택해주세요.</p>
-            )}
-          </LabelContainer>
-          <LabelContainer label="모집 인원" id="headcount">
-            <TextInput
-              value={headcount.value}
-              disabled={isPending}
-              onChange={(e) => {
-                headcount.onChange(e.target.value);
-              }}
+                      return (
+                        <Button
+                          variant="ghost"
+                          key={`major-category-${category}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            jobMajorCategory.onChange(
+                              category as JobMajorCategory,
+                            );
+                          }}
+                          className={`text-grey-darker justify-start ${jobMajorCategory.value === category ? 'bg-grey-light font-bold' : ''}`}
+                        >
+                          {formatMajorJobToLabel(category)}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                  <div className="flex flex-col gap-2 w-[202px]">
+                    {JOB_CATEGORY_MAP[jobMajorCategory.value].map(
+                      (subCategory) => (
+                        <Button
+                          variant="ghost"
+                          key={`sub-category-${subCategory}`}
+                          value={subCategory}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            jobMinorCategory.onChange(subCategory);
+                          }}
+                          className={`text-grey-darker justify-start ${jobMinorCategory.value === subCategory ? 'bg-grey-light font-bold' : ''}`}
+                        >
+                          {formatMinorJobToLabel(subCategory)}
+                        </Button>
+                      ),
+                    )}
+                  </div>
+                </div>
+              </section>
+              {isSubmit && jobMinorCategory.isError && (
+                <p>직무를 선택해주세요.</p>
+              )}
+            </LabelContainer>
+          </div>
+          <div className="flex-2">
+            <HeadcountField
+              label="모집 인원"
+              input={headcount}
+              unit="명"
+              isPending={isPending}
+              isSubmit={isSubmit}
+              isSubmitError={formStates.headcount.isError}
+              errorMessage={'모집 인원은 0 또는 양의 정수여야 합니다.'}
               placeholder="모집 인원 수"
+              required={true}
             />
-            {isSubmit && formStates.headcount.isError && (
-              <p>모집 인원은 0 또는 양의 정수여야 합니다.</p>
-            )}
-          </LabelContainer>
+          </div>
         </div>
         <MarkdownEditorField
           label="상세 공고 글"
@@ -185,69 +206,31 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           maxLength={CONTENT_MAX_LENGTH}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={detail.isError}
+          isSubmitError={formStates.detail.isError}
           errorMessage={`공고 글은 ${CONTENT_MAX_LENGTH}자 이내로 작성해주세요.`}
           required={true}
         />
-        <LabelContainer label="채용 마감일" id="employmentEndDate">
-          <div className="relative">
-            <div
-              className={`absolute left-0 bottom-0 mt-2 w-[340px] rounded-lg bg-white shadow-lg overflow-hidden transition-all duration-300 ${
-                showCalendar
-                  ? 'opacity-100 scale-100'
-                  : 'opacity-0 pointer-events-none'
-              }`}
-            >
-              <Calendar
-                mode="single"
-                selected={new Date(employmentEndDate.value)}
-                onSelect={(input: Date | undefined) => {
-                  employmentEndDate.onChange(
-                    input !== undefined
-                      ? new Date(input)
-                          .toLocaleDateString('ko-KR', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                          })
-                          .replace(/\. /g, '-')
-                          .replace('.', '')
-                      : '',
-                  );
-                }}
-              />
-            </div>
-          </div>
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              setShowCalendar(!showCalendar);
-            }}
-            variant="outline"
-            className="w-full justify-start"
-          >
-            {employmentEndDate.value !== ''
-              ? new Date(employmentEndDate.value)
-                  .toLocaleDateString('ko-KR', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                  })
-                  .replace(/\. /g, '-')
-                  .replace('.', '')
-              : '모집 마감일을 선택해주세요.'}
-            <img src={ICON_SRC.CALENDAR} />
-          </Button>
-          <FormInfoResponse>
-            채용 마감일을 설정하지 않으면 {"'"}상시{"'"} 상태로 등록돼요.
-          </FormInfoResponse>
-          {isSubmit && formStates.employmentEndDateTime.isError && (
-            <p>올바른 채용 마감일을 선택해주세요.</p>
-          )}
-          {responseMessage !== '' && (
-            <FormErrorResponse>{responseMessage}</FormErrorResponse>
-          )}
-        </LabelContainer>
+        <EmploymentEndDateField
+          label="채용 마감일"
+          showFilter={showFilter}
+          onClick={() => {
+            if (showFilter !== 'CALENDAR') {
+              setShowFilter('CALENDAR');
+              return;
+            }
+            setShowFilter('NONE');
+          }}
+          input={employmentEndDate}
+          isPending={isPending}
+          isSubmit={isSubmit}
+          isSubmitError={formStates.employmentEndDateTime.isError}
+          infoMessage={`채용 마감일을 설정하지 않으면 '상시' 상태로 등록돼요.`}
+          errorMessage="올바른 채용 마감일을 선택해주세요."
+          required={true}
+        />
+        {responseMessage !== '' && (
+          <FormErrorResponse>{responseMessage}</FormErrorResponse>
+        )}
         <div className="flex gap-2">
           <Button
             variant="secondary"
