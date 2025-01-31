@@ -173,7 +173,13 @@ export const companyFormPresentation: CompanyFormPresentation = {
               ? tags.value.map((item) => ({ tag: item }))
               : undefined,
         },
-        landingPageLink: landingPageLink,
+        landingPageLink: {
+          isError: landingPageLink.isError,
+          value:
+            landingPageLink.value.trim().length !== 0
+              ? landingPageLink.value
+              : undefined,
+        },
         externalDescriptionLink: {
           isError: externalDescriptionLink.isError,
           value:
