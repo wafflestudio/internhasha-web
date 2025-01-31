@@ -47,10 +47,8 @@ type CompanyFormPresentation = {
       investCompany: ListInput<string>;
       series: SelectInput<Series | 'NONE'>;
       irDeckPreview: Input<{ file: File; url: string } | null>;
-      irDeckLink: Input<string>;
       landingPageLink: Input<string>;
       imagePreview: Input<{ file: File; url: string } | null>;
-      imageLink: Input<string>;
       rawExternalDescriptionLink: Input<ExternalLink>;
       externalDescriptionLink: ListInput<ExternalLink>;
       rawTag: Input<string>;
@@ -64,9 +62,7 @@ type CompanyFormPresentation = {
       investAmount: InputForForm<number>;
       investCompany: InputForForm<string>;
       series: InputForForm<Series | 'NONE'>;
-      irDeckLink: InputForForm<string | undefined>;
       landingPageLink: InputForForm<string | undefined>;
-      imageLink: InputForForm<string>;
       externalDescriptionLink: InputForForm<ExternalLink[] | undefined>;
       tags: InputForForm<{ tag: string }[] | undefined>;
     };
@@ -103,10 +99,8 @@ export const companyFormPresentation: CompanyFormPresentation = {
       investCompany,
       series,
       irDeckPreview,
-      irDeckLink,
       landingPageLink,
       imagePreview,
-      imageLink,
       rawExternalDescriptionLink,
       externalDescriptionLink,
       rawTag,
@@ -131,10 +125,8 @@ export const companyFormPresentation: CompanyFormPresentation = {
         investCompany,
         series,
         irDeckPreview,
-        irDeckLink,
         landingPageLink,
         imagePreview,
-        imageLink,
         rawExternalDescriptionLink,
         externalDescriptionLink,
         rawTag,
@@ -156,10 +148,6 @@ export const companyFormPresentation: CompanyFormPresentation = {
         slogan: {
           isError: slogan.isError || slogan.value.trim().length === 0,
           value: slogan.value,
-        },
-        imageLink: {
-          isError: imageLink.isError || imageLink.value.trim().length === 0,
-          value: imageLink.value,
         },
         series: {
           isError: series.isError || series.value === 'NONE',
@@ -184,11 +172,6 @@ export const companyFormPresentation: CompanyFormPresentation = {
             tags.value.length !== 0
               ? tags.value.map((item) => ({ tag: item }))
               : undefined,
-        },
-        irDeckLink: {
-          isError: irDeckLink.isError,
-          value:
-            irDeckLink.value.trim().length !== 0 ? irDeckLink.value : undefined,
         },
         landingPageLink: landingPageLink,
         externalDescriptionLink: {

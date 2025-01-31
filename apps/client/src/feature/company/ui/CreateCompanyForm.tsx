@@ -174,7 +174,7 @@ export const CreateCompanyForm = () => {
           input={imagePreview}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={formStates.imageLink.isError}
+          isSubmitError={imagePreview.isError}
           errorMessage="1MB 이하의 이미지 파일을 올려주세요."
           infoMessage="회사 썸네일 이미지는 정사각형 비율(1:1)로 보여져요."
           required={true}
@@ -229,7 +229,7 @@ export const CreateCompanyForm = () => {
           input={irDeckPreview}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={formStates.irDeckLink.isError}
+          isSubmitError={irDeckPreview.isError}
           errorMessage="5MB 이하의 PDF 파일을 올려주세요."
         />
         <StringField

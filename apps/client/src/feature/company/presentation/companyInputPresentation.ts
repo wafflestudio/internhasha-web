@@ -36,10 +36,8 @@ export type CompanyInputPresentation = {
     investCompany: ListInput<string>;
     series: SelectInput<Series | 'NONE'>;
     irDeckPreview: Input<{ file: File; url: string } | null>;
-    irDeckLink: Input<string>;
     landingPageLink: Input<string>;
     imagePreview: Input<{ file: File; url: string } | null>;
-    imageLink: Input<string>;
     rawExternalDescriptionLink: Input<ExternalLink>;
     externalDescriptionLink: ListInput<ExternalLink>;
     rawTag: Input<string>;
@@ -110,9 +108,6 @@ export const companyInputPresentation: CompanyInputPresentation = {
         ? initialState.irDeckPreview
         : null,
     );
-    const [irDeckLink, setIrDeckLink] = useState(
-      initialState?.irDeckLink !== undefined ? initialState.irDeckLink : '',
-    );
     const [landingPageLink, setLandingPageLink] = useState(
       initialState?.landingPageLink !== undefined
         ? initialState.landingPageLink
@@ -125,9 +120,6 @@ export const companyInputPresentation: CompanyInputPresentation = {
       initialState?.imagePreview !== undefined
         ? initialState.imagePreview
         : null,
-    );
-    const [imageLink, setImageLink] = useState(
-      initialState?.imageLink !== undefined ? initialState.imageLink : '',
     );
     const [rawExternalDescriptionLink, setRawExternalDescriptionLink] =
       useState<ExternalLink>({ link: '', description: '' });
@@ -449,11 +441,6 @@ export const companyInputPresentation: CompanyInputPresentation = {
         value: irDeckPreview,
         onChange: setIrDeckPreview,
       },
-      irDeckLink: {
-        isError: false,
-        value: irDeckLink,
-        onChange: setIrDeckLink,
-      },
       landingPageLink: {
         isError:
           landingPageLink.trim().length !== 0 &&
@@ -465,11 +452,6 @@ export const companyInputPresentation: CompanyInputPresentation = {
         isError: !isImagePreviewValid(imagePreview),
         value: imagePreview,
         onChange: setImagePreview,
-      },
-      imageLink: {
-        isError: imageLink.trim().length === 0,
-        value: imageLink,
-        onChange: setImageLink,
       },
       rawExternalDescriptionLink: {
         isError: !isRawExternalDescriptionLinkValid(rawExternalDescriptionLink),
