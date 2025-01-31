@@ -58,6 +58,7 @@ export const ImageField = ({
               }
               removeImage();
             }}
+            className="absolute top-[-10px] right-[-10px]"
           />
         </div>
       ) : (
