@@ -1,4 +1,4 @@
-import { ICON_SRC } from "@/entities/asset";
+import { ICON_SRC } from '@/entities/asset';
 
 export const CancelButton = ({ onClick }: { onClick(): void }) => {
   return (
