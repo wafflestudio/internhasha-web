@@ -27,6 +27,7 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatMajorJobToLabel, formatMinorJobToLabel } from '@/util/format';
 
 export const CreatePostForm = ({ companyId }: { companyId: string }) => {
+  const [showCalendar, setShowCalendar] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [showModal, setShowModal] = useState<'NONE' | 'CANCEL' | 'NEXT'>(
     'NONE',
@@ -185,16 +186,45 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           required={true}
         />
         <LabelContainer label="채용 마감일" id="employmentEndDate">
-          <Calendar
-            mode="single"
-            selected={new Date(employmentEndDate.value)}
-            onSelect={(input: Date | undefined) => {
-              console.log(input);
-              employmentEndDate.onChange(
-                input !== undefined ? input.toISOString() : '',
-              );
+          <div className="relative">
+            <div
+              className={`absolute left-0 bottom-0 mt-2 w-[340px] rounded-lg bg-white shadow-lg overflow-hidden transition-all duration-300 ${
+                showCalendar
+                  ? 'opacity-100 scale-100'
+                  : 'opacity-0 pointer-events-none'
+              }`}
+            >
+              <Calendar
+                mode="single"
+                selected={new Date(employmentEndDate.value)}
+                onSelect={(input: Date | undefined) => {
+                  console.log(input);
+                  employmentEndDate.onChange(
+                    input !== undefined ? input.toISOString() : '',
+                  );
+                }}
+              />
+            </div>
+          </div>
+          <Button
+            onClick={() => {
+              setShowCalendar(!showCalendar);
             }}
-          />
+            variant="outline"
+            className="w-full justify-start"
+          >
+            {employmentEndDate.value !== ''
+              ? new Date(employmentEndDate.value)
+                  .toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                  })
+                  .replace(/\. /g, '-')
+                  .replace('.', '')
+              : '모집 마감일을 선택해주세요.'}
+          </Button>
+
           <input
             id="employmentEndDate"
             type="date"
