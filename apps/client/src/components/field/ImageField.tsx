@@ -1,3 +1,4 @@
+import { CancelButton } from '@/components/button/CancelButton';
 import { LabelContainer } from '@/components/input/LabelContainer';
 import {
   FormErrorResponse,
@@ -50,17 +51,14 @@ export const ImageField = ({
             alt="썸네일"
             className="w-full h-full object-cover rounded-md"
           />
-          <div
+          <CancelButton
             onClick={() => {
               if (isPending) {
                 return;
               }
               removeImage();
             }}
-            className="absolute top-[-10px] right-[-10px] flex justify-center items-center w-[20px] h-[20px] bg-grey-normal text-white rounded-full p-1 text-xs hover:bg-grey-normal-hover transition"
-          >
-            <img src={ICON_SRC.CLOSE.WHITE} />
-          </div>
+          />
         </div>
       ) : (
         <label
