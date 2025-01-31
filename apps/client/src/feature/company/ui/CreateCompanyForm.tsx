@@ -127,7 +127,7 @@ export const CreateCompanyForm = () => {
     ) {
       return;
     }
-    console.log(imagePreview);
+
     // TODO: 불가능한 타입이지만 isError를 사용할 시 타입스크립트가 인식하지 못함.
     if (!imagePreview.isError && imagePreview.value !== null) {
       uploadImage({

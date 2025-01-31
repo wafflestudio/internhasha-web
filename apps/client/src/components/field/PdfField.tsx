@@ -49,7 +49,6 @@ export const PdfField = ({
 
   const showError = (!isSubmit && input.isError) || (isSubmit && isSubmitError);
 
-  console.log(input);
   return (
     <LabelContainer label={label} required={required}>
       {input.value !== null ? (
