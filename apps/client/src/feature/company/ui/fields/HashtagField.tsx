@@ -37,22 +37,24 @@ export const HashtagField = ({
   return (
     <LabelContainer label={label} required={required}>
       {/* TODO: Input 안에 해시태그 넣기*/}
-      <div className="w-full p-2 rounded-lg flex flex-wrap gap-2 bg-white">
-        {input.value.map((tag, index) => (
-          <div
-            key={`tag-${tag}`}
-            className="inline-flex items-center gap-1 bg-grey-light-active px-2 py-1 rounded-md"
-          >
-            <span className="text-sm">{tag}</span>
-            <CancelButton
-              onClick={() => {
-                input.onChange({ input: tag, index, mode: 'REMOVE' });
-              }}
-              className="w-4 h-4"
-            />
-          </div>
-        ))}
-      </div>
+      {input.value.length !== 0 && (
+        <div className="w-full p-2 rounded-lg flex flex-wrap gap-2 bg-white">
+          {input.value.map((tag, index) => (
+            <div
+              key={`tag-${tag}`}
+              className="inline-flex items-center gap-1 bg-grey-light-active px-2 py-1 rounded-md"
+            >
+              <span className="text-sm">{tag}</span>
+              <CancelButton
+                onClick={() => {
+                  input.onChange({ input: tag, index, mode: 'REMOVE' });
+                }}
+                className="w-4 h-4"
+              />
+            </div>
+          ))}
+        </div>
+      )}
       <Input
         value={rawInput.value}
         placeholder={placeholder}
