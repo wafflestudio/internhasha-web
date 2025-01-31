@@ -72,13 +72,14 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
       return;
     }
     createPost({
+      companyId: companyId,
       post: {
-        companyId: companyId,
         title: formStates.title.value,
         employmentEndDate: formStates.employmentEndDateTime.value,
         category: formStates.job.value,
         headcount: formStates.headcount.value,
         detail: formStates.detail.value,
+        isActive: true,
       },
     });
   };
@@ -289,11 +290,17 @@ const useCreatePost = ({
   const { token } = useGuardContext(TokenContext);
 
   const { mutate: createPost, isPending } = useMutation({
-    mutationFn: ({ post }: { post: CreatePostRequest }) => {
+    mutationFn: ({
+      companyId,
+      post,
+    }: {
+      companyId: string;
+      post: CreatePostRequest;
+    }) => {
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return postService.createPost({ token, postContents: post });
+      return postService.createPost({ token, companyId, postContents: post });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {

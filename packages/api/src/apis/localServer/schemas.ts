@@ -138,6 +138,10 @@ export type ResumeIdParams = {
   resumeId: string;
 };
 
+export type CompanyIdParams = {
+  companyId: string;
+};
+
 export type BookmarkPageParams = {
   bookmarkPage?: string;
 };
@@ -215,12 +219,12 @@ export type CreateCompanyRequest = {
 };
 
 export type CreatePostRequest = {
-  companyId: string;
   title: string;
   employmentEndDate?: string;
   category: JobCategory;
   detail: string;
   headcount: number;
+  isActive: boolean;
 };
 
 // Response
