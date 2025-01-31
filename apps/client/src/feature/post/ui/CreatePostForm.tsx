@@ -8,9 +8,13 @@ import { TextInput } from '@/components/input';
 import { LabelContainer } from '@/components/input/LabelContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { RewritePostModal } from '@/components/modal/RewritePostModal';
-import { FormErrorResponse } from '@/components/response/formResponse';
+import {
+  FormErrorResponse,
+  FormInfoResponse,
+} from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
+import { ICON_SRC } from '@/entities/asset';
 import { createErrorMessage } from '@/entities/errors';
 import type { CreatePostRequest } from '@/entities/post';
 import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
@@ -232,17 +236,11 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
                   .replace(/\. /g, '-')
                   .replace('.', '')
               : '모집 마감일을 선택해주세요.'}
+            <img src={ICON_SRC.CALENDAR} />
           </Button>
-
-          <input
-            id="employmentEndDate"
-            type="date"
-            value={employmentEndDate.value}
-            disabled={isPending}
-            onChange={(e) => {
-              employmentEndDate.onChange(e.target.value);
-            }}
-          />
+          <FormInfoResponse>
+            채용 마감일을 설정하지 않으면 {"'"}상시{"'"} 상태로 등록돼요.
+          </FormInfoResponse>
           {isSubmit && formStates.employmentEndDateTime.isError && (
             <p>올바른 채용 마감일을 선택해주세요.</p>
           )}
