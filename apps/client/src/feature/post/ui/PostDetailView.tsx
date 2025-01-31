@@ -65,7 +65,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             <span className="text-gray-900 text-2xl">{companyName}</span>
           </div>
           {/* TODO title 데이터 들어오면 '타이틀' 없애기*/}
-          <span className="text-black text-4xl font-bold">{title} 타이틀</span>
+          <span className="text-black text-4xl font-bold">{title}</span>
         </div>
 
         {/* 회사 소개 */}

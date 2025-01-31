@@ -286,11 +286,7 @@ export const CreateCompanyForm = () => {
           errorMessage="https로 시작하는 홈페이지 링크를 입력해주세요."
         />
         <ExternalLinkField
-          label={{
-            main: '외부 소개 링크',
-            description: '제목',
-            link: '링크',
-          }}
+          label="외부 소개 링크"
           input={externalDescriptionLink}
           rawInput={rawExternalDescriptionLink}
           isPending={isPending}
