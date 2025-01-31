@@ -19,7 +19,7 @@ export const getEmploymentStatus = (employmentEndDate: string): string => {
   return daysLeft >= 0 ? (daysLeft === 0 ? 'D-day' : `D-${daysLeft}`) : '마감';
 };
 
-export const formatSeriesBadge = (input: Series) => {
+export const formatSeries = (input: Series) => {
   if (input === 'SEED') {
     return 'Seed';
   }

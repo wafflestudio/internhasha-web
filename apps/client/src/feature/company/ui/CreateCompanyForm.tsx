@@ -29,7 +29,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { formatSeriesBadge } from '@/util/postFormatFunctions';
+import { formatSeries } from '@/util/postFormatFunctions';
 
 export const CreateCompanyForm = () => {
   const [isSubmit, setIsSubmit] = useState(false);
@@ -226,7 +226,7 @@ export const CreateCompanyForm = () => {
           label="투자 단계"
           input={series}
           inputList={seriesList as Series[]}
-          formatter={formatSeriesBadge}
+          formatter={formatSeries}
           isPending={isPending}
           isSubmit={isSubmit}
           isSubmitError={formStates.series.isError}

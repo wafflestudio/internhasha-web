@@ -7,7 +7,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import {
-  formatSeriesBadge,
+  formatSeries,
   getEmploymentStatus,
 } from '@/util/postFormatFunctions.ts';
 
@@ -116,9 +116,7 @@ export const PostCard = ({
         {/* 시리즈 및 투자 정보 */}
         <div className="flex w-full justify-between py-1 gap-3">
           <div className="flex items-center gap-2">
-            <SeriesBadge variant={series}>
-              {formatSeriesBadge(series)}
-            </SeriesBadge>
+            <SeriesBadge variant={series}>{formatSeries(series)}</SeriesBadge>
             {investAmount != null && (
               <SeriesBadge>
                 투자 누적 {investAmount.toLocaleString()}억
