@@ -89,8 +89,13 @@ export type CreateCompanyRequest = Pick<
 
 export type CreatePostRequest = Pick<
   Post,
-  'title' | 'employmentEndDate' | 'category' | 'detail' | 'headcount'
-> & { companyId: string };
+  | 'title'
+  | 'employmentEndDate'
+  | 'category'
+  | 'detail'
+  | 'headcount'
+  | 'isActive'
+>;
 
 export type BriefPost = Omit<
   Post,

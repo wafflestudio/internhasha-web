@@ -45,9 +45,11 @@ export type PostService = {
   }): ServiceResponse<void>;
   createPost({
     token,
+    companyId,
     postContents,
   }: {
     token: string;
+    companyId: string;
     postContents: CreatePostRequest;
   }): ServiceResponse<void>;
   addBookmark({
@@ -150,9 +152,13 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     return { type: 'error', code: data.code, message: data.message };
   },
 
-  createPost: async ({ token, postContents }) => {
-    const { status, data } = await apis['POST /curator/post']({
+  createPost: async ({ token, companyId, postContents }) => {
+    const params = { companyId };
+    const { status, data } = await apis[
+      'POST /post/company/:companyId/position'
+    ]({
       token: token,
+      params,
       body: postContents,
     });
 

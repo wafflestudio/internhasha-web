@@ -26,7 +26,6 @@ type PostFormPresentation = {
       headcount: Input<string>;
       detail: Input<string>;
       employmentEndDate: Input<string>;
-      employmentEndTime: Input<string>;
     };
     formStates: {
       title: InputForForm<string>;
@@ -66,7 +65,6 @@ export const postFormPresentation: PostFormPresentation = {
           : undefined,
       detail: initialState?.detail,
       employmentEndDate: initialState?.employmentEndDateTime,
-      employmentEndTime: initialState?.employmentEndDateTime,
     };
 
     const {
@@ -76,15 +74,13 @@ export const postFormPresentation: PostFormPresentation = {
       headcount,
       detail,
       employmentEndDate,
-      employmentEndTime,
     } = postInputPresentation.useValidator({
       initialState: initialStateForInput,
     });
 
     const employmentEndDateTime =
-      employmentEndDate.value.trim().length !== 0 &&
-      employmentEndTime.value.trim().length !== 0
-        ? `${employmentEndDate.value}T${employmentEndTime.value}:00`
+      employmentEndDate.value.trim().length !== 0
+        ? `${employmentEndDate.value}T23:59:59`
         : '';
 
     return {
@@ -95,7 +91,6 @@ export const postFormPresentation: PostFormPresentation = {
         headcount,
         detail,
         employmentEndDate,
-        employmentEndTime,
       },
       formStates: {
         title: {
@@ -118,7 +113,6 @@ export const postFormPresentation: PostFormPresentation = {
         employmentEndDateTime: {
           isError:
             employmentEndDate.isError ||
-            employmentEndTime.isError ||
             (employmentEndDateTime !== '' &&
               !DATE_TIME_REGEX.test(employmentEndDateTime)),
           value: employmentEndDateTime,

@@ -11,7 +11,6 @@ type InitialState = {
   headcount?: string;
   detail?: string;
   employmentEndDate?: string;
-  employmentEndTime?: string;
 };
 
 export type PostInputPresentation = {
@@ -22,7 +21,6 @@ export type PostInputPresentation = {
     headcount: Input<string>;
     detail: Input<string>;
     employmentEndDate: Input<string>;
-    employmentEndTime: Input<string>;
   };
 };
 
@@ -30,7 +28,6 @@ const TITLE_MAX_LENGTH = 500;
 export const CONTENT_MAX_LENGTH = 10000;
 const HEADCOUNT_REGEX = /^\s*$|^[0-9]+$/;
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
-const TIME_REGEX = /^\d{2}:\d{2}$/;
 
 export const postInputPresentation: PostInputPresentation = {
   useValidator: ({ initialState }) => {
@@ -60,11 +57,6 @@ export const postInputPresentation: PostInputPresentation = {
     const [employmentEndDate, setEmploymentEndDate] = useState(
       initialState?.employmentEndDate !== undefined
         ? initialState.employmentEndDate
-        : '',
-    );
-    const [employmentEndTime, setEmploymentEndTime] = useState(
-      initialState?.employmentEndTime !== undefined
-        ? initialState.employmentEndTime
         : '',
     );
 
@@ -115,13 +107,6 @@ export const postInputPresentation: PostInputPresentation = {
           !DATE_REGEX.test(employmentEndDate),
         value: employmentEndDate,
         onChange: setEmploymentEndDate,
-      },
-      employmentEndTime: {
-        isError:
-          employmentEndTime.trim().length !== 0 &&
-          !TIME_REGEX.test(employmentEndTime),
-        value: employmentEndTime,
-        onChange: setEmploymentEndTime,
       },
     };
   },

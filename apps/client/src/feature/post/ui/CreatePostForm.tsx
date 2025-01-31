@@ -53,7 +53,6 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
     jobMinorCategory,
     headcount,
     detail,
-    employmentEndTime,
     employmentEndDate,
   } = inputStates;
 
@@ -72,13 +71,14 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
       return;
     }
     createPost({
+      companyId: companyId,
       post: {
-        companyId: companyId,
         title: formStates.title.value,
         employmentEndDate: formStates.employmentEndDateTime.value,
         category: formStates.job.value,
         headcount: formStates.headcount.value,
         detail: formStates.detail.value,
+        isActive: true,
       },
     });
   };
@@ -199,14 +199,24 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
                 selected={new Date(employmentEndDate.value)}
                 onSelect={(input: Date | undefined) => {
                   employmentEndDate.onChange(
-                    input !== undefined ? input.toISOString() : '',
+                    input !== undefined
+                      ? new Date(input)
+                          .toLocaleDateString('ko-KR', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                          })
+                          .replace(/\. /g, '-')
+                          .replace('.', '')
+                      : '',
                   );
                 }}
               />
             </div>
           </div>
           <Button
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
               setShowCalendar(!showCalendar);
             }}
             variant="outline"
@@ -231,15 +241,6 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
             disabled={isPending}
             onChange={(e) => {
               employmentEndDate.onChange(e.target.value);
-            }}
-          />
-          <input
-            id="employmentEndTime"
-            type="time"
-            value={employmentEndTime.value}
-            disabled={isPending}
-            onChange={(e) => {
-              employmentEndTime.onChange(e.target.value);
             }}
           />
           {isSubmit && formStates.employmentEndDateTime.isError && (
@@ -289,11 +290,17 @@ const useCreatePost = ({
   const { token } = useGuardContext(TokenContext);
 
   const { mutate: createPost, isPending } = useMutation({
-    mutationFn: ({ post }: { post: CreatePostRequest }) => {
+    mutationFn: ({
+      companyId,
+      post,
+    }: {
+      companyId: string;
+      post: CreatePostRequest;
+    }) => {
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return postService.createPost({ token, postContents: post });
+      return postService.createPost({ token, companyId, postContents: post });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {

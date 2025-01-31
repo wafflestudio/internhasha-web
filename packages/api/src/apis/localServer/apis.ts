@@ -7,6 +7,7 @@ import type {
 import type {
   AccessTokenRequest,
   BookmarkPageParams,
+  CompanyIdParams,
   CreateAndUpdatePostRequest,
   CreateCompanyRequest,
   CreatePostRequest,
@@ -303,16 +304,18 @@ export const getLocalServerApis = ({
         body,
       });
     },
-    "POST /curator/post": ({
+    "POST /post/company/:companyId/position": ({
       token,
+      params,
       body,
     }: {
       token: string;
+      params: CompanyIdParams;
       body: CreatePostRequest;
     }) => {
       return callWithToken<SuccessResponse<void>>({
         method: "POST",
-        path: "curator/post",
+        path: `post/company/${params.companyId}/position`,
         token,
         body,
       });
