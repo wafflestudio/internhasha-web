@@ -3,7 +3,7 @@ import {
   FormErrorResponse,
   FormInfoResponse,
 } from '@/components/response/formResponse';
-import { Button } from '@/components/ui/button';
+import { ICON_SRC } from '@/entities/asset';
 import type { Input as InputType } from '@/entities/input';
 
 type ImageFieldProps = {
@@ -45,14 +45,40 @@ export const ImageField = ({
     <LabelContainer label={label} required={required}>
       {input.value !== null && !input.isError ? (
         <div>
-          <img src={input.value.url} alt="썸네일" />
-          <Button onClick={removeImage} disabled={isPending}>
+          <div className="relative w-[100px] h-[100px] border border-grey-light-hover rounded-md">
+            <img
+              src={input.value.url}
+              alt="썸네일"
+              className="w-full h-full object-cover rounded-md"
+            />
+            <div
+              onClick={() => {
+                if (isPending) {
+                  return;
+                }
+                removeImage();
+              }}
+              className="absolute top-[-10px] right-[-10px] flex justify-center items-center w-[20px] h-[20px] bg-grey-normal text-white rounded-full p-1 text-xs hover:bg-grey-normal-hover transition"
+            >
+              <img src={ICON_SRC.CLOSE.WHITE} />
+            </div>
+          </div>
+
+          {/* <Button
+            
+            disabled={isPending}
+            className="absolute top-10 right-10 w-[20px] h-[20px] bg-grey-normal text-white rounded-full p-1 text-xs hover:bg-grey-normal-active transition"
+          >
             삭제
-          </Button>
+          </Button> */}
         </div>
       ) : (
-        <label htmlFor="fileInput">
-          <span>이미지 등록</span>
+        <label
+          htmlFor="fileInput"
+          className="flex flex-col gap-1 justify-center items-center w-[100px] h-[100px] bg-grey-light-hover rounded-md"
+        >
+          <img src={ICON_SRC.CAMERA} />
+          <span className="text-grey-normal-hover text-xs">이미지 등록</span>
         </label>
       )}
       <input
