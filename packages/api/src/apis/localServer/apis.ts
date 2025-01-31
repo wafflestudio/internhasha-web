@@ -136,10 +136,17 @@ export const getLocalServerApis = ({
         path: "user/me",
         token,
       }),
-    "GET /post": ({ params }: { params: PostPathParams }) =>
-      callWithoutToken<SuccessResponse<PostsResponse>>({
+    "GET /post": ({
+      params,
+      token,
+    }: {
+      params: PostPathParams;
+      token?: string;
+    }) =>
+      callWithOptionalToken<SuccessResponse<PostsResponse>>({
         method: "GET",
         path: `post?${params.postPath}`,
+        token,
       }),
     "GET /post/:postId": ({
       token,
