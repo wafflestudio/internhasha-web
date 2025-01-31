@@ -16,7 +16,6 @@ type PdfFieldProps = {
   isSubmit: boolean;
   isSubmitError: boolean;
   errorMessage: string;
-  responseErrorMessage?: string;
   infoMessage?: string;
   required?: boolean;
 };
@@ -28,7 +27,6 @@ export const PdfField = ({
   isSubmit,
   isSubmitError,
   errorMessage,
-  responseErrorMessage,
   infoMessage,
   required,
 }: PdfFieldProps) => {
@@ -89,7 +87,6 @@ export const PdfField = ({
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
         )}
         {showError && <FormErrorResponse>{errorMessage}</FormErrorResponse>}
-        {responseErrorMessage !== '' && <p>{responseErrorMessage}</p>}
       </div>
     </LabelContainer>
   );
