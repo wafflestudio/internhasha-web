@@ -44,33 +44,23 @@ export const ImageField = ({
   return (
     <LabelContainer label={label} required={required}>
       {input.value !== null && !input.isError ? (
-        <div>
-          <div className="relative w-[100px] h-[100px] border border-grey-light-hover rounded-md">
-            <img
-              src={input.value.url}
-              alt="썸네일"
-              className="w-full h-full object-cover rounded-md"
-            />
-            <div
-              onClick={() => {
-                if (isPending) {
-                  return;
-                }
-                removeImage();
-              }}
-              className="absolute top-[-10px] right-[-10px] flex justify-center items-center w-[20px] h-[20px] bg-grey-normal text-white rounded-full p-1 text-xs hover:bg-grey-normal-hover transition"
-            >
-              <img src={ICON_SRC.CLOSE.WHITE} />
-            </div>
-          </div>
-
-          {/* <Button
-            
-            disabled={isPending}
-            className="absolute top-10 right-10 w-[20px] h-[20px] bg-grey-normal text-white rounded-full p-1 text-xs hover:bg-grey-normal-active transition"
+        <div className="relative w-[100px] h-[100px] border border-grey-light-hover rounded-md">
+          <img
+            src={input.value.url}
+            alt="썸네일"
+            className="w-full h-full object-cover rounded-md"
+          />
+          <div
+            onClick={() => {
+              if (isPending) {
+                return;
+              }
+              removeImage();
+            }}
+            className="absolute top-[-10px] right-[-10px] flex justify-center items-center w-[20px] h-[20px] bg-grey-normal text-white rounded-full p-1 text-xs hover:bg-grey-normal-hover transition"
           >
-            삭제
-          </Button> */}
+            <img src={ICON_SRC.CLOSE.WHITE} />
+          </div>
         </div>
       ) : (
         <label
