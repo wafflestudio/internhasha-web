@@ -6,7 +6,6 @@ import { MarkdownEditorField } from '@/components/field/MarkdownEditorField';
 import { PdfField } from '@/components/field/PdfField';
 import { StringField } from '@/components/field/StringField';
 import { StringSelectForm } from '@/components/field/StringSelectForm';
-import { StringWithLetterCountField } from '@/components/field/StringWithLetterCountField';
 import { FormContainer } from '@/components/form';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
@@ -25,6 +24,7 @@ import { ExternalLinkField } from '@/feature/company/ui/fields/ExternalLinkField
 import { HashtagField } from '@/feature/company/ui/fields/HashtagField';
 import { InvestAmountField } from '@/feature/company/ui/fields/InvestAmountField';
 import { InvestCompanyField } from '@/feature/company/ui/fields/InvestCompanyField';
+import { SloganField } from '@/feature/company/ui/fields/SloganField';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -188,7 +188,7 @@ export const CreateCompanyForm = () => {
           errorMessage="올바르지 않은 이메일 형식입니다."
           required={true}
         />
-        <StringWithLetterCountField
+        <SloganField
           label="한 줄 소개"
           input={slogan}
           isPending={isPending}
