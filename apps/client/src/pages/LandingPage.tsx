@@ -15,6 +15,7 @@ import {
 import { SkeletonPostCard } from '@/feature/landing/ui/SkeletonPostCard';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
+import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LandingPage = () => {
@@ -143,6 +144,7 @@ export const useGetPosts = ({
   pathStatus?: number;
 }) => {
   const { postService } = useGuardContext(ServiceContext);
+  const { token } = useGuardContext(TokenContext);
 
   const { data: postsData } = useQuery({
     queryKey: [
@@ -163,6 +165,7 @@ export const useGetPosts = ({
         investmentMin,
         series,
         pathStatus,
+        token,
       });
       if (response.type === 'success') {
         return response.data;

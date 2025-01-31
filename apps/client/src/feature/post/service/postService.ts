@@ -18,6 +18,7 @@ export type PostService = {
     investmentMin,
     series,
     pathStatus,
+    token,
   }: {
     page?: number;
     roles?: string[];
@@ -25,6 +26,7 @@ export type PostService = {
     investmentMin?: number;
     series?: Series[];
     pathStatus?: number;
+    token: string | null;
   }): ServiceResponse<{
     posts: BriefPost[];
     paginator: Paginator;
@@ -88,6 +90,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     investmentMin,
     series,
     pathStatus,
+    token,
   }) => {
     const postPath = new URLSearchParams();
 
@@ -108,7 +111,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     const params = {
       postPath: postPath.toString(),
     };
-    const { status, data } = await apis['GET /post']({ params });
+    const { status, data } = await apis['GET /post']({ params, token: token !== null ? token: undefined});
 
     if (status === 200) {
       return {
