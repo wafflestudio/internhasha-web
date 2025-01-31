@@ -36,7 +36,6 @@ export const SloganField = ({
 
   useEffect(() => {
     if (textareaRef.current !== null) {
-      console.log(textareaRef.current.scrollHeight);
       textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 내용에 맞춰 자동 조절
     }

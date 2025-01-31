@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 import { CancelButton } from '@/components/button/CancelButton';
 import { LabelContainer } from '@/components/input/LabelContainer';
 import {
@@ -30,6 +32,8 @@ export const ImageField = ({
   infoMessage,
   required,
 }: ImageFieldProps) => {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   const addImage = (file: File | undefined) => {
     if (file !== undefined) {
       input.onChange({ file, url: URL.createObjectURL(file) });
@@ -38,6 +42,9 @@ export const ImageField = ({
 
   const removeImage = () => {
     input.onChange(null);
+    if (fileInputRef.current !== null) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const showError = (!isSubmit && input.isError) || (isSubmit && isSubmitError);
@@ -71,6 +78,7 @@ export const ImageField = ({
         </label>
       )}
       <input
+        ref={fileInputRef}
         id="fileInput"
         type="file"
         accept="image/*"

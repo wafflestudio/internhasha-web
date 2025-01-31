@@ -50,7 +50,6 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
 
   const investCompanyList = investCompany.split(',');
   const tagList = tags?.map((item) => item.tag);
-  console.log(tagList);
 
   return (
     <div className="max-w-screen-md mx-auto gap-12 p-10 flex">
