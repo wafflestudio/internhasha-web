@@ -369,7 +369,10 @@ export const useGetPostDetail = ({ postId }: { postId: string }) => {
   const { data: postDetailData } = useQuery({
     queryKey: ['postServicce', 'getPostDetail', token] as const,
     queryFn: ({ queryKey: [, , t] }) => {
-      return postService.getPostDetail({ token: t !== null ? t: undefined, postId: postId });
+      return postService.getPostDetail({
+        token: t !== null ? t : undefined,
+        postId: postId,
+      });
     },
   });
 
