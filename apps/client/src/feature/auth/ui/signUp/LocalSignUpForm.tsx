@@ -174,7 +174,7 @@ export const LocalSignUpForm = () => {
                   {password.detailedError.englishError === false ? (
                     <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
                   ) : (
-                    <img src={ICON_SRC.CLOSE} alt="재작성 아이콘" />
+                    <img src={ICON_SRC.CLOSE.GREY} alt="재작성 아이콘" />
                   )}{' '}
                   <span
                     className={
@@ -190,7 +190,7 @@ export const LocalSignUpForm = () => {
                   {password.detailedError.numberError === false ? (
                     <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
                   ) : (
-                    <img src={ICON_SRC.CLOSE} alt="재작성 아이콘" />
+                    <img src={ICON_SRC.CLOSE.GREY} alt="재작성 아이콘" />
                   )}{' '}
                   <span
                     className={
@@ -206,7 +206,7 @@ export const LocalSignUpForm = () => {
                   {password.detailedError.specialCharError === false ? (
                     <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
                   ) : (
-                    <img src={ICON_SRC.CLOSE} alt="재작성 아이콘" />
+                    <img src={ICON_SRC.CLOSE.GREY} alt="재작성 아이콘" />
                   )}{' '}
                   <span
                     className={
@@ -222,7 +222,7 @@ export const LocalSignUpForm = () => {
                   {password.detailedError.lengthError === false ? (
                     <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
                   ) : (
-                    <img src={ICON_SRC.CLOSE} alt="재작성 아이콘" />
+                    <img src={ICON_SRC.CLOSE.GREY} alt="재작성 아이콘" />
                   )}{' '}
                   <span
                     className={
