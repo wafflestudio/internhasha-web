@@ -223,7 +223,7 @@ export const companyInputPresentation: CompanyInputPresentation = {
     };
     const isRawTagValid = (input: string) => {
       const trimmedInput = input.trim();
-      if (trimmedInput.length === 0 || trimmedInput.length > MAX_TAG_LENGTH) {
+      if (trimmedInput.length > MAX_TAG_LENGTH) {
         return false;
       }
       if (tags.includes(trimmedInput)) {
@@ -384,7 +384,9 @@ export const companyInputPresentation: CompanyInputPresentation = {
       setTags((prevState) => {
         switch (mode) {
           case 'ADD':
-            return [...prevState, input];
+            return input.trim().length !== 0
+              ? [...prevState, input]
+              : prevState;
           case 'REMOVE':
             return [
               ...prevState.slice(0, index),
