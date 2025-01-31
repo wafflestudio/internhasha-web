@@ -6,7 +6,7 @@ import {
 import { Input } from '@/components/ui/input';
 import type { Input as InputType } from '@/entities/input';
 
-type InvestAmountFieldProps = {
+type HeadcountFieldProps = {
   label: string;
   input: InputType<string>;
   unit: string;
@@ -15,10 +15,11 @@ type InvestAmountFieldProps = {
   isSubmitError: boolean;
   errorMessage: string;
   infoMessage?: string;
+  placeholder?: string;
   required?: boolean;
 };
 
-export const InvestAmountField = ({
+export const HeadcountField = ({
   label,
   input,
   unit,
@@ -27,20 +28,20 @@ export const InvestAmountField = ({
   isSubmitError,
   errorMessage,
   infoMessage,
+  placeholder,
   required,
-}: InvestAmountFieldProps) => {
+}: HeadcountFieldProps) => {
   return (
     <LabelContainer label={label} required={required}>
       <div className="flex items-center gap-2">
         <Input
           id="investAmount"
           value={input.value}
-          placeholder="100"
           disabled={isPending}
+          placeholder={placeholder}
           onChange={(e) => {
             input.onChange(e.target.value);
           }}
-          className="w-[190px]"
         />
         <span className="text-grey-dark-hover">{unit}</span>
       </div>

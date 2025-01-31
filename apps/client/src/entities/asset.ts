@@ -8,4 +8,5 @@ export const ICON_SRC = {
     SELECTED: '/svg/bookmark_selected.svg',
     UNSELECTED: '/svg/bookmark_unselected.svg',
   },
+  CALENDAR: '/svg/calendar_today.svg',
 };
