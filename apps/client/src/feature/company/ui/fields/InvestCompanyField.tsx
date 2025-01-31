@@ -36,49 +36,52 @@ export const InvestCompanyField = ({
 }: InvestCompanyFieldProps) => {
   return (
     <LabelContainer label={label} required={required}>
-      {input.value.map((company, index) => (
-        <div key={`invest-company-${index}`}>
-          <Input
-            value={company}
-            placeholder={placeholder}
-            disabled={isPending}
-            onChange={(e) => {
-              input.onChange({
-                input: e.target.value,
-                index,
-                mode: 'PATCH',
-              });
-              rawInput.onChange(e.target.value);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+      <div className="flex flex-col gap-3">
+        {input.value.map((company, index) => (
+          <div key={`invest-company-${index}`} className="flex gap-2">
+            <Input
+              value={company}
+              placeholder={placeholder}
+              disabled={isPending}
+              onChange={(e) => {
+                input.onChange({
+                  input: e.target.value,
+                  index,
+                  mode: 'PATCH',
+                });
+                rawInput.onChange(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  input.onChange({ input: '', mode: 'ADD' });
+                }
+              }}
+            />
+            <Button
+              variant="outline"
+              disabled={isPending}
+              onClick={(e) => {
                 e.preventDefault();
-                input.onChange({ input: '', mode: 'ADD' });
-              }
-            }}
-          />
-          <Button
-            variant="outline"
-            disabled={isPending}
-            onClick={(e) => {
-              e.preventDefault();
-              input.onChange({ input: company, index, mode: 'REMOVE' });
-            }}
-          >
-            삭제
-          </Button>
-        </div>
-      ))}
-      <Button
-        variant="secondary"
-        disabled={isPending}
-        onClick={(e) => {
-          e.preventDefault();
-          input.onChange({ input: '', mode: 'ADD' });
-        }}
-      >
-        추가
-      </Button>
+                input.onChange({ input: company, index, mode: 'REMOVE' });
+              }}
+            >
+              삭제
+            </Button>
+          </div>
+        ))}
+        <Button
+          variant="secondary"
+          disabled={isPending}
+          onClick={(e) => {
+            e.preventDefault();
+            input.onChange({ input: '', mode: 'ADD' });
+          }}
+          className="w-[100px]"
+        >
+          추가
+        </Button>
+      </div>
       <div className="flex flex-col gap-1">
         {infoMessage !== undefined && (
           <FormInfoResponse>{infoMessage}</FormInfoResponse>

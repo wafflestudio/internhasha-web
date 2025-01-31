@@ -5,7 +5,7 @@ import { ImageField } from '@/components/field/ImageField';
 import { MarkdownEditorField } from '@/components/field/MarkdownEditorField';
 import { PdfField } from '@/components/field/PdfField';
 import { StringField } from '@/components/field/StringField';
-import { StringSelectForm } from '@/components/field/StringSelectForm';
+import { StringSelectField } from '@/components/field/StringSelectField';
 import { FormContainer } from '@/components/form';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
@@ -29,6 +29,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+import { formatSeries } from '@/util/postFormatFunctions';
 
 export const CreateCompanyForm = () => {
   const [isSubmit, setIsSubmit] = useState(false);
@@ -221,10 +222,11 @@ export const CreateCompanyForm = () => {
           infoMessage="회사 썸네일 이미지는 정사각형 비율(1:1)로 보여져요."
           required={true}
         />
-        <StringSelectForm<Series>
+        <StringSelectField<Series>
           label="투자 단계"
           input={series}
-          inputList={seriesList}
+          inputList={seriesList as Series[]}
+          formatter={formatSeries}
           isPending={isPending}
           isSubmit={isSubmit}
           isSubmitError={formStates.series.isError}
