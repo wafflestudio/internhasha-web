@@ -53,7 +53,6 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
     jobMinorCategory,
     headcount,
     detail,
-    employmentEndTime,
     employmentEndDate,
   } = inputStates;
 
@@ -200,14 +199,24 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
                 selected={new Date(employmentEndDate.value)}
                 onSelect={(input: Date | undefined) => {
                   employmentEndDate.onChange(
-                    input !== undefined ? input.toISOString() : '',
+                    input !== undefined
+                      ? new Date(input)
+                          .toLocaleDateString('ko-KR', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                          })
+                          .replace(/\. /g, '-')
+                          .replace('.', '')
+                      : '',
                   );
                 }}
               />
             </div>
           </div>
           <Button
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
               setShowCalendar(!showCalendar);
             }}
             variant="outline"
@@ -232,15 +241,6 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
             disabled={isPending}
             onChange={(e) => {
               employmentEndDate.onChange(e.target.value);
-            }}
-          />
-          <input
-            id="employmentEndTime"
-            type="time"
-            value={employmentEndTime.value}
-            disabled={isPending}
-            onChange={(e) => {
-              employmentEndTime.onChange(e.target.value);
             }}
           />
           {isSubmit && formStates.employmentEndDateTime.isError && (
