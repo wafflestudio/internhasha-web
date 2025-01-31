@@ -19,7 +19,7 @@ export const AuthCompanySwitchRoute = ({
 
   try {
     const decoded = jwtDecode<DecodedToken>(token);
-    if (decoded.role === 'ROLE_POST_ADMIN') {
+    if (decoded.role === 'CURATOR') {
       return <>{companyPage}</>;
     }
   } catch {

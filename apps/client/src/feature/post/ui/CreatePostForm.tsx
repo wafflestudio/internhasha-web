@@ -198,7 +198,6 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
                 mode="single"
                 selected={new Date(employmentEndDate.value)}
                 onSelect={(input: Date | undefined) => {
-                  console.log(input);
                   employmentEndDate.onChange(
                     input !== undefined ? input.toISOString() : '',
                   );

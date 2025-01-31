@@ -90,7 +90,7 @@ export const CreateCompanyForm = () => {
         uploadFile({ file: imagePreview.value?.file, presignedUrl });
       },
       setResponseMessage: handleChangeImageResponseMessage,
-      setLink: irDeckLink.onChange,
+      setLink: imageLink.onChange,
     });
   const { getPresignedUrl: uploadPdf, isPending: isUploadPdfPending } =
     useGetPresignedUrl({
@@ -98,7 +98,7 @@ export const CreateCompanyForm = () => {
         uploadFile({ file: irDeckPreview.value?.file, presignedUrl });
       },
       setResponseMessage: handleChangePdfResponseMessage,
-      setLink: imageLink.onChange,
+      setLink: irDeckLink.onChange,
     });
   const { createCompany, isPending: isCreateCompanyPending } = useCreateCompany(
     { setResponseMessage },
@@ -112,6 +112,21 @@ export const CreateCompanyForm = () => {
 
   const handleSubmit = () => {
     setIsSubmit(true);
+    if (
+      formStates.companyName.isError ||
+      formStates.explanation.isError ||
+      formStates.email.isError ||
+      formStates.slogan.isError ||
+      formStates.investAmount.isError ||
+      formStates.investCompany.isError ||
+      formStates.series.isError ||
+      formStates.landingPageLink.isError ||
+      formStates.externalDescriptionLink.isError ||
+      formStates.tags.isError
+    ) {
+      return;
+    }
+    console.log(imagePreview);
     // TODO: 불가능한 타입이지만 isError를 사용할 시 타입스크립트가 인식하지 못함.
     if (!imagePreview.isError && imagePreview.value !== null) {
       uploadImage({
@@ -126,22 +141,6 @@ export const CreateCompanyForm = () => {
       });
     }
     if (imageResponseMessage !== '' || pdfResponseMessage !== '') {
-      return;
-    }
-    if (
-      formStates.companyName.isError ||
-      formStates.explanation.isError ||
-      formStates.email.isError ||
-      formStates.slogan.isError ||
-      formStates.investAmount.isError ||
-      formStates.investCompany.isError ||
-      formStates.series.isError ||
-      formStates.irDeckLink.isError ||
-      formStates.landingPageLink.isError ||
-      formStates.imageLink.isError ||
-      formStates.externalDescriptionLink.isError ||
-      formStates.tags.isError
-    ) {
       return;
     }
     // TODO: 불가능한 타입이지만 isError를 사용할 시 타입스크립트가 인식하지 못함.
