@@ -16,7 +16,6 @@ type ImageFieldProps = {
   isSubmit: boolean;
   isSubmitError: boolean;
   errorMessage: string;
-  responseErrorMessage?: string;
   infoMessage?: string;
   required?: boolean;
 };
@@ -28,7 +27,6 @@ export const ImageField = ({
   isSubmit,
   isSubmitError,
   errorMessage,
-  responseErrorMessage,
   infoMessage,
   required,
 }: ImageFieldProps) => {
@@ -95,9 +93,6 @@ export const ImageField = ({
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
         )}
         {showError && <FormErrorResponse>{errorMessage}</FormErrorResponse>}
-        {responseErrorMessage !== '' && (
-          <FormErrorResponse>{responseErrorMessage}</FormErrorResponse>
-        )}
       </div>
     </LabelContainer>
   );

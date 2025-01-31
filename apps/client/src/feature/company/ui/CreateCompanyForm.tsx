@@ -35,8 +35,6 @@ export const CreateCompanyForm = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [isCancel, setIsCancel] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
-  const [imageResponseMessage, setImageResponseMessage] = useState('');
-  const [pdfResponseMessage, setPdfResponseMessage] = useState('');
 
   const { inputStates, formStates } = companyFormPresentation.useValidator({
     companyInputPresentation,
@@ -52,10 +50,8 @@ export const CreateCompanyForm = () => {
     investCompany,
     series,
     irDeckPreview,
-    irDeckLink,
     landingPageLink,
     imagePreview,
-    imageLink,
     rawExternalDescriptionLink,
     externalDescriptionLink,
     rawTag,
@@ -72,44 +68,9 @@ export const CreateCompanyForm = () => {
     setIsCancel(false);
   };
 
-  const handleChangeResponseMessage = (input: string) => {
-    setResponseMessage(input);
-  };
-  const handleChangeImageResponseMessage = (input: string) => {
-    setImageResponseMessage(input);
-  };
-  const handleChangePdfResponseMessage = (input: string) => {
-    setPdfResponseMessage(input);
-  };
-
-  const { uploadFile, isPending: isUploadFilePending } = useUploadFile({
-    setResponseMessage: handleChangeResponseMessage,
+  const { handleCreateCompany, isPending } = useCreateCompanyWithUploads({
+    setResponseMessage: setResponseMessage,
   });
-  const { getPresignedUrl: uploadImage, isPending: isUploadImagePending } =
-    useGetPresignedUrl({
-      onSuccess: ({ presignedUrl }: { presignedUrl: string }) => {
-        uploadFile({ file: imagePreview.value?.file, presignedUrl });
-      },
-      setResponseMessage: handleChangeImageResponseMessage,
-      setLink: imageLink.onChange,
-    });
-  const { getPresignedUrl: uploadPdf, isPending: isUploadPdfPending } =
-    useGetPresignedUrl({
-      onSuccess: ({ presignedUrl }: { presignedUrl: string }) => {
-        uploadFile({ file: irDeckPreview.value?.file, presignedUrl });
-      },
-      setResponseMessage: handleChangePdfResponseMessage,
-      setLink: irDeckLink.onChange,
-    });
-  const { createCompany, isPending: isCreateCompanyPending } = useCreateCompany(
-    { setResponseMessage },
-  );
-
-  const isPending =
-    isUploadFilePending ||
-    isUploadImagePending ||
-    isUploadPdfPending ||
-    isCreateCompanyPending;
 
   const handleSubmit = () => {
     setIsSubmit(true);
@@ -129,27 +90,17 @@ export const CreateCompanyForm = () => {
     }
 
     // TODO: 불가능한 타입이지만 isError를 사용할 시 타입스크립트가 인식하지 못함.
-    if (!imagePreview.isError && imagePreview.value !== null) {
-      uploadImage({
-        fileName: imagePreview.value.file.name,
-        fileType: imagePreview.value.file.type,
-      });
-    }
-    if (irDeckPreview.isError && irDeckPreview.value !== null) {
-      uploadPdf({
-        fileName: irDeckPreview.value.file.name,
-        fileType: irDeckPreview.value.file.type,
-      });
-    }
-    if (imageResponseMessage !== '' || pdfResponseMessage !== '') {
+    if (imagePreview.value === null) {
       return;
     }
+
     // TODO: 불가능한 타입이지만 isError를 사용할 시 타입스크립트가 인식하지 못함.
     if (formStates.series.value === 'NONE') {
       return;
     }
-    createCompany({
-      company: {
+
+    handleCreateCompany({
+      companyInfo: {
         companyName: formStates.companyName.value,
         explanation: formStates.explanation.value,
         email: formStates.email.value,
@@ -157,13 +108,20 @@ export const CreateCompanyForm = () => {
         investAmount: formStates.investAmount.value,
         investCompany: formStates.investCompany.value,
         series: formStates.series.value,
-        irDeckLink: formStates.irDeckLink.value,
         landingPageLink: landingPageLink.value,
-        imageLink: formStates.imageLink.value,
         externalDescriptionLink: formStates.externalDescriptionLink.value,
         tags: formStates.tags.value,
       },
-    });
+      pdfFile:
+        irDeckPreview.value !== null ? irDeckPreview.value.file : undefined,
+      imageFile: imagePreview.value.file,
+    })
+      .then(() => {
+        return;
+      })
+      .catch(() => {
+        return;
+      });
   };
 
   return (
@@ -216,9 +174,8 @@ export const CreateCompanyForm = () => {
           input={imagePreview}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={formStates.imageLink.isError}
+          isSubmitError={imagePreview.isError}
           errorMessage="1MB 이하의 이미지 파일을 올려주세요."
-          responseErrorMessage={imageResponseMessage}
           infoMessage="회사 썸네일 이미지는 정사각형 비율(1:1)로 보여져요."
           required={true}
         />
@@ -272,9 +229,8 @@ export const CreateCompanyForm = () => {
           input={irDeckPreview}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={formStates.irDeckLink.isError}
+          isSubmitError={irDeckPreview.isError}
           errorMessage="5MB 이하의 PDF 파일을 올려주세요."
-          responseErrorMessage={pdfResponseMessage}
         />
         <StringField
           label="기업 소개 홈페이지"
@@ -332,19 +288,17 @@ export const CreateCompanyForm = () => {
   );
 };
 
-const useGetPresignedUrl = ({
-  onSuccess,
+const useCreateCompanyWithUploads = ({
   setResponseMessage,
-  setLink,
 }: {
-  onSuccess({ presignedUrl }: { presignedUrl: string }): void;
   setResponseMessage(input: string): void;
-  setLink(input: string): void;
 }) => {
-  const { fileService } = useGuardContext(ServiceContext);
+  const { fileService, postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
+  const [isPending, setIsPending] = useState(false);
+  const { toMain } = useRouteNavigation();
 
-  const { mutate: getPresignedUrl, isPending } = useMutation({
+  const { mutateAsync: getPresignedUrl } = useMutation({
     mutationFn: ({
       fileName,
       fileType,
@@ -359,34 +313,19 @@ const useGetPresignedUrl = ({
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        onSuccess({ presignedUrl: response.data.presignedUrl });
-        setLink(response.data.presignedUrl);
+        return;
       } else {
         setResponseMessage(createErrorMessage(response.code));
-        setLink('');
       }
     },
     onError: () => {
-      setResponseMessage('업로드에 실패했습니다. 잠시 후에 다시 실행해주세요.');
-      setLink('');
+      setResponseMessage(
+        '이미지 업로드에 실패했습니다. 잠시 후에 다시 실행해주세요.',
+      );
     },
   });
 
-  return {
-    getPresignedUrl,
-    isPending,
-  };
-};
-
-const useUploadFile = ({
-  setResponseMessage,
-}: {
-  setResponseMessage(input: string): void;
-}) => {
-  const { fileService } = useGuardContext(ServiceContext);
-  const { token } = useGuardContext(TokenContext);
-
-  const { mutate: uploadFile, isPending } = useMutation({
+  const { mutateAsync: uploadFile } = useMutation({
     mutationFn: ({
       presignedUrl,
       file,
@@ -414,33 +353,20 @@ const useUploadFile = ({
     },
   });
 
-  return {
-    uploadFile,
-    isPending,
-  };
-};
-
-const useCreateCompany = ({
-  setResponseMessage,
-}: {
-  setResponseMessage(input: string): void;
-}) => {
-  const { postService } = useGuardContext(ServiceContext);
-  const { token } = useGuardContext(TokenContext);
-  const { toMain } = useRouteNavigation();
-
-  const { mutate: createCompany, isPending } = useMutation({
-    mutationFn: ({ company }: { company: CreateCompanyRequest }) => {
+  const { mutate: createCompany } = useMutation({
+    mutationFn: ({
+      companyContents,
+    }: {
+      companyContents: CreateCompanyRequest;
+    }) => {
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return postService.createCompany({ token, companyContents: company });
+      return postService.createCompany({ token, companyContents });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
         toMain();
-      } else {
-        setResponseMessage(createErrorMessage(response.code));
       }
     },
     onError: () => {
@@ -450,8 +376,82 @@ const useCreateCompany = ({
     },
   });
 
+  const handleCreateCompany = async ({
+    companyInfo,
+    pdfFile,
+    imageFile,
+  }: {
+    companyInfo: Omit<CreateCompanyRequest, 'irDeckLink' | 'imageLink'>;
+    pdfFile?: File;
+    imageFile: File;
+  }) => {
+    try {
+      setIsPending(true);
+
+      const [pdfPresignedUrlResponse, imagePresignedUrlResponse] =
+        await Promise.all([
+          pdfFile !== undefined
+            ? getPresignedUrl({
+                fileName: pdfFile.name,
+                fileType: pdfFile.type,
+              })
+            : Promise.resolve(null),
+          getPresignedUrl({
+            fileName: imageFile.name,
+            fileType: imageFile.type,
+          }),
+        ]);
+
+      if (
+        pdfPresignedUrlResponse?.type === 'error' ||
+        imagePresignedUrlResponse.type === 'error'
+      ) {
+        setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
+        setIsPending(false);
+        return;
+      }
+
+      const [pdfUploadResponse, imageUploadResponse] = await Promise.all([
+        pdfPresignedUrlResponse !== null
+          ? uploadFile({
+              presignedUrl: pdfPresignedUrlResponse.data.presignedUrl,
+              file: pdfFile,
+            })
+          : null,
+        uploadFile({
+          presignedUrl: imagePresignedUrlResponse.data.presignedUrl,
+          file: imageFile,
+        }),
+      ]);
+
+      if (
+        pdfUploadResponse?.type === 'error' ||
+        imageUploadResponse.type === 'error'
+      ) {
+        setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
+        setIsPending(false);
+        return;
+      }
+
+      createCompany({
+        companyContents: {
+          ...companyInfo,
+          irDeckLink:
+            pdfPresignedUrlResponse !== null
+              ? pdfPresignedUrlResponse.data.presignedUrl
+              : undefined,
+          imageLink: imagePresignedUrlResponse.data.presignedUrl,
+        },
+      });
+    } catch {
+      setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
+    } finally {
+      setIsPending(false);
+    }
+  };
+
   return {
-    createCompany,
+    handleCreateCompany,
     isPending,
   };
 };
