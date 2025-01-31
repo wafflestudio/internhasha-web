@@ -36,7 +36,7 @@ export type PostService = {
     token,
   }: {
     postId: string;
-    token: string;
+    token?: string;
   }): ServiceResponse<Post>;
   createCompany({
     token,
@@ -111,7 +111,10 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     const params = {
       postPath: postPath.toString(),
     };
-    const { status, data } = await apis['GET /post']({ params, token: token !== null ? token: undefined});
+    const { status, data } = await apis['GET /post']({
+      params,
+      token: token !== null ? token : undefined,
+    });
 
     if (status === 200) {
       return {
@@ -121,13 +124,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-  getPostDetail: async ({
-    token,
-    postId,
-  }: {
-    token?: string;
-    postId: string;
-  }) => {
+  getPostDetail: async ({ token, postId }) => {
     const params = { postId };
 
     const { status, data } = await apis['GET /post/:postId']({ token, params });

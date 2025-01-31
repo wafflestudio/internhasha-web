@@ -108,7 +108,7 @@ export const CreateCompanyForm = () => {
         investAmount: formStates.investAmount.value,
         investCompany: formStates.investCompany.value,
         series: formStates.series.value,
-        landingPageLink: landingPageLink.value,
+        landingPageLink: formStates.landingPageLink.value,
         externalDescriptionLink: formStates.externalDescriptionLink.value,
         tags: formStates.tags.value,
       },
@@ -443,7 +443,8 @@ const useCreateCompanyWithUploads = ({
           imageLink: imagePresignedUrlResponse.data.presignedUrl,
         },
       });
-    } catch {
+    } catch (error) {
+      console.error(error);
       setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
     } finally {
       setIsPending(false);
