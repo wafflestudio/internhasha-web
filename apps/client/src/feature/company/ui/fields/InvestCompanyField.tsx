@@ -37,7 +37,7 @@ export const InvestCompanyField = ({
   return (
     <LabelContainer label={label} required={required}>
       {input.value.map((company, index) => (
-        <div key={`invest-company-${index}`}>
+        <div key={`invest-company-${index}`} className="flex gap-2">
           <Input
             value={company}
             placeholder={placeholder}
