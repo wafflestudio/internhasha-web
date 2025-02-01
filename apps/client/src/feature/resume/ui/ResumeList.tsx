@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { Button } from '@/components/button';
-import { Card } from '@/components/card/card.tsx';
+import { ICON_SRC } from '@/entities/asset';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -25,26 +24,27 @@ export const ResumeListView = () => {
   const { resumeList } = resumeListData.data;
 
   return (
-    <div>
-      <div className="max-w-screen-lg">
-        <div className="space-y-4 w-3/5">
-          {resumeList.map((resume) => (
-            <Card key={resume.id} className="">
-              <Button
-                onClick={() => {
-                  toResumeDetail({ resumeId: resume.id });
-                }}
-                className="flex justify-between w-full h-full p-5"
-              >
-                <span>{resume.companyName}</span>
-                <span className="text-gray-400">
-                  {getFormatDate(resume.createdAt)}
-                </span>
-              </Button>
-            </Card>
-          ))}
+    <div className="flex flex-col w-full gap-3">
+      {resumeList.map((resume) => (
+        <div
+          key={resume.id}
+          className="flex w-full px-[24px] py-[10px] justify-between cursor-pointer hover:shadow-md"
+          onClick={() => {
+            toResumeDetail({ resumeId: resume.id });
+          }}
+        >
+          <div className="flex gap-[18px]">
+            <img src={ICON_SRC.BOOKMARK.SELECTED} />
+            <span className="text-grey-darker">{resume.positionTitle}</span>
+          </div>
+          <div className="flex gap-[18px]">
+            <span className="text-grey-darker">{resume.companyName}</span>
+            <span className="px-2 py-1 bg-grey-darker text-white text-sm">
+              {getFormatDate(resume.createdAt)}
+            </span>
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 };
