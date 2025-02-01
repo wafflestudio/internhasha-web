@@ -76,6 +76,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
 
   const {
     companyName,
+    author,
     slogan,
     imageLink,
     tags,
@@ -93,8 +94,9 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
     isActive,
   } = postDetailData.data;
 
+  console.log(postDetailData.data)
+
   const investCompanyList = investCompany.split(',');
-  const tagList = tags?.map((item) => item.tag);
 
   const formatEmploymentState = ({
     isActiveInput,
@@ -198,6 +200,21 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
 
               <div className="flex items-center">
                 <span className="text-sm w-24 sm:w-32 text-gray-500 font-medium">
+                  추천 VC
+                </span>
+                <div className="flex items-center gap-2">
+                  <Badge
+                    variant="outline"
+                    className="bg-white text-gray-800 font-normal
+                        py-1.5 px-2"
+                  >
+                    {author.name}
+                  </Badge>
+                </div>
+              </div>
+
+              <div className="flex items-center">
+                <span className="text-sm w-24 sm:w-32 text-gray-500 font-medium">
                   투자사
                 </span>
                 <div className="flex items-center gap-2">
@@ -221,7 +238,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           <section className="flex gap-4 xs:gap-10">
             <div className="flex flex-col gap-5 items-center xs:flex-row">
               <span>회사 홈페이지</span>
-              {landingPageLink != null ? (
+              {landingPageLink !== '' ? (
                 <a
                   href={landingPageLink}
                   target="_blank"
@@ -232,13 +249,15 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                   <span>링크 접속</span>
                 </a>
               ) : (
-                <p>준비 중</p>
+                <p className="px-3 py-2 gap-1 rounded-lg bg-gray-100">
+                  준비 중
+                </p>
               )}
             </div>
 
             <div className="flex gap-5 items-center flex-col xs:flex-row flex-1">
               <span>IR Deck 자료</span>
-              {irDeckLink != null ? (
+              {irDeckLink !== '' && irDeckLink !== undefined ? (
                 <a
                   href={`${API_BASE_URL}/${irDeckLink}`}
                   target="_blank"
@@ -250,15 +269,17 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                   <span>IR Deck 자료</span>
                 </a>
               ) : (
-                <p>준비 중</p>
+                <p className="px-3 py-2 gap-1 rounded-lg bg-gray-100">
+                  준비 중
+                </p>
               )}
             </div>
           </section>
 
           <section>
-            <div className="flex flex-col gap-5 items-start xs:flex-row">
+            <div className="flex flex-col gap-5 items-center items-start xs:flex-row">
               <span>외부 링크</span>
-              {externalDescriptionLink !== undefined &&
+              {(externalDescriptionLink?.length !== 0 && externalDescriptionLink !== undefined) ?
                 externalDescriptionLink.map((Link, index) => {
                   return (
                     <div key={index} className="flex">
@@ -278,7 +299,9 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                       </a>
                     </div>
                   );
-                })}
+                }) : (
+                  <p className="px-4 py-2 gap-1 rounded-lg bg-gray-100">준비 중</p>
+                )}
             </div>
           </section>
 
@@ -288,9 +311,9 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             <span className="text-xl font-bold">태그</span>
             {tags != null && (
               <div className="flex flex-wrap gap-2">
-                {tagList?.map((tag) => (
+                {tags.map((tag, index) => (
                   <Badge
-                    key={tag}
+                    key={index}
                     variant="outline"
                     className="bg-white text-gray-800 font-normal
                         py-1.5 px-2"
@@ -362,7 +385,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             >
               커피챗 신청하기
             </Button>
-            <Button variant="outline" onClick={toMain}>
+            <Button variant="secondary" onClick={toMain}>
               목록으로
             </Button>
           </div>
