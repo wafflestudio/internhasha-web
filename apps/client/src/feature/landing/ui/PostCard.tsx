@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { SeriesBadge } from '@/components/ui/badge';
 import { ICON_SRC } from '@/entities/asset';
 import type { BriefPost } from '@/entities/post';
+import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -23,6 +24,7 @@ export const PostCard = ({
   setShowSignInModal,
 }: PostCardProps) => {
   const { token } = useGuardContext(TokenContext);
+  const { API_BASE_URL } = useGuardContext(EnvContext);
   const { addBookmark, isPending: isAddBookmarkPending } = useAddBookmark();
   const { deleteBookmark, isPending: isDeleteBookmarkPending } =
     useDeleteBookmark();
@@ -91,15 +93,11 @@ export const PostCard = ({
         <div className="flex items-center gap-[14px]">
           {/* 회사 이미지 */}
           <div className="w-[40px] h-[40px] rounded-lg bg-gray-100 overflow-hidden">
-            {imageLink !== undefined ? (
-              <img
-                src={imageLink}
-                alt={companyName}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full bg-grey-light-hover"></div>
-            )}
+            <img
+              src={`${API_BASE_URL}/${imageLink}`}
+              alt={companyName}
+              className="w-full h-full object-cover"
+            />
           </div>
           <div className="flex flex-col gap-1">
             <h3 className="text-lg font-semibold text-grey-darker">

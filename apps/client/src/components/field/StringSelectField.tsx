@@ -36,9 +36,6 @@ export const StringSelectField = <T extends string>({
   infoMessage,
   required,
 }: StringSelectFieldProps<T>) => {
-  // const isValidType = (value: string, valueList: string[]): value is T => {
-  //   return valueList.includes(value);
-  // };
   return (
     <LabelContainer label={label} required={required}>
       <Select
@@ -47,12 +44,14 @@ export const StringSelectField = <T extends string>({
         defaultValue="NONE"
       >
         <div>
-          <SelectTrigger className="w-[190px]">
+          <SelectTrigger
+            className={`${input.value !== 'NONE' ? 'text-grey-dark' : 'text-grey-normal'} w-[190px]`}
+          >
             {input.value !== 'NONE' ? input.value : '시리즈를 선택해주세요.'}
           </SelectTrigger>
           <SelectContent>
             {inputList.map((item, idx) => (
-              <SelectItem key={idx} value={item}>
+              <SelectItem key={idx} value={item} className="text-grey-darker">
                 {item !== 'NONE' && formatter(item)}
               </SelectItem>
             ))}

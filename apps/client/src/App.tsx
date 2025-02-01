@@ -105,7 +105,7 @@ export const App = () => {
 
   const localServerCall = async (content: ExternalCallParams) => {
     const response = await fetch(
-      `${ENV.APP_ENV === 'prod' ? ENV.API_BASE_URL : '/api'}/${content.path}`,
+      `${ENV.APP_ENV === 'prod' ? ENV.API_BASE_URL : ''}/api/${content.path}`,
       {
         method: content.method,
         headers: content.headers,

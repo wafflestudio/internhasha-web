@@ -15,7 +15,7 @@ export const implApi = ({ externalCall }: ImplApiProps) => {
     method: string;
     path: string;
     contentType?: string;
-    body?: Record<string, unknown>;
+    body?: Record<string, unknown> | File;
     token?: string;
   }) => {
     const response = await externalCall({

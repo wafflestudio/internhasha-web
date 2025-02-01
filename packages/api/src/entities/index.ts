@@ -22,7 +22,7 @@ export type ErrorResponse<
 export type ExternalCallParams = {
   method: string;
   path: string;
-  body?: Record<string, unknown>;
+  body?: Record<string, unknown> | File;
   headers?: Record<string, string>;
   credentials?: string;
 };
@@ -31,6 +31,6 @@ export type InternalCallParams = {
   method: string;
   path: string;
   contentType?: string;
-  body?: Record<string, unknown>;
+  body?: Record<string, unknown> | File;
   token?: string;
 };

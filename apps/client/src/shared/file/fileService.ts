@@ -44,12 +44,13 @@ export const implFileService = ({
     return { type: 'error', code: data.code, message: data.message };
   },
   uploadImage: async ({ presignedUrl, file }) => {
-    const body = { file };
     const { status, data } = await externalApis['PUT upload-file']({
       path: presignedUrl,
-      body,
+      body: file,
       contentType: file.type,
     });
+
+    console.log(file);
 
     if (status === 200) {
       return {

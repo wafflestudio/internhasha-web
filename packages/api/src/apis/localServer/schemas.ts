@@ -52,7 +52,7 @@ type PostDTO = {
   series: Series;
   irDeckLink?: string;
   landingPageLink?: string;
-  imageLink?: string;
+  imageLink: string;
   externalDescriptionLink?: Link[];
   tags?: { tag: string }[];
 
@@ -213,7 +213,7 @@ export type CreateCompanyRequest = {
   series: Series;
   irDeckLink?: string;
   landingPageLink?: string;
-  imageLink?: string;
+  imageLink: string;
   externalDescriptionLink?: Link[];
   tags?: { tag: string }[];
 };
