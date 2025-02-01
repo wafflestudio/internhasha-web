@@ -19,6 +19,7 @@ export type PostService = {
     series,
     pathStatus,
     token,
+    order,
   }: {
     page?: number;
     roles?: string[];
@@ -26,6 +27,7 @@ export type PostService = {
     investmentMin?: number;
     series?: Series[];
     pathStatus?: number;
+    order?: number;
     token: string | null;
   }): ServiceResponse<{
     posts: BriefPost[];
@@ -90,6 +92,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     investmentMin,
     series,
     pathStatus,
+    order,
     token,
   }) => {
     const postPath = new URLSearchParams();
@@ -107,6 +110,9 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     if (series !== undefined) postPath.append('series', series.toString());
     if (pathStatus !== undefined)
       postPath.append('status', pathStatus.toString());
+    if (order !== undefined) {
+      postPath.append('order', order.toString());
+    }
 
     const params = {
       postPath: postPath.toString(),
