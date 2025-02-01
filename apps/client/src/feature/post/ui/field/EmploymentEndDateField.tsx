@@ -1,5 +1,8 @@
 import { LabelContainer } from '@/components/input/LabelContainer';
-import { FormInfoResponse } from '@/components/response/formResponse';
+import {
+  FormErrorResponse,
+  FormInfoResponse,
+} from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { ICON_SRC } from '@/entities/asset';
@@ -57,6 +60,7 @@ export const EmploymentEndDateField = ({
                       .replace('.', '')
                   : '',
               );
+              onClick();
             }}
           />
         </div>
@@ -83,7 +87,9 @@ export const EmploymentEndDateField = ({
       </Button>
       <div className="flex flex-col gap-1">
         <FormInfoResponse>{infoMessage}</FormInfoResponse>
-        {isSubmit && isSubmitError && <p>{errorMessage}</p>}
+        {isSubmit && isSubmitError && (
+          <FormErrorResponse>{errorMessage}</FormErrorResponse>
+        )}
       </div>
     </LabelContainer>
   );
