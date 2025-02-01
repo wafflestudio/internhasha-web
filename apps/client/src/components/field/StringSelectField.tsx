@@ -47,7 +47,9 @@ export const StringSelectField = <T extends string>({
           <SelectTrigger
             className={`${input.value !== 'NONE' ? 'text-grey-dark' : 'text-grey-normal'} w-[190px]`}
           >
-            {input.value !== 'NONE' ? input.value : '시리즈를 선택해주세요.'}
+            {input.value !== 'NONE'
+              ? formatter(input.value)
+              : '시리즈를 선택해주세요.'}
           </SelectTrigger>
           <SelectContent>
             {inputList.map((item, idx) => (
