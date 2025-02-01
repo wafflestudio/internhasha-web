@@ -54,7 +54,7 @@ type PostDTO = {
   landingPageLink?: string;
   imageLink: string;
   externalDescriptionLink?: Link[];
-  tags?: { tag: string }[];
+  tags?: string[];
 
   // post 정보
   title: string;
@@ -90,7 +90,7 @@ type ResumeDTO = {
     userRole: UserRole;
     snuMail: string;
     phoneNumber?: string;
-    profileImageLink: string;
+    profileImageLink?: string;
   };
   postId: string;
   content: string;
@@ -215,7 +215,7 @@ export type CreateCompanyRequest = {
   landingPageLink?: string;
   imageLink: string;
   externalDescriptionLink?: Link[];
-  tags?: { tag: string }[];
+  tags?: string[];
 };
 
 export type CreatePostRequest = {

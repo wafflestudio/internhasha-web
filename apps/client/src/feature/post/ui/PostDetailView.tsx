@@ -13,6 +13,7 @@ import { SignInForCoffeeChatModal } from '@/components/modal/SignInForCoffeChatM
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ICON_SRC } from '@/entities/asset.ts';
+import { getEmploymentStatus } from '@/feature/post/ui/postFormatFunctions.ts';
 import { SeriesBadge } from '@/feature/post/ui/SeriesBadge';
 import { SkeletonPostDetailView } from '@/feature/post/ui/SkeletonPostDetailView';
 import { EnvContext } from '@/shared/context/EnvContext';
@@ -20,7 +21,6 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { getEmploymentStatus } from '@/feature/post/ui/postFormatFunctions.ts';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
@@ -94,7 +94,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
     isActive,
   } = postDetailData.data;
 
-  console.log(postDetailData.data)
+  console.log(postDetailData.data);
 
   const investCompanyList = investCompany.split(',');
 
@@ -279,7 +279,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           <section>
             <div className="flex flex-col gap-5 items-center items-start xs:flex-row">
               <span>외부 링크</span>
-              {(externalDescriptionLink?.length !== 0 && externalDescriptionLink !== undefined) ?
+              {externalDescriptionLink?.length !== 0 &&
+              externalDescriptionLink !== undefined ? (
                 externalDescriptionLink.map((Link, index) => {
                   return (
                     <div key={index} className="flex">
@@ -299,9 +300,12 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                       </a>
                     </div>
                   );
-                }) : (
-                  <p className="px-4 py-2 gap-1 rounded-lg bg-gray-100">준비 중</p>
-                )}
+                })
+              ) : (
+                <p className="px-4 py-2 gap-1 rounded-lg bg-gray-100">
+                  준비 중
+                </p>
+              )}
             </div>
           </section>
 

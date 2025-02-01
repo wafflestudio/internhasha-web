@@ -25,11 +25,11 @@ import { HashtagField } from '@/feature/company/ui/fields/HashtagField';
 import { InvestAmountField } from '@/feature/company/ui/fields/InvestAmountField';
 import { InvestCompanyField } from '@/feature/company/ui/fields/InvestCompanyField';
 import { SloganField } from '@/feature/company/ui/fields/SloganField';
+import { formatSeries } from '@/feature/post/ui/postFormatFunctions.ts';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { formatSeries } from '@/feature/post/ui/postFormatFunctions.ts';
 
 export const CreateCompanyForm = () => {
   const [isSubmit, setIsSubmit] = useState(false);
@@ -98,8 +98,6 @@ export const CreateCompanyForm = () => {
     if (formStates.series.value === 'NONE') {
       return;
     }
-
-    console.log(imagePreview.value.file);
 
     handleCreateCompany({
       companyInfo: {

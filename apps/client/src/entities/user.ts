@@ -13,6 +13,6 @@ export type User = {
   phoneNumber?: string;
   resumes: Resume[];
   posts: Post[];
-  profileImageLink: string;
+  profileImageLink?: string;
   isMerged: boolean;
 };

@@ -115,9 +115,7 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
               </span>
 
               {isSubmit && contents.isError && (
-                <p className="text-red">
-                  내용은 10,000자 이하로 작성해주세요.
-                </p>
+                <p className="text-red">내용은 10,000자 이하로 작성해주세요.</p>
               )}
             </div>
           </LabelContainer>
@@ -138,9 +136,7 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
               form="CreateResumeForm"
               onClick={handleSubmit}
               disabled={
-                isPending ||
-                phoneNumber.value === '' ||
-                contents.value === ''
+                isPending || phoneNumber.value === '' || contents.value === ''
               }
               className="flex-1 px-4 py-2 rounded-md"
             >
