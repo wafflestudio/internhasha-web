@@ -49,7 +49,7 @@ export const PdfField = ({
 
   return (
     <LabelContainer label={label} required={required}>
-      {input.value !== null ? (
+      {input.value !== null && !input.isError ? (
         <div className="flex gap-2">
           <div className="flex gap-2 jusify-between items-center w-full px-[12px] py-[11px] border rounded-md">
             <p className="text-sm text-grey-normal">{input.value.file.name}</p>

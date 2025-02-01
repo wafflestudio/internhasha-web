@@ -58,7 +58,7 @@ type PostDTO = {
 
   // post 정보
   title: string;
-  employmentEndDate?: string;
+  employmentEndDate: string | null;
   createdAt: string;
   updatedAt: string;
   isActive: boolean;

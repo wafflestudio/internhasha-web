@@ -3,6 +3,7 @@ export type ResponseNecessary = {
   data: unknown;
 };
 
+// TODO: 200 이외의 코드가 내려왔을 때 대응 필요
 export type SuccessResponse<T, Status extends number = 200> = {
   status: Status;
   data: T;

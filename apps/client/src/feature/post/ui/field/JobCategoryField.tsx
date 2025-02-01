@@ -53,7 +53,7 @@ export const JobCategoryField = ({
           : '직무를 선택해주세요.'}
         <img
           src={ICON_SRC.ARROW}
-          className={`${showFilter === 'CATEGORY' ? 'rotate-180' : 'rotate-0'} transition-rotate ease-in-out duration-300`}
+          className={`${showFilter === 'CATEGORY' ? 'rotate-0' : 'rotate-180'} transition-rotate ease-in-out duration-300`}
         />
       </Button>
       <section className="relative">
@@ -94,6 +94,7 @@ export const JobCategoryField = ({
                 onClick={(e) => {
                   e.preventDefault();
                   input.minor.onChange(subCategory);
+                  onClick();
                 }}
                 className={`text-grey-darker justify-start ${input.minor.value === subCategory ? 'bg-grey-light font-bold' : ''}`}
               >

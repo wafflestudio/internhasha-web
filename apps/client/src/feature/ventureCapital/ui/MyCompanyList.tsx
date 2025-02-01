@@ -70,7 +70,7 @@ export const useGetCompanies = () => {
       if (token === null) {
         throw new Error('토큰이 존재하자 않습니다.');
       }
-      return ventureCapitalService.getMyCompany({
+      return ventureCapitalService.getMyCompanys({
         token,
       });
     },
