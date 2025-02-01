@@ -118,6 +118,9 @@ export const FilterSection = ({
         upper: filterElements.investmentMax,
       }),
     );
+  const [selectedFilter, setSelectedFilter] = useState<
+    'RECRUITING' | 'SERIES' | 'INVEST_AMOUNT' | 'NONE'
+  >('NONE');
 
   const handleChangeRecruitingFilter = (input: string) => {
     if (input === 'ALL') {
@@ -237,188 +240,241 @@ export const FilterSection = ({
     setInvestAmountSelect('ALL');
   };
 
-  return (
-    <div className="flex gap-5 items-center">
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant={
-              filterElements.pathStatus !== undefined ? 'selected' : 'secondary'
-            }
-            className="bg-white"
-          >
-            {filterElements.pathStatus !== undefined
-              ? VALID_RECRUITING_OPTION_VALUE[filterElements.pathStatus]
-              : '모집 상태'}{' '}
-            <img src={ICON_SRC.ARROW} className="w-4 h-4 rotate-180" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent>
-          <div className="flex flex-col p-5 gap-[30px]">
-            <RadioGroup
-              onValueChange={handleChangeRecruitingFilter}
-              value={
-                recruitingSelect === undefined
-                  ? 'ALL'
-                  : String(recruitingSelect)
-              }
-              className="flex flex-col gap-[10px]"
-            >
-              <div className="flex gap-[10px] text-sm text-grey-darker">
-                <RadioGroupItem value="ALL" id="recruiting-all" />
-                <Label htmlFor="recruiting-all">전체</Label>
-              </div>
-              {RECRUITING_FILTER_VALUE.map((option, idx) => (
-                <div
-                  key={`recruiting-filter-${idx}`}
-                  className="flex gap-[10px] text-sm text-grey-darker"
-                >
-                  <RadioGroupItem
-                    value={String(option.value)}
-                    id={`recruiting-${option.value}`}
-                  />
-                  <Label htmlFor={`recruiting-${option.value}`}>
-                    {option.label}
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
-            <div className="flex justify-end gap-[6px]">
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={handleClickResetRecruitButton}
-              >
-                초기화
-              </Button>
-              <Button size="sm" onClick={handleClickApplyRecruitingFilter}>
-                적용
-              </Button>
-            </div>
-          </div>
-        </PopoverContent>
-      </Popover>
+  const handleClickAllResetButton = () => {
+    onChangeFilters({});
+  };
 
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant={
-              filterElements.series !== undefined &&
-              filterElements.series.length !== 0
-                ? 'selected'
-                : 'secondary'
+  return (
+    <div className="flex items-center gap-3">
+      <div className="flex gap-5 items-center">
+        <Popover
+          onOpenChange={(open) => {
+            if (open) {
+              setSelectedFilter('RECRUITING');
+              return;
             }
-            className="bg-white"
-          >
-            시리즈
-            <img src={ICON_SRC.ARROW} className="w-4 h-4 rotate-180" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent>
-          <div className="flex flex-col p-5 gap-[30px]">
-            <div className="flex flex-col gap-[10px]">
-              <div className="flex gap-[10px] text-sm text-grey-darker">
-                <Checkbox
-                  value="ALL"
-                  id="series-all"
-                  checked={isAllSeriesSelected}
-                  onCheckedChange={() => {
-                    handleChangeSeriesFilter('ALL');
-                  }}
-                />
-                <Label htmlFor="seires-all">전체</Label>
-              </div>
-              {SERIES_FILTER_VALUE.map((option, idx) => (
-                <div
-                  key={`series-filter-${idx}`}
-                  className="flex gap-[10px] text-sm text-grey-darker"
+            setSelectedFilter('NONE');
+          }}
+        >
+          <PopoverTrigger asChild>
+            <Button
+              variant={
+                filterElements.pathStatus !== undefined
+                  ? 'selected'
+                  : 'secondary'
+              }
+              className="bg-white"
+            >
+              {filterElements.pathStatus !== undefined
+                ? VALID_RECRUITING_OPTION_VALUE[filterElements.pathStatus]
+                : '모집 상태'}{' '}
+              <img
+                src={ICON_SRC.ARROW}
+                className={`${selectedFilter === 'RECRUITING' ? 'rotate-0' : 'rotate-180'} w-4 h-4 duration-300`}
+              />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <div className="flex flex-col p-5 gap-[30px]">
+              <RadioGroup
+                onValueChange={handleChangeRecruitingFilter}
+                value={
+                  recruitingSelect === undefined
+                    ? 'ALL'
+                    : String(recruitingSelect)
+                }
+                className="flex flex-col gap-[10px]"
+              >
+                <div className="flex gap-[10px] text-sm text-grey-darker">
+                  <RadioGroupItem value="ALL" id="recruiting-all" />
+                  <Label htmlFor="recruiting-all">전체</Label>
+                </div>
+                {RECRUITING_FILTER_VALUE.map((option, idx) => (
+                  <div
+                    key={`recruiting-filter-${idx}`}
+                    className="flex gap-[10px] text-sm text-grey-darker"
+                  >
+                    <RadioGroupItem
+                      value={String(option.value)}
+                      id={`recruiting-${option.value}`}
+                    />
+                    <Label htmlFor={`recruiting-${option.value}`}>
+                      {option.label}
+                    </Label>
+                  </div>
+                ))}
+              </RadioGroup>
+              <div className="flex justify-end gap-[6px]">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleClickResetRecruitButton}
                 >
+                  초기화
+                </Button>
+                <Button size="sm" onClick={handleClickApplyRecruitingFilter}>
+                  적용
+                </Button>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
+
+        <Popover
+          onOpenChange={(open) => {
+            if (open) {
+              setSelectedFilter('SERIES');
+              return;
+            }
+            setSelectedFilter('NONE');
+          }}
+        >
+          <PopoverTrigger asChild>
+            <Button
+              variant={
+                filterElements.series !== undefined &&
+                filterElements.series.length !== 0
+                  ? 'selected'
+                  : 'secondary'
+              }
+              className="bg-white"
+            >
+              시리즈
+              <img
+                src={ICON_SRC.ARROW}
+                className={`${selectedFilter === 'SERIES' ? 'rotate-0' : 'rotate-180'} w-4 h-4 duration-300`}
+              />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <div className="flex flex-col p-5 gap-[30px]">
+              <div className="flex flex-col gap-[10px]">
+                <div className="flex gap-[10px] text-sm text-grey-darker">
                   <Checkbox
-                    value={option.value}
-                    id={`series-${option.value}`}
-                    checked={seriesSelect?.includes(option.value as Series)}
+                    value="ALL"
+                    id="series-all"
+                    checked={isAllSeriesSelected}
                     onCheckedChange={() => {
-                      handleChangeSeriesFilter(option.value);
+                      handleChangeSeriesFilter('ALL');
                     }}
                   />
-                  <Label htmlFor={`series-${option.value}`}>
-                    {option.label}
-                  </Label>
+                  <Label htmlFor="seires-all">전체</Label>
                 </div>
-              ))}
-            </div>
-            <div className="flex justify-end gap-[6px]">
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={handleClickResetSeriesButton}
-              >
-                초기화
-              </Button>
-              <Button size="sm" onClick={handleClickApplySeriesFilter}>
-                적용
-              </Button>
-            </div>
-          </div>
-        </PopoverContent>
-      </Popover>
-
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant={
-              filterElements.investmentMax !== undefined ||
-              filterElements.investmentMin !== undefined
-                ? 'selected'
-                : 'secondary'
-            }
-            className="bg-white"
-          >
-            투자 금액{' '}
-            <img src={ICON_SRC.ARROW} className="w-4 h-4 rotate-180" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent>
-          <div className="flex flex-col p-5 gap-[30px]">
-            <RadioGroup
-              onValueChange={handleChangeInvestAmountFilter}
-              value={investAmountSelect}
-              className="flex flex-col gap-[10px]"
-            >
-              <div className="flex gap-[10px] text-sm text-grey-darker">
-                <RadioGroupItem value="ALL" id="invest-amount-all" />
-                <Label htmlFor="invest-amount-all">전체</Label>
+                {SERIES_FILTER_VALUE.map((option, idx) => (
+                  <div
+                    key={`series-filter-${idx}`}
+                    className="flex gap-[10px] text-sm text-grey-darker"
+                  >
+                    <Checkbox
+                      value={option.value}
+                      id={`series-${option.value}`}
+                      checked={seriesSelect?.includes(option.value as Series)}
+                      onCheckedChange={() => {
+                        handleChangeSeriesFilter(option.value);
+                      }}
+                    />
+                    <Label htmlFor={`series-${option.value}`}>
+                      {option.label}
+                    </Label>
+                  </div>
+                ))}
               </div>
-              {INVEST_AMOUNT_VALUE.map((option, idx) => (
-                <div
-                  key={`invest-amount-filter-${idx}`}
-                  className="flex gap-[10px] text-sm text-grey-darker"
+              <div className="flex justify-end gap-[6px]">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleClickResetSeriesButton}
                 >
-                  <RadioGroupItem
-                    value={option.value}
-                    id={`invest-amount-${option.value}`}
-                  />
-                  <Label htmlFor={`invest-amount-${option.value}`}>
-                    {option.label}
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
-            <div className="flex justify-end gap-[6px]">
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={handleClickResetInvestAmountButton}
-              >
-                초기화
-              </Button>
-              <Button size="sm" onClick={handleClickApplyInvestAmountingFilter}>
-                적용
-              </Button>
+                  초기화
+                </Button>
+                <Button size="sm" onClick={handleClickApplySeriesFilter}>
+                  적용
+                </Button>
+              </div>
             </div>
-          </div>
-        </PopoverContent>
-      </Popover>
+          </PopoverContent>
+        </Popover>
+
+        <Popover
+          onOpenChange={(open) => {
+            if (open) {
+              setSelectedFilter('INVEST_AMOUNT');
+              return;
+            }
+            setSelectedFilter('NONE');
+          }}
+        >
+          <PopoverTrigger asChild>
+            <Button
+              variant={
+                filterElements.investmentMax !== undefined ||
+                filterElements.investmentMin !== undefined
+                  ? 'selected'
+                  : 'secondary'
+              }
+              className="bg-white"
+            >
+              투자 금액{' '}
+              <img
+                src={ICON_SRC.ARROW}
+                className={`${selectedFilter === 'INVEST_AMOUNT' ? 'rotate-0' : 'rotate-180'} w-4 h-4 duration-300`}
+              />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <div className="flex flex-col p-5 gap-[30px]">
+              <RadioGroup
+                onValueChange={handleChangeInvestAmountFilter}
+                value={investAmountSelect}
+                className="flex flex-col gap-[10px]"
+              >
+                <div className="flex gap-[10px] text-sm text-grey-darker">
+                  <RadioGroupItem value="ALL" id="invest-amount-all" />
+                  <Label htmlFor="invest-amount-all">전체</Label>
+                </div>
+                {INVEST_AMOUNT_VALUE.map((option, idx) => (
+                  <div
+                    key={`invest-amount-filter-${idx}`}
+                    className="flex gap-[10px] text-sm text-grey-darker"
+                  >
+                    <RadioGroupItem
+                      value={option.value}
+                      id={`invest-amount-${option.value}`}
+                    />
+                    <Label htmlFor={`invest-amount-${option.value}`}>
+                      {option.label}
+                    </Label>
+                  </div>
+                ))}
+              </RadioGroup>
+              <div className="flex justify-end gap-[6px]">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleClickResetInvestAmountButton}
+                >
+                  초기화
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleClickApplyInvestAmountingFilter}
+                >
+                  적용
+                </Button>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
+      </div>
+      <Button
+        variant="secondary"
+        size="sm"
+        className="px-2"
+        onClick={handleClickAllResetButton}
+      >
+        <img src={ICON_SRC.REFRESH} />
+        초기화
+      </Button>
     </div>
   );
 };

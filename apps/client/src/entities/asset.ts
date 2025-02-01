@@ -16,4 +16,5 @@ export const ICON_SRC = {
   UPLOAD: '/svg/drive_folder_upload.svg',
   EDIT: '/svg/edit.svg',
   PLUS: '/svg/add_2.svg',
+  REFRESH: '/svg/refresh.svg',
 };
