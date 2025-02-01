@@ -20,7 +20,7 @@ export const PostCard = ({
   onDetailClick,
   setShowSignInModal,
 }: PostCardProps) => {
-  const { token } = useGuardContext(TokenContext);
+  const { token, role } = useGuardContext(TokenContext);
   const { API_BASE_URL } = useGuardContext(EnvContext);
   const { addBookmark, isPending: isAddBookmarkPending } = useAddBookmark();
   const { deleteBookmark, isPending: isDeleteBookmarkPending } =
@@ -121,35 +121,37 @@ export const PostCard = ({
               <SeriesBadge></SeriesBadge>
             )}
           </div>
-          <div>
-            {isBookmarked ? (
-              <button
-                disabled={isPending}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onClickDeleteBookmark({ postId: id });
-                }}
-              >
-                <img
-                  src={ICON_SRC.BOOKMARK.SELECTED}
-                  className="w-[30px] h-[30px]"
-                />
-              </button>
-            ) : (
-              <button
-                disabled={isPending}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onClickAddBookmark({ postId: id });
-                }}
-              >
-                <img
-                  src={ICON_SRC.BOOKMARK.UNSELECTED}
-                  className="w-[30px] h-[30px]"
-                />
-              </button>
-            )}
-          </div>
+          {role !== 'CURATOR' && (
+            <div>
+              {isBookmarked ? (
+                <button
+                  disabled={isPending}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onClickDeleteBookmark({ postId: id });
+                  }}
+                >
+                  <img
+                    src={ICON_SRC.BOOKMARK.SELECTED}
+                    className="w-[30px] h-[30px]"
+                  />
+                </button>
+              ) : (
+                <button
+                  disabled={isPending}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onClickAddBookmark({ postId: id });
+                  }}
+                >
+                  <img
+                    src={ICON_SRC.BOOKMARK.UNSELECTED}
+                    className="w-[30px] h-[30px]"
+                  />
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </section>
     </div>
