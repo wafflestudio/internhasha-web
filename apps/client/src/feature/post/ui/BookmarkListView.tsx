@@ -25,6 +25,22 @@ export const BookmarkListView = () => {
 
   const { posts: bookmarkList } = bookmarkListData.data;
 
+  const formatEmploymentState = ({
+    isActive,
+    employmentEndDate,
+  }: {
+    isActive: boolean;
+    employmentEndDate: string | null;
+  }) => {
+    if (!isActive) {
+      return '모집 완료';
+    }
+    if (employmentEndDate === null) {
+      return '상시 채용';
+    }
+    return getEmploymentStatus(employmentEndDate);
+  };
+
   return (
     <div>
       <div className="max-w-screen-lg">
@@ -42,10 +58,10 @@ export const BookmarkListView = () => {
                 <div className="flex gap-8">
                   <span>{post.companyName}</span>
                   <span className="text-gray-400">
-                    {post.isActive
-                      ? post.employmentEndDate !== undefined &&
-                        getEmploymentStatus(post.employmentEndDate)
-                      : '모집 완료'}
+                    {formatEmploymentState({
+                      isActive: post.isActive,
+                      employmentEndDate: post.employmentEndDate,
+                    })}
                   </span>
                 </div>
               </Button>

@@ -14,10 +14,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import {
-  getEmploymentStatus,
-  getFormatDate,
-} from '@/util/postFormatFunctions.ts';
+import { getEmploymentStatus } from '@/util/postFormatFunctions.ts';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
@@ -48,10 +45,27 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
     detail,
     headcount,
     employmentEndDate,
+    isActive,
   } = postDetailData.data;
 
   const investCompanyList = investCompany.split(',');
   const tagList = tags?.map((item) => item.tag);
+
+  const formatEmploymentState = ({
+    isActiveInput,
+    employmentEndDateInput,
+  }: {
+    isActiveInput: boolean;
+    employmentEndDateInput: string | null;
+  }) => {
+    if (!isActiveInput) {
+      return '모집 완료';
+    }
+    if (employmentEndDateInput === null) {
+      return '상시 채용';
+    }
+    return getEmploymentStatus(employmentEndDateInput);
+  };
 
   return (
     <div className="max-w-screen-md mx-auto gap-12 p-10 flex">
@@ -337,13 +351,14 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
         <div className="text-sm text-gray-900 font-medium flex items-center gap-3">
           <span>
             채용 마감일 :{' '}
-            {employmentEndDate !== undefined
-              ? getFormatDate(employmentEndDate)
-              : '상시'}
+            {formatEmploymentState({
+              isActiveInput: isActive,
+              employmentEndDateInput: employmentEndDate,
+            })}
           </span>
 
           <span className="bg-gray-600 text-white py-1 px-2 rounded-md">
-            {employmentEndDate !== undefined &&
+            {employmentEndDate !== null &&
               getEmploymentStatus(employmentEndDate)}
           </span>
         </div>
