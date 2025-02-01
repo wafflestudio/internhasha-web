@@ -421,9 +421,9 @@ const useCreateCompanyWithUploads = ({
 
       const randomizedPdfFile =
         pdfFile !== undefined
-          ? `assets/${generateRandomString()}-${pdfFile.name}`
+          ? `static/${generateRandomString()}-${pdfFile.name}`
           : undefined;
-      const randomizedImageFile = `assets/${generateRandomString()}-${imageFile.name}`;
+      const randomizedImageFile = `static/${generateRandomString()}-${imageFile.name}`;
 
       const [pdfPresignedUrlResponse, imagePresignedUrlResponse] =
         await Promise.all([
