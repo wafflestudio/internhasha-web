@@ -3,11 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { ICON_SRC } from '@/entities/asset.ts';
 import { getFormatDate } from '@/feature/post/ui/postFormatFunctions.ts';
+import { EnvContext } from '@/shared/context/EnvContext.ts';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
-import { EnvContext } from '@/shared/context/EnvContext.ts';
 
 export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
   const { resumeDetailData } = useGetResumeDetail({ resumeId });
