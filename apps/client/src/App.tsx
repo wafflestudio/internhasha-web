@@ -27,7 +27,7 @@ import { ResumeListPage } from '@/pages/ResumeListPage';
 import { SignInSelectPage } from '@/pages/SignInSelectPage';
 import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
 import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
-import { VentureCapitalLandingPage } from '@/pages/VentureCapitalLandingPage';
+import { VentureCapitalMyPage } from '@/pages/VentureCapitalMyPage';
 import { AuthCompanySwitchRoute } from '@/shared/auth/AuthAdminSwitchRoute';
 import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { CompanyProtectedRoute } from '@/shared/auth/CompanyProtectedRoute';
@@ -45,26 +45,26 @@ import { implTokenStateRepository } from '@/shared/token/state';
 const RouterProvider = () => {
   return (
     <Routes>
-      <Route
-        path={PATH.INDEX}
-        element={
-          <AuthCompanySwitchRoute
-            nonCompanyPage={<LandingPage />}
-            companyPage={<VentureCapitalLandingPage />}
-          />
-        }
-      />
+      <Route path={PATH.INDEX} element={<LandingPage />} />
       <Route path={PATH.POST_DETAIL} element={<PostDetailPage />} />
       <Route path={PATH.SIGN_IN_SELECT} element={<SignInSelectPage />} />
       <Route path={PATH.SIGN_UP_SELECT} element={<SignUpSelectPage />} />
       <Route path={PATH.SIGN_UP_LOCAL} element={<LocalSignUpPage />} />
       <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
       <Route path={PATH.SIGN_UP_COMPLETE} element={<SignUpCompletePage />} />
-      <Route path={PATH.CREATE_RESUME} element={<CreateResumePage />} />
-      <Route path={PATH.RESUME_LIST} element={<ResumeListPage />} />
-      <Route path={PATH.RESUME_DETAIL} element={<ResumeDetailPage />} />
       <Route element={<AuthProtectedRoute />}>
-        <Route path={PATH.MY_PAGE} element={<MyPage />} />
+        <Route
+          path={PATH.MY_PAGE}
+          element={
+            <AuthCompanySwitchRoute
+              nonCompanyPage={<MyPage />}
+              companyPage={<VentureCapitalMyPage />}
+            />
+          }
+        />
+        <Route path={PATH.CREATE_RESUME} element={<CreateResumePage />} />
+        <Route path={PATH.RESUME_LIST} element={<ResumeListPage />} />
+        <Route path={PATH.RESUME_DETAIL} element={<ResumeDetailPage />} />
       </Route>
       <Route element={<CompanyProtectedRoute />}>
         <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
