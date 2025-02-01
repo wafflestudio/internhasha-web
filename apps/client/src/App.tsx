@@ -63,12 +63,13 @@ const RouterProvider = () => {
       <Route path={PATH.CREATE_RESUME} element={<CreateResumePage />} />
       <Route path={PATH.RESUME_LIST} element={<ResumeListPage />} />
       <Route path={PATH.RESUME_DETAIL} element={<ResumeDetailPage />} />
-      <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
-      <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
       <Route element={<AuthProtectedRoute />}>
         <Route path={PATH.MY_PAGE} element={<MyPage />} />
       </Route>
-      <Route element={<CompanyProtectedRoute />}></Route>
+      <Route element={<CompanyProtectedRoute />}>
+        <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
+        <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
+      </Route>
     </Routes>
   );
 };

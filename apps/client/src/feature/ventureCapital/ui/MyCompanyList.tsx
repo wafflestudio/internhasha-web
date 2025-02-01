@@ -6,9 +6,11 @@ import { ICON_SRC } from '@/entities/asset';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
+import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const MyCompanyList = () => {
   const { companyData } = useGetCompanies();
+  const { toCreatePost } = useRouteNavigation();
 
   if (companyData === undefined) {
     return (
@@ -42,7 +44,13 @@ export const MyCompanyList = () => {
           className="flex justify-between items-center h-[50px] px-[18px] bg-white rounded-md"
         >
           <span>{item.companyName}</span>
-          <Button variant="secondary" className="test-sm flex h-[28px] px-2">
+          <Button
+            variant="secondary"
+            onClick={() => {
+              toCreatePost({ companyId: item.id });
+            }}
+            className="test-sm flex h-[28px] px-2"
+          >
             <img src={ICON_SRC.EDIT} />
             공고 작성
           </Button>
