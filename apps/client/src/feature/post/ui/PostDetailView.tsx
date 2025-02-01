@@ -337,14 +337,15 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
         <div className="text-sm text-gray-900 font-medium flex items-center gap-3">
           <span>
             채용 마감일 :{' '}
-            {employmentEndDate !== undefined
+            {employmentEndDate != null
               ? getFormatDate(employmentEndDate)
-              : '상시'}
+              : '상시 채용'}
           </span>
 
           <span className="bg-gray-600 text-white py-1 px-2 rounded-md">
-            {employmentEndDate !== undefined &&
-              getEmploymentStatus(employmentEndDate)}
+            {employmentEndDate != null ?
+              getEmploymentStatus(employmentEndDate)
+            : '상시'}
           </span>
         </div>
         <div className="flex flex-col gap-3">

@@ -72,7 +72,7 @@ export const PostCard = ({
         </div>
 
         <span className="text-grey-normal-hover">
-          {employmentEndDate === undefined
+          {employmentEndDate == null
             ? '상시 채용'
             : getEmploymentStatus(employmentEndDate)}
         </span>
