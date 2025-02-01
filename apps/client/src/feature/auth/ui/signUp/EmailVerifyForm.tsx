@@ -58,13 +58,13 @@ export const EmailVerifyForm = () => {
     timeLeft,
     responseMessage: codeResponseMessage,
     isPending: isPendingSend,
-  } = useSendCode({ setShowModal });
+  } = useSendCode();
   const {
     emailVerify,
     verifySuccess,
     responseMessage: emailResponseMessage,
     isPending: isPendingVerify,
-  } = useEmailVerify({ setShowModal });
+  } = useEmailVerify();
   const {
     googleSignUp,
     responseMessage: googleSignUpResponseMessage,
@@ -256,11 +256,7 @@ export const EmailVerifyForm = () => {
   );
 };
 
-const useSendCode = ({
-  setShowModal,
-}: {
-  setShowModal(input: 'NONE' | 'ADD' | 'REDIRECT'): void;
-}) => {
+const useSendCode = () => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
   const [sendSuccess, setSendSuccess] = useState(false);
@@ -307,10 +303,6 @@ const useSendCode = ({
         startTimer();
       } else {
         stopTimer();
-        if (response.code === 'USER_001') {
-          setShowModal('REDIRECT');
-          return;
-        }
         setResponseMessage(createErrorMessage(response.code));
       }
     },
@@ -333,11 +325,7 @@ const useSendCode = ({
   };
 };
 
-const useEmailVerify = ({
-  setShowModal,
-}: {
-  setShowModal(input: 'NONE' | 'ADD' | 'REDIRECT'): void;
-}) => {
+const useEmailVerify = () => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
   const [verifySuccess, setVerifySuccess] = useState(false);
@@ -353,10 +341,6 @@ const useEmailVerify = ({
       if (response.type === 'success') {
         setVerifySuccess(true);
       } else {
-        if (response.code === 'USER_001') {
-          setShowModal('REDIRECT');
-          return;
-        }
         setResponseMessage(createErrorMessage(response.code));
         setVerifySuccess(false);
       }
@@ -401,7 +385,7 @@ const useGoogleSignUp = ({
         }
         toSignUpComplete();
       } else {
-        if (response.code === 'USER_001' || response.code === 'USER-003') {
+        if (response.code === 'USER_001' || response.code === 'USER_003') {
           setShowModal('REDIRECT');
           return;
         }
