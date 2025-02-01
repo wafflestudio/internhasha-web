@@ -13,6 +13,7 @@ export const GlobalNavigationBar = () => {
     useRouteNavigation();
   const handleClickLogoutButton = () => {
     logout();
+    toMain();
   };
 
   return (
