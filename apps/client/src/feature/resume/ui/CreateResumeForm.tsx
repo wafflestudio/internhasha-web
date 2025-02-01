@@ -1,11 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { Button, SubmitButton } from '@/components/button';
 import { FormContainer } from '@/components/form';
 import { LabelContainer } from '@/components/input/LabelContainer.tsx';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal.tsx';
 import { FormErrorResponse } from '@/components/response/formResponse';
+import { Button } from '@/components/ui/button.tsx';
 import type { ResumeRequest } from '@/entities/resume.ts';
 import {
   CONTENTS_MAX_LENGTH,
@@ -56,7 +56,7 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
   return (
     <div className="min-h-screen flex flex-col items-center gap-8 px-10">
       <div className="w-full max-w-2xl">
-        <p className="w-full text-left text-3xl py-7 font-medium text-gray-700">
+        <p className="w-full text-left text-3xl py-7 font-bold text-gray-700">
           커피챗 신청서 작성
         </p>
         <FormContainer
@@ -83,7 +83,7 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
                 p-3 resize-none overflow-auto"
             />
             {isSubmit && phoneNumber.isError && (
-              <p className="text-gray-500">
+              <p className="text-red">
                 전화번호 양식에 맞게 작성해주세요. (예시: 010-0000-0000)
               </p>
             )}
@@ -115,32 +115,37 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
               </span>
 
               {isSubmit && contents.isError && (
-                <p className="text-gray-500">
+                <p className="text-red">
                   내용은 10,000자 이하로 작성해주세요.
                 </p>
               )}
             </div>
           </LabelContainer>
 
-          <div className="flex">
+          <div className="flex gap-2">
             <Button
               type="button"
+              variant="ghost"
               onClick={handleClickCancelButton}
               disabled={isPending}
               className="flex-1 px-4 py-2 bg-gray-100 text-gray-600 rounded-md hover:bg-gray-200"
             >
               취소
             </Button>
-
-            <SubmitButton
+            <Button
               type="submit"
+              variant="default"
               form="CreateResumeForm"
               onClick={handleSubmit}
-              disabled={isPending}
-              className="flex-1 px-4 py-2 rounded-md bg-gray-400 text-white hover:bg-gray-500"
+              disabled={
+                isPending ||
+                phoneNumber.value === '' ||
+                contents.value === ''
+              }
+              className="flex-1 px-4 py-2 rounded-md"
             >
               등록
-            </SubmitButton>
+            </Button>
           </div>
           {responseMessage !== '' && (
             <FormErrorResponse>{responseMessage}</FormErrorResponse>
