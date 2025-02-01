@@ -13,6 +13,7 @@ import { implLandingService } from '@/feature/landing/service/landingService';
 import { implPostService } from '@/feature/post';
 import { implResumeService } from '@/feature/resume';
 import { implUserService } from '@/feature/user';
+import { implVentureCapitalService } from '@/feature/ventureCapital';
 import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
 import { CreateResumePage } from '@/pages/CreateResumePage';
@@ -62,12 +63,13 @@ const RouterProvider = () => {
       <Route path={PATH.CREATE_RESUME} element={<CreateResumePage />} />
       <Route path={PATH.RESUME_LIST} element={<ResumeListPage />} />
       <Route path={PATH.RESUME_DETAIL} element={<ResumeDetailPage />} />
-      <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
-      <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
       <Route element={<AuthProtectedRoute />}>
         <Route path={PATH.MY_PAGE} element={<MyPage />} />
       </Route>
-      <Route element={<CompanyProtectedRoute />}></Route>
+      <Route element={<CompanyProtectedRoute />}>
+        <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
+        <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
+      </Route>
     </Routes>
   );
 };
@@ -177,6 +179,7 @@ export const App = () => {
       rolesFilterLocalStorageRepository,
       rolesFilterStateRepository,
     }),
+    ventureCapitalService: implVentureCapitalService({ apis }),
   };
 
   return (

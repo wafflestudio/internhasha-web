@@ -27,7 +27,7 @@ export const CreateCompanyPage = () => {
   const location = useLocation();
   const state = location.state as Body | null;
 
-  if (state === null) {
+  if (state?.companyBody === undefined) {
     return (
       <div className="min-h-screen">
         <GlobalNavigationBar />

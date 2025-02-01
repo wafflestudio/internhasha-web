@@ -1,10 +1,5 @@
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/tabs/tabs.tsx';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BookmarkListView } from '@/feature/post/ui/BookmarkListView.tsx';
 import { ResumeListView } from '@/feature/resume';
 import { MyInfo } from '@/feature/user';

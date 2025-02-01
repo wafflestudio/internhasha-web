@@ -16,7 +16,7 @@ export const GlobalNavigationBar = () => {
   };
 
   return (
-    <header className="flex justify-center sticky top-0 z-50 bg-white shadow-md">
+    <header className="flex justify-center sticky top-0 z-50 bg-grey-light shadow-md">
       <div className="flex w-full sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl px-6 py-4 justify-between items-center">
         <h1
           onClick={toMain}
