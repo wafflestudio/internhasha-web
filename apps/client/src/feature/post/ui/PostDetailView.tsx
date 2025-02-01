@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
 import {
   Card,
@@ -6,24 +7,55 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/card/card.tsx';
+import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
 import { Button } from '@/components/ui/button.tsx';
+import { ICON_SRC } from '@/entities/asset.ts';
 import { SeriesBadge } from '@/feature/post/ui/SeriesBadge.tsx';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+import { useAddBookmark, useDeleteBookmark } from '@/util/bookmarkFunctions.ts'
 import {
   getEmploymentStatus,
   getFormatDate,
 } from '@/util/postFormatFunctions.ts';
-import { ICON_SRC } from '@/entities/asset.ts';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
   const { API_BASE_URL } = useGuardContext(EnvContext);
+  const { token } = useGuardContext(TokenContext);
+
   const { toMain, toCreateResume } = useRouteNavigation();
+
+  const [showSignInModal, setShowSignInModal] = useState(false);
+  const closeSignInModal = () => {
+    setShowSignInModal(false);
+  };
+
+  const { addBookmark, isPending: isAddBookmarkPending } = useAddBookmark();
+  const { deleteBookmark, isPending: isDeleteBookmarkPending } =
+    useDeleteBookmark();
+
+  const isPending = isAddBookmarkPending || isDeleteBookmarkPending;
+
+  const onClickAddBookmark = ({ id }: { id: string }) => {
+    if (token === null) {
+      setShowSignInModal(true);
+      return;
+    }
+    addBookmark({ postId: id });
+  };
+
+  const onClickDeleteBookmark = ({ id }: { id: string }) => {
+    if (token === null) {
+      setShowSignInModal(true);
+      return;
+    }
+    deleteBookmark({ postId: id });
+  };
 
   // TODO: 전체 페이지 대신 카드 컴포넌트만 로딩되도록 설정
   if (postDetailData === undefined) {
@@ -49,6 +81,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
     detail,
     headcount,
     employmentEndDate,
+    isBookmarked,
   } = postDetailData.data;
 
   const investCompanyList = investCompany.split(',');
@@ -67,7 +100,38 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             />
             <span className="text-gray-900 text-2xl">{companyName}</span>
           </div>
-          <span className="text-black text-4xl font-bold">{title}</span>
+          <div className="flex justify-between w-full">
+            <span className="text-black text-4xl font-bold">{title}</span>
+            <div className="content-center">
+              {isBookmarked ? (
+                <button
+                  disabled={isPending}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onClickDeleteBookmark({ id: postId });
+                  }}
+                >
+                  <img
+                    src={ICON_SRC.BOOKMARK.SELECTED}
+                    className="w-[30px] h-[30px]"
+                  />
+                </button>
+              ) : (
+                <button
+                  disabled={isPending}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onClickAddBookmark({ id: postId });
+                  }}
+                >
+                  <img
+                    src={ICON_SRC.BOOKMARK.UNSELECTED}
+                    className="w-[30px] h-[30px]"
+                  />
+                </button>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* 회사 소개 */}
@@ -79,7 +143,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                 <p className="text-lg text-gray-600 font-normal">{slogan}</p>
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col gap-4 space-y-4 py-3 px-4 sm:py-6 sm:px-8 rounded-lg bg-gray-100">
+            <CardContent className="flex flex-col gap-4 space-y-4 py-6 px-4 sm:py-6 sm:px-8 rounded-lg bg-gray-100">
               <div className="flex flex-col gap-8 sm:gap-16 xs:flex-row">
                 <div className="flex items-center flex-1">
                   <span className="text-sm w-24 sm:w-32 text-gray-500 font-medium">
@@ -135,7 +199,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                   href={landingPageLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center px-4 py-2 gap-1 rounded-lg bg-gray-100"
+                  className="flex items-center px-3 py-2 gap-1 rounded-lg bg-gray-100"
                 >
                   <img src={ICON_SRC.LINK} className="w-[20px] h-[20px]" />
                   <span>링크 접속</span>
@@ -145,7 +209,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               )}
             </div>
 
-            <div className="flex gap-5 items-center flex-col xs:flex-row">
+            <div className="flex gap-5 items-center flex-col xs:flex-row flex-1">
               <span>IR Deck 자료</span>
               {irDeckLink != null ? (
                 <a
@@ -153,7 +217,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                   target="_blank"
                   download={true}
                   rel="noopener noreferrer"
-                  className="flex items-center px-4 py-2 gap-1 rounded-lg bg-gray-100"
+                  className="flex items-center px-3 py-2 gap-1 rounded-lg bg-gray-100"
                 >
                   <img src={ICON_SRC.DOWNLOAD} className="w-[20px] h-[20px]" />
                   <span>IR Deck 자료</span>
@@ -165,8 +229,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           </section>
 
           <section>
-            <span>외부 링크</span>
-            <div>
+            <div className="flex flex-col gap-5 items-start xs:flex-row">
+              <span>외부 링크</span>
               {externalDescriptionLink !== undefined &&
                 externalDescriptionLink.map((Link, index) => {
                   return (
@@ -276,6 +340,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           </Button>
         </div>
       </div>
+      {showSignInModal && <SignInForBookmarkModal onClose={closeSignInModal} />}
     </div>
   );
 };
@@ -285,11 +350,11 @@ export const useGetPostDetail = ({ postId }: { postId: string }) => {
   const { postService } = useGuardContext(ServiceContext);
 
   const { data: postDetailData } = useQuery({
-    queryKey: ['postServicce', 'getPostDetail', token] as const,
-    queryFn: ({ queryKey: [, , t] }) => {
+    queryKey: ['postService', 'getPostDetail',postId, token] as const,
+    queryFn: ({ queryKey: [, , pid, t] }) => {
       return postService.getPostDetail({
         token: t !== null ? t : undefined,
-        postId: postId,
+        postId: pid,
       });
     },
   });
