@@ -22,23 +22,23 @@ export const MyInfo = () => {
   const { name, snuMail, phoneNumber } = myInfoData.data;
 
   return (
-    <div className="space-y-6 w-3/5">
+    <div className="w-full flex flex-col gap-4">
       <Card>
-        <CardContent className="p-4 space-y-4">
-          <p className="text-xl p-4 border-b-2">이름: {name}</p>
-          <p className="text-xl p-4 border-b-2">메일: {snuMail}</p>
-          <p className="text-xl p-4 border-b-2">전화번호: {phoneNumber}</p>
+        <CardContent className="flex flex-col p-4 gap-2">
+          <p className="p-2 border-b-[1px]">이름: {name}</p>
+          <p className="p-2 border-b-[1px]">스누메일: {snuMail}</p>
+          <p className="p-2 border-b-[1px]">전화번호: {phoneNumber}</p>
         </CardContent>
       </Card>
 
-      <div className="flex gap-4">
+      <div className="flex gap-2">
         {/* 정보 수정 버튼 */}
-        <Button variant="outline" className="w-full">
+        <Button variant="outline" className="flex-1">
           정보 수정하기
         </Button>
 
         {/* 회원 탈퇴 버튼 */}
-        <Button variant="destructive" className="w-full">
+        <Button variant="destructive" className="flex-1">
           회원 탈퇴하기
         </Button>
       </div>
