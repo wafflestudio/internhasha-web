@@ -1,2 +1,2 @@
 export { implVentureCapitalService } from '@/feature/ventureCapital/service/ventureCapitalService';
-export { VentureCapitalLandingTab } from '@/feature/ventureCapital/ui/VentureCapitalLandingTab';
+export { VentureCapitalMyTab } from '@/feature/ventureCapital/ui/VentureCapitalMyTab';

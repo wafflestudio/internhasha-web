@@ -8,7 +8,7 @@ import { MyPage } from '@/feature/ventureCapital/ui/MyPage';
 import { MyPostList } from '@/feature/ventureCapital/ui/MyPostList';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
-export const VentureCapitalLandingTab = () => {
+export const VentureCapitalMyTab = () => {
   const { toCreateCompany } = useRouteNavigation();
   const [currentTab, setCurrentTab] = useState<'COMPANY' | 'RESUME' | 'MYPAGE'>(
     'COMPANY',

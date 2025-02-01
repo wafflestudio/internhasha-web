@@ -24,7 +24,7 @@ import { getEmploymentStatus } from '@/util/postFormatFunctions';
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
   const { API_BASE_URL } = useGuardContext(EnvContext);
-  const { token } = useGuardContext(TokenContext);
+  const { token, role } = useGuardContext(TokenContext);
 
   const { toMain, toCreateResume } = useRouteNavigation();
 
@@ -117,35 +117,37 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           </div>
           <div className="flex justify-between w-full">
             <span className="text-black text-4xl font-bold">{title}</span>
-            <div className="content-center">
-              {isBookmarked ? (
-                <button
-                  disabled={isPending}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onClickDeleteBookmark({ id: postId });
-                  }}
-                >
-                  <img
-                    src={ICON_SRC.BOOKMARK.SELECTED}
-                    className="w-[30px] h-[30px]"
-                  />
-                </button>
-              ) : (
-                <button
-                  disabled={isPending}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onClickAddBookmark({ id: postId });
-                  }}
-                >
-                  <img
-                    src={ICON_SRC.BOOKMARK.UNSELECTED}
-                    className="w-[30px] h-[30px]"
-                  />
-                </button>
-              )}
-            </div>
+            {role !== 'CURATOR' && (
+              <div className="content-center">
+                {isBookmarked ? (
+                  <button
+                    disabled={isPending}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onClickDeleteBookmark({ id: postId });
+                    }}
+                  >
+                    <img
+                      src={ICON_SRC.BOOKMARK.SELECTED}
+                      className="w-[30px] h-[30px]"
+                    />
+                  </button>
+                ) : (
+                  <button
+                    disabled={isPending}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onClickAddBookmark({ id: postId });
+                    }}
+                  >
+                    <img
+                      src={ICON_SRC.BOOKMARK.UNSELECTED}
+                      className="w-[30px] h-[30px]"
+                    />
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -341,20 +343,34 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               getEmploymentStatus(employmentEndDate)}
           </span>
         </div>
-        <div className="flex flex-col gap-3">
-          <Button
-            variant="outline"
-            onClick={() => {
-              toCreateResume({ postId });
-            }}
-            className="bg-gray-600 text-white h-12 hover:bg-gray-400"
-          >
-            커피챗 신청하기
-          </Button>
-          <Button variant="outline" onClick={toMain}>
-            목록으로
-          </Button>
-        </div>
+        {role !== 'CURATOR' && (
+          <div className="flex flex-col gap-3">
+            <Button
+              onClick={() => {
+                toCreateResume({ postId });
+              }}
+            >
+              커피챗 신청하기
+            </Button>
+            <Button variant="outline" onClick={toMain}>
+              목록으로
+            </Button>
+          </div>
+        )}
+        {/* // TODO: 내가 작성한 글에서는 삭제, 수정, 목록으로가 나타나도록 수정 */}
+        {/* (
+          <div className="flex flex-row md:flex-col-reverse gap-3">
+            <Button variant="destructive" onClick={() => {}} className="flex-1">
+              공고 삭제하기
+            </Button>
+            <Button variant="outline" onClick={toMain} className="flex-1">
+              목록으로
+            </Button>
+            <Button onClick={() => {}} className="flex-1">
+              공고 수정하기
+            </Button>
+          </div>
+        ) */}
       </div>
       {showSignInModal && <SignInForBookmarkModal onClose={closeSignInModal} />}
     </div>

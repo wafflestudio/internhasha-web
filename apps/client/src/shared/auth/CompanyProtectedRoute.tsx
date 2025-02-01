@@ -1,10 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
-import { jwtDecode } from 'jwt-decode';
 import { useRef } from 'react';
 import { Outlet } from 'react-router';
 
 import { ReSignInModal } from '@/components/modal/ReSignInModal';
-import type { DecodedToken } from '@/entities/decodedToken';
 import { PATH } from '@/entities/route';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -13,8 +11,10 @@ import { RouteNavigator } from '@/shared/route/RouteNavigator';
 
 export const CompanyProtectedRoute = () => {
   const hasReissued = useRef(false);
-  const { token } = useGuardContext(TokenContext);
+  const { token, role } = useGuardContext(TokenContext);
   const { reissueToken } = useRefreshToken();
+
+  console.log(role, token);
 
   if (token === null && !hasReissued.current) {
     reissueToken();
@@ -26,14 +26,8 @@ export const CompanyProtectedRoute = () => {
     return <ReSignInModal />;
   }
 
-  try {
-    const decoded = jwtDecode<DecodedToken>(token);
-
-    if (decoded.role === 'CURATOR') {
-      return <Outlet />;
-    }
-  } catch {
-    return <RouteNavigator link={PATH.INDEX} />;
+  if (role === 'CURATOR') {
+    return <Outlet />;
   }
 
   return <RouteNavigator link={PATH.INDEX} />;
