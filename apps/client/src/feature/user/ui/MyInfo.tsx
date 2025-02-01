@@ -19,17 +19,6 @@ export const MyInfo = () => {
   return (
     <div className="w-full flex flex-col gap-4">
       <Card>
-        <CardContent className="flex flex-col p-4 gap-2">
-          <p className="p-2 border-b-[1px]">
-            <Skeleton className="" />
-          </p>
-          <p className="p-2 border-b-[1px]">
-            <Skeleton />
-          </p>
-          <p className="p-2 border-b-[1px]">
-            <Skeleton />
-          </p>
-        </CardContent>
         {myInfoData !== undefined ? (
           <CardContent className="flex flex-col p-4 gap-2">
             <p className="p-2 border-b-[1px]">이름: {myInfoData.data.name}</p>
