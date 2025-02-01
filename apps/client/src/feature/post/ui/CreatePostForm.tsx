@@ -103,7 +103,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           errorMessage="공고명은 500자 이내로 작성해주세요."
           required={true}
         />
-        <div className="flex w-full gap-2">
+        <div className="flex flex-col md:flex-row w-full gap-2">
           <div className="flex-1">
             <JobCategoryField
               label="직무 유형"
@@ -147,7 +147,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           isPending={isPending}
           isSubmit={isSubmit}
           isSubmitError={formStates.detail.isError}
-          errorMessage={`공고 글은 ${CONTENT_MAX_LENGTH}자 이내로 작성해주세요.`}
+          errorMessage={`공고 글은 0자 이상 ${CONTENT_MAX_LENGTH}자 이내로 작성해주세요.`}
           required={true}
         />
         <EmploymentEndDateField

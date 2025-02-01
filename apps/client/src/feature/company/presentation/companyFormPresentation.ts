@@ -155,7 +155,9 @@ export const companyFormPresentation: CompanyFormPresentation = {
         },
         investAmount: {
           isError:
-            isNaN(Number(investAmount.value)) || Number(investAmount.value) < 0,
+            investAmount.value.trim().length === 0 ||
+            isNaN(Number(investAmount.value)) ||
+            Number(investAmount.value) < 0,
           value: Number(investAmount.value),
         },
         investCompany: {

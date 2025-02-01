@@ -10,17 +10,11 @@ import { TokenContext } from '@/shared/context/TokenContext';
 export const MyInfo = () => {
   const { myInfoData } = useMyInfo();
 
-  // if (myInfoData === undefined) {
-  //   return <div>로딩중...</div>;
-  // }
-
   if (myInfoData?.type === 'error') {
     return (
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
   }
-
-  // const { name, snuMail, phoneNumber } = myInfoData.data;
 
   return (
     <div className="w-full flex flex-col gap-4">

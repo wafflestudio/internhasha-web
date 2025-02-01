@@ -83,6 +83,17 @@ export const postFormPresentation: PostFormPresentation = {
         ? `${employmentEndDate.value}T23:59:59`
         : '';
 
+    const checkOverToday = (datetime: string) => {
+      if (datetime.trim().length === 0) {
+        return true;
+      }
+
+      const currentDateTime = new Date(); // 현재 시각
+      const employmentEndDateTimeObj = new Date(employmentEndDateTime);
+
+      return employmentEndDateTimeObj > currentDateTime;
+    };
+
     return {
       inputStates: {
         title,
@@ -112,6 +123,7 @@ export const postFormPresentation: PostFormPresentation = {
         },
         employmentEndDateTime: {
           isError:
+            !checkOverToday(employmentEndDate.value) ||
             employmentEndDate.isError ||
             (employmentEndDateTime !== '' &&
               !DATE_TIME_REGEX.test(employmentEndDateTime)),

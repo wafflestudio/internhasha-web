@@ -176,7 +176,7 @@ export const CreateCompanyForm = () => {
           input={imagePreview}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={imagePreview.isError}
+          isSubmitError={imagePreview.isError || imagePreview.value === null}
           errorMessage="1MB 이하의 이미지 파일을 올려주세요."
           infoMessage="회사 썸네일 이미지는 정사각형 비율(1:1)로 보여져요."
           required={true}
