@@ -4,8 +4,8 @@ import type { BriefPost } from '@/entities/post';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { TokenContext } from '@/shared/context/TokenContext';
-import { formatSeries, getEmploymentStatus } from '@/util/postFormatFunctions';
 import { useAddBookmark, useDeleteBookmark } from '@/util/bookmarkFunctions.ts';
+import { formatSeries, getEmploymentStatus } from '@/util/postFormatFunctions';
 
 type PostCardProps = {
   post: BriefPost;

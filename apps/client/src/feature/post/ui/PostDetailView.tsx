@@ -17,7 +17,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { useAddBookmark, useDeleteBookmark } from '@/util/bookmarkFunctions.ts'
+import { useAddBookmark, useDeleteBookmark } from '@/util/bookmarkFunctions.ts';
 import {
   getEmploymentStatus,
   getFormatDate,
@@ -350,7 +350,7 @@ export const useGetPostDetail = ({ postId }: { postId: string }) => {
   const { postService } = useGuardContext(ServiceContext);
 
   const { data: postDetailData } = useQuery({
-    queryKey: ['postService', 'getPostDetail',postId, token] as const,
+    queryKey: ['postService', 'getPostDetail', postId, token] as const,
     queryFn: ({ queryKey: [, , pid, t] }) => {
       return postService.getPostDetail({
         token: t !== null ? t : undefined,
