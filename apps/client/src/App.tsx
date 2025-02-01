@@ -87,10 +87,11 @@ export const App = () => {
   const tokenLocalStorageRepository = implTokenLocalStorageRepository();
   const rolesFilterLocalStorageRepository =
     implRolesFilterLocalStorageRepository();
+  const { token: storagedToken, role: storagedRole } =
+    tokenLocalStorageRepository.getToken();
 
-  const [token, setToken] = useState<string | null>(
-    tokenLocalStorageRepository.getToken,
-  );
+  const [token, setToken] = useState<string | null>(storagedToken);
+  const [role, setRole] = useState<'NORMAL' | 'CURATOR' | null>(storagedRole);
   const [activeCategory, setActiveCategory] = useState<RolesFilterCategory>(
     rolesFilterLocalStorageRepository.getActiveJobCategory,
   );
@@ -99,7 +100,7 @@ export const App = () => {
   );
 
   const ENV = useGuardContext(EnvContext);
-  const tokenStateRepository = implTokenStateRepository({ setToken });
+  const tokenStateRepository = implTokenStateRepository({ setToken, setRole });
   const rolesFilterStateRepository = implRolesFilterStateRepository({
     setActiveCategory,
     setIsFilterDropdownOpen,
@@ -185,7 +186,7 @@ export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ServiceContext.Provider value={services}>
-        <TokenContext.Provider value={{ token }}>
+        <TokenContext.Provider value={{ token, role }}>
           <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID}>
             <RolesFilterContext.Provider
               value={{ activeCategory, isFilterDropdownOpen }}
