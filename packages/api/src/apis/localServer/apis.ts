@@ -335,10 +335,16 @@ export const getLocalServerApis = ({
         token,
       });
     },
-    "GET /post/position/me": ({ token }: { token: string }) => {
-      return callWithToken<SuccessResponse<PostBriefDTO[]>>({
+    "GET /post/position/me": ({
+      token,
+      params,
+    }: {
+      token: string;
+      params: PostPathParams;
+    }) => {
+      return callWithToken<SuccessResponse<PostsResponse>>({
         method: "GET",
-        path: "post/position/me",
+        path: `post/position/me?${params.postPath}`,
         token,
       });
     },

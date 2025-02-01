@@ -61,7 +61,7 @@ export type Post = {
 
   // post 정보
   title: string;
-  employmentEndDate?: string;
+  employmentEndDate: string | null;
   createdAt: string;
   updatedAt: string;
   isActive: boolean;
@@ -89,13 +89,8 @@ export type CreateCompanyRequest = Pick<
 
 export type CreatePostRequest = Pick<
   Post,
-  | 'title'
-  | 'employmentEndDate'
-  | 'category'
-  | 'detail'
-  | 'headcount'
-  | 'isActive'
->;
+  'title' | 'category' | 'detail' | 'headcount' | 'isActive'
+> & { employmentEndDate?: string };
 
 export type BriefPost = Omit<
   Post,
