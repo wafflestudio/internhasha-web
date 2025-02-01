@@ -6,7 +6,7 @@ import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { TokenContext } from '@/shared/context/TokenContext.ts';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
-import { getEmploymentStatus } from '@/util/postFormatFunctions.ts';
+import { getEmploymentStatus } from '@/feature/post/ui/postFormatFunctions.ts';
 
 export const BookmarkListView = () => {
   const { bookmarkListData } = useGetBookmarkList();

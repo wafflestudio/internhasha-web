@@ -29,7 +29,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { formatSeries } from '@/util/postFormatFunctions';
+import { formatSeries } from '@/feature/post/ui/postFormatFunctions.ts';
 
 export const CreateCompanyForm = () => {
   const [isSubmit, setIsSubmit] = useState(false);

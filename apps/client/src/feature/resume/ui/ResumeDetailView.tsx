@@ -5,7 +5,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
-import { getFormatDate } from '@/util/postFormatFunctions.ts';
+import { getFormatDate } from '@/feature/post/ui/postFormatFunctions.ts';
 
 export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
   const { resumeDetailData } = useGetResumeDetail({ resumeId });

@@ -3,7 +3,7 @@ import { ICON_SRC } from '@/entities/asset';
 import type { BriefPost } from '@/entities/post';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
-import { formatSeries, getEmploymentStatus } from '@/util/postFormatFunctions';
+import { formatSeries, getEmploymentStatus } from '@/feature/post/ui/postFormatFunctions.ts';
 
 type PostCardProps = {
   post: BriefPost;
