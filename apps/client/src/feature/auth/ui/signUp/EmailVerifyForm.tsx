@@ -155,7 +155,10 @@ export const EmailVerifyForm = () => {
             </div>
             {!verifySuccess && (
               <Button
-                onClick={handleClickSendEmailCodeButton}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleClickSendEmailCodeButton();
+                }}
                 disabled={isPending || sendCodeDisable}
               >
                 인증코드 받기
@@ -189,13 +192,17 @@ export const EmailVerifyForm = () => {
                 )}
                 {!verifySuccess && !isCodeExpired && (
                   <Button
-                    onClick={handleClickVerifyEmailButton}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleClickVerifyEmailButton();
+                    }}
                     disabled={isPending || verifyEmailDisable}
                   >
                     인증코드 확인
                   </Button>
                 )}
               </div>
+
               <div className="flex flex-col gap-2">
                 {verifySuccess && (
                   <FormInfoResponse>인증 성공</FormInfoResponse>
@@ -205,7 +212,9 @@ export const EmailVerifyForm = () => {
                     인증코드가 만료되었습니다.
                   </FormErrorResponse>
                 )}
-                <FormErrorResponse>{emailResponseMessage}</FormErrorResponse>
+                {!verifySuccess && (
+                  <FormErrorResponse>{emailResponseMessage}</FormErrorResponse>
+                )}
               </div>
             </LabelContainer>
           </>
