@@ -83,11 +83,16 @@ export const postFormPresentation: PostFormPresentation = {
         ? `${employmentEndDate.value}T23:59:59`
         : '';
 
-    const currentDateTime = new Date(); // 현재 시각
+    const checkOverToday = (datetime: string) => {
+      if (datetime.trim().length === 0) {
+        return true;
+      }
 
-    const employmentEndDateTimeObj = new Date(employmentEndDateTime);
+      const currentDateTime = new Date(); // 현재 시각
+      const employmentEndDateTimeObj = new Date(employmentEndDateTime);
 
-    const isValidEndDateTime = employmentEndDateTimeObj > currentDateTime;
+      return employmentEndDateTimeObj > currentDateTime;
+    };
 
     return {
       inputStates: {
@@ -118,7 +123,7 @@ export const postFormPresentation: PostFormPresentation = {
         },
         employmentEndDateTime: {
           isError:
-            !isValidEndDateTime ||
+            !checkOverToday(employmentEndDate.value) ||
             employmentEndDate.isError ||
             (employmentEndDateTime !== '' &&
               !DATE_TIME_REGEX.test(employmentEndDateTime)),
