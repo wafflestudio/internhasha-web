@@ -1,39 +1,68 @@
-import { Button } from '@waffle/design-system';
+import { useQuery } from '@tanstack/react-query';
 
-import type { Series } from '@/entities/post';
+import { Button } from '@/components/ui/button';
+import { ICON_SRC } from '@/entities/asset';
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
+import { TokenContext } from '@/shared/context/TokenContext';
 
 export const MyCompanyList = () => {
-  // TODO: 서버 API와 연결
-  const mockCompanyList = [
-    {
-      companyName: 'AAA',
-      email: 'AAA@gmail.com',
-      slogan: '연우의 회사',
-      series: 'A' as Series,
-      imageLink: '...',
-      investAmount: 12,
-      investCompany: ['연우의 투자사'],
-      explanation: '나는 회사 1',
-    },
-    {
-      companyName: 'bbb',
-      email: 'BBB@gmail.com',
-      slogan: '연우의 회사2',
-      series: 'A' as Series,
-      imageLink: '...',
-      investAmount: 3,
-      investCompany: ['연우의 투자사', '카카오 투자사'],
-      explanation: '나는 회사 2',
-    },
-  ];
+  const { companyData } = useGetCompanies();
+
+  if (companyData === undefined) {
+    return (
+      <div className="grid w-full gap-x-4 gap-y-3 grid-cols-1 md:grid-cols-2">
+        {Array.from({ length: 12 }).map((_, index) => (
+          <div key={`loading-${index}`}>
+            <span></span>
+            <Button>공고 작성</Button>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (companyData.type === 'error') {
+    return (
+      <div>데이터를 불러오는 데 실패하였습니다. 잠시 후 다시 시도해주세요.</div>
+    );
+  }
+
+  const company = companyData.data;
+
   return (
-    <div>
-      {mockCompanyList.map((item, idx) => (
-        <div key={`company-list-${idx}`}>
+    <div className="grid w-full gap-x-4 gap-y-3 grid-cols-1 md:grid-cols-2">
+      {company.map((item, idx) => (
+        <div
+          key={`company-list-${idx}`}
+          className="flex justify-between items-center h-[50px] px-[18px] bg-white rounded-md"
+        >
           <span>{item.companyName}</span>
-          <Button>공고 작성</Button>
+          <Button variant="secondary" className="test-sm flex h-[28px] px-2">
+            <img src={ICON_SRC.EDIT} />
+            공고 작성
+          </Button>
         </div>
       ))}
     </div>
   );
+};
+
+export const useGetCompanies = () => {
+  const { ventureCapitalService } = useGuardContext(ServiceContext);
+  const { token } = useGuardContext(TokenContext);
+
+  const { data: companyData } = useQuery({
+    queryKey: ['postService', 'getPosts'],
+    queryFn: async () => {
+      if (token === null) {
+        throw new Error('토큰이 존재하자 않습니다.');
+      }
+      return ventureCapitalService.getMyCompany({
+        token,
+      });
+    },
+  });
+
+  return { companyData };
 };

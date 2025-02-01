@@ -17,6 +17,7 @@ import type {
   FileUploadRequest,
   GoogleEmailResponse,
   IdRequest,
+  PostBriefDTO,
   PostDetailResponse,
   PostIdParams,
   PostPathParams,
@@ -325,6 +326,20 @@ export const getLocalServerApis = ({
         path: `post/company/${params.companyId}/position`,
         token,
         body,
+      });
+    },
+    "GET /post/company/me": ({ token }: { token: string }) => {
+      return callWithToken<SuccessResponse<PostBriefDTO[]>>({
+        method: "GET",
+        path: "post/company/me",
+        token,
+      });
+    },
+    "GET /post/position/me": ({ token }: { token: string }) => {
+      return callWithToken<SuccessResponse<PostBriefDTO[]>>({
+        method: "GET",
+        path: "post/position/me",
+        token,
       });
     },
   }) satisfies Record<string, Api>;

@@ -13,6 +13,7 @@ import { implLandingService } from '@/feature/landing/service/landingService';
 import { implPostService } from '@/feature/post';
 import { implResumeService } from '@/feature/resume';
 import { implUserService } from '@/feature/user';
+import { implVentureCapitalService } from '@/feature/ventureCapital';
 import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
 import { CreateResumePage } from '@/pages/CreateResumePage';
@@ -177,6 +178,7 @@ export const App = () => {
       rolesFilterLocalStorageRepository,
       rolesFilterStateRepository,
     }),
+    ventureCapitalService: implVentureCapitalService({ apis }),
   };
 
   return (

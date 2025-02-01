@@ -14,4 +14,5 @@ export const ICON_SRC = {
   CALENDAR: '/svg/calendar_today.svg',
   CAMERA: '/svg/photo_camera.svg',
   UPLOAD: '/svg/drive_folder_upload.svg',
+  EDIT: '/svg/edit.svg',
 };
