@@ -136,7 +136,7 @@ export const useGetPosts = ({
   investmentMin,
   series,
   pathStatus,
-  order
+  order,
 }: {
   page?: number;
   roles?: string[];
