@@ -23,7 +23,7 @@ export const VentureCapitalLandingTab = () => {
       }}
     >
       <div className="flex flex-col gap-[30px]">
-        <div className="flex flex-col gap-4 xs:flex-row w-full sm:justify-between">
+        <div className="flex flex-col gap-4 xs:flex-row w-full xs:justify-between">
           <TabsList className="flex text-lg font-medium">
             <TabsTrigger value="COMPANY">관리 기업</TabsTrigger>
             <TabsTrigger value="RESUME">작성한 공고</TabsTrigger>
