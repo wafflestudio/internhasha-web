@@ -354,7 +354,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             onClick={() => {
               toCreateResume({ postId });
             }}
-            className="bg-gray-600 text-white h-12"
+            className="bg-gray-600 text-white h-12 hover:bg-gray-400"
           >
             커피챗 신청하기
           </Button>
