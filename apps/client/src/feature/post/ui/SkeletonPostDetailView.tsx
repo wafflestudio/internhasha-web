@@ -76,9 +76,7 @@ export const SkeletonPostDetailView = () => {
         {/* 상세 공고 글 */}
         <section className="flex flex-col gap-7">
           <Skeleton className="h-[30px] w-[200px]" />
-          <Skeleton
-            className="bg-gray-200 px-6 py-4 h-[150px]"
-          />
+          <Skeleton className="bg-gray-200 px-6 py-4 h-[150px]" />
         </section>
       </div>
 

@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { ICON_SRC } from '@/entities/asset.ts';
 import { SeriesBadge } from '@/feature/post/ui/SeriesBadge.tsx';
+import { SkeletonPostDetailView } from '@/feature/post/ui/SkeletonPostDetailView.tsx';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -19,7 +20,6 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { useAddBookmark, useDeleteBookmark } from '@/util/bookmarkFunctions.ts';
 import { getEmploymentStatus } from '@/util/postFormatFunctions.ts';
-import { SkeletonPostDetailView } from '@/feature/post/ui/SkeletonPostDetailView.tsx';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
@@ -272,9 +272,9 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
 
           {/* 태그 */}
 
-            <section className="space-y-4 border-b-2 pb-10">
-              <span className="text-xl font-bold">태그</span>
-              {tags != null && (
+          <section className="space-y-4 border-b-2 pb-10">
+            <span className="text-xl font-bold">태그</span>
+            {tags != null && (
               <div className="flex flex-wrap gap-2">
                 {tagList?.map((tag) => (
                   <Badge
@@ -287,8 +287,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                   </Badge>
                 ))}
               </div>
-              )}
-            </section>
+            )}
+          </section>
         </div>
 
         {/* 상세 공고 글 */}
