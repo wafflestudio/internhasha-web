@@ -375,10 +375,11 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             })}
           </span>
 
-          <span className="bg-gray-600 text-white py-1 px-2 rounded-md">
-            {employmentEndDate != null &&
-              getEmploymentStatus(employmentEndDate)}
-          </span>
+          {employmentEndDate != null && (
+            <span className="bg-gray-600 text-white py-1 px-2 rounded-md">
+              {getEmploymentStatus(employmentEndDate)}
+            </span>
+          )}
         </div>
         {role !== 'CURATOR' && (
           <div className="flex flex-col gap-3">
