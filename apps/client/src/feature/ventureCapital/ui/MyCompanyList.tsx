@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { ICON_SRC } from '@/entities/asset';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -13,9 +14,12 @@ export const MyCompanyList = () => {
     return (
       <div className="grid w-full gap-x-4 gap-y-3 grid-cols-1 md:grid-cols-2">
         {Array.from({ length: 12 }).map((_, index) => (
-          <div key={`loading-${index}`}>
-            <span></span>
-            <Button>공고 작성</Button>
+          <div
+            key={`loading-${index}`}
+            className="flex justify-between items-center h-[50px] px-[18px] bg-white rounded-md"
+          >
+            <Skeleton className="h-[28px] w-[120px]" />
+            <Skeleton className="h-[28px] w-[96px]" />
           </div>
         ))}
       </div>
@@ -53,7 +57,7 @@ export const useGetCompanies = () => {
   const { token } = useGuardContext(TokenContext);
 
   const { data: companyData } = useQuery({
-    queryKey: ['postService', 'getPosts'],
+    queryKey: ['postService', 'getMyCompany'],
     queryFn: async () => {
       if (token === null) {
         throw new Error('토큰이 존재하자 않습니다.');

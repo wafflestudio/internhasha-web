@@ -7,10 +7,7 @@ import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
-import {
-  formatSeries,
-  getEmploymentStatus,
-} from '@/util/postFormatFunctions.ts';
+import { formatSeries, getEmploymentStatus } from '@/util/postFormatFunctions';
 
 type PostCardProps = {
   post: BriefPost;

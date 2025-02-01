@@ -1,54 +1,39 @@
-import { Button } from '@waffle/design-system';
+import { useQuery } from '@tanstack/react-query';
 
+import { Button } from '@/components/ui/button';
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
+import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const MyPostList = () => {
   const { toPost } = useRouteNavigation();
-  const mockBriefPost = [
-    {
-      id: 'AAA',
-      companyName: '레브잇',
-      slogan: '최신 LLM 오픈 소스 모델과 자체개발 어쩌구',
-      investAmount: 3,
-      investCompany: ['연우 투자사', '우연투자사'],
-      series: 'SEED',
-      imageLink: '...',
+  const { postsData } = useGetPosts();
 
-      title: 'react 프론트엔드 개발자',
-      isAlways: false,
-      employmentEndDate: '2024-01-25T09:00:00',
-      createdAt: '2024-01-22T09:00:00',
-      updatedAt: '2024-01-23T09:00:00',
-      isActive: true,
-      category: 'FRONT',
+  if (postsData === undefined) {
+    return (
+      <div className="grid w-full gap-x-4 gap-y-3 grid-cols-1 md:grid-cols-2">
+        {Array.from({ length: 12 }).map((_, index) => (
+          <div key={`loading-${index}`}>
+            <span></span>
+            <Button>공고 작성</Button>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
-      detail: '이히히',
-      headcount: 3,
-    },
-    {
-      id: 'BBB',
-      companyName: '마이프랜차이즈',
-      slogan: '최신 LLM 오픈 소스 모델과 자체개발 어쩌구',
-      investAmount: 3,
-      investCompany: ['연우 투자사'],
-      series: 'A',
-      imageLink: '...',
+  if (postsData.type === 'error') {
+    return (
+      <div>데이터를 불러오는 데 실패하였습니다. 잠시 후 다시 시도해주세요.</div>
+    );
+  }
 
-      title: 'Full Stack Engineer',
-      isAlways: false,
-      employmentEndDate: '2024-01-25T09:00:00',
-      createdAt: '2024-01-22T09:00:00',
-      updatedAt: '2024-01-23T09:00:00',
-      isActive: true,
-      category: 'FRONT',
+  const posts = postsData.data;
 
-      detail: '얏호',
-      headcount: 3,
-    },
-  ];
   return (
     <div>
-      {mockBriefPost.map((item, idx) => (
+      {posts.map((item, idx) => (
         <div key={`post-list-${idx}`}>
           <div>
             <span>{item.title}</span>
@@ -66,4 +51,23 @@ export const MyPostList = () => {
       ))}
     </div>
   );
+};
+
+export const useGetPosts = () => {
+  const { ventureCapitalService } = useGuardContext(ServiceContext);
+  const { token } = useGuardContext(TokenContext);
+
+  const { data: postsData } = useQuery({
+    queryKey: ['postService', 'getMyCompany'],
+    queryFn: async () => {
+      if (token === null) {
+        throw new Error('토큰이 존재하자 않습니다.');
+      }
+      return ventureCapitalService.getMyCompany({
+        token,
+      });
+    },
+  });
+
+  return { postsData };
 };
