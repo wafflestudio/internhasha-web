@@ -156,7 +156,7 @@ export const PostCard = ({
   );
 };
 
-const useAddBookmark = () => {
+export const useAddBookmark = () => {
   const { postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
 
@@ -190,7 +190,7 @@ const useAddBookmark = () => {
   };
 };
 
-const useDeleteBookmark = () => {
+export const useDeleteBookmark = () => {
   const { postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
 
