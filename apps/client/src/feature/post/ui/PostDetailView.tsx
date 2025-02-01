@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import {
@@ -6,20 +7,19 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/card/card.tsx';
-import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal.tsx';
-import { Badge } from '@/components/ui/badge.tsx';
-import { Button } from '@/components/ui/button.tsx';
+} from '@/components/card/card';
+import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { ICON_SRC } from '@/entities/asset.ts';
-import { SeriesBadge } from '@/feature/post/ui/SeriesBadge.tsx';
-import { SkeletonPostDetailView } from '@/feature/post/ui/SkeletonPostDetailView.tsx';
+import { SeriesBadge } from '@/feature/post/ui/SeriesBadge';
+import { SkeletonPostDetailView } from '@/feature/post/ui/SkeletonPostDetailView';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { useAddBookmark, useDeleteBookmark } from '@/util/bookmarkFunctions.ts';
-import { getEmploymentStatus } from '@/util/postFormatFunctions.ts';
+import { getEmploymentStatus } from '@/util/postFormatFunctions';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
@@ -376,4 +376,72 @@ export const useGetPostDetail = ({ postId }: { postId: string }) => {
   });
 
   return { postDetailData };
+};
+
+export const useAddBookmark = () => {
+  const { postService } = useGuardContext(ServiceContext);
+  const { token } = useGuardContext(TokenContext);
+
+  const queryClient = useQueryClient();
+
+  const { mutate: addBookmark, isPending } = useMutation({
+    mutationFn: ({ postId }: { postId: string }) => {
+      if (token === null) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+      return postService.addBookmark({ token, postId });
+    },
+    onSuccess: async (response) => {
+      if (response.type === 'success') {
+        await queryClient.invalidateQueries({ queryKey: ['postService'] });
+        return;
+      } else {
+        // TODO: 북마크 생성 실패 시 하단에 토스트 띄우기
+        return;
+      }
+    },
+    onError: () => {
+      // TODO: 북마크 생성 실패 시 하단에 토스트 띄우기
+      return;
+    },
+  });
+
+  return {
+    addBookmark,
+    isPending,
+  };
+};
+
+export const useDeleteBookmark = () => {
+  const { postService } = useGuardContext(ServiceContext);
+  const { token } = useGuardContext(TokenContext);
+
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteBookmark, isPending } = useMutation({
+    mutationFn: ({ postId }: { postId: string }) => {
+      if (token === null) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+      return postService.deleteBookmark({ token, postId });
+    },
+    onSuccess: async (response) => {
+      if (response.type === 'success') {
+        await queryClient.invalidateQueries({ queryKey: ['postService'] });
+        return;
+      } else {
+        // TODO: 북마크 생성 실패 시 하단에 토스트 띄우기
+        return;
+      }
+    },
+    onError: () => {
+      // TODO: 북마크 생성 실패 시 하단에 토스트 띄우기
+      return;
+    },
+  });
+
+  return {
+    deleteBookmark,
+    isPending,
+  };
 };
