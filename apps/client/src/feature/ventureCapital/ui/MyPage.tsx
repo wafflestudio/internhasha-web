@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Card, CardContent } from '@/components/card/card.tsx';
 import { Button } from '@/components/ui/button.tsx';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -9,26 +10,44 @@ import { TokenContext } from '@/shared/context/TokenContext';
 export const MyPage = () => {
   const { myInfoData } = useMyInfo();
 
-  if (myInfoData === undefined) {
-    return <div>로딩중...</div>;
-  }
+  // if (myInfoData === undefined) {
+  //   return <div>로딩중...</div>;
+  // }
 
-  if (myInfoData.type === 'error') {
+  if (myInfoData?.type === 'error') {
     return (
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
   }
 
-  const { name, snuMail, phoneNumber } = myInfoData.data;
+  // const { name, snuMail, phoneNumber } = myInfoData.data;
 
   return (
     <div className="w-full flex flex-col gap-4">
       <Card>
-        <CardContent className="flex flex-col p-4 gap-2">
-          <p className="p-2 border-b-[1px]">이름: {name}</p>
-          <p className="p-2 border-b-[1px]">스누메일: {snuMail}</p>
-          <p className="p-2 border-b-[1px]">전화번호: {phoneNumber}</p>
-        </CardContent>
+        {myInfoData !== undefined ? (
+          <CardContent className="flex flex-col p-4 gap-2">
+            <p className="p-2 border-b-[1px]">이름: {myInfoData.data.name}</p>
+            <p className="p-2 border-b-[1px]">
+              스누메일: {myInfoData.data.snuMail}
+            </p>
+            <p className="p-2 border-b-[1px]">
+              전화번호: {myInfoData.data.phoneNumber}
+            </p>
+          </CardContent>
+        ) : (
+          <CardContent className="flex flex-col p-4 gap-2">
+            <p className="p-2 border-b-[1px]">
+              <Skeleton className="w-full h-6" />
+            </p>
+            <p className="p-2 border-b-[1px]">
+              <Skeleton className="w-full h-6" />
+            </p>
+            <p className="p-2 border-b-[1px]">
+              <Skeleton className="w-full h-6" />
+            </p>
+          </CardContent>
+        )}
       </Card>
 
       <div className="flex gap-2">
