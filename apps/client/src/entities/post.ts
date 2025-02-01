@@ -34,6 +34,7 @@ export type FilterElements = {
   investmentMin?: number;
   pathStatus?: 0 | 1;
   series?: Series[];
+  order?: 0 | 1;
 };
 
 export type Link = {

@@ -26,6 +26,7 @@ export const LandingPage = () => {
     investmentMin: undefined,
     series: undefined,
     pathStatus: undefined,
+    order: undefined,
   });
   const [showSignInModal, setShowSignInModal] = useState(false);
 
@@ -135,6 +136,7 @@ export const useGetPosts = ({
   investmentMin,
   series,
   pathStatus,
+  order,
 }: {
   page?: number;
   roles?: string[];
@@ -142,6 +144,7 @@ export const useGetPosts = ({
   investmentMin?: number;
   series?: Series[];
   pathStatus?: number;
+  order?: number;
 }) => {
   const { postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
@@ -156,6 +159,7 @@ export const useGetPosts = ({
       investmentMin,
       series,
       pathStatus,
+      order,
     ],
     queryFn: async () => {
       const response = await postService.getPosts({
@@ -166,6 +170,7 @@ export const useGetPosts = ({
         series,
         pathStatus,
         token,
+        order,
       });
       if (response.type === 'success') {
         return response.data;
