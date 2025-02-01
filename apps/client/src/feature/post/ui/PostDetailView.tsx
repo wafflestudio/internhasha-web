@@ -19,6 +19,7 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { useAddBookmark, useDeleteBookmark } from '@/util/bookmarkFunctions.ts';
 import { getEmploymentStatus } from '@/util/postFormatFunctions.ts';
+import { SkeletonPostDetailView } from '@/feature/post/ui/SkeletonPostDetailView.tsx';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
@@ -56,7 +57,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
 
   // TODO: 전체 페이지 대신 카드 컴포넌트만 로딩되도록 설정
   if (postDetailData === undefined) {
-    return <div>로딩 중...</div>;
+    return <SkeletonPostDetailView />;
   }
 
   if (postDetailData.type === 'error') {
@@ -270,9 +271,10 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           </section>
 
           {/* 태그 */}
-          {tags != null && (
+
             <section className="space-y-4 border-b-2 pb-10">
               <span className="text-xl font-bold">태그</span>
+              {tags != null && (
               <div className="flex flex-wrap gap-2">
                 {tagList?.map((tag) => (
                   <Badge
@@ -285,8 +287,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                   </Badge>
                 ))}
               </div>
+              )}
             </section>
-          )}
         </div>
 
         {/* 상세 공고 글 */}
