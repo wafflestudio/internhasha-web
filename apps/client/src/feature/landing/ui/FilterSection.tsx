@@ -515,7 +515,7 @@ export const FilterSection = ({
             variant={
               filterElements.order !== undefined ? 'selected' : 'secondary'
             }
-            className="bg-white px-3 py-2"
+            className="w-fit bg-white px-3 py-2"
           >
             {filterElements.order !== undefined
               ? VALID_ORDER_OPTION_VALUE[filterElements.order]
