@@ -58,13 +58,13 @@ export const EmailVerifyForm = () => {
     timeLeft,
     responseMessage: codeResponseMessage,
     isPending: isPendingSend,
-  } = useSendCode({ setShowModal });
+  } = useSendCode();
   const {
     emailVerify,
     verifySuccess,
     responseMessage: emailResponseMessage,
     isPending: isPendingVerify,
-  } = useEmailVerify({ setShowModal });
+  } = useEmailVerify();
   const {
     googleSignUp,
     responseMessage: googleSignUpResponseMessage,
@@ -155,7 +155,10 @@ export const EmailVerifyForm = () => {
             </div>
             {!verifySuccess && (
               <Button
-                onClick={handleClickSendEmailCodeButton}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleClickSendEmailCodeButton();
+                }}
                 disabled={isPending || sendCodeDisable}
               >
                 인증코드 받기
@@ -189,13 +192,17 @@ export const EmailVerifyForm = () => {
                 )}
                 {!verifySuccess && !isCodeExpired && (
                   <Button
-                    onClick={handleClickVerifyEmailButton}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleClickVerifyEmailButton();
+                    }}
                     disabled={isPending || verifyEmailDisable}
                   >
                     인증코드 확인
                   </Button>
                 )}
               </div>
+
               <div className="flex flex-col gap-2">
                 {verifySuccess && (
                   <FormInfoResponse>인증 성공</FormInfoResponse>
@@ -205,7 +212,9 @@ export const EmailVerifyForm = () => {
                     인증코드가 만료되었습니다.
                   </FormErrorResponse>
                 )}
-                <FormErrorResponse>{emailResponseMessage}</FormErrorResponse>
+                {!verifySuccess && (
+                  <FormErrorResponse>{emailResponseMessage}</FormErrorResponse>
+                )}
               </div>
             </LabelContainer>
           </>
@@ -256,11 +265,7 @@ export const EmailVerifyForm = () => {
   );
 };
 
-const useSendCode = ({
-  setShowModal,
-}: {
-  setShowModal(input: 'NONE' | 'ADD' | 'REDIRECT'): void;
-}) => {
+const useSendCode = () => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
   const [sendSuccess, setSendSuccess] = useState(false);
@@ -307,10 +312,6 @@ const useSendCode = ({
         startTimer();
       } else {
         stopTimer();
-        if (response.code === 'USER_001') {
-          setShowModal('REDIRECT');
-          return;
-        }
         setResponseMessage(createErrorMessage(response.code));
       }
     },
@@ -333,11 +334,7 @@ const useSendCode = ({
   };
 };
 
-const useEmailVerify = ({
-  setShowModal,
-}: {
-  setShowModal(input: 'NONE' | 'ADD' | 'REDIRECT'): void;
-}) => {
+const useEmailVerify = () => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
   const [verifySuccess, setVerifySuccess] = useState(false);
@@ -353,10 +350,6 @@ const useEmailVerify = ({
       if (response.type === 'success') {
         setVerifySuccess(true);
       } else {
-        if (response.code === 'USER_001') {
-          setShowModal('REDIRECT');
-          return;
-        }
         setResponseMessage(createErrorMessage(response.code));
         setVerifySuccess(false);
       }
@@ -401,7 +394,7 @@ const useGoogleSignUp = ({
         }
         toSignUpComplete();
       } else {
-        if (response.code === 'USER_001' || response.code === 'USER-003') {
+        if (response.code === 'USER_001' || response.code === 'USER_003') {
           setShowModal('REDIRECT');
           return;
         }

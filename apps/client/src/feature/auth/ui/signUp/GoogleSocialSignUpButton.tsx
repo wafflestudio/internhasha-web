@@ -146,7 +146,7 @@ const useGoogleSignUp = ({
         }
         toSignUpComplete();
       } else {
-        if (response.code === 'USER-003') {
+        if (response.code === 'USER_003') {
           setShowModal('REDIRECT');
         }
         setResponseMessage(createErrorMessage(response.code));
