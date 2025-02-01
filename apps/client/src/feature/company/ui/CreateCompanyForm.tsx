@@ -99,6 +99,8 @@ export const CreateCompanyForm = () => {
       return;
     }
 
+    console.log(imagePreview.value.file);
+
     handleCreateCompany({
       companyInfo: {
         companyName: formStates.companyName.value,
@@ -326,26 +328,46 @@ const useCreateCompanyWithUploads = ({
   });
 
   const { mutateAsync: uploadFile } = useMutation({
-    mutationFn: ({
+    mutationFn: async ({
       presignedUrl,
       file,
     }: {
       presignedUrl: string;
       file: File | undefined;
     }) => {
-      if (token === null) {
-        throw new Error('토큰이 존재하지 않습니다.');
-      }
       if (file === undefined) {
         throw new Error('파일이 존재하지 않습니다.');
       }
-      return fileService.uploadImage({ presignedUrl, file });
+
+      try {
+        const response = await fetch(presignedUrl, {
+          method: 'PUT',
+          body: file,
+          headers: {
+            'Content-Type': file.type,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(
+            `Upload failed: ${response.status} ${response.statusText}`,
+          );
+        }
+
+        return { type: 'success' };
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        return {
+          type: 'error',
+          message: '업로드 과정에서 오류가 발생했습니다!',
+        };
+      }
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
         setResponseMessage('');
       } else {
-        setResponseMessage(createErrorMessage(response.code));
+        setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
       }
     },
     onError: () => {
@@ -388,16 +410,31 @@ const useCreateCompanyWithUploads = ({
     try {
       setIsPending(true);
 
+      const generateRandomString = () => {
+        const RANDOM_STRING_LENGTH = 10;
+        const characters =
+          'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        return Array.from({ length: RANDOM_STRING_LENGTH }, () =>
+          characters.charAt(Math.floor(Math.random() * characters.length)),
+        ).join('');
+      };
+
+      const randomizedPdfFile =
+        pdfFile !== undefined
+          ? `assets/${generateRandomString()}-${pdfFile.name}`
+          : undefined;
+      const randomizedImageFile = `assets/${generateRandomString()}-${imageFile.name}`;
+
       const [pdfPresignedUrlResponse, imagePresignedUrlResponse] =
         await Promise.all([
-          pdfFile !== undefined
+          pdfFile !== undefined && randomizedPdfFile !== undefined
             ? getPresignedUrl({
-                fileName: pdfFile.name,
+                fileName: randomizedPdfFile,
                 fileType: pdfFile.type,
               })
             : Promise.resolve(null),
           getPresignedUrl({
-            fileName: imageFile.name,
+            fileName: randomizedImageFile,
             fileType: imageFile.type,
           }),
         ]);
@@ -433,18 +470,29 @@ const useCreateCompanyWithUploads = ({
         return;
       }
 
+      const getS3ObjectPath = (url: string): string => {
+        const pathname = new URL(url).pathname;
+        return pathname.startsWith('/') ? pathname.slice(1) : pathname;
+      };
+
+      const pdfS3Key =
+        pdfPresignedUrlResponse?.type === 'success'
+          ? getS3ObjectPath(pdfPresignedUrlResponse.data.presignedUrl)
+          : undefined;
+      const imageS3Key = getS3ObjectPath(
+        imagePresignedUrlResponse.data.presignedUrl,
+      );
+
+      console.log(pdfS3Key, imageS3Key);
+
       createCompany({
         companyContents: {
           ...companyInfo,
-          irDeckLink:
-            pdfPresignedUrlResponse !== null
-              ? pdfPresignedUrlResponse.data.presignedUrl
-              : undefined,
-          imageLink: imagePresignedUrlResponse.data.presignedUrl,
+          irDeckLink: pdfS3Key,
+          imageLink: imageS3Key,
         },
       });
-    } catch (error) {
-      console.error(error);
+    } catch {
       setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
     } finally {
       setIsPending(false);

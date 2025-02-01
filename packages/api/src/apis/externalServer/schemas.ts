@@ -1,3 +1,1 @@
-export type UploadFileRequest = {
-  file: File;
-};
+export type UploadFileRequest = File;

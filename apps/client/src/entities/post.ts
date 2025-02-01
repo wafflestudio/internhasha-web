@@ -55,7 +55,7 @@ export type Post = {
   series: Series;
   irDeckLink?: string;
   landingPageLink?: string;
-  imageLink?: string;
+  imageLink: string;
   externalDescriptionLink?: Link[];
   tags?: { tag: string }[];
 
