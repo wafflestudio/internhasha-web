@@ -42,19 +42,20 @@ export const BookmarkListView = () => {
         bookmarkListData.data.posts.map((post) => (
           <div
             key={post.id}
-            className="flex flex-col md:flex-row md:w-full items-start md:items-center px-[24px] py-[10px] gap-4 md:justify-between cursor-pointer bg-white rounded-md duration-300 hover:shadow-md"
+            className="flex flex-col xs:flex-row w-full items-start xs:item-center px-[24px] py-[10px] gap-4 justify-between cursor-pointer bg-white rounded-md duration-300 hover:shadow-md"
             onClick={() => {
               toPost({ postId: post.id });
             }}
           >
-            <div className="flex items-center gap-[18px]">
+            <div className="flex flex-1 items-center gap-4">
               <img src={ICON_SRC.BOOKMARK.SELECTED} />
-              <span className="w-[350px] text-grey-darker font-semibold truncate">
+              <span className="text-grey-darker font-semibold truncate">
                 {post.title}
               </span>
             </div>
-            <div className="flex flex-col md:flex-row items-end md:items-center w-full md:size-fit gap-2 md:gap-[30px]">
-              <span className="w-full md:w-[150px] text-grey-dark-hover font-semibold text-left md:text-center truncate">
+
+            <div className="flex items-center gap-2">
+              <span className="text-grey-dark-hover font-semibold text-left md:text-center truncate">
                 {post.companyName}
               </span>
               <span className="w-[80px] py-1 bg-grey-darker text-center text-white text-sm rounded-md">

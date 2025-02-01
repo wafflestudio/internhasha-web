@@ -29,7 +29,7 @@ export const ResumeListView = () => {
             }}
           >
             <span className="w-[350px] text-grey-darker font-semibold truncate">
-              {resume.positionTitle}
+              {resume.companyName}
             </span>
             <span className="text-sm text-grey-normal">
               {getFormatDate(resume.createdAt)}

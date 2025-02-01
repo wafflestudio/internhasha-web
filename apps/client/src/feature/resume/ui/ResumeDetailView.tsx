@@ -7,9 +7,11 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
+import { EnvContext } from '@/shared/context/EnvContext.ts';
 
 export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
   const { resumeDetailData } = useGetResumeDetail({ resumeId });
+  const { API_BASE_URL } = useGuardContext(EnvContext);
   const { toMyPage } = useRouteNavigation();
 
   if (resumeDetailData === undefined) {
@@ -41,7 +43,7 @@ export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
             <div className="w-[40px] h-[40px] overflow-hidden">
               {resumeDetail.author.profileImageLink != null ? (
                 <img
-                  src={resumeDetail.author.profileImageLink}
+                  src={`${API_BASE_URL}/${resumeDetail.author.profileImageLink}`}
                   alt="프로필 이미지"
                   className="w-[40px] h-[40px] object-cover border border-gray-200"
                 />
