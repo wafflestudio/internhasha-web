@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from '@/components/card/card';
 import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal';
+import { SignInForCoffeeChatModal } from '@/components/modal/SignInForCoffeChatModal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ICON_SRC } from '@/entities/asset.ts';
@@ -28,9 +29,11 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
 
   const { toMain, toCreateResume } = useRouteNavigation();
 
-  const [showSignInModal, setShowSignInModal] = useState(false);
-  const closeSignInModal = () => {
-    setShowSignInModal(false);
+  const [showModal, setShowModal] = useState<
+    'COFFEE_CHAT' | 'BOOKMARK' | 'NONE'
+  >('NONE');
+  const closeModal = () => {
+    setShowModal('NONE');
   };
 
   const { addBookmark, isPending: isAddBookmarkPending } = useAddBookmark();
@@ -39,23 +42,30 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
 
   const isPending = isAddBookmarkPending || isDeleteBookmarkPending;
 
-  const onClickAddBookmark = ({ id }: { id: string }) => {
+  const handleClickAddBookmark = ({ id }: { id: string }) => {
     if (token === null) {
-      setShowSignInModal(true);
+      setShowModal('BOOKMARK');
       return;
     }
     addBookmark({ postId: id });
   };
 
-  const onClickDeleteBookmark = ({ id }: { id: string }) => {
+  const handleClickDeleteBookmark = ({ id }: { id: string }) => {
     if (token === null) {
-      setShowSignInModal(true);
+      setShowModal('BOOKMARK');
       return;
     }
     deleteBookmark({ postId: id });
   };
 
-  // TODO: 전체 페이지 대신 카드 컴포넌트만 로딩되도록 설정
+  const handleClickApplyCoffeeChat = ({ id }: { id: string }) => {
+    if (token === null) {
+      setShowModal('COFFEE_CHAT');
+      return;
+    }
+    toCreateResume({ postId: id });
+  };
+
   if (postDetailData === undefined) {
     return <SkeletonPostDetailView />;
   }
@@ -124,7 +134,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                     disabled={isPending}
                     onClick={(e) => {
                       e.stopPropagation();
-                      onClickDeleteBookmark({ id: postId });
+                      handleClickDeleteBookmark({ id: postId });
                     }}
                   >
                     <img
@@ -137,7 +147,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                     disabled={isPending}
                     onClick={(e) => {
                       e.stopPropagation();
-                      onClickAddBookmark({ id: postId });
+                      handleClickAddBookmark({ id: postId });
                     }}
                   >
                     <img
@@ -347,7 +357,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           <div className="flex flex-col gap-3">
             <Button
               onClick={() => {
-                toCreateResume({ postId });
+                handleClickApplyCoffeeChat({ id: postId });
               }}
             >
               커피챗 신청하기
@@ -372,7 +382,12 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           </div>
         ) */}
       </div>
-      {showSignInModal && <SignInForBookmarkModal onClose={closeSignInModal} />}
+      {showModal === 'BOOKMARK' && (
+        <SignInForBookmarkModal onClose={closeModal} />
+      )}
+      {showModal === 'COFFEE_CHAT' && (
+        <SignInForCoffeeChatModal onClose={closeModal} />
+      )}
     </div>
   );
 };
