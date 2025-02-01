@@ -54,7 +54,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   const tagList = tags?.map((item) => item.tag);
 
   return (
-    <div className="max-w-screen-md mx-auto gap-12 p-10 flex">
+    <div className="max-w-screen-md mx-auto gap-12 p-10 flex flex-col md:flex-row">
       <div className="flex flex-col gap-12 flex-1">
         {/* 헤더 */}
         <div className="flex flex-col justify-between items-start gap-2">
@@ -333,7 +333,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
         </section>
       </div>
 
-      <div className="flex flex-col flex-[0.5] w-80 gap-5 my-36">
+      <div className="flex flex-col flex-[0.5] w-full gap-5 my-36 md:w-80">
         <div className="text-sm text-gray-900 font-medium flex items-center gap-3">
           <span>
             채용 마감일 :{' '}
