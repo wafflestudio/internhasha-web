@@ -2,16 +2,16 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export const SkeletonResumeDetailView = () => {
   return (
-    <div className="flex w-full py-10 bg-gray-50">
+    <div className="flex w-full py-10 border-grey-light">
       {/* Left Section */}
       <div className="xs:w-3/5 w-11/12 mx-auto bg-white rounded-lg p-8 space-y-6">
         {/* Title */}
         <div>
-          <Skeleton className="h-8 w-[200px] mx-auto" />
+          <Skeleton className="h-8 w-[200px]" />
         </div>
 
         {/* Profile Section */}
-        <div className="flex flex-col sm:flex-row justify-between items-start gap-4 border-b border-gray-200 pb-5">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-4 border-b border-grey-light-active pb-5">
           <div className="flex gap-4 items-center">
             {/* Profile Image */}
             <Skeleton className="w-[40px] h-[40px] rounded-full" />
