@@ -1,15 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
-
-import { ICON_SRC } from '@/entities/asset.ts';
-import { getFormatDate } from '@/feature/post/ui/postFormatFunctions.ts';
-import { EnvContext } from '@/shared/context/EnvContext.ts';
-import { SkeletonResumeDetailView } from '@/feature/resume/ui/SkeletonResumeDetailView.tsx';
+import { ICON_SRC } from '@/entities/asset';
+import { getFormatDate } from '@/feature/post/ui/postFormatFunctions';
+import { SkeletonResumeDetailView } from '@/feature/resume/ui/SkeletonResumeDetailView';
+import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
-import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
+import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
   const { resumeDetailData } = useGetResumeDetail({ resumeId });
