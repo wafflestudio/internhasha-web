@@ -214,7 +214,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
         </div>
 
         {/* 회사 소개 */}
-        <div className="flex flex-col w-full md:max-w-[580px] gap-4">
+        <div className="flex w-full md:max-w-[580px] flex-col gap-4">
           <p className="text-xl font-semibold">회사 소개</p>
           <p className="text-grey-dark-active font-normal">{slogan}</p>
           {/* 회사 설명 카드 */}
