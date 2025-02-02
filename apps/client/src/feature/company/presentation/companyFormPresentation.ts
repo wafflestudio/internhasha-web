@@ -64,7 +64,7 @@ type CompanyFormPresentation = {
       series: InputForForm<Series | 'NONE'>;
       landingPageLink: InputForForm<string | undefined>;
       externalDescriptionLink: InputForForm<ExternalLink[] | undefined>;
-      tags: InputForForm<string[] | undefined>;
+      tags: InputForForm<{ tag: string }[] | undefined>;
     };
   };
 };
@@ -170,7 +170,10 @@ export const companyFormPresentation: CompanyFormPresentation = {
         },
         tags: {
           isError: tags.isError,
-          value: tags.value.length !== 0 ? tags.value : undefined,
+          value:
+            tags.value.length !== 0
+              ? tags.value.map((item) => ({ tag: item }))
+              : undefined,
         },
         landingPageLink: {
           isError: landingPageLink.isError,

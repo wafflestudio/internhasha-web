@@ -215,7 +215,7 @@ export type CreateCompanyRequest = {
   landingPageLink?: string;
   imageLink: string;
   externalDescriptionLink?: Link[];
-  tags?: string[];
+  tags?: { tag: string }[];
 };
 
 export type CreatePostRequest = {

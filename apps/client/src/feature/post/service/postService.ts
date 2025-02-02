@@ -5,7 +5,7 @@ import type {
   BriefPost,
   CreateCompanyRequest,
   CreatePostRequest,
-  Post,
+  PostResponse,
   Series,
 } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
@@ -39,7 +39,7 @@ export type PostService = {
   }: {
     postId: string;
     token?: string;
-  }): ServiceResponse<Post>;
+  }): ServiceResponse<PostResponse>;
   createCompany({
     token,
     companyContents,

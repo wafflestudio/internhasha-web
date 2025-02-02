@@ -130,8 +130,11 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
               form="CreateResumeForm"
               onClick={handleSubmit}
               disabled={
-                isPending || phoneNumber.value === '' || contents.value === ''
-                || phoneNumber.isError || contents.isError
+                isPending ||
+                phoneNumber.value === '' ||
+                contents.value === '' ||
+                phoneNumber.isError ||
+                contents.isError
               }
               className="flex-1 px-4 py-2 rounded-md"
             >
