@@ -159,13 +159,10 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
   },
 
   createPost: async ({ token, companyId, postContents }) => {
-    const params = { companyId };
-    const { status, data } = await apis[
-      'POST /post/company/:companyId/position'
-    ]({
+    const body = { ...postContents, companyId };
+    const { status, data } = await apis['POST /post/position']({
       token: token,
-      params,
-      body: postContents,
+      body: body,
     });
 
     if (status === 200) {

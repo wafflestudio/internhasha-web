@@ -114,7 +114,9 @@ export const postFormPresentation: PostFormPresentation = {
         },
         headcount: {
           isError:
-            isNaN(Number(headcount.value)) || Number(headcount.value) <= 0,
+            headcount.value === '' ||
+            isNaN(Number(headcount.value)) ||
+            Number(headcount.value) <= 0,
           value: Number(headcount.value),
         },
         detail: {

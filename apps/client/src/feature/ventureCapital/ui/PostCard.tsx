@@ -1,12 +1,9 @@
-import { SeriesBadge } from '@/components/ui/badge';
+import { Badge, SeriesBadge } from '@/components/ui/badge';
 import { ICON_SRC } from '@/entities/asset';
 import type { BriefPost } from '@/entities/post';
-import {
-  formatSeries,
-  getEmploymentStatus,
-} from '@/feature/post/ui/postFormatFunctions.ts';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
+import { getEmploymentStatus } from '@/util/postFormatFunctions';
 
 type PostCardProps = {
   post: BriefPost;
@@ -18,6 +15,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
 
   const {
     id,
+    author,
     companyName,
     slogan,
     title,
@@ -25,10 +23,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
     imageLink,
     investAmount,
     employmentEndDate,
-    investCompany,
   } = post;
-
-  const firstInvestCompany = investCompany.split(',')[0];
 
   return (
     <div
@@ -73,9 +68,7 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
             <h3 className="text-lg font-semibold text-grey-darker">
               {companyName}
             </h3>
-            <span className="text-sm text-grey-normal">
-              {firstInvestCompany} 추천
-            </span>
+            <span className="text-sm text-grey-normal">{author.name} 추천</span>
           </div>
         </div>
 
@@ -84,15 +77,10 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
         {/* 시리즈 및 투자 정보 */}
         <div className="flex w-full justify-between py-1 gap-3">
           <div className="flex items-center gap-2">
-            <SeriesBadge variant={series}>{formatSeries(series)}</SeriesBadge>
-            {investAmount != null && (
-              <SeriesBadge>
-                투자 누적 {investAmount.toLocaleString()}억
-              </SeriesBadge>
-            )}
-            {firstInvestCompany !== undefined && firstInvestCompany !== '' && (
-              <SeriesBadge></SeriesBadge>
-            )}
+            <SeriesBadge series={series} />
+            <Badge variant="secondary">
+              투자 누적 {investAmount.toLocaleString()}억
+            </Badge>
           </div>
         </div>
       </section>
