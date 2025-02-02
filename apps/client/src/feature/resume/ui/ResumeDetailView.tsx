@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
+import { SkeletonResumeDetailView } from '@/feature/resume/ui/SkeletonResumeDetailView.tsx';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -12,7 +13,7 @@ export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
   const { toMyPage } = useRouteNavigation();
 
   if (resumeDetailData === undefined) {
-    return <div>로딩중...</div>;
+    return <SkeletonResumeDetailView />;
   }
 
   if (resumeDetailData.type === 'error') {
