@@ -17,9 +17,9 @@ import { TokenContext } from '@/shared/context/TokenContext.ts';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
 
 export const CreateResumeForm = ({ postId }: { postId: string }) => {
-  const [isSubmit, setIsSubmit] = useState(false);
   const [isCancel, setIsCancel] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
+  const [phoneNumberTouched, setPhoneNumberTouched] = useState(false);
 
   const { createResume, isPending } = useCreateResume({
     setResponseMessage,
@@ -27,12 +27,9 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
   });
 
   const { phoneNumber, contents } = resumePresentation.useValidator({});
-
   const { toPost } = useRouteNavigation();
 
   const handleSubmit = () => {
-    setIsSubmit(true);
-
     const isPhoneNumberValid = !phoneNumber.isError;
     const isContentsValid = !contents.isError;
 
@@ -75,6 +72,7 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
               disabled={isPending}
               onChange={(e) => {
                 phoneNumber.onChange(e.target.value);
+                setPhoneNumberTouched(true);
               }}
               placeholder="010-0000-0000"
               className="w-full border border-gray-300 rounded-md
@@ -82,10 +80,10 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
                 placeholder:text-gray-400 placeholder:top-0 placeholder:left-0
                 p-3 resize-none overflow-auto"
             />
-            {isSubmit && phoneNumber.isError && (
-              <p className="text-red">
+            {phoneNumberTouched && phoneNumber.isError && (
+              <FormErrorResponse>
                 전화번호 양식에 맞게 작성해주세요. (예시: 010-0000-0000)
-              </p>
+              </FormErrorResponse>
             )}
           </LabelContainer>
 
@@ -113,10 +111,6 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
               >
                 {contents.value.length}/{CONTENTS_MAX_LENGTH}
               </span>
-
-              {isSubmit && contents.isError && (
-                <p className="text-red">내용은 10,000자 이하로 작성해주세요.</p>
-              )}
             </div>
           </LabelContainer>
 
@@ -137,6 +131,7 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
               onClick={handleSubmit}
               disabled={
                 isPending || phoneNumber.value === '' || contents.value === ''
+                || phoneNumber.isError || contents.isError
               }
               className="flex-1 px-4 py-2 rounded-md"
             >
