@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { ICON_SRC } from '@/entities/asset.ts';
-import { getEmploymentStatus } from '@/feature/post/ui/postFormatFunctions.ts';
 import { useGuardContext } from '@/shared/context/hooks.ts';
 import { ServiceContext } from '@/shared/context/ServiceContext.ts';
 import { TokenContext } from '@/shared/context/TokenContext.ts';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
+import { getEmploymentStatus } from '@/util/postFormatFunctions';
 
 export const BookmarkListView = () => {
   const { bookmarkListData } = useGetBookmarkList();

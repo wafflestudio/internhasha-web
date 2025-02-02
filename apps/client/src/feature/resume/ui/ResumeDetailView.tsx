@@ -2,13 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
 import { ICON_SRC } from '@/entities/asset.ts';
-import { getFormatDate } from '@/feature/post/ui/postFormatFunctions.ts';
 import { SkeletonResumeDetailView } from '@/feature/resume/ui/SkeletonResumeDetailView.tsx';
 import { EnvContext } from '@/shared/context/EnvContext.ts';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation.ts';
+import { getFormatDate } from '@/util/postFormatFunctions';
 
 export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
   const { resumeDetailData } = useGetResumeDetail({ resumeId });
@@ -26,8 +26,6 @@ export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
   }
 
   const resumeDetail = resumeDetailData.data;
-
-  console.log(resumeDetail);
 
   return (
     <div className="flex w-full py-10 bg-gray-50">

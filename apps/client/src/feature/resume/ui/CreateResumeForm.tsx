@@ -118,7 +118,10 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
             <Button
               type="button"
               variant="ghost"
-              onClick={handleClickCancelButton}
+              onClick={(e) => {
+                e.preventDefault();
+                handleClickCancelButton();
+              }}
               disabled={isPending}
               className="flex-1 px-4 py-2 bg-gray-100 text-gray-600 rounded-md hover:bg-gray-200"
             >
@@ -128,7 +131,10 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
               type="submit"
               variant="default"
               form="CreateResumeForm"
-              onClick={handleSubmit}
+              onClick={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
               disabled={
                 isPending ||
                 phoneNumber.value === '' ||

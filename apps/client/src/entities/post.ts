@@ -51,7 +51,7 @@ export type PostRequest = {
   explanation: string;
   email: string;
   slogan: string;
-  investAmount?: number;
+  investAmount: number;
   investCompany: string;
   series: Series;
   irDeckLink?: string;
@@ -62,7 +62,7 @@ export type PostRequest = {
 
   // post 정보
   title: string;
-  employmentEndDate: string | null;
+  employmentEndDate: string;
   createdAt: string;
   updatedAt: string;
   isActive: boolean;
@@ -81,11 +81,11 @@ export type PostResponse = {
   explanation: string;
   email: string;
   slogan: string;
-  investAmount?: number;
+  investAmount: number;
   investCompany: string;
   series: Series;
-  irDeckLink?: string;
-  landingPageLink?: string;
+  irDeckLink?: string | null;
+  landingPageLink?: string | null;
   imageLink: string;
   externalDescriptionLink?: Link[];
   tags?: string[];

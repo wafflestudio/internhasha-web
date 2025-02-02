@@ -47,11 +47,11 @@ type PostDTO = {
   explanation: string;
   email: string;
   slogan: string;
-  investAmount?: number;
+  investAmount: number;
   investCompany: string;
   series: Series;
-  irDeckLink?: string;
-  landingPageLink?: string;
+  irDeckLink?: string | null;
+  landingPageLink?: string | null;
   imageLink: string;
   externalDescriptionLink?: Link[];
   tags?: string[];
@@ -138,10 +138,6 @@ export type ResumeIdParams = {
   resumeId: string;
 };
 
-export type CompanyIdParams = {
-  companyId: string;
-};
-
 export type BookmarkPageParams = {
   bookmarkPage?: string;
 };
@@ -208,7 +204,7 @@ export type CreateCompanyRequest = {
   explanation: string;
   email: string;
   slogan: string;
-  investAmount?: number;
+  investAmount: number;
   investCompany: string;
   series: Series;
   irDeckLink?: string;
@@ -225,6 +221,7 @@ export type CreatePostRequest = {
   detail: string;
   headcount: number;
   isActive: boolean;
+  companyId: string;
 };
 
 // Response

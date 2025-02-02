@@ -1,20 +1,20 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
+import type { Series } from '@/entities/post';
 import { cn } from '@/lib/utils';
+import { formatSeries } from '@/util/postFormatFunctions';
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  'inline-flex items-center rounded-md px-2 py-1.5 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
-        default:
-          'border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80',
-        secondary:
-          'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
+        default: 'border-transparent bg-white text-grey-dark-active',
+        secondary: 'bg-grey-light-hover text-grey-darker',
         destructive:
           'border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80',
-        outline: 'text-foreground',
+        outline: 'border bg-white text-grey-darker',
       },
     },
     defaultVariants: {
@@ -34,7 +34,7 @@ function Badge({ className, variant, ...props }: BadgeProps) {
 }
 
 const seriesBadgeVariants = cva(
-  'inline-flex items-center text-center rounded-md px-1.5 py-1 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  'inline-flex items-center text-center rounded-md px-2 py-1.5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
@@ -57,7 +57,7 @@ export interface SeriesBadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof seriesBadgeVariants> {}
 
-function SeriesBadge({ className, variant, ...props }: SeriesBadgeProps) {
+function SeriesBadgeLayout({ className, variant, ...props }: SeriesBadgeProps) {
   return (
     <div
       className={cn(seriesBadgeVariants({ variant }), className)}
@@ -65,5 +65,19 @@ function SeriesBadge({ className, variant, ...props }: SeriesBadgeProps) {
     />
   );
 }
+
+const SeriesBadge = ({
+  series,
+  className,
+}: {
+  series: Series;
+  className?: string;
+}) => {
+  return (
+    <SeriesBadgeLayout className={className}>
+      {formatSeries(series)}
+    </SeriesBadgeLayout>
+  );
+};
 
 export { Badge, SeriesBadge, badgeVariants };

@@ -7,7 +7,6 @@ import type {
 import type {
   AccessTokenRequest,
   BookmarkPageParams,
-  CompanyIdParams,
   CreateAndUpdatePostRequest,
   CreateCompanyRequest,
   CreatePostRequest,
@@ -312,18 +311,16 @@ export const getLocalServerApis = ({
         body,
       });
     },
-    "POST /post/company/:companyId/position": ({
+    "POST /post/position": ({
       token,
-      params,
       body,
     }: {
       token: string;
-      params: CompanyIdParams;
       body: CreatePostRequest;
     }) => {
       return callWithToken<SuccessResponse<void>>({
         method: "POST",
-        path: `post/company/${params.companyId}/position`,
+        path: `post/position`,
         token,
         body,
       });
