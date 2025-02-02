@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { Skeleton } from '@/components/ui/skeleton';
+import { getFormatDate } from '@/feature/post/ui/postFormatFunctions.ts';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { getFormatDate } from '@/util/postFormatFunctions';
 
 export const ResumeListView = () => {
   const { resumeListData } = useGetResumeList();
@@ -29,7 +29,7 @@ export const ResumeListView = () => {
             }}
           >
             <span className="w-[350px] text-grey-darker font-semibold truncate">
-              {resume.positionTitle}
+              {resume.companyName}
             </span>
             <span className="text-sm text-grey-normal">
               {getFormatDate(resume.createdAt)}

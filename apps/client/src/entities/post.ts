@@ -42,7 +42,7 @@ export type Link = {
   description: string;
 };
 
-export type Post = {
+export type PostRequest = {
   id: string;
   author: AuthorBriefDTO;
 
@@ -72,8 +72,38 @@ export type Post = {
   isBookmarked: boolean;
 };
 
+export type PostResponse = {
+  id: string;
+  author: AuthorBriefDTO;
+
+  // 회사 정보
+  companyName: string;
+  explanation: string;
+  email: string;
+  slogan: string;
+  investAmount?: number;
+  investCompany: string;
+  series: Series;
+  irDeckLink?: string;
+  landingPageLink?: string;
+  imageLink: string;
+  externalDescriptionLink?: Link[];
+  tags?: string[];
+
+  // post 정보
+  title: string;
+  employmentEndDate: string | null;
+  createdAt: string;
+  updatedAt: string;
+  isActive: boolean;
+  category: JobMinorCategory;
+  detail: string;
+  headcount: number;
+  isBookmarked: boolean;
+};
+
 export type CreateCompanyRequest = Pick<
-  Post,
+  PostRequest,
   | 'companyName'
   | 'explanation'
   | 'email'
@@ -89,12 +119,12 @@ export type CreateCompanyRequest = Pick<
 >;
 
 export type CreatePostRequest = Pick<
-  Post,
+  PostRequest,
   'title' | 'category' | 'detail' | 'headcount' | 'isActive'
 > & { employmentEndDate?: string };
 
 export type BriefPost = Omit<
-  Post,
+  PostResponse,
   | 'explanation'
   | 'irDeckLink'
   | 'landingPageLink'

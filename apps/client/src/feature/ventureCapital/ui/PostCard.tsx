@@ -1,9 +1,12 @@
 import { SeriesBadge } from '@/components/ui/badge';
 import { ICON_SRC } from '@/entities/asset';
 import type { BriefPost } from '@/entities/post';
+import {
+  formatSeries,
+  getEmploymentStatus,
+} from '@/feature/post/ui/postFormatFunctions.ts';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
-import { formatSeries, getEmploymentStatus } from '@/util/postFormatFunctions';
 
 type PostCardProps = {
   post: BriefPost;
