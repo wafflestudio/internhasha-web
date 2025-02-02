@@ -273,7 +273,10 @@ export const CreateCompanyForm = () => {
             뒤로가기
           </Button>
           <Button
-            onClick={handleSubmit}
+            onClick={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
             disabled={isPending}
             className="flex-1"
           >

@@ -184,7 +184,10 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
             이전으로
           </Button>
           <Button
-            onClick={handleSubmit}
+            onClick={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
             disabled={isPending}
             className="flex-1"
           >
