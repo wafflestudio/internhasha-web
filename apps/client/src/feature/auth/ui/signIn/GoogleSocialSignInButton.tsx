@@ -10,10 +10,16 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
-export const GoogleSocialSignInButton = () => {
+export const GoogleSocialSignInButton = ({
+  setShowSignUpModal,
+}: {
+  setShowSignUpModal(input: boolean): void;
+}) => {
   const [error, setError] = useState<string | undefined>(undefined);
 
-  const { googleSignIn, responseMessage, isPending } = useGoogleSignIn();
+  const { googleSignIn, responseMessage, isPending } = useGoogleSignIn({
+    setShowSignUpModal,
+  });
 
   const popupGoogle = useGoogleLogin({
     onSuccess: (credentialResponse) => {
@@ -30,31 +36,37 @@ export const GoogleSocialSignInButton = () => {
   };
 
   return (
-    <div className="w-full">
-      <Button
-        onClick={handleClickGoogleSignUpButton}
-        disabled={isPending}
-        variant="outline"
-        className="w-full"
-      >
-        <img src={ICON_SRC.GOOGLE} />
-        구글 계정으로 간편 로그인
-      </Button>
-      {error !== undefined && (
-        <div>
-          <span>{error}</span>
-        </div>
-      )}
-      {responseMessage !== '' && (
-        <div className="text-red-500 text-sm mt-2">
-          <FormErrorResponse>{responseMessage}</FormErrorResponse>
-        </div>
-      )}
-    </div>
+    <>
+      <div className="w-full">
+        <Button
+          onClick={handleClickGoogleSignUpButton}
+          disabled={isPending}
+          variant="outline"
+          className="w-full"
+        >
+          <img src={ICON_SRC.GOOGLE} />
+          구글 계정으로 간편 로그인
+        </Button>
+        {error !== undefined && (
+          <div>
+            <span>{error}</span>
+          </div>
+        )}
+        {responseMessage !== '' && (
+          <div className="text-red-500 text-sm mt-2">
+            <FormErrorResponse>{responseMessage}</FormErrorResponse>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
-const useGoogleSignIn = () => {
+const useGoogleSignIn = ({
+  setShowSignUpModal,
+}: {
+  setShowSignUpModal(input: boolean): void;
+}) => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
   const { toMain } = useRouteNavigation();
@@ -74,6 +86,10 @@ const useGoogleSignIn = () => {
       if (response.type === 'success') {
         toMain();
       } else {
+        if (response.code === 'USER_004') {
+          setShowSignUpModal(true);
+          return;
+        }
         setResponseMessage(createErrorMessage(response.code));
       }
     },
