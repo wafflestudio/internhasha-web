@@ -15,7 +15,7 @@ const mockPostsResponse: PostDetailResponse[] = Array.from(
     irDeckLink: `https://example.com/deck${index}.pdf`,
     landingPageLink: `https://startup${index}.com`,
     imageLink: `https://example.com/startup${index}.jpg`,
-    externalDescriptionLink: [
+    links: [
       {
         link: `https://news${index}.com`,
         description: `관련 기사 ${index}`,
@@ -51,9 +51,7 @@ export const mockPost1: PostDetailResponse = {
   irDeckLink: 'https://example.com/deckA.pdf',
   landingPageLink: 'https://startupA.com',
   imageLink: 'https://example.com/startupA.jpg',
-  externalDescriptionLink: [
-    { link: 'https://newsA.com', description: '스타트업 A 관련 기사' },
-  ],
+  links: [{ link: 'https://newsA.com', description: '스타트업 A 관련 기사' }],
   tags: ['AI', '혁신', '스타트업'],
   title: 'AI 개발자 모집',
   employmentEndDate: '2025-03-01',

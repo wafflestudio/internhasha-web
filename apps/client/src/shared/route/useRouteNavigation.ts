@@ -34,7 +34,7 @@ type CompanyBody = {
   irDeckLink?: string;
   landingPageLink?: string;
   imageLink?: string;
-  externalDescriptionLink?: { link: string; description: string }[];
+  links?: { link: string; description: string }[];
   tags?: string[];
 };
 

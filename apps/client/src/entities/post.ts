@@ -57,7 +57,7 @@ export type PostRequest = {
   irDeckLink?: string;
   landingPageLink?: string;
   imageLink: string;
-  externalDescriptionLink?: Link[];
+  links?: Link[];
   tags?: { tag: string }[];
 
   // post 정보
@@ -87,7 +87,7 @@ export type PostResponse = {
   irDeckLink?: string | null;
   landingPageLink?: string | null;
   imageLink: string;
-  externalDescriptionLink?: Link[];
+  links?: Link[];
   tags?: string[];
 
   // post 정보
@@ -114,7 +114,7 @@ export type CreateCompanyRequest = Pick<
   | 'irDeckLink'
   | 'landingPageLink'
   | 'imageLink'
-  | 'externalDescriptionLink'
+  | 'links'
   | 'tags'
 >;
 
@@ -128,7 +128,7 @@ export type BriefPost = Omit<
   | 'explanation'
   | 'irDeckLink'
   | 'landingPageLink'
-  | 'externalDescriptionLink'
+  | 'links'
   | 'tags'
   | 'createdAt'
   | 'updatedAt'

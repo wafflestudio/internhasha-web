@@ -25,7 +25,7 @@ type InitialState = {
   landingPageLink?: string;
   imagePreview?: { file: File; url: string } | null;
   imageLink?: string;
-  externalDescriptionLink?: ExternalLink[];
+  links?: ExternalLink[];
   tags?: string[];
 };
 
@@ -49,8 +49,8 @@ type CompanyFormPresentation = {
       irDeckPreview: Input<{ file: File; url: string } | null>;
       landingPageLink: Input<string>;
       imagePreview: Input<{ file: File; url: string } | null>;
-      rawExternalDescriptionLink: Input<ExternalLink>;
-      externalDescriptionLink: ListInput<ExternalLink>;
+      rawLink: Input<ExternalLink>;
+      links: ListInput<ExternalLink>;
       rawTag: Input<string>;
       tags: ListInput<string>;
     };
@@ -63,7 +63,7 @@ type CompanyFormPresentation = {
       investCompany: InputForForm<string>;
       series: InputForForm<Series | 'NONE'>;
       landingPageLink: InputForForm<string | undefined>;
-      externalDescriptionLink: InputForForm<ExternalLink[] | undefined>;
+      links: InputForForm<ExternalLink[] | undefined>;
       tags: InputForForm<{ tag: string }[] | undefined>;
     };
   };
@@ -85,7 +85,7 @@ export const companyFormPresentation: CompanyFormPresentation = {
       irDeckPreview: initialState?.irDeckPreview,
       landingPageLink: initialState?.landingPageLink,
       imagePreview: initialState?.imagePreview,
-      externalDescriptionLink: initialState?.externalDescriptionLink,
+      links: initialState?.links,
       tags: initialState?.tags,
     };
 
@@ -101,8 +101,8 @@ export const companyFormPresentation: CompanyFormPresentation = {
       irDeckPreview,
       landingPageLink,
       imagePreview,
-      rawExternalDescriptionLink,
-      externalDescriptionLink,
+      rawLink,
+      links,
       rawTag,
       tags,
     } = companyInputPresentation.useValidator({
@@ -113,6 +113,11 @@ export const companyFormPresentation: CompanyFormPresentation = {
       const filteredInput = input.filter((item) => item.trim().length !== 0);
       return filteredInput.length === 0;
     };
+
+    const filteredLinks = links.value.filter(
+      (item) =>
+        item.link.trim().length !== 0 && item.description.trim().length !== 0,
+    );
 
     return {
       inputStates: {
@@ -127,8 +132,8 @@ export const companyFormPresentation: CompanyFormPresentation = {
         irDeckPreview,
         landingPageLink,
         imagePreview,
-        rawExternalDescriptionLink,
-        externalDescriptionLink,
+        rawLink,
+        links,
         rawTag,
         tags,
       },
@@ -182,20 +187,9 @@ export const companyFormPresentation: CompanyFormPresentation = {
               ? landingPageLink.value
               : undefined,
         },
-        externalDescriptionLink: {
-          isError: externalDescriptionLink.isError,
-          value:
-            externalDescriptionLink.value.filter(
-              (item) =>
-                item.link.trim().length !== 0 &&
-                item.description.trim().length !== 0,
-            ).length !== 0
-              ? externalDescriptionLink.value.filter(
-                  (item) =>
-                    item.link.trim().length !== 0 &&
-                    item.description.trim().length !== 0,
-                )
-              : undefined,
+        links: {
+          isError: links.isError,
+          value: filteredLinks.length !== 0 ? filteredLinks : undefined,
         },
       },
     };
