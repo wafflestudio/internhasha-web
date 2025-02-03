@@ -35,6 +35,7 @@ type VALID_RECRUITING_FILTER_TYPE = 0 | 1 | undefined;
 const SERIES_FILTER_VALUE = [
   { value: 'SEED', label: 'Seed' },
   { value: 'PRE_A', label: 'Pre-Series A' },
+  { value: 'A', label: 'Series A' },
   { value: 'B', label: 'Series B' },
   { value: 'C', label: 'Series C' },
   { value: 'D', label: 'Series D' },
