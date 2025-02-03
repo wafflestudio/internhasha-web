@@ -279,7 +279,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
 
               {irDeckLink !== undefined &&
                 irDeckLink !== null &&
-                irDeckLink.trim().length === 0 && (
+                irDeckLink.trim().length !== 0 && (
                   <div className="flex flex-col items-start sm:items-center sm:flex-row gap-5">
                     <span className="text-lg text-grey-dark-active font-semibold">
                       IR Deck 자료
