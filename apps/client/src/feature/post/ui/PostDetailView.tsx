@@ -82,7 +82,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
     investCompany,
     irDeckLink,
     landingPageLink,
-    externalDescriptionLink,
+    links,
     title,
     detail,
     headcount,
@@ -301,38 +301,32 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                 )}
             </section>
 
-            {externalDescriptionLink !== undefined &&
-              externalDescriptionLink.length !== 0 && (
-                <section className="flex flex-col gap-3">
-                  <span className="text-lg text-grey-dark-active font-semibold">
-                    외부 링크
-                  </span>
-                  <div className="flex flex-col gap-1.5">
-                    {externalDescriptionLink.map(
-                      (linkWithDescription, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="flex gap-[10px] items-center"
-                          >
-                            <span className="text-grey-dark">
-                              {linkWithDescription.description}
-                            </span>
-                            <a
-                              href={linkWithDescription.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1 gap-1 rounded-lg bg-grey-light"
-                            >
-                              <img src={ICON_SRC.LINK} />
-                            </a>
-                          </div>
-                        );
-                      },
-                    )}
-                  </div>
-                </section>
-              )}
+            {links !== undefined && links.length !== 0 && (
+              <section className="flex flex-col gap-3">
+                <span className="text-lg text-grey-dark-active font-semibold">
+                  외부 링크
+                </span>
+                <div className="flex flex-col gap-1.5">
+                  {links.map((linkWithDescription, index) => {
+                    return (
+                      <div key={index} className="flex gap-[10px] items-center">
+                        <span className="text-grey-dark">
+                          {linkWithDescription.description}
+                        </span>
+                        <a
+                          href={linkWithDescription.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1 gap-1 rounded-lg bg-grey-light"
+                        >
+                          <img src={ICON_SRC.LINK} />
+                        </a>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
 
             {/* 태그 */}
             <section className="flex flex-col gap-3">

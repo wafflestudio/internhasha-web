@@ -18,7 +18,7 @@ type Body = {
     irDeckLink?: string;
     landingPageLink?: string;
     imageLink?: string;
-    externalDescriptionLink?: Link[];
+    links?: Link[];
     tags?: string[];
   };
 };

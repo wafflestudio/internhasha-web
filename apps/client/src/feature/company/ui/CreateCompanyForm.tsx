@@ -52,8 +52,8 @@ export const CreateCompanyForm = () => {
     irDeckPreview,
     landingPageLink,
     imagePreview,
-    rawExternalDescriptionLink,
-    externalDescriptionLink,
+    rawLink,
+    links,
     rawTag,
     tags,
   } = inputStates;
@@ -83,7 +83,7 @@ export const CreateCompanyForm = () => {
       formStates.investCompany.isError ||
       formStates.series.isError ||
       formStates.landingPageLink.isError ||
-      formStates.externalDescriptionLink.isError ||
+      formStates.links.isError ||
       formStates.tags.isError
     ) {
       return;
@@ -109,7 +109,7 @@ export const CreateCompanyForm = () => {
         investCompany: formStates.investCompany.value,
         series: formStates.series.value,
         landingPageLink: formStates.landingPageLink.value,
-        externalDescriptionLink: formStates.externalDescriptionLink.value,
+        links: formStates.links.value,
         tags: formStates.tags.value,
       },
       pdfFile:
@@ -123,6 +123,8 @@ export const CreateCompanyForm = () => {
         return;
       });
   };
+
+  console.log(formStates.links);
 
   return (
     <>
@@ -243,11 +245,11 @@ export const CreateCompanyForm = () => {
         />
         <ExternalLinkField
           label="외부 소개 링크"
-          input={externalDescriptionLink}
-          rawInput={rawExternalDescriptionLink}
+          input={links}
+          rawInput={rawLink}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={formStates.externalDescriptionLink.isError}
+          isSubmitError={formStates.links.isError}
           placeholder={{
             description:
               '링크 제목을 작성해주세요. (e.g. OO 프로젝트 성과 기사)',
@@ -483,8 +485,6 @@ const useCreateCompanyWithUploads = ({
       const imageS3Key = getS3ObjectPath(
         imagePresignedUrlResponse.data.presignedUrl,
       );
-
-      console.log(pdfS3Key, imageS3Key);
 
       createCompany({
         companyContents: {

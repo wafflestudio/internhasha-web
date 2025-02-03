@@ -53,7 +53,7 @@ type PostDTO = {
   irDeckLink?: string | null;
   landingPageLink?: string | null;
   imageLink: string;
-  externalDescriptionLink?: Link[];
+  links?: Link[];
   tags?: string[];
 
   // post 정보
@@ -73,7 +73,7 @@ export type PostBriefDTO = Omit<
   | "explanation"
   | "irDeckLink"
   | "landingPageLink"
-  | "externalDescriptionLink"
+  | "links"
   | "tags"
   | "createdAt"
   | "updatedAt"
@@ -210,7 +210,7 @@ export type CreateCompanyRequest = {
   irDeckLink?: string;
   landingPageLink?: string;
   imageLink: string;
-  externalDescriptionLink?: Link[];
+  links?: Link[];
   tags?: { tag: string }[];
 };
 

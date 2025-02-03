@@ -21,7 +21,7 @@ type InitialInputState = {
   landingPageLink?: string;
   imagePreview?: { file: File; url: string } | null;
   imageLink?: string;
-  externalDescriptionLink?: ExternalLink[];
+  links?: ExternalLink[];
   tags?: string[];
 };
 
@@ -38,8 +38,8 @@ export type CompanyInputPresentation = {
     irDeckPreview: Input<{ file: File; url: string } | null>;
     landingPageLink: Input<string>;
     imagePreview: Input<{ file: File; url: string } | null>;
-    rawExternalDescriptionLink: Input<ExternalLink>;
-    externalDescriptionLink: ListInput<ExternalLink>;
+    rawLink: Input<ExternalLink>;
+    links: ListInput<ExternalLink>;
     rawTag: Input<string>;
     tags: ListInput<string>;
   };
@@ -75,7 +75,7 @@ const IMAGE_EXTENSIONS = [
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const INVEST_AMOUNT_REGEX = /^\s*$|^[0-9]+$/;
-const URL_REGEX = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;
+const URL_REGEX = /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;
 
 export const companyInputPresentation: CompanyInputPresentation = {
   useValidator: ({ initialState }) => {
@@ -121,13 +121,13 @@ export const companyInputPresentation: CompanyInputPresentation = {
         ? initialState.imagePreview
         : null,
     );
-    const [rawExternalDescriptionLink, setRawExternalDescriptionLink] =
-      useState<ExternalLink>({ link: '', description: '' });
-    const [externalDescriptionLink, setExternalDescriptionLink] = useState<
-      ExternalLink[]
-    >(
-      initialState?.externalDescriptionLink !== undefined
-        ? initialState.externalDescriptionLink
+    const [rawLink, setRawLink] = useState<ExternalLink>({
+      link: '',
+      description: '',
+    });
+    const [links, setLinks] = useState<ExternalLink[]>(
+      initialState?.links !== undefined
+        ? initialState.links
         : [{ link: '', description: '' }],
     );
     const [rawTag, setRawTag] = useState('');
@@ -168,7 +168,7 @@ export const companyInputPresentation: CompanyInputPresentation = {
       }
       return true;
     };
-    const isRawExternalDescriptionLinkValid = (input: ExternalLink) => {
+    const isRawlinksValid = (input: ExternalLink) => {
       const trimmedDescription = input.description.trim();
       const trimmedLink = input.link.trim();
 
@@ -179,7 +179,7 @@ export const companyInputPresentation: CompanyInputPresentation = {
         return false;
       }
 
-      const filteredExternalDescriptionLink = externalDescriptionLink.filter(
+      const filteredlinks = links.filter(
         (item) =>
           item.link.trim() !== trimmedLink &&
           item.description.trim() !== trimmedDescription,
@@ -187,8 +187,7 @@ export const companyInputPresentation: CompanyInputPresentation = {
       if (
         trimmedDescription.length !== 0 &&
         trimmedLink.length !== 0 &&
-        filteredExternalDescriptionLink.length !==
-          externalDescriptionLink.length - 1
+        filteredlinks.length !== links.length - 1
       ) {
         return false;
       }
@@ -322,7 +321,7 @@ export const companyInputPresentation: CompanyInputPresentation = {
         }
       });
     };
-    const handleExternalDescriptionLinkChange = ({
+    const handlelinksChange = ({
       input,
       index,
       mode,
@@ -337,12 +336,10 @@ export const companyInputPresentation: CompanyInputPresentation = {
           index: number;
           mode: 'PATCH' | 'REMOVE';
         }) => {
-      setExternalDescriptionLink((prevState) => {
+      setLinks((prevState) => {
         switch (mode) {
           case 'ADD':
-            return isRawExternalDescriptionLinkValid(input)
-              ? [...prevState, input]
-              : prevState;
+            return isRawlinksValid(input) ? [...prevState, input] : prevState;
           case 'REMOVE':
             return [
               ...prevState.slice(0, index),
@@ -417,7 +414,9 @@ export const companyInputPresentation: CompanyInputPresentation = {
         onChange: setSlogan,
       },
       investAmount: {
-        isError: !INVEST_AMOUNT_REGEX.test(investAmount),
+        isError:
+          investAmount.trim().length !== 0 &&
+          !INVEST_AMOUNT_REGEX.test(investAmount),
         value: investAmount,
         onChange: setInvestAmount,
       },
@@ -453,15 +452,15 @@ export const companyInputPresentation: CompanyInputPresentation = {
         value: imagePreview,
         onChange: setImagePreview,
       },
-      rawExternalDescriptionLink: {
-        isError: !isRawExternalDescriptionLinkValid(rawExternalDescriptionLink),
-        value: rawExternalDescriptionLink,
-        onChange: setRawExternalDescriptionLink,
+      rawLink: {
+        isError: !isRawlinksValid(rawLink),
+        value: rawLink,
+        onChange: setRawLink,
       },
-      externalDescriptionLink: {
-        isError: !isExternalLinkValid(externalDescriptionLink),
-        value: externalDescriptionLink,
-        onChange: handleExternalDescriptionLinkChange,
+      links: {
+        isError: !isExternalLinkValid(links),
+        value: links,
+        onChange: handlelinksChange,
       },
       rawTag: {
         isError: !isRawTagValid(rawTag),
