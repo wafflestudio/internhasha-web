@@ -2,7 +2,6 @@ import type { Apis } from '@waffle/api';
 
 import type { ServiceResponse } from '@/entities/response';
 import type { User } from '@/entities/user';
-import type { TokenLocalStorageRepository } from '@/shared/token/localstorage';
 import type { TokenStateRepository } from '@/shared/token/state';
 
 export type AuthService = {
@@ -80,11 +79,9 @@ export type AuthService = {
 
 export const implAuthService = ({
   apis,
-  tokenLocalStorageRepository,
   tokenStateRepository,
 }: {
   apis: Apis;
-  tokenLocalStorageRepository: TokenLocalStorageRepository;
   tokenStateRepository: TokenStateRepository;
 }): AuthService => ({
   signUp: async ({ authType, info }) => {
@@ -94,7 +91,6 @@ export const implAuthService = ({
     if (status === 200) {
       const token = data.token;
 
-      tokenLocalStorageRepository.setToken({ token });
       tokenStateRepository.setToken({ token });
 
       return {
@@ -111,7 +107,6 @@ export const implAuthService = ({
     if (status === 200) {
       const token = data.token;
 
-      tokenLocalStorageRepository.setToken({ token });
       tokenStateRepository.setToken({ token });
 
       return {
@@ -173,7 +168,6 @@ export const implAuthService = ({
     if (status === 200) {
       const accessToken = data.accessToken;
 
-      tokenLocalStorageRepository.setToken({ token: accessToken });
       tokenStateRepository.setToken({ token: accessToken });
 
       return {
@@ -201,7 +195,7 @@ export const implAuthService = ({
   },
   logout: async ({ token }) => {
     const { status, data } = await apis['POST /user/signout']({ token });
-    tokenLocalStorageRepository.removeToken();
+
     tokenStateRepository.removeToken();
     if (status === 200) {
       return {
