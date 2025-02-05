@@ -91,8 +91,6 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
     isActive,
   } = postDetailData.data;
 
-  console.log(postDetailData.data);
-
   const investCompanyList = investCompany.split(',');
 
   const formatDate = (isoString: string) => {

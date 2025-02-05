@@ -50,8 +50,6 @@ export const implFileService = ({
       contentType: file.type,
     });
 
-    console.log(file);
-
     if (status === 200) {
       return {
         type: 'success',

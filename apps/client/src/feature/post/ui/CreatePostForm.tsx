@@ -230,12 +230,10 @@ const useCreatePost = ({
       if (response.type === 'success') {
         onSuccess();
       } else {
-        console.log(response);
         setResponseMessage(createErrorMessage(response.code));
       }
     },
-    onError: (error) => {
-      console.log(error);
+    onError: () => {
       setResponseMessage(
         '공고 생성에 실패했습니다. 잠시 후에 다시 실행해주세요.',
       );
