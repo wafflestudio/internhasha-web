@@ -197,7 +197,7 @@ export const CreateCompanyForm = () => {
           isPending={isPending}
           isSubmit={isSubmit}
           isSubmitError={formStates.investAmount.isError}
-          errorMessage="0 이상의 양의 정수로 입력해주세요."
+          errorMessage="0 이상의 10만 이하의 양의 정수로 입력해주세요."
           required={true}
         />
         <InvestCompanyField
