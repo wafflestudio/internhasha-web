@@ -266,6 +266,9 @@ export const FilterSection = ({
   };
 
   const handleClickAllResetButton = () => {
+    setRecruitingSelect(undefined);
+    setSeriesSelect(undefined);
+    setInvestAmountSelect('ALL');
     onChangeFilters({});
   };
 
