@@ -69,6 +69,8 @@ type CompanyFormPresentation = {
   };
 };
 
+const MAX_INVEST_AMOUNT = 100000;
+
 export const companyFormPresentation: CompanyFormPresentation = {
   useValidator: ({ initialState, companyInputPresentation }) => {
     const initialStateForInput = {
@@ -162,7 +164,8 @@ export const companyFormPresentation: CompanyFormPresentation = {
           isError:
             investAmount.value.trim().length === 0 ||
             isNaN(Number(investAmount.value)) ||
-            Number(investAmount.value) < 0,
+            Number(investAmount.value) < 0 ||
+            Number(investAmount.value) > MAX_INVEST_AMOUNT,
           value: Number(investAmount.value),
         },
         investCompany: {
