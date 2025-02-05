@@ -39,7 +39,6 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { implFileService } from '@/shared/file/fileService';
 import { implRolesFilterLocalStorageRepository } from '@/shared/rolesFilter/localstorage';
 import { implRolesFilterStateRepository } from '@/shared/rolesFilter/state';
-import { implTokenLocalStorageRepository } from '@/shared/token/localstorage';
 import { implTokenStateRepository } from '@/shared/token/state';
 
 const RouterProvider = () => {
@@ -84,14 +83,11 @@ const queryClient = new QueryClient({
 });
 
 export const App = () => {
-  const tokenLocalStorageRepository = implTokenLocalStorageRepository();
   const rolesFilterLocalStorageRepository =
     implRolesFilterLocalStorageRepository();
-  const { token: storagedToken, role: storagedRole } =
-    tokenLocalStorageRepository.getToken();
 
-  const [token, setToken] = useState<string | null>(storagedToken);
-  const [role, setRole] = useState<'NORMAL' | 'CURATOR' | null>(storagedRole);
+  const [token, setToken] = useState<string | null>(null);
+  const [role, setRole] = useState<'NORMAL' | 'CURATOR' | null>(null);
   const [activeCategory, setActiveCategory] = useState<RolesFilterCategory>(
     rolesFilterLocalStorageRepository.getActiveJobCategory,
   );
@@ -137,7 +133,6 @@ export const App = () => {
     if (!response.ok) {
       if (response.status === 401) {
         tokenStateRepository.removeToken();
-        tokenLocalStorageRepository.removeToken();
       }
     }
     return {
@@ -170,7 +165,6 @@ export const App = () => {
     authService: implAuthService({
       apis,
       tokenStateRepository,
-      tokenLocalStorageRepository,
     }),
     postService: implPostService({ apis }),
     userService: implUserService({ apis }),

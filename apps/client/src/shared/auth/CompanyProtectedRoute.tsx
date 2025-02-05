@@ -14,8 +14,6 @@ export const CompanyProtectedRoute = () => {
   const { token, role } = useGuardContext(TokenContext);
   const { reissueToken } = useRefreshToken();
 
-  console.log(role, token);
-
   if (token === null && !hasReissued.current) {
     reissueToken();
     hasReissued.current = true;

@@ -124,8 +124,6 @@ export const CreateCompanyForm = () => {
       });
   };
 
-  console.log(formStates.links);
-
   return (
     <>
       <FormContainer handleSubmit={handleSubmit} className="gap-10">
