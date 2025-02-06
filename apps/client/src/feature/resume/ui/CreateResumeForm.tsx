@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { FormContainer } from '@/components/form';
@@ -174,6 +174,7 @@ const useCreateResume = ({
   const { resumeService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
   const { toPost } = useRouteNavigation();
+  const queryClient = useQueryClient();
 
   const { mutate: createResume, isPending } = useMutation({
     mutationFn: ({ resume }: { resume: ResumeRequest }) => {
@@ -186,8 +187,9 @@ const useCreateResume = ({
         postId,
       });
     },
-    onSuccess: (response) => {
+    onSuccess: async (response) => {
       if (response.type === 'success') {
+        await queryClient.invalidateQueries();
         toPost({ postId });
       } else {
         setResponseMessage(response.code);

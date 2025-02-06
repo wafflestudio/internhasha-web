@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRef } from 'react';
 import { Outlet } from 'react-router';
 
@@ -23,14 +23,15 @@ export const AuthProtectedRoute = () => {
 
 const useRefreshToken = () => {
   const { authService } = useGuardContext(ServiceContext);
+  const queryClient = useQueryClient();
 
   const { mutate: reissueToken } = useMutation({
     mutationFn: async () => {
       const response = await authService.reissueAccessToken();
       return response;
     },
-    onSuccess: () => {
-      return;
+    onSuccess: async () => {
+      await queryClient.invalidateQueries();
     },
     onError: () => {
       return;

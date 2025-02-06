@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { ImageField } from '@/components/field/ImageField';
@@ -298,6 +298,8 @@ const useCreateCompanyWithUploads = ({
 }) => {
   const { fileService, postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
+  const queryClient = useQueryClient();
+
   const [isPending, setIsPending] = useState(false);
   const { toMain } = useRouteNavigation();
 
@@ -387,8 +389,9 @@ const useCreateCompanyWithUploads = ({
       }
       return postService.createCompany({ token, companyContents });
     },
-    onSuccess: (response) => {
+    onSuccess: async (response) => {
       if (response.type === 'success') {
+        await queryClient.invalidateQueries();
         toMain();
       }
     },

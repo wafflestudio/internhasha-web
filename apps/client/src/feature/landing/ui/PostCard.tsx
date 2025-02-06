@@ -164,7 +164,7 @@ export const useAddBookmark = () => {
     },
     onSuccess: async (response) => {
       if (response.type === 'success') {
-        await queryClient.invalidateQueries({ queryKey: ['postService'] });
+        await queryClient.invalidateQueries();
         return;
       } else {
         // TODO: 북마크 생성 실패 시 하단에 토스트 띄우기
