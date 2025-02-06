@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { MarkdownEditorField } from '@/components/field/MarkdownEditorField';
@@ -212,6 +212,7 @@ const useCreatePost = ({
 }) => {
   const { postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
+  const queryClient = useQueryClient();
 
   const { mutate: createPost, isPending } = useMutation({
     mutationFn: ({
@@ -226,8 +227,9 @@ const useCreatePost = ({
       }
       return postService.createPost({ token, companyId, postContents: post });
     },
-    onSuccess: (response) => {
+    onSuccess: async (response) => {
       if (response.type === 'success') {
+        await queryClient.invalidateQueries();
         onSuccess();
       } else {
         setResponseMessage(createErrorMessage(response.code));

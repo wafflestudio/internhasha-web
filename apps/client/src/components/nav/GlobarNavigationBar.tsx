@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
 import { useGuardContext } from '@/shared/context/hooks';
@@ -58,6 +58,8 @@ export const GlobalNavigationBar = () => {
 const useLogout = () => {
   const { authService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
+  const { refreshPage } = useRouteNavigation();
+  const queryClient = useQueryClient();
 
   const { mutate: logout, isPending } = useMutation({
     mutationFn: () => {
@@ -65,6 +67,12 @@ const useLogout = () => {
         throw new Error('토큰이 존재하지 않습니다.');
       }
       return authService.logout({ token });
+    },
+    onSuccess: async (response) => {
+      if (response.type === 'success') {
+        await queryClient.invalidateQueries();
+        refreshPage();
+      }
     },
   });
 
