@@ -5,6 +5,7 @@ import type {
   BriefPost,
   CreateCompanyRequest,
   CreatePostRequest,
+  PositionDTO,
   PostResponse,
   Series,
 } from '@/entities/post';
@@ -55,7 +56,7 @@ export type PostService = {
     token: string;
     companyId: string;
     postContents: CreatePostRequest;
-  }): ServiceResponse<void>;
+  }): ServiceResponse<PositionDTO>;
   addBookmark({
     postId,
     token,

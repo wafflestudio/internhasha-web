@@ -134,3 +134,16 @@ export type BriefPost = Omit<
   | 'updatedAt'
   | 'detail'
 >;
+
+export type PositionDTO = Pick<
+  PostResponse,
+  | 'id'
+  | 'title'
+  | 'category'
+  | 'detail'
+  | 'headcount'
+  | 'createdAt'
+  | 'updatedAt'
+  | 'employmentEndDate'
+  | 'isActive'
+>;

@@ -301,7 +301,7 @@ const useCreateCompanyWithUploads = ({
   const queryClient = useQueryClient();
 
   const [isPending, setIsPending] = useState(false);
-  const { toMain } = useRouteNavigation();
+  const { toMyPage } = useRouteNavigation();
 
   const { mutateAsync: getPresignedUrl } = useMutation({
     mutationFn: ({
@@ -392,7 +392,7 @@ const useCreateCompanyWithUploads = ({
     onSuccess: async (response) => {
       if (response.type === 'success') {
         await queryClient.invalidateQueries();
-        toMain();
+        toMyPage();
       }
     },
     onError: () => {

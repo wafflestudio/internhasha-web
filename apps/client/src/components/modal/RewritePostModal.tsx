@@ -2,8 +2,8 @@ import { Button } from '@/components/ui/button';
 import { ModalFloatBackground } from '@/components/ui/layout';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
-export const RewritePostModal = () => {
-  const { toMain, refreshPage } = useRouteNavigation();
+export const RewritePostModal = ({ postId }: { postId: string | null }) => {
+  const { toPost, toMain, refreshPage } = useRouteNavigation();
 
   return (
     <ModalFloatBackground variant="transparent">
@@ -12,8 +12,18 @@ export const RewritePostModal = () => {
         <p>해당 회사에 대한 다른 직군 공고를 계속 작성하시겠습니까?</p>
       </div>
       <div className="flex gap-2">
-        <Button variant="secondary" onClick={toMain} className="flex-1">
-          메인으로
+        <Button
+          variant="secondary"
+          onClick={() => {
+            if (postId === null) {
+              toMain();
+              return;
+            }
+            toPost({ postId });
+          }}
+          className="flex-1"
+        >
+          공고로 이동
         </Button>
         <Button onClick={refreshPage} className="flex-1">
           계속 작성하기
