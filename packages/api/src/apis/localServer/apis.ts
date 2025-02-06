@@ -16,6 +16,7 @@ import type {
   FileUploadRequest,
   GoogleEmailResponse,
   IdRequest,
+  PositionRespone,
   PostBriefDTO,
   PostDetailResponse,
   PostIdParams,
@@ -318,7 +319,7 @@ export const getLocalServerApis = ({
       token: string;
       body: CreatePostRequest;
     }) => {
-      return callWithToken<SuccessResponse<void>>({
+      return callWithToken<SuccessResponse<PositionRespone>>({
         method: "POST",
         path: `post/position`,
         token,

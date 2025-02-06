@@ -247,6 +247,19 @@ export type PostsResponse = {
 
 export type PostDetailResponse = PostDTO;
 
+export type PositionRespone = Pick<
+  PostDTO,
+  | "id"
+  | "title"
+  | "category"
+  | "detail"
+  | "headcount"
+  | "createdAt"
+  | "updatedAt"
+  | "employmentEndDate"
+  | "isActive"
+>;
+
 export type TokenResponse = {
   accessToken: string;
 };

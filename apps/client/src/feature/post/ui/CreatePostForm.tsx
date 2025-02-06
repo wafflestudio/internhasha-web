@@ -24,6 +24,7 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const CreatePostForm = ({ companyId }: { companyId: string }) => {
+  const [postId, setPostId] = useState<string | null>(null);
   const [showFilter, setShowFilter] = useState<
     'NONE' | 'CALENDAR' | 'CATEGORY'
   >('NONE');
@@ -34,8 +35,9 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
   const [responseMessage, setResponseMessage] = useState('');
   const { toMain } = useRouteNavigation();
 
-  const onSuccessSubmit = () => {
+  const onSuccessSubmit = ({ id }: { id: string }) => {
     setShowModal('NEXT');
+    setPostId(id);
   };
   const { createPost, isPending } = useCreatePost({
     setResponseMessage,
@@ -198,7 +200,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
       {showModal === 'CANCEL' && (
         <CancelCheckModal onClose={toMain} onCancel={closeCancelModal} />
       )}
-      {showModal === 'NEXT' && <RewritePostModal />}
+      {showModal === 'NEXT' && <RewritePostModal postId={postId} />}
     </>
   );
 };
@@ -208,7 +210,7 @@ const useCreatePost = ({
   onSuccess,
 }: {
   setResponseMessage(input: string): void;
-  onSuccess(): void;
+  onSuccess({ id }: { id: string }): void;
 }) => {
   const { postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
@@ -230,7 +232,7 @@ const useCreatePost = ({
     onSuccess: async (response) => {
       if (response.type === 'success') {
         await queryClient.invalidateQueries();
-        onSuccess();
+        onSuccess({ id: response.data.id });
       } else {
         setResponseMessage(createErrorMessage(response.code));
       }
