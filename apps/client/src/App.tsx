@@ -37,6 +37,7 @@ import { RolesFilterContext } from '@/shared/context/RolesFilterContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { implFileService } from '@/shared/file/fileService';
+import { implRoleStateRepository } from '@/shared/role/state';
 import { implRolesFilterLocalStorageRepository } from '@/shared/rolesFilter/localstorage';
 import { implRolesFilterStateRepository } from '@/shared/rolesFilter/state';
 import { implTokenStateRepository } from '@/shared/token/state';
@@ -96,7 +97,8 @@ export const App = () => {
   );
 
   const ENV = useGuardContext(EnvContext);
-  const tokenStateRepository = implTokenStateRepository({ setToken, setRole });
+  const tokenStateRepository = implTokenStateRepository({ setToken });
+  const roleStateRepository = implRoleStateRepository({ setRole });
   const rolesFilterStateRepository = implRolesFilterStateRepository({
     setActiveCategory,
     setIsFilterDropdownOpen,
@@ -165,6 +167,7 @@ export const App = () => {
     authService: implAuthService({
       apis,
       tokenStateRepository,
+      roleStateRepository,
     }),
     postService: implPostService({ apis }),
     userService: implUserService({ apis }),

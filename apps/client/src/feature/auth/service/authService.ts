@@ -2,6 +2,7 @@ import type { Apis } from '@waffle/api';
 
 import type { ServiceResponse } from '@/entities/response';
 import type { User } from '@/entities/user';
+import type { RoleStateRepository } from '@/shared/role/state';
 import type { TokenStateRepository } from '@/shared/token/state';
 
 export type AuthService = {
@@ -80,9 +81,11 @@ export type AuthService = {
 export const implAuthService = ({
   apis,
   tokenStateRepository,
+  roleStateRepository,
 }: {
   apis: Apis;
   tokenStateRepository: TokenStateRepository;
+  roleStateRepository: RoleStateRepository;
 }): AuthService => ({
   signUp: async ({ authType, info }) => {
     const body = { authType, info };
@@ -92,6 +95,7 @@ export const implAuthService = ({
       const token = data.token;
 
       tokenStateRepository.setToken({ token });
+      roleStateRepository.setRole({ role: data.user.userRole });
 
       return {
         type: 'success',
@@ -108,6 +112,7 @@ export const implAuthService = ({
       const token = data.token;
 
       tokenStateRepository.setToken({ token });
+      roleStateRepository.setRole({ role: data.user.userRole });
 
       return {
         type: 'success',
@@ -169,6 +174,7 @@ export const implAuthService = ({
       const accessToken = data.accessToken;
 
       tokenStateRepository.setToken({ token: accessToken });
+      roleStateRepository.setRoleByToken({ token: accessToken });
 
       return {
         type: 'success',
@@ -197,6 +203,8 @@ export const implAuthService = ({
     const { status, data } = await apis['POST /user/signout']({ token });
 
     tokenStateRepository.removeToken();
+    roleStateRepository.removeRole();
+
     if (status === 200) {
       return {
         type: 'success',
