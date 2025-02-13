@@ -10,9 +10,6 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./apps/client
 
     steps:
       - name: Checkout
@@ -20,7 +17,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20.11.1"
+          node-version: '20.11.1'
 
       - name: Set environment variables
         run: |
