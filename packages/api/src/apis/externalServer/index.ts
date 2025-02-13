@@ -1,1 +1,0 @@
-export { getExternalServerApis } from "./apis";

@@ -9,6 +9,14 @@
 !.vscode/extensions.json
 !.vscode/*.code-snippets
 
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
 # Local History for Visual Studio Code
 .history/
 
@@ -23,6 +31,7 @@
 ### yarn ###
 # https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
 
+.pnp.*
 .yarn/*
 !.yarn/releases
 !.yarn/patches
@@ -39,7 +48,9 @@
 
 node_modules
 
-.idea
-.pnp.cjs
+dist
+dist-ssr
+*.local
+tsconfig.tsbuildinfo
 
 # End of https://www.toptal.com/developers/gitignore/api/yarn,visualstudiocode
