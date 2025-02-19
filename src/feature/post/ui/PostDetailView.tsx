@@ -23,7 +23,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   const { API_BASE_URL } = useGuardContext(EnvContext);
   const { token, role } = useGuardContext(TokenContext);
 
-  const { toMain, toCreateResume } = useRouteNavigation();
+  const { toMain, toCreateCoffeeChat } = useRouteNavigation();
 
   const [showModal, setShowModal] = useState<
     'COFFEE_CHAT' | 'BOOKMARK' | 'NONE'
@@ -59,7 +59,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
       setShowModal('COFFEE_CHAT');
       return;
     }
-    toCreateResume({ postId: id });
+    toCreateCoffeeChat({ postId: id });
   };
 
   if (postDetailData === undefined) {

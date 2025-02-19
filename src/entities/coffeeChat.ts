@@ -1,6 +1,6 @@
 import type { User } from '@/entities/user';
 
-export type Resume = {
+export type CoffeeChat = {
   id: string;
   positionTitle: string;
   companyName: string;
@@ -14,11 +14,11 @@ export type Resume = {
   createdAt: string;
 };
 
-export type ResumeListResponse = {
-  resumeList: Resume[];
+export type CoffeeChatListResponse = {
+  coffeeChatList: CoffeeChat[];
 };
 
-export type ResumeRequest = {
+export type CoffeeChatRequest = {
   phoneNumber: string;
   content: string;
 };

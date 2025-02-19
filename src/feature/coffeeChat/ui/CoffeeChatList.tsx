@@ -7,11 +7,11 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { getFormatDate } from '@/util/postFormatFunctions';
 
-export const ResumeListView = () => {
-  const { resumeListData } = useGetResumeList();
-  const { toResumeDetail } = useRouteNavigation();
+export const CoffeeChatListView = () => {
+  const { coffeeChatListData } = useGetCoffeeChatList();
+  const { toCoffeeChatDetail } = useRouteNavigation();
 
-  if (resumeListData?.type === 'error') {
+  if (coffeeChatListData?.type === 'error') {
     return (
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
@@ -19,20 +19,20 @@ export const ResumeListView = () => {
 
   return (
     <div className="flex flex-col w-full gap-3">
-      {resumeListData !== undefined ? (
-        resumeListData.data.resumeList.map((resume) => (
+      {coffeeChatListData !== undefined ? (
+        coffeeChatListData.data.coffeeChatList.map((coffeeChat) => (
           <div
-            key={resume.id}
+            key={coffeeChat.id}
             className="flex px-[24px] h-[50px] justify-between items-center cursor-pointer bg-white rounded-md duration-300 hover:shadow-md"
             onClick={() => {
-              toResumeDetail({ resumeId: resume.id });
+              toCoffeeChatDetail({ coffeeChatId: coffeeChat.id });
             }}
           >
             <span className="w-[350px] text-grey-darker font-semibold truncate">
-              {resume.companyName}
+              {coffeeChat.companyName}
             </span>
             <span className="text-sm text-grey-normal">
-              {getFormatDate(resume.createdAt)}
+              {getFormatDate(coffeeChat.createdAt)}
             </span>
           </div>
         ))
@@ -53,20 +53,20 @@ export const ResumeListView = () => {
   );
 };
 
-const useGetResumeList = () => {
+const useGetCoffeeChatList = () => {
   const { token } = useGuardContext(TokenContext);
-  const { resumeService } = useGuardContext(ServiceContext);
+  const { coffeeChatService } = useGuardContext(ServiceContext);
 
-  const { data: resumeListData } = useQuery({
-    queryKey: ['resumeService', 'getResumeList', token] as const,
+  const { data: coffeeChatListData } = useQuery({
+    queryKey: ['coffeeChatService', 'getCoffeeChatList', token] as const,
     queryFn: ({ queryKey: [, , t] }) => {
       if (t === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return resumeService.getResumeList({ token: t });
+      return coffeeChatService.getCoffeeChatList({ token: t });
     },
     enabled: token !== null,
   });
 
-  return { resumeListData };
+  return { coffeeChatListData };
 };

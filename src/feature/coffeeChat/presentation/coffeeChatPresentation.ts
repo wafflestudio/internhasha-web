@@ -7,7 +7,7 @@ type InitialState = {
   contents?: string;
 };
 
-type ResumePresentation = {
+type CoffeeChatPresentation = {
   useValidator({ initialState }: { initialState?: InitialState }): {
     phoneNumber: Input<string>;
     contents: Input<string>;
@@ -17,7 +17,7 @@ type ResumePresentation = {
 const PHONE_NUMBER_REGEX = /^010-\d{4}-\d{4}$/;
 export const CONTENTS_MAX_LENGTH = 10000;
 
-export const resumePresentation: ResumePresentation = {
+export const coffeeChatPresentation: CoffeeChatPresentation = {
   useValidator: ({ initialState = {} }) => {
     const [phoneNumber, setPhoneNumber] = useState(
       initialState.phoneNumber !== undefined ? initialState.phoneNumber : '',

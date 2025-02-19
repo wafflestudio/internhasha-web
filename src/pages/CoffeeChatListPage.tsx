@@ -1,11 +1,11 @@
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
-import { ResumeListView } from '@/feature/resume';
+import { CoffeeChatListView } from '@/feature/coffeeChat';
 
-export const ResumeListPage = () => {
+export const CoffeeChatListPage = () => {
   return (
     <div>
       <GlobalNavigationBar />
-      <ResumeListView />
+      <CoffeeChatListView />
     </div>
   );
 };

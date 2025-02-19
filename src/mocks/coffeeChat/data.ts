@@ -1,6 +1,6 @@
-import type { ResumeResponse } from '@/mocks/resume/schemas';
+import type { CoffeeChatResponse } from '@/mocks/coffeeChat/schemas';
 
-export const mockResumes: ResumeResponse[] = [
+export const mockCoffeeChats: CoffeeChatResponse[] = [
   {
     id: '1',
     postId: 'post1',

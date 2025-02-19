@@ -9,8 +9,6 @@ type UserDTO = {
   userRole: UserRole;
   snuMail: string;
   phoneNumber?: string;
-  resumes: CoffeeChatDTO[];
-  posts: PostDTO[];
   profileImageLink: string;
   isMerged: boolean;
 };

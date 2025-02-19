@@ -57,11 +57,12 @@ export const useRouteNavigation = () => {
     VERIFY_EMAIL,
     SIGN_UP_LOCAL,
     SIGN_UP_COMPLETE,
-    RESUME_LIST,
+    COFFEE_CHAT_LIST,
     CREATE_COMPANY,
     MY_PAGE,
   } = PATH;
-  const { POST_DETAIL, CREATE_RESUME, RESUME_DETAIL, CREATE_POST } = PATH.MAKE;
+  const { POST_DETAIL, CREATE_COFFEE_CHAT, COFFEE_CHAT_DETAIL, CREATE_POST } =
+    PATH.MAKE;
 
   return {
     toMain: () => {
@@ -85,14 +86,14 @@ export const useRouteNavigation = () => {
     toSignUpComplete: () => {
       void navigate(SIGN_UP_COMPLETE);
     },
-    toCreateResume: ({ postId }: { postId: string }) => {
-      void navigate(CREATE_RESUME(postId));
+    toCreateCoffeeChat: ({ postId }: { postId: string }) => {
+      void navigate(CREATE_COFFEE_CHAT(postId));
     },
-    toResumeList: () => {
-      void navigate(RESUME_LIST);
+    toCoffeeChatList: () => {
+      void navigate(COFFEE_CHAT_LIST);
     },
-    toResumeDetail: ({ resumeId }: { resumeId: string }) => {
-      void navigate(RESUME_DETAIL(resumeId));
+    toCoffeeChatDetail: ({ coffeeChatId }: { coffeeChatId: string }) => {
+      void navigate(COFFEE_CHAT_DETAIL(coffeeChatId));
     },
     toCreateCompany: ({ companyBody }: { companyBody?: CompanyBody }) => {
       void navigate(CREATE_COMPANY, { state: { companyBody } });

@@ -6,27 +6,27 @@ import { LabelContainer } from '@/components/label/LabelContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
-import type { ResumeRequest } from '@/entities/resume';
+import type { CoffeeChatRequest } from '@/entities/coffeeChat';
 import {
+  coffeeChatPresentation,
   CONTENTS_MAX_LENGTH,
-  resumePresentation,
-} from '@/feature/resume/presentation/resumePresentation';
+} from '@/feature/coffeeChat/presentation/coffeeChatPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
-export const CreateResumeForm = ({ postId }: { postId: string }) => {
+export const CreateCoffeeChatForm = ({ postId }: { postId: string }) => {
   const [isCancel, setIsCancel] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
   const [phoneNumberTouched, setPhoneNumberTouched] = useState(false);
 
-  const { createResume, isPending } = useCreateResume({
+  const { createCoffeeChat, isPending } = useCreateCoffeeChat({
     setResponseMessage,
     postId,
   });
 
-  const { phoneNumber, contents } = resumePresentation.useValidator({});
+  const { phoneNumber, contents } = coffeeChatPresentation.useValidator({});
   const { toPost } = useRouteNavigation();
 
   const handleSubmit = () => {
@@ -37,8 +37,8 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
       return;
     }
 
-    createResume({
-      resume: { phoneNumber: phoneNumber.value, content: contents.value },
+    createCoffeeChat({
+      coffeeChat: { phoneNumber: phoneNumber.value, content: contents.value },
     });
   };
 
@@ -57,7 +57,7 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
           커피챗 신청서 작성
         </p>
         <FormContainer
-          id="CreateResumeForm"
+          id="CreateCoffeeChatForm"
           handleSubmit={handleSubmit}
           className={'text-sm w-full bg-white rounded-lg'}
         >
@@ -130,7 +130,7 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
             <Button
               type="submit"
               variant="default"
-              form="CreateResumeForm"
+              form="CreateCoffeeChatForm"
               onClick={(e) => {
                 e.preventDefault();
                 handleSubmit();
@@ -164,26 +164,26 @@ export const CreateResumeForm = ({ postId }: { postId: string }) => {
   );
 };
 
-const useCreateResume = ({
+const useCreateCoffeeChat = ({
   setResponseMessage,
   postId,
 }: {
   setResponseMessage(input: string): void;
   postId: string;
 }) => {
-  const { resumeService } = useGuardContext(ServiceContext);
+  const { coffeeChatService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
   const { toPost } = useRouteNavigation();
   const queryClient = useQueryClient();
 
-  const { mutate: createResume, isPending } = useMutation({
-    mutationFn: ({ resume }: { resume: ResumeRequest }) => {
+  const { mutate: createCoffeeChat, isPending } = useMutation({
+    mutationFn: ({ coffeeChat }: { coffeeChat: CoffeeChatRequest }) => {
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return resumeService.createResume({
+      return coffeeChatService.createCoffeeChat({
         token,
-        resumeContents: resume,
+        coffeeChatContents: coffeeChat,
         postId,
       });
     },
@@ -202,7 +202,7 @@ const useCreateResume = ({
     },
   });
   return {
-    createResume,
+    createCoffeeChat,
     isPending,
   };
 };

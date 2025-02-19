@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
 import { ICON_SRC } from '@/entities/asset';
-import { SkeletonResumeDetailView } from '@/feature/resume/ui/SkeletonResumeDetailView';
+import { SkeletonCoffeeChatDetailView } from '@/feature/coffeeChat/ui/SkeletonCoffeeChatDetailView';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -10,22 +10,26 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { getFormatDate } from '@/util/postFormatFunctions';
 
-export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
-  const { resumeDetailData } = useGetResumeDetail({ resumeId });
+export const CoffeeChatDetailView = ({
+  coffeeChatId,
+}: {
+  coffeeChatId: string;
+}) => {
+  const { coffeeChatDetailData } = useGetCoffeeChatDetail({ coffeeChatId });
   const { API_BASE_URL } = useGuardContext(EnvContext);
   const { toMyPage } = useRouteNavigation();
 
-  if (resumeDetailData === undefined) {
-    return <SkeletonResumeDetailView />;
+  if (coffeeChatDetailData === undefined) {
+    return <SkeletonCoffeeChatDetailView />;
   }
 
-  if (resumeDetailData.type === 'error') {
+  if (coffeeChatDetailData.type === 'error') {
     return (
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
   }
 
-  const resumeDetail = resumeDetailData.data;
+  const coffeeChatDetail = coffeeChatDetailData.data;
 
   return (
     <div className="flex w-full py-10 bg-gray-50">
@@ -40,9 +44,9 @@ export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
           {/* Profile Section */}
           <div className="flex gap-4 items-center">
             <div className="w-[40px] h-[40px] overflow-hidden">
-              {resumeDetail.author.profileImageLink != null ? (
+              {coffeeChatDetail.author.profileImageLink != null ? (
                 <img
-                  src={`${API_BASE_URL}/${resumeDetail.author.profileImageLink}`}
+                  src={`${API_BASE_URL}/${coffeeChatDetail.author.profileImageLink}`}
                   alt="프로필 이미지"
                   className="w-[40px] h-[40px] object-cover border border-gray-200"
                 />
@@ -52,12 +56,12 @@ export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
             </div>
             <div>
               <p className="text-gray-900 text-lg font-semibold align-center">
-                {resumeDetail.companyName}
+                {coffeeChatDetail.companyName}
               </p>
             </div>
           </div>
           <span className="text-gray-400 text-lg font-semibold my-auto">
-            {getFormatDate(resumeDetail.createdAt)}
+            {getFormatDate(coffeeChatDetail.createdAt)}
           </span>
         </div>
 
@@ -65,9 +69,9 @@ export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
         <div className="py-6 space-y-5">
           <p className="flex gap-2 text-gray-700 text-sm">
             <img src={ICON_SRC.CALL} className="w-[20px] h-[20px]" />
-            <span>{resumeDetail.phoneNumber}</span>
+            <span>{coffeeChatDetail.phoneNumber}</span>
           </p>
-          <p className="text-gray-700 text-sm">{resumeDetail.content}</p>
+          <p className="text-gray-700 text-sm">{coffeeChatDetail.content}</p>
         </div>
         <Button variant="secondary" onClick={toMyPage} className="w-full mt-20">
           목록으로
@@ -77,20 +81,23 @@ export const ResumeDetailView = ({ resumeId }: { resumeId: string }) => {
   );
 };
 
-const useGetResumeDetail = ({ resumeId }: { resumeId: string }) => {
+const useGetCoffeeChatDetail = ({ coffeeChatId }: { coffeeChatId: string }) => {
   const { token } = useGuardContext(TokenContext);
-  const { resumeService } = useGuardContext(ServiceContext);
+  const { coffeeChatService } = useGuardContext(ServiceContext);
 
-  const { data: resumeDetailData } = useQuery({
-    queryKey: ['user', 'resume', token] as const,
+  const { data: coffeeChatDetailData } = useQuery({
+    queryKey: ['user', 'coffeeChat', token] as const,
     queryFn: ({ queryKey: [, , t] }) => {
       if (t === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return resumeService.getResumeDetail({ token: t, resumeId: resumeId });
+      return coffeeChatService.getCoffeeChatDetail({
+        token: t,
+        coffeeChatId: coffeeChatId,
+      });
     },
     enabled: token !== null,
   });
 
-  return { resumeDetailData: resumeDetailData };
+  return { coffeeChatDetailData: coffeeChatDetailData };
 };

@@ -32,7 +32,7 @@ export type AuthService = {
           password: string;
         };
   }): ServiceResponse<{
-    user: Omit<User, 'createdAt' | 'updatedAt' | 'resumes' | 'posts'>;
+    user: Omit<User, 'createdAt' | 'updatedAt'>;
     token: string;
   }>;
   signIn({
@@ -52,7 +52,7 @@ export type AuthService = {
           token: string;
         };
   }): ServiceResponse<{
-    user: Omit<User, 'createdAt' | 'updatedAt' | 'resumes' | 'posts'>;
+    user: Omit<User, 'createdAt' | 'updatedAt'>;
     token: string;
   }>;
   checkGoogleEmail({
