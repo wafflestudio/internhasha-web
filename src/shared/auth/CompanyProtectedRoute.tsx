@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Outlet } from 'react-router';
 
 import { ReSignInModal } from '@/components/modal/ReSignInModal';
@@ -14,10 +14,15 @@ export const CompanyProtectedRoute = () => {
   const { token, role } = useGuardContext(TokenContext);
   const { reissueToken } = useRefreshToken();
 
+  useEffect(() => {
+    if (token === null && !hasReissued.current) {
+      hasReissued.current = true;
+    }
+  }, [token]);
+
   if (token === null && !hasReissued.current) {
     reissueToken();
-    hasReissued.current = true;
-    return <div>로딩중...</div>;
+    return null;
   }
 
   if (token === null) {

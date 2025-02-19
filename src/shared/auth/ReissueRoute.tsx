@@ -2,12 +2,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { Outlet } from 'react-router';
 
-import { ReSignInModal } from '@/components/modal/ReSignInModal';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 
-export const AuthProtectedRoute = () => {
+export const ReissueRoute = () => {
   const hasReissued = useRef(false);
   const { token } = useGuardContext(TokenContext);
   const { reissueToken } = useRefreshToken();
@@ -23,7 +22,7 @@ export const AuthProtectedRoute = () => {
     return null;
   }
 
-  return token === null ? <ReSignInModal /> : <Outlet />;
+  return <Outlet />;
 };
 
 const useRefreshToken = () => {
