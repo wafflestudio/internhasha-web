@@ -4,4 +4,4 @@ export {
 } from '@/feature/landing/ui/RolesFilter';
 export { FilterSection } from '@/feature/landing/ui/FilterSection';
 export { PaginationBar } from '@/feature/landing/ui/PaginationBar';
-export { PostCard } from '@/feature/landing/ui/PostCard';
+export { LandingPostView } from '@/feature/landing/ui/LandingPostView';

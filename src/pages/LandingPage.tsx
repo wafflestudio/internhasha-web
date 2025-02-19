@@ -1,25 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal';
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import type { FilterElements, JobMinorCategory } from '@/entities/post';
-import type { Series } from '@/entities/post';
 import {
   FilterSection,
   NarrowRolesFilter,
-  PaginationBar,
-  PostCard,
   RolesFilter,
 } from '@/feature/landing';
-import { SkeletonPostCard } from '@/feature/landing/ui/SkeletonPostCard';
-import { useGuardContext } from '@/shared/context/hooks';
-import { ServiceContext } from '@/shared/context/ServiceContext';
-import { TokenContext } from '@/shared/context/TokenContext';
-import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+import { LandingPostView } from '@/feature/landing';
 
 export const LandingPage = () => {
-  const { toPost } = useRouteNavigation();
   const [filterElements, setFilterElements] = useState<FilterElements>({
     roles: undefined,
     investmentMax: undefined,
@@ -37,17 +28,6 @@ export const LandingPage = () => {
   const closeSignInModal = () => {
     setShowSignInModal(false);
   };
-
-  const [currentPage, setCurrentPage] = useState(0);
-  const [currentGroup, setCurrentGroup] = useState(0);
-
-  const { postsData } = useGetPosts({
-    page: currentPage,
-    ...filterElements,
-  });
-
-  const TOTAL_PAGES = postsData?.paginator.lastPage;
-  const PAGES_PER_GROUP = 5;
 
   return (
     <>
@@ -83,101 +63,14 @@ export const LandingPage = () => {
                 onChangeFilters={setFilterElements}
               />
             </div>
-
-            {/* 게시글 리스트 */}
-            <main>
-              <div className="grid w-full grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {postsData !== undefined
-                  ? postsData.posts.map((post, idx) => (
-                      <PostCard
-                        key={`post-${idx}`}
-                        post={post}
-                        onDetailClick={(postId) => {
-                          toPost({ postId });
-                        }}
-                        setShowSignInModal={setShowSignInModal}
-                      />
-                    ))
-                  : Array.from({ length: 10 }).map((_, index) => (
-                      <SkeletonPostCard key={index} />
-                    ))}
-              </div>
-            </main>
-
-            {/* 페이지네이션 */}
-            <footer className="mt-6 flex justify-center">
-              {TOTAL_PAGES !== undefined && (
-                <PaginationBar
-                  totalPages={TOTAL_PAGES}
-                  pagesPerGroup={PAGES_PER_GROUP}
-                  currentPage={currentPage}
-                  currentGroup={currentGroup}
-                  onChangePage={(page) => {
-                    setCurrentPage(page);
-                  }}
-                  onChangeGroup={(group) => {
-                    setCurrentGroup(group);
-                  }}
-                />
-              )}
-            </footer>
+            <LandingPostView
+              filterElements={filterElements}
+              setShowSignInModal={setShowSignInModal}
+            />
           </div>
         </div>
       </div>
       {showSignInModal && <SignInForBookmarkModal onClose={closeSignInModal} />}
     </>
   );
-};
-
-const useGetPosts = ({
-  page = 0,
-  roles,
-  investmentMax,
-  investmentMin,
-  series,
-  pathStatus,
-  order,
-}: {
-  page?: number;
-  roles?: string[];
-  investmentMax?: number;
-  investmentMin?: number;
-  series?: Series[];
-  pathStatus?: number;
-  order?: number;
-}) => {
-  const { postService } = useGuardContext(ServiceContext);
-  const { token } = useGuardContext(TokenContext);
-
-  const { data: postsData } = useQuery({
-    queryKey: [
-      'postService',
-      'getPosts',
-      page,
-      roles,
-      investmentMax,
-      investmentMin,
-      series,
-      pathStatus,
-      order,
-    ],
-    queryFn: async () => {
-      const response = await postService.getPosts({
-        page,
-        roles,
-        investmentMax,
-        investmentMin,
-        series,
-        pathStatus,
-        token,
-        order,
-      });
-      if (response.type === 'success') {
-        return response.data;
-      }
-      throw new Error('회사 정보를 가져오는데 실패했습니다.');
-    },
-  });
-
-  return { postsData };
 };
