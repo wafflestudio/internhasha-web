@@ -122,6 +122,73 @@ export default {
           5: 'hsl(var(--chart-5))',
         },
       },
+      fontSize: {
+        // medium이 DEFAULT 값 (없을 경우 bold)
+        40: {
+          DEFAULT: ['40px', { lineHeight: '150%', fontWeight: 700 }],
+          bold: ['40px', { lineHeight: '150%', fontWeight: 700 }],
+          semibold: ['40px', { lineHeight: '150%', fontWeight: 600 }],
+        },
+        30: {
+          DEFAULT: ['30px', { lineHeight: '150%', fontWeight: 700 }],
+          bold: ['30px', { lineHeight: '150%', fontWeight: 700 }],
+          semibold: ['30px', { lineHeight: '150%', fontWeight: 600 }],
+        },
+        26: {
+          DEFAULT: ['26px', { lineHeight: '150%', fontWeight: 700 }],
+          bold: ['26px', { lineHeight: '150%', fontWeight: 700 }],
+          semibold: ['26px', { lineHeight: '150%', fontWeight: 600 }],
+        },
+        22: {
+          DEFAULT: ['22px', { lineHeight: '150%', fontWeight: 500 }],
+          bold: ['22px', { lineHeight: '150%', fontWeight: 700 }],
+          semibold: ['22px', { lineHeight: '150%', fontWeight: 600 }],
+          medium: ['22px', { lineHeight: '150%', fontWeight: 500 }],
+        },
+        18: {
+          DEFAULT: ['18px', { lineHeight: '150%', fontWeight: 500 }],
+          bold: ['18px', { lineHeight: '150%', fontWeight: 700 }],
+          semibold: ['18px', { lineHeight: '150%', fontWeight: 600 }],
+          medium: ['18px', { lineHeight: '150%', fontWeight: 500 }],
+        },
+        16: {
+          DEFAULT: ['16px', { lineHeight: '150%', fontWeight: 500 }],
+          bold: ['16px', { lineHeight: '150%', fontWeight: 700 }],
+          semibold: ['16px', { lineHeight: '150%', fontWeight: 600 }],
+          medium: ['16px', { lineHeight: '150%', fontWeight: 500 }],
+        },
+        15: {
+          DEFAULT: ['15px', { lineHeight: '150%', fontWeight: 500 }],
+          semibold: ['15px', { lineHeight: '150%', fontWeight: 600 }],
+          medium: ['15px', { lineHeight: '150%', fontWeight: 500 }],
+          regular: ['15px', { lineHeight: '150%', fontWeight: 400 }],
+        },
+        14: {
+          DEFAULT: ['14px', { lineHeight: '150%', fontWeight: 500 }],
+          semibold: ['14px', { lineHeight: '140%', fontWeight: 600 }],
+          medium: ['14px', { lineHeight: '150%', fontWeight: 500 }],
+          regular: ['14px', { lineHeight: '150%', fontWeight: 400 }],
+        },
+        13: {
+          DEFAULT: ['14px', { lineHeight: '140%', fontWeight: 500 }],
+          semibold: ['14px', { lineHeight: '140%', fontWeight: 600 }],
+          medium: ['14px', { lineHeight: '140%', fontWeight: 500 }],
+          'regular-150': ['14px', { lineHeight: '150%', fontWeight: 400 }],
+          'regular-140': ['14px', { lineHeight: '140%', fontWeight: 400 }],
+        },
+        12: {
+          DEFAULT: ['12px', { lineHeight: '150%', fontWeight: 500 }],
+          semibold: ['12px', { lineHeight: '150%', fontWeight: 600 }],
+          medium: ['12px', { lineHeight: '150%', fontWeight: 500 }],
+          regular: ['12px', { lineHeight: '150%', fontWeight: 400 }],
+        },
+        11: {
+          DEFAULT: ['11px', { lineHeight: '150%', fontWeight: 500 }],
+          semibold: ['11px', { lineHeight: '150%', fontWeight: 600 }],
+          medium: ['11px', { lineHeight: '150%', fontWeight: 500 }],
+          regular: ['11px', { lineHeight: '150%', fontWeight: 400 }],
+        },
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
