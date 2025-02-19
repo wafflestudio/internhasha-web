@@ -9,7 +9,7 @@ type UserDTO = {
   userRole: UserRole;
   snuMail: string;
   phoneNumber?: string;
-  resumes: ResumeDTO[];
+  resumes: CoffeeChatDTO[];
   posts: PostDTO[];
   profileImageLink: string;
   isMerged: boolean;
@@ -80,7 +80,7 @@ export type PostBriefDTO = Omit<
   | 'detail'
 >;
 
-type ResumeDTO = {
+type CoffeeChatDTO = {
   id: string;
   positionTitle: string;
   companyName: string;
@@ -134,8 +134,8 @@ export type PostIdParams = {
   postId: string;
 };
 
-export type ResumeIdParams = {
-  resumeId: string;
+export type CoffeeChatIdParams = {
+  coffeeChatId: string;
 };
 
 export type BookmarkPageParams = {
@@ -189,7 +189,7 @@ export type CreateAndUpdatePostRequest = Omit<
   'id' | 'createdAt' | 'updatedAt' | 'isActive' | 'isBookmarked'
 >;
 
-export type CreateResumeRequest = {
+export type CreateCoffeeChatRequest = {
   phoneNumber: string;
   content: string;
 };
@@ -268,9 +268,9 @@ export type GoogleEmailResponse = {
   googleEmail: string;
 };
 
-export type ResumeResponse = ResumeDTO;
+export type CoffeeChatResponse = CoffeeChatDTO;
 
-export type ResumeListResponse = { resumeList: ResumeDTO[] };
+export type CoffeeChatListResponse = { coffeeChatList: CoffeeChatDTO[] };
 
 export type PresignedUrlResponse = {
   presignedUrl: string;

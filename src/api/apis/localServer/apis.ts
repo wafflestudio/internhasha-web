@@ -7,10 +7,13 @@ import type {
 import type {
   AccessTokenRequest,
   BookmarkPageParams,
+  CoffeeChatIdParams,
+  CoffeeChatListResponse,
+  CoffeeChatResponse,
   CreateAndUpdatePostRequest,
+  CreateCoffeeChatRequest,
   CreateCompanyRequest,
   CreatePostRequest,
-  CreateResumeRequest,
   EchoParams,
   EmailVerifyRequest,
   FileUploadRequest,
@@ -25,9 +28,6 @@ import type {
   PresignedUrlResponse,
   PretotypeUserSubmitRequest,
   PretotypeUserSubmitResponse,
-  ResumeIdParams,
-  ResumeListResponse,
-  ResumeResponse,
   SignInRequest,
   SignUpRequest,
   SnuMailRequest,
@@ -189,52 +189,52 @@ export const getLocalServerApis = ({
         token,
         body,
       }),
-    'GET /resume/:resumeId': ({
+    'GET /coffeeChat/:coffeeChatId': ({
       token,
       params,
     }: {
       token: string;
-      params: ResumeIdParams;
+      params: CoffeeChatIdParams;
     }) => {
-      return callWithToken<SuccessResponse<ResumeResponse>>({
+      return callWithToken<SuccessResponse<CoffeeChatResponse>>({
         method: 'GET',
-        path: `resume/${params.resumeId}`,
+        path: `coffeeChat/${params.coffeeChatId}`,
         token,
       });
     },
-    'GET /resume': ({ token }: { token: string }) => {
-      return callWithToken<SuccessResponse<ResumeListResponse>>({
+    'GET /coffeeChat': ({ token }: { token: string }) => {
+      return callWithToken<SuccessResponse<CoffeeChatListResponse>>({
         method: 'GET',
-        path: 'resume',
+        path: 'coffeeChat',
         token,
       });
     },
-    'POST /resume/:postId': ({
+    'POST /coffeeChat/:postId': ({
       token,
       params,
       body,
     }: {
       token: string;
       params: PostIdParams;
-      body: CreateResumeRequest;
+      body: CreateCoffeeChatRequest;
     }) => {
-      return callWithToken<SuccessResponse<ResumeResponse>>({
+      return callWithToken<SuccessResponse<CoffeeChatResponse>>({
         method: 'POST',
-        path: `resume/${params.postId}`,
+        path: `coffeeChat/${params.postId}`,
         token,
         body,
       });
     },
-    'DELETE /resume/:resumeId': ({
+    'DELETE /coffeeChat/:coffeeChatId': ({
       token,
       params,
     }: {
       token: string;
-      params: ResumeIdParams;
+      params: CoffeeChatIdParams;
     }) => {
       return callWithToken<SuccessResponse<void>>({
         method: 'DELETE',
-        path: `resume/${params.resumeId}`,
+        path: `coffeeChat/${params.coffeeChatId}`,
         token,
       });
     },
