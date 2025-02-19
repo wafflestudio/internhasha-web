@@ -256,6 +256,10 @@ export const FilterSection = ({
     });
   };
 
+  console.log(seriesSelect);
+  console.log(filterElements);
+  console.log(seriesSelect?.includes('A'));
+
   const handleClickResetInvestAmountButton = () => {
     onChangeFilters({
       ...filterElements,
@@ -397,7 +401,10 @@ export const FilterSection = ({
                       <Checkbox
                         value={option.value}
                         id={`series-${option.value}`}
-                        checked={seriesSelect?.includes(option.value as Series)}
+                        checked={
+                          seriesSelect !== undefined &&
+                          seriesSelect.includes(option.value as Series)
+                        }
                         onCheckedChange={() => {
                           handleChangeSeriesFilter(option.value);
                         }}

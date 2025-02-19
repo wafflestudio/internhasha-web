@@ -31,6 +31,7 @@ import { VentureCapitalMyPage } from '@/pages/VentureCapitalMyPage';
 import { AuthCompanySwitchRoute } from '@/shared/auth/AuthAdminSwitchRoute';
 import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { CompanyProtectedRoute } from '@/shared/auth/CompanyProtectedRoute';
+import { ReissueRoute } from '@/shared/auth/ReissueRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { RolesFilterContext } from '@/shared/context/RolesFilterContext';
@@ -45,7 +46,9 @@ import { implTokenStateRepository } from '@/shared/token/state';
 const RouterProvider = () => {
   return (
     <Routes>
-      <Route path={PATH.INDEX} element={<LandingPage />} />
+      <Route element={<ReissueRoute />}>
+        <Route path={PATH.INDEX} element={<LandingPage />} />
+      </Route>
       <Route path={PATH.POST_DETAIL} element={<PostDetailPage />} />
       <Route path={PATH.SIGN_IN_SELECT} element={<SignInSelectPage />} />
       <Route path={PATH.SIGN_UP_SELECT} element={<SignUpSelectPage />} />
