@@ -1,6 +1,3 @@
-import type { PostResponse } from '@/entities/post';
-import type { Resume } from '@/entities/resume';
-
 type UserRole = 'NORMAL' | 'CURATOR';
 
 export type User = {
@@ -11,8 +8,6 @@ export type User = {
   userRole: UserRole;
   snuMail: string;
   phoneNumber?: string;
-  resumes: Resume[];
-  posts: PostResponse[];
   profileImageLink?: string;
   isMerged: boolean;
 };

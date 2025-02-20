@@ -2,10 +2,10 @@ import { useParams } from 'react-router';
 
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { PATH } from '@/entities/route';
-import { CreateResumeForm } from '@/feature/resume/ui/CreateResumeForm';
+import { CreateCoffeeChatForm } from '@/feature/coffeeChat/ui/CreateCoffeeChatForm';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
 
-export const CreateResumePage = () => {
+export const CreateCoffeeChatPage = () => {
   const { postId } = useParams<{ postId: string }>();
 
   if (postId === undefined) {
@@ -15,7 +15,7 @@ export const CreateResumePage = () => {
   return (
     <div>
       <GlobalNavigationBar />
-      <CreateResumeForm postId={postId} />
+      <CreateCoffeeChatForm postId={postId} />
     </div>
   );
 };

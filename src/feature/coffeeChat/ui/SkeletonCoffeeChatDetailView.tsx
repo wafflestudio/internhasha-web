@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
 
-export const SkeletonResumeDetailView = () => {
+export const SkeletonCoffeeChatDetailView = () => {
   return (
     <div className="flex w-full py-10 border-grey-light">
       {/* Left Section */}

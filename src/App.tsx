@@ -9,21 +9,21 @@ import { type ExternalCallParams, implApi } from '@/api';
 import type { RolesFilterCategory } from '@/entities/filter';
 import { PATH } from '@/entities/route';
 import { implAuthService } from '@/feature/auth';
+import { implCoffeeChatService } from '@/feature/coffeeChat';
 import { implLandingService } from '@/feature/landing/service/landingService';
 import { implPostService } from '@/feature/post';
-import { implResumeService } from '@/feature/resume';
 import { implUserService } from '@/feature/user';
 import { implVentureCapitalService } from '@/feature/ventureCapital';
+import { CoffeeChatDetailPage } from '@/pages/CoffeeChatDetailPage';
+import { CoffeeChatListPage } from '@/pages/CoffeeChatListPage';
+import { CreateCoffeeChatPage } from '@/pages/CreateCoffeeChatPage';
 import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
-import { CreateResumePage } from '@/pages/CreateResumePage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
 import { MyPage } from '@/pages/MyPage';
 import { PostDetailPage } from '@/pages/PostDetailPage';
-import { ResumeDetailPage } from '@/pages/ResumeDetailPage';
-import { ResumeListPage } from '@/pages/ResumeListPage';
 import { SignInSelectPage } from '@/pages/SignInSelectPage';
 import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
 import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
@@ -65,9 +65,15 @@ const RouterProvider = () => {
             />
           }
         />
-        <Route path={PATH.CREATE_RESUME} element={<CreateResumePage />} />
-        <Route path={PATH.RESUME_LIST} element={<ResumeListPage />} />
-        <Route path={PATH.RESUME_DETAIL} element={<ResumeDetailPage />} />
+        <Route
+          path={PATH.CREATE_COFFEE_CHAT}
+          element={<CreateCoffeeChatPage />}
+        />
+        <Route path={PATH.COFFEE_CHAT_LIST} element={<CoffeeChatListPage />} />
+        <Route
+          path={PATH.COFFEE_CHAT_DETAIL}
+          element={<CoffeeChatDetailPage />}
+        />
       </Route>
       <Route element={<CompanyProtectedRoute />}>
         <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
@@ -174,7 +180,7 @@ export const App = () => {
     }),
     postService: implPostService({ apis }),
     userService: implUserService({ apis }),
-    resumeService: implResumeService({ apis }),
+    coffeeChatService: implCoffeeChatService({ apis }),
     fileService: implFileService({ apis, externalApis }),
     landingService: implLandingService({
       rolesFilterLocalStorageRepository,

@@ -1,7 +1,7 @@
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CoffeeChatListView } from '@/feature/coffeeChat';
 import { BookmarkListView } from '@/feature/post/ui/BookmarkListView';
-import { ResumeListView } from '@/feature/resume';
 import { MyInfo } from '@/feature/user';
 
 export const MyPage = () => {
@@ -21,7 +21,7 @@ export const MyPage = () => {
             </TabsList>
 
             <TabsContent value="COFFEE_CHAT">
-              <ResumeListView />
+              <CoffeeChatListView />
             </TabsContent>
             <TabsContent value="BOOKMARK">
               <BookmarkListView />

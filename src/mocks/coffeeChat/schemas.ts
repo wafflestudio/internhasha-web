@@ -8,7 +8,7 @@ type UserDTO = {
   googleId?: string;
 };
 
-export type ResumeDTO = {
+export type CoffeeChatDTO = {
   id: string;
   postId: string;
   author: UserDTO;
@@ -17,6 +17,6 @@ export type ResumeDTO = {
   createdAt: string;
 };
 
-export type ResumeResponse = ResumeDTO;
+export type CoffeeChatResponse = CoffeeChatDTO;
 
-export type ResumeListResponse = [resumeList: ResumeDTO[]];
+export type CoffeeChatListResponse = { coffeeChatList: CoffeeChatDTO[] };
