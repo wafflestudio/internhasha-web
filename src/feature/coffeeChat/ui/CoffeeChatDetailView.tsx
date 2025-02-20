@@ -86,8 +86,8 @@ const useGetCoffeeChatDetail = ({ coffeeChatId }: { coffeeChatId: string }) => {
   const { coffeeChatService } = useGuardContext(ServiceContext);
 
   const { data: coffeeChatDetailData } = useQuery({
-    queryKey: ['user', 'coffeeChat', token] as const,
-    queryFn: ({ queryKey: [, , t] }) => {
+    queryKey: ['user', 'coffeeChat', coffeeChatId, token] as const,
+    queryFn: ({ queryKey: [, , , t] }) => {
       if (t === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
