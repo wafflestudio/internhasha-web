@@ -2,15 +2,13 @@ import { FormContainer } from '@/components/form/FormContainer';
 import { LabelContainer } from '@/components/label/LabelContainer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
-import { authPresentation } from '../../presentation/authPresentation';
+import { authPresentation } from '@/feature/auth/presentation/authPresentation';
 
 export const FindPwForm = () => {
   const { localId, snuMail } = authPresentation.useValidator({});
 
-  const onSubmit = () => {
-    console.info('submit FindPwForm');
-  };
+  const onSubmit = () => {};
+
   return (
     <>
       <FormContainer id="FindIdForm" handleSubmit={onSubmit}>

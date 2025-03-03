@@ -2,8 +2,7 @@ import { FormContainer } from '@/components/form/FormContainer';
 import { LabelContainer } from '@/components/label/LabelContainer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
-import { authPresentation } from '../../presentation/authPresentation';
+import { authPresentation } from '@/feature/auth/presentation/authPresentation';
 
 export const FindIdForm = () => {
   const { snuMail } = authPresentation.useValidator({});
