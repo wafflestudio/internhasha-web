@@ -55,6 +55,7 @@ export const useRouteNavigation = () => {
     SIGN_IN_SELECT,
     SIGN_UP_SELECT,
     VERIFY_EMAIL,
+    FIND_ACCOUNT,
     SIGN_UP_LOCAL,
     SIGN_UP_COMPLETE,
     COFFEE_CHAT_LIST,
@@ -76,6 +77,9 @@ export const useRouteNavigation = () => {
     },
     toSignUpSelect: () => {
       void navigate(SIGN_UP_SELECT);
+    },
+    toFindAccount: () => {
+      void navigate(FIND_ACCOUNT);
     },
     toVerifyEmail: ({ body }: { body: VerifyMailBody }) => {
       void navigate(VERIFY_EMAIL, { state: { body } });

@@ -22,6 +22,8 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
         selected:
           'border border-2 border-grey-dark bg-grey-light-hover text-black hover:bg-grey-light-active diabled:text-bg-grey-light disabled:text-grey-normal',
+        tabBar:
+          'bg-grey-light text-grey-normal hover:bg-grey-light-active disabled:bg-white disabled:text-black disabled:opacity-100',
       },
       size: {
         default: 'h-[42px] px-4 py-2 items-center',

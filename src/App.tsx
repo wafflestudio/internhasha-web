@@ -20,6 +20,7 @@ import { CreateCoffeeChatPage } from '@/pages/CreateCoffeeChatPage';
 import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
+import { FindAccountPage } from '@/pages/FindAccountPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
 import { MyPage } from '@/pages/MyPage';
@@ -51,6 +52,7 @@ const RouterProvider = () => {
       </Route>
       <Route path={PATH.POST_DETAIL} element={<PostDetailPage />} />
       <Route path={PATH.SIGN_IN_SELECT} element={<SignInSelectPage />} />
+      <Route path={PATH.FIND_ACCOUNT} element={<FindAccountPage />} />
       <Route path={PATH.SIGN_UP_SELECT} element={<SignUpSelectPage />} />
       <Route path={PATH.SIGN_UP_LOCAL} element={<LocalSignUpPage />} />
       <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
