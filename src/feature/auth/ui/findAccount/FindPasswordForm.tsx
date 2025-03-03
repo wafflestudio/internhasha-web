@@ -4,14 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { authPresentation } from '@/feature/auth/presentation/authPresentation';
 
-export const FindPwForm = () => {
+export const FindPasswordForm = () => {
   const { localId, snuMail } = authPresentation.useValidator({});
 
   const onSubmit = () => {};
 
   return (
     <>
-      <FormContainer id="FindIdForm" handleSubmit={onSubmit}>
+      <FormContainer id="FindPasswordForm" handleSubmit={onSubmit}>
         <LabelContainer label="아이디" id="localId">
           <Input
             id="localId"

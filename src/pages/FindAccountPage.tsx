@@ -1,6 +1,6 @@
 import { ModalBackgroundWithHeader } from '@/components/ui/layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FindIdForm, FindPwForm } from '@/feature/auth';
+import { FindIdForm, FindPasswordForm } from '@/feature/auth';
 
 export const FindAccountPage = () => {
   return (
@@ -23,7 +23,7 @@ export const FindAccountPage = () => {
             <FindIdForm />
           </TabsContent>
           <TabsContent value="PW">
-            <FindPwForm />
+            <FindPasswordForm />
           </TabsContent>
         </Tabs>
       </div>

@@ -7,9 +7,7 @@ import { authPresentation } from '@/feature/auth/presentation/authPresentation';
 export const FindIdForm = () => {
   const { snuMail } = authPresentation.useValidator({});
 
-  const onSubmit = () => {
-    console.info('submit FindIdForm');
-  };
+  const onSubmit = () => {};
   return (
     <>
       <FormContainer id="FindIdForm" handleSubmit={onSubmit}>
