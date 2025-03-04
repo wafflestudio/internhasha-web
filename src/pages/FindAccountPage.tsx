@@ -14,7 +14,7 @@ export const FindAccountPage = () => {
             <TabsTrigger value="ID" variant="button">
               아이디
             </TabsTrigger>
-            <TabsTrigger value="PW" variant="button">
+            <TabsTrigger value="PASSWORD" variant="button">
               비밀번호
             </TabsTrigger>
           </TabsList>
@@ -22,7 +22,7 @@ export const FindAccountPage = () => {
           <TabsContent value="ID">
             <FindIdForm />
           </TabsContent>
-          <TabsContent value="PW">
+          <TabsContent value="PASSWORD">
             <FindPasswordForm />
           </TabsContent>
         </Tabs>
