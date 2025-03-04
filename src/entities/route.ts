@@ -5,6 +5,7 @@ export const PATH = {
   SIGN_UP_SELECT: '/signup',
   SIGN_UP_LOCAL: '/signup/local',
   SIGN_UP_COMPLETE: '/signup/complete',
+  FIND_ACCOUNT: '/find-account',
   VERIFY_EMAIL: '/verify-email',
   MY_PAGE: '/mypage',
   CREATE_COFFEE_CHAT: '/post/:postId/coffeeChat/create',

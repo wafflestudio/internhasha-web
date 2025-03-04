@@ -8,7 +8,7 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const SignInSelectPage = () => {
   const [showSignUpModal, setShowSignUpModal] = useState(false);
-  const { toSignUpSelect } = useRouteNavigation();
+  const { toSignUpSelect, toFindAccount } = useRouteNavigation();
 
   const onCloseModal = () => {
     setShowSignUpModal(false);
@@ -21,9 +21,12 @@ export const SignInSelectPage = () => {
         <section className="flex flex-col gap-[10px]">
           <LocalLogInForm setShowSignUpModal={setShowSignUpModal} />
           <div className="flex justify-end">
-            <span className="text-grey-normal-active text-sm underline-offset-4 hover:cursor-pointer hover:underline hover:decoration-grey-normal-active">
+            <a
+              className="text-grey-normal-active text-sm underline-offset-4 hover:cursor-pointer hover:underline hover:decoration-grey-normal-active"
+              onClick={toFindAccount}
+            >
               아이디/비밀번호 찾기
-            </span>
+            </a>
           </div>
         </section>
         <section className="flex flex-col w-full gap-[18px]">
