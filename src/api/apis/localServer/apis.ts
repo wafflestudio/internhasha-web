@@ -108,21 +108,13 @@ export const getLocalServerApis = ({
         path: 'user/snu-mail-verification/verify',
         body,
       }),
-    'POST /user/help/find-Id': ({
-      body,
-    }: {
-      body: SnuMailRequest;
-    }) =>
+    'POST /user/help/find-Id': ({ body }: { body: SnuMailRequest }) =>
       callWithoutToken<SuccessResponse<void>>({
         method: 'POST',
         path: 'user/help/find-Id',
         body,
       }),
-    'POST /user/help/reset-password': ({
-      body,
-    }: {
-      body: SnuMailRequest;
-    }) =>
+    'POST /user/help/reset-password': ({ body }: { body: SnuMailRequest }) =>
       callWithoutToken<SuccessResponse<void>>({
         method: 'POST',
         path: 'user/help/reset-password',

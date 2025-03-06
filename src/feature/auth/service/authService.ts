@@ -216,9 +216,7 @@ export const implAuthService = ({
   },
   sendEmailId: async ({ snuMail }) => {
     const body = { snuMail };
-    const { status, data } = await apis[
-      'POST /user/help/find-Id'
-    ]({
+    const { status, data } = await apis['POST /user/help/find-Id']({
       body,
     });
 
@@ -232,9 +230,7 @@ export const implAuthService = ({
   },
   sendEmailPassword: async ({ snuMail }) => {
     const body = { snuMail };
-    const { status, data } = await apis[
-      'POST /user/help/reset-password'
-    ]({
+    const { status, data } = await apis['POST /user/help/reset-password']({
       body,
     });
 
