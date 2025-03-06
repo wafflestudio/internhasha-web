@@ -61,6 +61,7 @@ export const useRouteNavigation = () => {
     COFFEE_CHAT_LIST,
     CREATE_COMPANY,
     MY_PAGE,
+    CREATE_PROFILE,
   } = PATH;
   const { POST_DETAIL, CREATE_COFFEE_CHAT, COFFEE_CHAT_DETAIL, CREATE_POST } =
     PATH.MAKE;
@@ -113,6 +114,9 @@ export const useRouteNavigation = () => {
     },
     toMyPage: () => {
       void navigate(MY_PAGE);
+    },
+    toCreateProfile: () => {
+      void navigate(CREATE_PROFILE);
     },
     refreshPage: () => {
       void navigate(0);

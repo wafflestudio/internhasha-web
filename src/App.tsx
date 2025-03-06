@@ -19,6 +19,7 @@ import { CoffeeChatListPage } from '@/pages/CoffeeChatListPage';
 import { CreateCoffeeChatPage } from '@/pages/CreateCoffeeChatPage';
 import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
+import { CreateProfilePage } from '@/pages/CreateProfilePage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { FindAccountPage } from '@/pages/FindAccountPage';
 import { LandingPage } from '@/pages/LandingPage';
@@ -29,6 +30,7 @@ import { SignInSelectPage } from '@/pages/SignInSelectPage';
 import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
 import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
 import { VentureCapitalMyPage } from '@/pages/VentureCapitalMyPage';
+import { ApplicantProtectedRoute } from '@/shared/auth/ApplicantProtectedRoute';
 import { AuthCompanySwitchRoute } from '@/shared/auth/AuthAdminSwitchRoute';
 import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
 import { CompanyProtectedRoute } from '@/shared/auth/CompanyProtectedRoute';
@@ -68,14 +70,17 @@ const RouterProvider = () => {
           }
         />
         <Route
+          path={PATH.COFFEE_CHAT_DETAIL}
+          element={<CoffeeChatDetailPage />}
+        />
+      </Route>
+      <Route element={<ApplicantProtectedRoute />}>
+        <Route
           path={PATH.CREATE_COFFEE_CHAT}
           element={<CreateCoffeeChatPage />}
         />
         <Route path={PATH.COFFEE_CHAT_LIST} element={<CoffeeChatListPage />} />
-        <Route
-          path={PATH.COFFEE_CHAT_DETAIL}
-          element={<CoffeeChatDetailPage />}
-        />
+        <Route path={PATH.CREATE_PROFILE} element={<CreateProfilePage />} />
       </Route>
       <Route element={<CompanyProtectedRoute />}>
         <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
