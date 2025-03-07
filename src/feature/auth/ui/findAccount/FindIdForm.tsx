@@ -19,7 +19,7 @@ export const FindIdForm = () => {
 
   const { sendId, sendSuccess, responseMessage, isPending } = useSendId();
 
-  const sendIdDisable = snuMail.isError;
+  const sendIdDisable = snuMail.isError || sendSuccess;
 
   const onSubmit = () => {
     sendId({ snuMail: snuMail.postfix });
@@ -54,10 +54,7 @@ export const FindIdForm = () => {
             <FormErrorResponse>{responseMessage}</FormErrorResponse>
           )}
         </LabelContainer>
-        <Button
-          className="mt-[16px]"
-          disabled={sendIdDisable || isPending || sendSuccess}
-        >
+        <Button className="mt-[16px]" disabled={sendIdDisable || isPending}>
           메일로 전송
         </Button>
       </FormContainer>

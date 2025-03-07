@@ -20,7 +20,7 @@ export const FindPasswordForm = () => {
   const { sendPassword, sendSuccess, responseMessage, isPending } =
     useSendPassword();
 
-  const sendPasswordDisable = snuMail.isError;
+  const sendPasswordDisable = snuMail.isError || sendSuccess;
 
   const onSubmit = () => {
     sendPassword({ snuMail: snuMail.postfix });
@@ -57,7 +57,7 @@ export const FindPasswordForm = () => {
         </LabelContainer>
         <Button
           className="mt-[16px]"
-          disabled={sendPasswordDisable || isPending || sendSuccess}
+          disabled={sendPasswordDisable || isPending}
         >
           메일로 전송
         </Button>
