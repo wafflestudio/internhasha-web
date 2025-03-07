@@ -54,7 +54,10 @@ export const FindIdForm = () => {
             <FormErrorResponse>{responseMessage}</FormErrorResponse>
           )}
         </LabelContainer>
-        <Button className="mt-[16px]" disabled={sendIdDisable || isPending}>
+        <Button
+          className="mt-[16px]"
+          disabled={sendIdDisable || isPending || sendSuccess}
+        >
           메일로 전송
         </Button>
       </FormContainer>

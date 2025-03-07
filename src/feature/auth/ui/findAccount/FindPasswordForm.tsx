@@ -57,7 +57,7 @@ export const FindPasswordForm = () => {
         </LabelContainer>
         <Button
           className="mt-[16px]"
-          disabled={sendPasswordDisable || isPending}
+          disabled={sendPasswordDisable || isPending || sendSuccess}
         >
           메일로 전송
         </Button>
