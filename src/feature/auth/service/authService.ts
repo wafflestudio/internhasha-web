@@ -75,6 +75,8 @@ export type AuthService = {
   }): ServiceResponse<void>;
   reissueAccessToken(): ServiceResponse<{ accessToken: string }>;
   logout({ token }: { token: string }): ServiceResponse<void>;
+  sendEmailId({ snuMail }: { snuMail: string }): ServiceResponse<void>;
+  sendEmailPassword({ snuMail }: { snuMail: string }): ServiceResponse<void>;
 };
 
 export const implAuthService = ({
@@ -203,6 +205,34 @@ export const implAuthService = ({
 
     tokenStateRepository.removeToken();
     roleStateRepository.removeRole();
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', code: data.code, message: data.message };
+  },
+  sendEmailId: async ({ snuMail }) => {
+    const body = { snuMail };
+    const { status, data } = await apis['POST /user/help/find-Id']({
+      body,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', code: data.code, message: data.message };
+  },
+  sendEmailPassword: async ({ snuMail }) => {
+    const body = { snuMail };
+    const { status, data } = await apis['POST /user/help/reset-password']({
+      body,
+    });
 
     if (status === 200) {
       return {
