@@ -41,21 +41,19 @@ export const CreateProfileForm = () => {
   });
 
   const {
-    companyName,
-    explanation,
-    email,
+    enrollYear,
+    department,
+    rawPosition,
+    positions,
     slogan,
-    investAmount,
-    rawInvestCompany,
-    investCompany,
-    series,
-    irDeckPreview,
-    landingPageLink,
+    explanation,
+    rawStack,
+    stack,
     imagePreview,
+    cvPreview,
+    portfolioPreview,
     rawLink,
     links,
-    rawTag,
-    tags,
   } = inputStates;
 
   const { toMain } = useRouteNavigation();

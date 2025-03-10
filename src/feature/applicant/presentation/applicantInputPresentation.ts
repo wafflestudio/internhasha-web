@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import type { Input, ListInput, SelectInput } from '@/entities/input';
-import type { Series } from '@/entities/post';
+import type { JobMinorCategory } from '@/entities/post';
 
 type ExternalLink = {
   link: string;
@@ -9,51 +9,44 @@ type ExternalLink = {
 };
 
 type InitialInputState = {
-  companyName?: string;
-  explanation?: string;
-  email?: string;
+  enrollYear?: string;
+  department?: string;
+  positions?: JobMinorCategory[];
   slogan?: string;
-  investAmount?: string;
-  investCompany?: string[];
-  series?: Series | 'NONE';
-  irDeckPreview?: { file: File; url: string } | null;
-  irDeckLink?: string;
-  landingPageLink?: string;
+  explanation?: string;
+  stack?: string[];
   imagePreview?: { file: File; url: string } | null;
-  imageLink?: string;
+  cvPreview?: { file: File; url: string } | null;
+  portfolioPreview?: { file: File; url: string } | null;
   links?: ExternalLink[];
-  tags?: string[];
 };
 
 export type ApplicantInputPresentation = {
   useValidator({ initialState }: { initialState?: InitialInputState }): {
-    companyName: Input<string>;
-    explanation: Input<string>;
-    email: Input<string>;
+    enrollYear: Input<string>;
+    department: Input<string>;
+    rawPosition: SelectInput<JobMinorCategory | 'NONE'>;
+    positions: ListInput<JobMinorCategory>;
     slogan: Input<string>;
-    investAmount: Input<string>;
-    rawInvestCompany: Input<string>;
-    investCompany: ListInput<string>;
-    series: SelectInput<Series | 'NONE'>;
-    irDeckPreview: Input<{ file: File; url: string } | null>;
-    landingPageLink: Input<string>;
+    explanation: Input<string>;
+    rawStack: Input<string>;
+    stack: ListInput<string>;
     imagePreview: Input<{ file: File; url: string } | null>;
+    cvPreview: Input<{ file: File; url: string } | null>;
+    portfolioPreview: Input<{ file: File; url: string } | null>;
     rawLink: Input<ExternalLink>;
     links: ListInput<ExternalLink>;
-    rawTag: Input<string>;
-    tags: ListInput<string>;
   };
 };
 
-const MAX_COMPANY_NAME_LENGTH = 30;
 export const MAX_EXPLANATION_LENGTH = 5000;
 export const MAX_SLOGAN_LENGTH = 100;
-const MAX_RAW_INVEST_COMPANY_LENGTH = 100;
+const MAX_STACK_LENTH = 20;
 const MAX_DESCRIPTION_LENGTH = 30;
-const MAX_TAG_LENGTH = 8;
-const MAX_INVEST_COMPANY_SIZE = 10;
+const MAX_CONTENT_LENGTH = 100;
+
 const MAX_EXTERNAL_DESCRIPTION_LINK_SIZE = 5;
-const MAX_TAGS_SIZE = 10;
+const MAX_STACK_SIZE = 10;
 
 const MAX_FILE_SIZE = 5 * 1024 * 2024;
 const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
@@ -73,45 +66,32 @@ const IMAGE_EXTENSIONS = [
   'heic',
 ];
 
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const INVEST_AMOUNT_REGEX = /^\s*$|^[0-9]+$/;
 const URL_REGEX = /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;
+const ENROLL_YEAR_REGEX = /^\d{2}$/;
 
 export const applicantInputPresentation: ApplicantInputPresentation = {
   useValidator: ({ initialState }) => {
-    const [companyName, setCompanyName] = useState(
-      initialState?.companyName !== undefined ? initialState.companyName : '',
+    const [enrollYear, setEnrollYear] = useState(
+      initialState?.enrollYear !== undefined ? initialState.enrollYear : '',
     );
-    const [explanation, setExplanation] = useState(
-      initialState?.explanation !== undefined ? initialState.explanation : '',
+    const [department, setDepartment] = useState(
+      initialState?.department !== undefined ? initialState.department : '',
     );
-    const [email, setEmail] = useState(
-      initialState?.email !== undefined ? initialState.email : '',
+    const [rawPosition, setRawPosition] = useState<JobMinorCategory | 'NONE'>(
+      'NONE',
+    );
+    const [positions, setPositions] = useState(
+      initialState?.positions !== undefined ? initialState.positions : [],
     );
     const [slogan, setSlogan] = useState(
       initialState?.slogan !== undefined ? initialState.slogan : '',
     );
-    const [investAmount, setInvestAmount] = useState(
-      initialState?.investAmount !== undefined ? initialState.investAmount : '',
+    const [explanation, setExplanation] = useState(
+      initialState?.explanation !== undefined ? initialState.explanation : '',
     );
-    const [rawInvestCompany, setRawInvestCompany] = useState('');
-    const [investCompany, setInvestCompany] = useState<string[]>(
-      initialState?.investCompany !== undefined
-        ? initialState.investCompany
-        : [''],
-    );
-    const [series, setSeries] = useState<Series | 'NONE'>(
-      initialState?.series !== undefined ? initialState.series : 'NONE',
-    );
-    const [irDeckPreview, setIrDeckPreview] = useState(
-      initialState?.irDeckPreview !== undefined
-        ? initialState.irDeckPreview
-        : null,
-    );
-    const [landingPageLink, setLandingPageLink] = useState(
-      initialState?.landingPageLink !== undefined
-        ? initialState.landingPageLink
-        : '',
+    const [rawStack, setRawStack] = useState('');
+    const [stack, setStack] = useState<string[]>(
+      initialState?.stack !== undefined ? initialState.stack : [],
     );
     const [imagePreview, setImagePreview] = useState<{
       file: File;
@@ -119,6 +99,20 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
     } | null>(
       initialState?.imagePreview !== undefined
         ? initialState.imagePreview
+        : null,
+    );
+    const [cvPreview, setCvPreview] = useState<{
+      file: File;
+      url: string;
+    } | null>(
+      initialState?.cvPreview !== undefined ? initialState.cvPreview : null,
+    );
+    const [portfolioPreview, setPortfolioPreview] = useState<{
+      file: File;
+      url: string;
+    } | null>(
+      initialState?.portfolioPreview !== undefined
+        ? initialState.portfolioPreview
         : null,
     );
     const [rawLink, setRawLink] = useState<ExternalLink>({
@@ -130,40 +124,91 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
         ? initialState.links
         : [{ link: '', description: '' }],
     );
-    const [rawTag, setRawTag] = useState('');
-    const [tags, setTags] = useState<string[]>(
-      initialState?.tags !== undefined ? initialState.tags : [],
-    );
 
-    const isRawInvestCompanyValid = (input: string) => {
-      const trimmedInput = input.trim();
-      if (trimmedInput.length > MAX_RAW_INVEST_COMPANY_LENGTH) {
+    const isRawPositionValid = (
+      input: JobMinorCategory | 'NONE',
+    ): input is JobMinorCategory => {
+      const filteredStack = stack.filter((item) => item !== input);
+      if (input === 'NONE') {
         return false;
       }
-      const filteredInvestCompanies = investCompany.filter(
-        (company) => company.trim() !== trimmedInput,
+      if (filteredStack.length !== stack.length - 1) {
+        return false;
+      }
+
+      return true;
+    };
+    const isRawStackValid = (input: string) => {
+      const trimmedInput = input.trim();
+      const filteredStack = stack.filter(
+        (item) => item.trim() !== trimmedInput,
       );
-      // 공백인 input이 여러개 발생할 수 있도록 설정
-      if (
-        trimmedInput.length !== 0 &&
-        filteredInvestCompanies.length !== investCompany.length - 1
-      ) {
+      if (trimmedInput.length > MAX_STACK_LENTH) {
+        return false;
+      }
+      if (filteredStack.length !== stack.length - 1) {
         return false;
       }
       return true;
     };
-    const isInvestCompanyValid = (input: string[]) => {
-      const filteredInvestCompany = input.filter(
-        (item) => item.trim().length !== 0,
-      );
-      if (filteredInvestCompany.length > MAX_INVEST_COMPANY_SIZE) {
+    const isStackValid = (input: string[]) => {
+      if (input.length > MAX_STACK_SIZE) {
         return false;
       }
-      if (
-        filteredInvestCompany.some(
-          (item) => item.trim().length > MAX_RAW_INVEST_COMPANY_LENGTH,
-        )
-      ) {
+      return true;
+    };
+    const isImagePreviewValid = (
+      input: {
+        file: File;
+        url: string;
+      } | null,
+    ) => {
+      if (input === null) {
+        return true;
+      }
+      if (!input.file.type.startsWith('image/')) {
+        return false;
+      }
+
+      const fileExtenstion = input.file.name
+        .split('.')
+        .pop()
+        ?.toLocaleLowerCase();
+      if (fileExtenstion === undefined) {
+        return false;
+      }
+      if (!IMAGE_EXTENSIONS.includes(fileExtenstion)) {
+        return false;
+      }
+      if (input.file.size > MAX_IMAGE_SIZE) {
+        return false;
+      }
+      return true;
+    };
+    const isPdfValid = (
+      input: {
+        file: File;
+        url: string;
+      } | null,
+    ) => {
+      if (input === null) {
+        return true;
+      }
+      if (!input.file.type.startsWith('application/pdf')) {
+        return false;
+      }
+
+      const fileExtenstion = input.file.name
+        .split('.')
+        .pop()
+        ?.toLocaleLowerCase();
+      if (fileExtenstion === undefined) {
+        return false;
+      }
+      if (!FILE_EXTENSIONS.includes(fileExtenstion)) {
+        return false;
+      }
+      if (input.file.size > MAX_FILE_SIZE) {
         return false;
       }
       return true;
@@ -212,80 +257,48 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
       }
       return true;
     };
-    const isRawTagValid = (input: string) => {
-      const trimmedInput = input.trim();
-      if (trimmedInput.length > MAX_TAG_LENGTH) {
-        return false;
-      }
-      if (tags.includes(trimmedInput)) {
-        return false;
-      }
-      return true;
-    };
-    const isTagsValid = (input: string[]) => {
-      if (input.length > MAX_TAGS_SIZE) {
-        return false;
-      }
-      return true;
-    };
-    const isIrDeckPreviewValid = (
-      input: {
-        file: File;
-        url: string;
-      } | null,
-    ) => {
-      if (input === null) {
-        return true;
-      }
-      if (!input.file.type.startsWith('application/pdf')) {
-        return false;
+
+    const handlePositionsChange = ({
+      input,
+      index,
+      mode,
+    }:
+      | {
+          input: JobMinorCategory | 'NONE';
+          mode: 'ADD';
+          index?: never;
+        }
+      | {
+          input: JobMinorCategory | 'NONE';
+          mode: 'PATCH' | 'REMOVE';
+          index: number;
+        }) => {
+      if (!isRawPositionValid(input)) {
+        return;
       }
 
-      const fileExtenstion = input.file.name
-        .split('.')
-        .pop()
-        ?.toLocaleLowerCase();
-      if (fileExtenstion === undefined) {
-        return false;
-      }
-      if (!FILE_EXTENSIONS.includes(fileExtenstion)) {
-        return false;
-      }
-      if (input.file.size > MAX_FILE_SIZE) {
-        return false;
-      }
-      return true;
+      setPositions((prevState) => {
+        switch (mode) {
+          case 'ADD':
+            return isRawPositionValid(input)
+              ? [...prevState, input]
+              : prevState;
+          case 'REMOVE':
+            return [
+              ...prevState.slice(0, index),
+              ...prevState.slice(index + 1),
+            ];
+          case 'PATCH':
+            if (index < 0 || index >= prevState.length) {
+              return prevState;
+            }
+            return prevState.map((item, idx) => (idx === index ? input : item));
+          default:
+            return prevState;
+        }
+      });
     };
-    const isImagePreviewValid = (
-      input: {
-        file: File;
-        url: string;
-      } | null,
-    ) => {
-      if (input === null) {
-        return true;
-      }
-      if (!input.file.type.startsWith('image/')) {
-        return false;
-      }
-
-      const fileExtenstion = input.file.name
-        .split('.')
-        .pop()
-        ?.toLocaleLowerCase();
-      if (fileExtenstion === undefined) {
-        return false;
-      }
-      if (!IMAGE_EXTENSIONS.includes(fileExtenstion)) {
-        return false;
-      }
-      if (input.file.size > MAX_IMAGE_SIZE) {
-        return false;
-      }
-      return true;
-    };
-
-    const handleInvestCompanyChange = ({
+    const handleStackChange = ({
       input,
       index,
       mode,
@@ -300,12 +313,10 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
           mode: 'PATCH' | 'REMOVE';
           index: number;
         }) => {
-      setInvestCompany((prevState) => {
+      setStack((prevState) => {
         switch (mode) {
           case 'ADD':
-            return isRawInvestCompanyValid(input)
-              ? [...prevState, input]
-              : prevState;
+            return isRawStackValid(input) ? [...prevState, input] : prevState;
           case 'REMOVE':
             return [
               ...prevState.slice(0, index),
@@ -355,102 +366,62 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
         }
       });
     };
-    const handleTagsChange = ({
-      input,
-      index,
-      mode,
-    }:
-      | {
-          input: string;
-          index?: never;
-          mode: 'ADD';
-        }
-      | {
-          input: string;
-          index: number;
-          mode: 'PATCH' | 'REMOVE';
-        }) => {
-      setTags((prevState) => {
-        switch (mode) {
-          case 'ADD':
-            return input.trim().length !== 0
-              ? [...prevState, input]
-              : prevState;
-          case 'REMOVE':
-            return [
-              ...prevState.slice(0, index),
-              ...prevState.slice(index + 1),
-            ];
-          case 'PATCH':
-            if (index < 0 || index >= prevState.length) {
-              return prevState;
-            }
-            return prevState.map((item, idx) => (idx === index ? input : item));
-          default:
-            return prevState;
-        }
-      });
-    };
 
     return {
-      companyName: {
-        isError: companyName.length > MAX_COMPANY_NAME_LENGTH,
-        value: companyName,
-        onChange: setCompanyName,
+      enrollYear: {
+        isError: !ENROLL_YEAR_REGEX.test(enrollYear),
+        value: enrollYear,
+        onChange: setEnrollYear,
       },
-      explanation: {
-        isError: explanation.length > MAX_EXPLANATION_LENGTH,
-        value: explanation,
-        onChange: setExplanation,
+      department: {
+        isError: department.length > MAX_CONTENT_LENGTH,
+        value: department,
+        onChange: setDepartment,
       },
-      email: {
-        isError: email.trim().length !== 0 && !EMAIL_REGEX.test(email),
-        value: email,
-        onChange: setEmail,
+      rawPosition: {
+        isError: false,
+        value: rawPosition,
+        onChange: setRawPosition,
+      },
+      positions: {
+        isError: false,
+        value: positions,
+        onChange: handlePositionsChange,
       },
       slogan: {
         isError: slogan.length > MAX_SLOGAN_LENGTH,
         value: slogan,
         onChange: setSlogan,
       },
-      investAmount: {
-        isError:
-          investAmount.trim().length !== 0 &&
-          !INVEST_AMOUNT_REGEX.test(investAmount),
-        value: investAmount,
-        onChange: setInvestAmount,
+      explanation: {
+        isError: explanation.length > MAX_EXPLANATION_LENGTH,
+        value: explanation,
+        onChange: setExplanation,
       },
-      rawInvestCompany: {
-        isError: !isRawInvestCompanyValid(rawInvestCompany),
-        value: rawInvestCompany,
-        onChange: setRawInvestCompany,
+      rawStack: {
+        isError: !isRawStackValid(rawStack),
+        value: rawStack,
+        onChange: setRawStack,
       },
-      investCompany: {
-        isError: !isInvestCompanyValid(investCompany),
-        value: investCompany,
-        onChange: handleInvestCompanyChange,
-      },
-      series: {
-        isError: false,
-        value: series,
-        onChange: setSeries,
-      },
-      irDeckPreview: {
-        isError: !isIrDeckPreviewValid(irDeckPreview),
-        value: irDeckPreview,
-        onChange: setIrDeckPreview,
-      },
-      landingPageLink: {
-        isError:
-          landingPageLink.trim().length !== 0 &&
-          !URL_REGEX.test(landingPageLink),
-        value: landingPageLink,
-        onChange: setLandingPageLink,
+      stack: {
+        isError: !isStackValid(stack),
+        value: stack,
+        onChange: handleStackChange,
       },
       imagePreview: {
         isError: !isImagePreviewValid(imagePreview),
         value: imagePreview,
         onChange: setImagePreview,
+      },
+      cvPreview: {
+        isError: !isPdfValid(cvPreview),
+        value: cvPreview,
+        onChange: setCvPreview,
+      },
+      portfolioPreview: {
+        isError: !isPdfValid(portfolioPreview),
+        value: portfolioPreview,
+        onChange: setPortfolioPreview,
       },
       rawLink: {
         isError: !isRawlinksValid(rawLink),
@@ -461,16 +432,6 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
         isError: !isExternalLinkValid(links),
         value: links,
         onChange: handlelinksChange,
-      },
-      rawTag: {
-        isError: !isRawTagValid(rawTag),
-        value: rawTag,
-        onChange: setRawTag,
-      },
-      tags: {
-        isError: !isTagsValid(tags),
-        value: tags,
-        onChange: handleTagsChange,
       },
     };
   },
