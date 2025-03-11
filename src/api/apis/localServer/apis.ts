@@ -81,7 +81,7 @@ export const getLocalServerApis = ({
         path: 'user/token',
       }),
     'POST /user/mail': ({ body }: { body: MailRequest }) =>
-      callWithoutToken<SuccessResponse<TokenResponse>>({
+      callWithoutToken<SuccessResponse<void>>({
         method: 'POST',
         path: 'user/mail',
         body,
@@ -108,11 +108,18 @@ export const getLocalServerApis = ({
         path: 'user',
         token,
       }),
-    'PATCH /user/password': ({ body }: { body: ChangePasswordRequest }) =>
-      callWithoutToken<SuccessResponse<void>>({
+    'PATCH /user/password': ({
+      token,
+      body,
+    }: {
+      token: string;
+      body: ChangePasswordRequest;
+    }) =>
+      callWithToken<SuccessResponse<void>>({
         method: 'PATCH',
         path: 'user/password',
         body,
+        token,
       }),
     'POST /user/password': ({ body }: { body: MailRequest }) =>
       callWithoutToken<SuccessResponse<void>>({
