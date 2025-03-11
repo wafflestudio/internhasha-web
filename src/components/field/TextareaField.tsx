@@ -48,7 +48,7 @@ export const TextareaField = ({
   useEffect(() => {
     if (textareaRef.current !== null) {
       textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 내용에 맞춰 자동 조절
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   }, [input.value]);
 
