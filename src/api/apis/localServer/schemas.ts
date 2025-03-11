@@ -1,5 +1,5 @@
 // DTO
-type UserRole = 'APPLICANT' | 'COMPANY';
+export type UserRole = 'APPLICANT' | 'COMPANY';
 
 type UserDTO = {
   id: string;
@@ -101,21 +101,6 @@ type CoffeeChatDTO = {
   createdAt: string;
 };
 
-type LocalApplicantInfo = {
-  type: 'APPLICANT';
-  name: string;
-  snuMail: string;
-  password: string;
-};
-
-type LocalCompanyInfo = {
-  type: 'COMPANY';
-  name: string;
-  secretPassword: string;
-  password: string;
-  email: string;
-};
-
 // Params
 export type PostPathParams = {
   postPath: string;
@@ -134,10 +119,26 @@ export type BookmarkPageParams = {
 };
 
 // Request
-export type SignUpRequest = {
-  authType: UserRole;
-  info: LocalApplicantInfo | LocalCompanyInfo;
-};
+export type SignUpRequest =
+  | {
+      authType: 'APPLICANT';
+      info: {
+        type: 'APPLICANT';
+        name: string;
+        snuMail: string;
+        password: string;
+      };
+    }
+  | {
+      authType: 'COMPANY';
+      info: {
+        type: 'COMPANY';
+        name: string;
+        secretPassword: string;
+        password: string;
+        email: string;
+      };
+    };
 
 export type SignInRequest = {
   mail: string;

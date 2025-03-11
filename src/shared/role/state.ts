@@ -3,7 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import type { DecodedToken } from '@/entities/decodedToken';
 
 export type RoleStateRepository = {
-  setRole({ role }: { role: 'NORMAL' | 'CURATOR' | null }): void;
+  setRole({ role }: { role: 'APPLICANT' | 'COMPANY' | null }): void;
   setRoleByToken({ token }: { token: string }): void;
   removeRole(): void;
 };
@@ -11,7 +11,7 @@ export type RoleStateRepository = {
 export const implRoleStateRepository = ({
   setRole,
 }: {
-  setRole(role: 'NORMAL' | 'CURATOR' | null): void;
+  setRole(role: 'APPLICANT' | 'COMPANY' | null): void;
 }): RoleStateRepository => ({
   setRole: ({ role }) => {
     setRole(role);
@@ -19,7 +19,7 @@ export const implRoleStateRepository = ({
   setRoleByToken: ({ token }) => {
     try {
       const decoded = jwtDecode<DecodedToken>(token);
-      if (decoded.role === 'CURATOR' || decoded.role === 'NORMAL') {
+      if (decoded.role === 'APPLICANT' || decoded.role === 'COMPANY') {
         setRole(decoded.role);
         return;
       }

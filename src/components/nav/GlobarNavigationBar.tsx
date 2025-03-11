@@ -9,8 +9,7 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 export const GlobalNavigationBar = () => {
   const { token } = useGuardContext(TokenContext);
   const { logout, isPending } = useLogout();
-  const { toSignUpSelect, toSignInSelect, toMyPage, toMain } =
-    useRouteNavigation();
+  const { toSignUp, toSignInSelect, toMyPage, toMain } = useRouteNavigation();
   const handleClickLogoutButton = () => {
     logout();
     toMain();
@@ -28,7 +27,12 @@ export const GlobalNavigationBar = () => {
         <div className="flex gap-5">
           {token == null ? (
             <>
-              <Button onClick={toSignUpSelect} variant="ghost">
+              <Button
+                onClick={() => {
+                  toSignUp({});
+                }}
+                variant="ghost"
+              >
                 회원가입
               </Button>
               <Button onClick={toSignInSelect} variant="ghost">
@@ -66,7 +70,7 @@ const useLogout = () => {
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return authService.logout({ token });
+      return authService.logout();
     },
     onSuccess: async (response) => {
       if (response.type === 'success') {
