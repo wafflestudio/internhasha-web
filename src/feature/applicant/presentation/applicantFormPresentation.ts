@@ -6,6 +6,8 @@ import type {
 } from '@/entities/input';
 import type { JobMinorCategory } from '@/entities/post';
 import type { ApplicantInputPresentation } from '@/feature/applicant/presentation/applicantInputPresentation';
+import { convertEmptyStringToUndefined } from '@/lib/responseFormat';
+import { fileFormatPresentation } from '@/shared/file/fileFormatPresentation';
 
 type ExternalLink = {
   link: string;
@@ -99,34 +101,12 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
       initialState: initialStateForInput,
     });
 
+    const { formatFileNameToS3Key } = fileFormatPresentation();
+
     const filteredLinks = links.value.filter(
       (item) =>
         item.link.trim().length !== 0 && item.description.trim().length !== 0,
     );
-
-    // TODO: File 공용 유틸 함수로 빼두기
-    const formatFileNameToS3Key = ({
-      fileName,
-      fileType,
-    }: {
-      fileName: string;
-      fileType:
-        | 'CV'
-        | 'PORTFOLIO'
-        | 'APPLICANT_THUMBNAIL'
-        | 'COMPANY_THUMBNAIL'
-        | 'IR_DECK';
-    }) => {
-      if (fileType === 'COMPANY_THUMBNAIL') {
-        return `static/public/${fileType.toLocaleLowerCase()}/${fileName}`;
-      }
-      return `static/private/${fileType.toLocaleLowerCase()}/${fileName}`;
-    };
-
-    // TODO: Formmating 공용 유틸 함수로 빼두기 (빈 문자열 UNDEFINED 변환 함수)
-    const convertEmptyStringToUndefined = (input: string) => {
-      return input.trim().length !== 0 ? input : undefined;
-    };
 
     return {
       inputStates: {
