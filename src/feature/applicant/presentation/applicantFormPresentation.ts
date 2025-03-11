@@ -6,7 +6,7 @@ import type {
 } from '@/entities/input';
 import type { JobMinorCategory } from '@/entities/post';
 import type { ApplicantInputPresentation } from '@/feature/applicant/presentation/applicantInputPresentation';
-import { convertEmptyStringToUndefined } from '@/lib/responseFormat';
+import { convertEmptyStringToUndefined } from '@/lib/responseConverter';
 import { fileFormatPresentation } from '@/shared/file/fileFormatPresentation';
 
 type ExternalLink = {
