@@ -1,40 +1,25 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { ExternalLinkField } from '@/components/field/ExternalLinkField';
+import { HashtagField } from '@/components/field/HashtagField';
 import { ImageField } from '@/components/field/ImageField';
-import { MarkdownEditorField } from '@/components/field/MarkdownEditorField';
 import { PdfField } from '@/components/field/PdfField';
 import { StringField } from '@/components/field/StringField';
-import { StringSelectField } from '@/components/field/StringSelectField';
+import { StringFieldWithUnit } from '@/components/field/StringFieldWithLabel';
+import { TextareaField } from '@/components/field/TextareaField';
 import { FormContainer } from '@/components/form/FormContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
-import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
-import { createErrorMessage } from '@/entities/errors';
-import type { Series } from '@/entities/post';
-import type { CreateCompanyRequest } from '@/entities/post';
-import { seriesList } from '@/entities/post';
 import { applicantFormPresentation } from '@/feature/applicant/presentation/applicantFormPresentation';
 import {
   applicantInputPresentation,
   MAX_EXPLANATION_LENGTH,
   MAX_SLOGAN_LENGTH,
 } from '@/feature/applicant/presentation/applicantInputPresentation';
-import { ExternalLinkField } from '@/feature/company/ui/fields/ExternalLinkField';
-import { HashtagField } from '@/feature/company/ui/fields/HashtagField';
-import { InvestAmountField } from '@/feature/company/ui/fields/InvestAmountField';
-import { InvestCompanyField } from '@/feature/company/ui/fields/InvestCompanyField';
-import { SloganField } from '@/feature/company/ui/fields/SloganField';
-import { useGuardContext } from '@/shared/context/hooks';
-import { ServiceContext } from '@/shared/context/ServiceContext';
-import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { formatSeries } from '@/util/postFormatFunctions';
 
 export const CreateProfileForm = () => {
-  const [isSubmit, setIsSubmit] = useState(false);
   const [isCancel, setIsCancel] = useState(false);
-  const [responseMessage, setResponseMessage] = useState('');
 
   const { inputStates, formStates } = applicantFormPresentation.useValidator({
     applicantInputPresentation,
@@ -43,8 +28,6 @@ export const CreateProfileForm = () => {
   const {
     enrollYear,
     department,
-    rawPosition,
-    positions,
     slogan,
     explanation,
     rawStack,
@@ -66,178 +49,95 @@ export const CreateProfileForm = () => {
     setIsCancel(false);
   };
 
-  const { handleCreateCompany, isPending } = useCreateCompanyWithUploads({
-    setResponseMessage: setResponseMessage,
-  });
-
-  const handleSubmit = () => {
-    setIsSubmit(true);
-    if (
-      formStates.companyName.isError ||
-      formStates.explanation.isError ||
-      formStates.email.isError ||
-      formStates.slogan.isError ||
-      formStates.investAmount.isError ||
-      formStates.investCompany.isError ||
-      formStates.series.isError ||
-      formStates.landingPageLink.isError ||
-      formStates.links.isError ||
-      formStates.tags.isError
-    ) {
-      return;
-    }
-
-    // TODO: 불가능한 타입이지만 isError를 사용할 시 타입스크립트가 인식하지 못함.
-    if (imagePreview.value === null) {
-      return;
-    }
-
-    // TODO: 불가능한 타입이지만 isError를 사용할 시 타입스크립트가 인식하지 못함.
-    if (formStates.series.value === 'NONE') {
-      return;
-    }
-
-    handleCreateCompany({
-      companyInfo: {
-        companyName: formStates.companyName.value,
-        explanation: formStates.explanation.value,
-        email: formStates.email.value,
-        slogan: formStates.slogan.value,
-        investAmount: formStates.investAmount.value,
-        investCompany: formStates.investCompany.value,
-        series: formStates.series.value,
-        landingPageLink: formStates.landingPageLink.value,
-        links: formStates.links.value,
-        tags: formStates.tags.value,
-      },
-      pdfFile:
-        irDeckPreview.value !== null ? irDeckPreview.value.file : undefined,
-      imageFile: imagePreview.value.file,
-    })
-      .then(() => {
-        return;
-      })
-      .catch(() => {
-        return;
-      });
-  };
+  // TODO: API 연결 이후 삭제
+  const handleSubmit = () => {};
+  const isPending = false;
+  const isSubmit = false;
 
   return (
     <>
       <FormContainer handleSubmit={handleSubmit} className="gap-10">
         <StringField
-          label="회사명"
-          input={companyName}
+          label="학과"
+          input={department}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={formStates.companyName.isError}
-          placeholder="회사명을 입력해주세요."
-          errorMessage="올바른 회사명을 입력해주세요."
+          isSubmitError={formStates.department.isError}
+          placeholder="학과명을 입력해주세요."
+          errorMessage="올바른 학과명을 입력해주세요."
           required={true}
         />
+        <StringFieldWithUnit
+          label="학번"
+          input={enrollYear}
+          unit="학번"
+          isPending={isPending}
+          isSubmit={isSubmit}
+          isSubmitError={formStates.enrollYear.isError}
+          placeholder="25"
+          errorMessage="두 자리 수 숫자로 작성해주세요. (e.g. 25)"
+          required={true}
+        />
+        {/* TODO: 지망 포지션 필드 추가 */}
         <StringField
-          label="회사 이메일"
-          input={email}
-          isPending={isPending}
-          isSubmit={isSubmit}
-          isSubmitError={formStates.email.isError}
-          placeholder="회사 이메일을 입력해주세요."
-          errorMessage="올바르지 않은 이메일 형식입니다."
-          required={true}
-        />
-        <SloganField
           label="한 줄 소개"
           input={slogan}
           isPending={isPending}
           isSubmit={isSubmit}
           isSubmitError={formStates.slogan.isError}
           maxLength={MAX_SLOGAN_LENGTH}
+          placeholder="한 줄 소개를 입력해주세요."
           errorMessage={`한 줄 소개는 ${MAX_SLOGAN_LENGTH}자 이내로 작성해주세요.`}
-          infoMessage="한 줄 소개는 공고 카드에 보여져요."
-          required={true}
         />
-        <MarkdownEditorField
-          label="회사 상세 소개"
+        <TextareaField
+          label="자기소개"
           input={explanation}
           isPending={isPending}
           isSubmit={isSubmit}
           isSubmitError={formStates.explanation.isError}
           maxLength={MAX_EXPLANATION_LENGTH}
+          placeholder="자신에 대한 상세 소개를 작성해주세요.\n\n[예시 작성 문항]\n- 전공 및 지원 분야에 대한 관심\n- 참여한 프로젝트등의 관련 경험\n- 성격적 강점\n 팀 협업 경험\n"
           errorMessage={`상세 소개는 ${MAX_EXPLANATION_LENGTH}자 이내로 작성해주세요.`}
-          infoMessage="상세 소개는 공고 글에 보여져요."
-          required={true}
+          infoMessage="나를 소개하는 한 마디를 입력해주세요."
+          minLine={7}
+        />
+        <HashtagField
+          label="상세 기술 스택"
+          input={stack}
+          rawInput={rawStack}
+          isPending={isPending}
+          isSubmit={isSubmit}
+          isSubmitError={formStates.stack.isError}
+          placeholder="사용할 수 있는 상세 기술 스택을 입력해주세요.(최대 10개)"
+          infoMessage="기술 스택은 엔터로 구분되며 한 개당 최대 20자까지 입력할 수 있어요."
+          inputErrorMessage="기존 태그와 중복되지 않는 20자 이하의 태그를 작성해주세요."
+          errorMessage="하나의 태그는 20자 이하, 총 10개까지 작성 가능합니다."
         />
         <ImageField
-          label="대표 사진"
+          label="프로필 사진"
           input={imagePreview}
           isPending={isPending}
           isSubmit={isSubmit}
           isSubmitError={imagePreview.isError || imagePreview.value === null}
           errorMessage="1MB 이하의 이미지 파일을 올려주세요."
           infoMessage="회사 썸네일 이미지는 정사각형 비율(1:1)로 보여져요."
-          required={true}
-        />
-        <StringSelectField<Series>
-          label="투자 단계"
-          input={series}
-          inputList={seriesList as Series[]}
-          formatter={formatSeries}
-          isPending={isPending}
-          isSubmit={isSubmit}
-          isSubmitError={formStates.series.isError}
-          errorMessage="투자 단계를 선택해주세요."
-          required={true}
-        />
-        <InvestAmountField
-          label="누적 투자액"
-          input={investAmount}
-          unit="천만원"
-          isPending={isPending}
-          isSubmit={isSubmit}
-          isSubmitError={formStates.investAmount.isError}
-          errorMessage="0 이상의 10만 이하의 양의 정수로 입력해주세요."
-          required={true}
-        />
-        <InvestCompanyField
-          label="투자사 정보"
-          input={investCompany}
-          rawInput={rawInvestCompany}
-          isPending={isPending}
-          isSubmit={isSubmit}
-          isSubmitError={formStates.investCompany.isError}
-          placeholder="투자사 이름을 입력해주세요."
-          errorMessage="투자사 정보는 1개 이상, 10개 이하로 중복되지 않게 입력해주세요."
-          inputErrorMessage="중복되지 않는 100자 이내의 투자사 이름을 작성해주세요."
-          required={true}
-        />
-        <HashtagField
-          label="해시태그"
-          input={tags}
-          rawInput={rawTag}
-          isPending={isPending}
-          isSubmit={isSubmit}
-          isSubmitError={formStates.tags.isError}
-          placeholder="회사를 소개하는 태그를 입력해주세요. (최대 10개)"
-          infoMessage="엔터를 치면 태그가 생성되며 한 개당 최대 8자까지 입력할 수 있어요."
-          inputErrorMessage="입력한 태그와 중복되지 않는 8자 이하의 태그를 작성해주세요."
-          errorMessage="하나의 태그는 8자 이하, 총 10개까지 작성 가능합니다."
         />
         <PdfField
-          label="IR Deck 자료"
-          input={irDeckPreview}
+          label="이력서 (CV)"
+          input={cvPreview}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={irDeckPreview.isError}
+          isSubmitError={cvPreview.isError}
           errorMessage="5MB 이하의 PDF 파일을 올려주세요."
         />
-        <StringField
-          label="기업 소개 홈페이지"
-          input={landingPageLink}
+        {/* TODO: 디자이너 직군을 선택한 경우에면 포트폴리오 입력 필드가 나타나도록 설정 */}
+        <PdfField
+          label="포트폴리오 (디자이너용)"
+          input={portfolioPreview}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={formStates.landingPageLink.isError}
-          placeholder="https://"
-          errorMessage="https로 시작하는 홈페이지 링크를 입력해주세요."
+          isSubmitError={portfolioPreview.isError}
+          errorMessage="5MB 이하의 PDF 파일을 올려주세요."
         />
         <ExternalLinkField
           label="외부 소개 링크"
@@ -247,17 +147,13 @@ export const CreateProfileForm = () => {
           isSubmit={isSubmit}
           isSubmitError={formStates.links.isError}
           placeholder={{
-            description:
-              '링크 제목을 작성해주세요. (e.g. OO 프로젝트 성과 기사)',
+            description: '링크 제목을 작성해주세요. (e.g. 깃허브)',
             link: 'https://',
           }}
-          infoMessage="더벤처스, 잡코리아, 기사 링크 등 회사를 소개할 수 있는 기타 링크를 첨부해주세요."
+          infoMessage="깃허브, 링크드인, 개인 홈페이지 등 자신을 소개할 수 있는 기타 링크를 첨부해주세요."
           errorMessage="외부 소개 링크는 최대 5개까지 입력 가능하며 링크는 https로 시작해야 합니다."
           inputErrorMessage="중복되지 않는 유효한 링크와 100자 이내의 설명글을 입력해주세요."
         />
-        {responseMessage !== '' && (
-          <FormErrorResponse>{responseMessage}</FormErrorResponse>
-        )}
         <div className="flex gap-2">
           <Button
             variant="secondary"
@@ -287,220 +183,4 @@ export const CreateProfileForm = () => {
       )}
     </>
   );
-};
-
-const useCreateCompanyWithUploads = ({
-  setResponseMessage,
-}: {
-  setResponseMessage(input: string): void;
-}) => {
-  const { fileService, postService } = useGuardContext(ServiceContext);
-  const { token } = useGuardContext(TokenContext);
-  const queryClient = useQueryClient();
-
-  const [isPending, setIsPending] = useState(false);
-  const { toMyPage } = useRouteNavigation();
-
-  const { mutateAsync: getPresignedUrl } = useMutation({
-    mutationFn: ({
-      fileName,
-      fileType,
-    }: {
-      fileName: string;
-      fileType: string;
-    }) => {
-      if (token === null) {
-        throw new Error('토큰이 존재하지 않습니다.');
-      }
-      return fileService.getPresignedUrl({ token, fileName, fileType });
-    },
-    onSuccess: (response) => {
-      if (response.type === 'success') {
-        return;
-      } else {
-        setResponseMessage(createErrorMessage(response.code));
-      }
-    },
-    onError: () => {
-      setResponseMessage(
-        '이미지 업로드에 실패했습니다. 잠시 후에 다시 실행해주세요.',
-      );
-    },
-  });
-
-  const { mutateAsync: uploadFile } = useMutation({
-    mutationFn: async ({
-      presignedUrl,
-      file,
-    }: {
-      presignedUrl: string;
-      file: File | undefined;
-    }) => {
-      if (file === undefined) {
-        throw new Error('파일이 존재하지 않습니다.');
-      }
-
-      try {
-        const response = await fetch(presignedUrl, {
-          method: 'PUT',
-          body: file,
-          headers: {
-            'Content-Type': file.type,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(
-            `Upload failed: ${response.status} ${response.statusText}`,
-          );
-        }
-
-        return { type: 'success' };
-      } catch (error) {
-        console.error('Error uploading file:', error);
-        return {
-          type: 'error',
-          message: '업로드 과정에서 오류가 발생했습니다!',
-        };
-      }
-    },
-    onSuccess: (response) => {
-      if (response.type === 'success') {
-        setResponseMessage('');
-      } else {
-        setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
-      }
-    },
-    onError: () => {
-      setResponseMessage('업로드에 실패했습니다. 잠시 후에 다시 실행해주세요.');
-    },
-  });
-
-  const { mutate: createCompany } = useMutation({
-    mutationFn: ({
-      companyContents,
-    }: {
-      companyContents: CreateCompanyRequest;
-    }) => {
-      if (token === null) {
-        throw new Error('토큰이 존재하지 않습니다.');
-      }
-      return postService.createCompany({ token, companyContents });
-    },
-    onSuccess: async (response) => {
-      if (response.type === 'success') {
-        await queryClient.invalidateQueries();
-        toMyPage();
-      }
-    },
-    onError: () => {
-      setResponseMessage(
-        '회사 생성에 실패했습니다. 잠시 후에 다시 실행해주세요.',
-      );
-    },
-  });
-
-  const handleCreateCompany = async ({
-    companyInfo,
-    pdfFile,
-    imageFile,
-  }: {
-    companyInfo: Omit<CreateCompanyRequest, 'irDeckLink' | 'imageLink'>;
-    pdfFile?: File;
-    imageFile: File;
-  }) => {
-    try {
-      setIsPending(true);
-
-      const generateRandomString = () => {
-        const RANDOM_STRING_LENGTH = 10;
-        const characters =
-          'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        return Array.from({ length: RANDOM_STRING_LENGTH }, () =>
-          characters.charAt(Math.floor(Math.random() * characters.length)),
-        ).join('');
-      };
-
-      const randomizedPdfFile =
-        pdfFile !== undefined
-          ? `static/${generateRandomString()}-${pdfFile.name}`
-          : undefined;
-      const randomizedImageFile = `static/${generateRandomString()}-${imageFile.name}`;
-
-      const [pdfPresignedUrlResponse, imagePresignedUrlResponse] =
-        await Promise.all([
-          pdfFile !== undefined && randomizedPdfFile !== undefined
-            ? getPresignedUrl({
-                fileName: randomizedPdfFile,
-                fileType: pdfFile.type,
-              })
-            : Promise.resolve(null),
-          getPresignedUrl({
-            fileName: randomizedImageFile,
-            fileType: imageFile.type,
-          }),
-        ]);
-
-      if (
-        pdfPresignedUrlResponse?.type === 'error' ||
-        imagePresignedUrlResponse.type === 'error'
-      ) {
-        setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
-        setIsPending(false);
-        return;
-      }
-
-      const [pdfUploadResponse, imageUploadResponse] = await Promise.all([
-        pdfPresignedUrlResponse !== null
-          ? uploadFile({
-              presignedUrl: pdfPresignedUrlResponse.data.presignedUrl,
-              file: pdfFile,
-            })
-          : null,
-        uploadFile({
-          presignedUrl: imagePresignedUrlResponse.data.presignedUrl,
-          file: imageFile,
-        }),
-      ]);
-
-      if (
-        pdfUploadResponse?.type === 'error' ||
-        imageUploadResponse.type === 'error'
-      ) {
-        setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
-        setIsPending(false);
-        return;
-      }
-
-      const getS3ObjectPath = (url: string): string => {
-        const pathname = new URL(url).pathname;
-        return pathname.startsWith('/') ? pathname.slice(1) : pathname;
-      };
-
-      const pdfS3Key =
-        pdfPresignedUrlResponse?.type === 'success'
-          ? getS3ObjectPath(pdfPresignedUrlResponse.data.presignedUrl)
-          : undefined;
-      const imageS3Key = getS3ObjectPath(
-        imagePresignedUrlResponse.data.presignedUrl,
-      );
-
-      createCompany({
-        companyContents: {
-          ...companyInfo,
-          irDeckLink: pdfS3Key,
-          imageLink: imageS3Key,
-        },
-      });
-    } catch {
-      setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
-    } finally {
-      setIsPending(false);
-    }
-  };
-
-  return {
-    handleCreateCompany,
-    isPending,
-  };
 };

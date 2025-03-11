@@ -128,11 +128,10 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
     const isRawPositionValid = (
       input: JobMinorCategory | 'NONE',
     ): input is JobMinorCategory => {
-      const filteredStack = stack.filter((item) => item !== input);
       if (input === 'NONE') {
         return false;
       }
-      if (filteredStack.length !== stack.length - 1) {
+      if (positions.some((item) => item === input)) {
         return false;
       }
 
@@ -140,13 +139,10 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
     };
     const isRawStackValid = (input: string) => {
       const trimmedInput = input.trim();
-      const filteredStack = stack.filter(
-        (item) => item.trim() !== trimmedInput,
-      );
       if (trimmedInput.length > MAX_STACK_LENTH) {
         return false;
       }
-      if (filteredStack.length !== stack.length - 1) {
+      if (stack.some((item) => item.trim() === trimmedInput)) {
         return false;
       }
       return true;
