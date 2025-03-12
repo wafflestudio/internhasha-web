@@ -70,7 +70,7 @@ const useLogout = () => {
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return authService.logout();
+      return authService.logout({ token });
     },
     onSuccess: async (response) => {
       if (response.type === 'success') {

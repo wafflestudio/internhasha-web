@@ -23,7 +23,7 @@ export const FindPasswordForm = () => {
   const sendPasswordDisable = snuMail.isError || sendSuccess;
 
   const onSubmit = () => {
-    sendPassword({ snuMail: snuMail.postfix });
+    sendPassword({ mail: snuMail.postfix });
   };
 
   return (
@@ -72,8 +72,8 @@ const useSendPassword = () => {
   const [sendSuccess, setSendSuccess] = useState(false);
 
   const { mutate: sendPassword, isPending } = useMutation({
-    mutationFn: ({ snuMail }: { snuMail: string }) => {
-      return authService.sendEmailPassword({ snuMail });
+    mutationFn: ({ mail }: { mail: string }) => {
+      return authService.sendEmailPassword({ mail });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {

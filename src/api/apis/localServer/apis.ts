@@ -57,58 +57,58 @@ export const getLocalServerApis = ({
   callWithOptionalToken,
 }: GetApisProps) =>
   ({
-    'POST /user': ({ body }: { body: SignUpRequest }) =>
+    'POST /auth/user': ({ body }: { body: SignUpRequest }) =>
       callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
         method: 'POST',
-        path: 'user',
+        path: 'auth/user',
         body,
       }),
-    'POST /user/auth': ({ body }: { body: SignInRequest }) =>
-      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
-        method: 'POST',
-        path: 'user/auth',
-        body,
-      }),
-    'DELETE /user/auth': ({ token }: { token: string }) =>
+    'DELETE /auth/user': ({ token }: { token: string }) =>
       callWithToken<SuccessResponse<void>>({
         method: 'DELETE',
-        path: 'user/auth',
+        path: 'auth/user',
         token,
       }),
-    'GET /user/token': () =>
+    'POST /auth/user/session': ({ body }: { body: SignInRequest }) =>
+      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
+        method: 'POST',
+        path: 'auth/user/session',
+        body,
+      }),
+    'DELETE /auth/user/session': ({ token }: { token: string }) =>
+      callWithToken<SuccessResponse<void>>({
+        method: 'DELETE',
+        path: 'auth/user/session',
+        token,
+      }),
+    'GET /auth/token': () =>
       callWithoutToken<SuccessResponse<TokenResponse>>({
         method: 'GET',
-        path: 'user/token',
+        path: 'auth/token',
       }),
-    'POST /user/mail': ({ body }: { body: MailRequest }) =>
+    'POST /auth/mail': ({ body }: { body: MailRequest }) =>
       callWithoutToken<SuccessResponse<void>>({
         method: 'POST',
-        path: 'user/mail',
+        path: 'auth/mail',
         body,
       }),
-    'POST /user/snu-mail/verification': ({ body }: { body: SnuMailRequest }) =>
+    'POST /auth/mail/verify': ({ body }: { body: SnuMailRequest }) =>
       callWithoutToken<SuccessResponse<void>>({
         method: 'POST',
-        path: 'user/snu-mail/verification',
+        path: 'auth/mail/verify',
         body,
       }),
-    'POST /user/snu-mail/verification/validate': ({
+    'POST /auth/mail/validate': ({
       body,
     }: {
       body: CheckSnuMailVerificationRequest;
     }) =>
       callWithoutToken<SuccessResponse<void>>({
         method: 'POST',
-        path: 'user/snu-mail/verification/validate',
+        path: 'auth/mail/validate',
         body,
       }),
-    'DELETE /user': ({ token }: { token: string }) =>
-      callWithToken<SuccessResponse<void>>({
-        method: 'DELETE',
-        path: 'user',
-        token,
-      }),
-    'PATCH /user/password': ({
+    'PATCH /auth/password': ({
       token,
       body,
     }: {
@@ -117,14 +117,14 @@ export const getLocalServerApis = ({
     }) =>
       callWithToken<SuccessResponse<void>>({
         method: 'PATCH',
-        path: 'user/password',
+        path: 'auth/password',
         body,
         token,
       }),
-    'POST /user/password': ({ body }: { body: MailRequest }) =>
+    'POST /auth/password': ({ body }: { body: MailRequest }) =>
       callWithoutToken<SuccessResponse<void>>({
         method: 'POST',
-        path: 'user/password',
+        path: 'auth/password',
         body,
       }),
     'GET /user/me': ({ token }: { token: string }) =>

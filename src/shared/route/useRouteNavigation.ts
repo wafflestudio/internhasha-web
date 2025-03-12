@@ -3,21 +3,12 @@ import { useNavigate } from 'react-router';
 import type { Series } from '@/entities/post';
 import { PATH } from '@/entities/route';
 
-type VerifyMailBody =
-  | {
-      authProvider: 'GOOGLE';
-      token: string;
-    }
-  | {
-      authProvider: 'LOCAL';
-      localId: string;
-      password: string;
-      username: string;
-    };
+type VerifyMailBody = {
+  password: string;
+  username: string;
+};
 
 type PreviousForm = {
-  authProvider: 'LOCAL';
-  localId: string;
   password: string;
   username: string;
 };

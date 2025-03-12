@@ -14,28 +14,17 @@ import { Input } from '@/components/ui/input';
 import { createErrorMessage } from '@/entities/errors';
 import { PATH } from '@/entities/route';
 import { authPresentation } from '@/feature/auth/presentation/authPresentation';
-import {
-  AddGoogleSignUpModal,
-  AddLocalSignUpModal,
-  RedirectSignInModal,
-} from '@/feature/auth/ui/signUp/AddSignUpModal';
+import { RedirectSignInModal } from '@/feature/auth/ui/signUp/RedirectSignInModal';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatNumberToTime } from '@/util/format';
 
-type VerifyMailBody =
-  | {
-      authProvider: 'GOOGLE';
-      token: string;
-    }
-  | {
-      authProvider: 'LOCAL';
-      localId: string;
-      password: string;
-      username: string;
-    };
+type VerifyMailBody = {
+  password: string;
+  username: string;
+};
 
 type EmailVerifyLocationState = {
   body: VerifyMailBody;
@@ -45,11 +34,9 @@ export const EmailVerifyForm = () => {
   const location = useLocation();
   const state = location.state as EmailVerifyLocationState | null;
 
-  const { toSignUpLocal, toSignUpSelect } = useRouteNavigation();
+  const { toSignUp } = useRouteNavigation();
   const [showSendCodeError, setShowSendCodeError] = useState(false);
-  const [showModal, setShowModal] = useState<'NONE' | 'ADD' | 'REDIRECT'>(
-    'NONE',
-  );
+  const [showModal, setShowModal] = useState<'NONE' | 'REDIRECT'>('NONE');
   const { snuMail, code } = authPresentation.useValidator({});
   const {
     sendCode,
@@ -66,11 +53,6 @@ export const EmailVerifyForm = () => {
     isPending: isPendingVerify,
   } = useEmailVerify();
   const {
-    googleSignUp,
-    responseMessage: googleSignUpResponseMessage,
-    isPending: isPendingGoogleSignup,
-  } = useGoogleSignUp({ setShowModal });
-  const {
     localSignUp,
     responseMessage: localSignUpResponseMessage,
     isPending: isPendingLocalSignUp,
@@ -82,14 +64,10 @@ export const EmailVerifyForm = () => {
   const signUpDisable =
     snuMail.isError || code.isError || !verifySuccess || isCodeExpired;
 
-  const isPending =
-    isPendingSend ||
-    isPendingVerify ||
-    isPendingGoogleSignup ||
-    isPendingLocalSignUp;
+  const isPending = isPendingSend || isPendingVerify || isPendingLocalSignUp;
 
   if (state === null) {
-    return <RouteNavigator link={PATH.SIGN_IN_SELECT} />;
+    return <RouteNavigator link={PATH.SIGN_IN} />;
   }
   const { body } = state;
 
@@ -98,7 +76,6 @@ export const EmailVerifyForm = () => {
       setShowSendCodeError(true);
       return;
     }
-
     sendCode({ snuMail: snuMail.postfix });
   };
 
@@ -109,36 +86,21 @@ export const EmailVerifyForm = () => {
 
   const onSubmit = () => {
     if (signUpDisable) return;
-    if (body.authProvider === 'GOOGLE') {
-      googleSignUp({
-        snuMail: snuMail.postfix,
-        token: body.token,
-      });
-    }
-    if (body.authProvider === 'LOCAL') {
-      localSignUp({
-        snuMail: snuMail.postfix,
-        localId: body.localId,
-        password: body.password,
-        username: body.username,
-      });
-    }
+    localSignUp({
+      snuMail: snuMail.postfix,
+      password: body.password,
+      username: body.username,
+    });
   };
 
   const hanldeClickPreviousButton = () => {
-    if (body.authProvider === 'LOCAL') {
-      toSignUpLocal({ body });
-      return;
-    }
-    toSignUpSelect();
+    toSignUp({ body });
   };
 
   return (
     <>
       <FormContainer id="EmailVerifyForm" handleSubmit={onSubmit}>
-        {body.authProvider === 'LOCAL' && (
-          <ProgressBar totalProgress={2} present={2} />
-        )}
+        <ProgressBar totalProgress={2} present={2} />
         <LabelContainer label="이메일" id="email">
           <div className="flex relative gap-2 items-center">
             <div className="flex w-full gap-1 items-center">
@@ -250,16 +212,7 @@ export const EmailVerifyForm = () => {
         {localSignUpResponseMessage !== '' && (
           <FormErrorResponse>{localSignUpResponseMessage}</FormErrorResponse>
         )}
-        {googleSignUpResponseMessage !== '' && (
-          <FormErrorResponse>{googleSignUpResponseMessage}</FormErrorResponse>
-        )}
       </FormContainer>
-      {showModal === 'ADD' && body.authProvider === 'GOOGLE' && (
-        <AddGoogleSignUpModal />
-      )}
-      {showModal === 'ADD' && body.authProvider === 'LOCAL' && (
-        <AddLocalSignUpModal />
-      )}
       {showModal === 'REDIRECT' && <RedirectSignInModal />}
     </>
   );
@@ -365,56 +318,10 @@ const useEmailVerify = () => {
   return { emailVerify, verifySuccess, responseMessage, isPending };
 };
 
-const useGoogleSignUp = ({
-  setShowModal,
-}: {
-  setShowModal(input: 'NONE' | 'ADD' | 'REDIRECT'): void;
-}) => {
-  const { authService } = useGuardContext(ServiceContext);
-  const [responseMessage, setResponseMessage] = useState('');
-  const { toSignUpComplete } = useRouteNavigation();
-
-  const { mutate: googleSignUp, isPending } = useMutation({
-    mutationFn: ({ snuMail, token }: { snuMail: string; token: string }) => {
-      return authService.signUp({
-        authType: 'SOCIAL_NORMAL',
-        info: {
-          type: 'SOCIAL_NORMAL',
-          provider: 'google',
-          snuMail,
-          token,
-        },
-      });
-    },
-    onSuccess: (response) => {
-      if (response.type === 'success') {
-        if (response.data.user.isMerged) {
-          setShowModal('ADD');
-          return;
-        }
-        toSignUpComplete();
-      } else {
-        if (response.code === 'USER_001' || response.code === 'USER_003') {
-          setShowModal('REDIRECT');
-          return;
-        }
-        setResponseMessage(createErrorMessage(response.code));
-      }
-    },
-    onError: () => {
-      setResponseMessage(
-        '회원가입에 실패했습니다. 잠시 후에 다시 실행해주세요.',
-      );
-    },
-  });
-
-  return { googleSignUp, responseMessage, isPending };
-};
-
 const useLocalSignUp = ({
   setShowModal,
 }: {
-  setShowModal(input: 'NONE' | 'ADD' | 'REDIRECT'): void;
+  setShowModal(input: 'NONE' | 'REDIRECT'): void;
 }) => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
@@ -424,31 +331,20 @@ const useLocalSignUp = ({
     mutationFn: ({
       snuMail,
       username,
-      localId,
       password,
     }: {
       snuMail: string;
       username: string;
-      localId: string;
       password: string;
     }) => {
       return authService.signUp({
-        authType: 'LOCAL_NORMAL',
-        info: {
-          type: 'LOCAL_NORMAL',
-          name: username,
-          snuMail,
-          localLoginId: localId,
-          password,
-        },
+        name: username,
+        mail: snuMail,
+        password,
       });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        if (response.data.user.isMerged) {
-          setShowModal('ADD');
-          return;
-        }
         toSignUpComplete();
       } else {
         if (response.code === 'USER_001' || response.code === 'USER_002') {

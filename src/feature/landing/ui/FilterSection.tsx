@@ -256,10 +256,6 @@ export const FilterSection = ({
     });
   };
 
-  console.log(seriesSelect);
-  console.log(filterElements);
-  console.log(seriesSelect?.includes('A'));
-
   const handleClickResetInvestAmountButton = () => {
     onChangeFilters({
       ...filterElements,
