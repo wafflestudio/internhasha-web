@@ -14,9 +14,7 @@ import type {
   CreateCoffeeChatRequest,
   CreateCompanyRequest,
   CreatePostRequest,
-  EchoParams,
   EmailVerifyRequest,
-  FileUploadRequest,
   GoogleEmailResponse,
   IdRequest,
   PositionRespone,
@@ -25,9 +23,9 @@ import type {
   PostIdParams,
   PostPathParams,
   PostsResponse,
-  PresignedUrlResponse,
-  PretotypeUserSubmitRequest,
-  PretotypeUserSubmitResponse,
+  S3DownloadResp,
+  S3UploadParams,
+  S3UploadReq,
   SignInRequest,
   SignUpRequest,
   SnuMailRequest,
@@ -61,17 +59,6 @@ export const getLocalServerApis = ({
   callWithOptionalToken,
 }: GetApisProps) =>
   ({
-    'GET /echo/:message': ({ params }: { params: EchoParams }) =>
-      callWithoutToken<SuccessResponse<never>>({
-        method: 'GET',
-        path: `echo/${params.message}`,
-      }),
-    'POST /pretotype': ({ body }: { body: PretotypeUserSubmitRequest }) =>
-      callWithoutToken<SuccessResponse<PretotypeUserSubmitResponse>>({
-        method: 'POST',
-        path: 'pretotype',
-        body,
-      }),
     'POST /user/signup': ({ body }: { body: SignUpRequest }) =>
       callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
         method: 'POST',
@@ -250,18 +237,25 @@ export const getLocalServerApis = ({
         token,
       });
     },
-    'POST /post/upload/presigned': ({
-      token,
-      body,
-    }: {
-      token: string;
-      body: FileUploadRequest;
-    }) => {
-      return callWithToken<SuccessResponse<PresignedUrlResponse>>({
+    'POST /s3': ({ token, body }: { token: string; body: S3UploadReq }) => {
+      return callWithToken<SuccessResponse<S3DownloadResp>>({
         method: 'POST',
-        path: 'post/upload/presigned',
+        path: 's3',
         token,
         body,
+      });
+    },
+    'GET /s3': ({
+      token,
+      params,
+    }: {
+      token: string;
+      params: S3UploadParams;
+    }) => {
+      return callWithToken<SuccessResponse<S3DownloadResp>>({
+        method: 'GET',
+        path: `s3?${params.filePath}`,
+        token,
       });
     },
     'POST /post/:postId/bookmark': ({

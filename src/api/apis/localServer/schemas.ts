@@ -120,16 +120,16 @@ type SocialApplicantInfo = {
 };
 
 // Params
-export type EchoParams = {
-  message: string;
-};
-
 export type PostPathParams = {
   postPath: string;
 };
 
 export type PostIdParams = {
   postId: string;
+};
+
+export type S3UploadParams = {
+  filePath: string;
 };
 
 export type CoffeeChatIdParams = {
@@ -141,11 +141,6 @@ export type BookmarkPageParams = {
 };
 
 // Request
-export type PretotypeUserSubmitRequest = {
-  email: string;
-  isSubscribed: boolean;
-};
-
 export type SignUpRequest = {
   authType: 'LOCAL_NORMAL' | 'SOCIAL_NORMAL' | 'LOCAL_CURATOR';
   info: LocalApplicantInfo | PostAdminInfo | SocialApplicantInfo;
@@ -192,7 +187,7 @@ export type CreateCoffeeChatRequest = {
   content: string;
 };
 
-export type FileUploadRequest = {
+export type S3UploadReq = {
   fileName: string;
   fileType: string;
 };
@@ -223,12 +218,6 @@ export type CreatePostRequest = {
 };
 
 // Response
-export type PretotypeUserSubmitResponse = {
-  email: string;
-  isSubscribed: boolean;
-  createdAt: string;
-};
-
 export type UserResponse = Omit<UserDTO, 'isMerged'>;
 
 export type UserWithTokenResponse = {
@@ -270,6 +259,6 @@ export type CoffeeChatResponse = CoffeeChatDTO;
 
 export type CoffeeChatListResponse = { coffeeChatList: CoffeeChatDTO[] };
 
-export type PresignedUrlResponse = {
-  presignedUrl: string;
+export type S3DownloadResp = {
+  url: string;
 };

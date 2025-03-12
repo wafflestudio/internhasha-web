@@ -1,8 +1,8 @@
-import type { Apis, ExternalApis } from '@/api';
+import type { Apis, ExternalApis, LocalServerDTO } from '@/api';
 import type { ServiceResponse } from '@/entities/response';
 
 export type FileService = {
-  getPresignedUrl({
+  getUploadPresignedUrl({
     token,
     fileName,
     fileType,
@@ -10,7 +10,16 @@ export type FileService = {
     token: string;
     fileName: string;
     fileType: string;
-  }): ServiceResponse<{ presignedUrl: string }>;
+  }): ServiceResponse<LocalServerDTO.S3DownloadResp>;
+  getDownloadPresignedUrl({
+    token,
+    filePath,
+    fileType,
+  }: {
+    token: string;
+    filePath: string;
+    fileType: string;
+  }): ServiceResponse<LocalServerDTO.S3DownloadResp>;
   uploadImage({
     presignedUrl,
     file,
@@ -27,11 +36,32 @@ export const implFileService = ({
   apis: Apis;
   externalApis: ExternalApis;
 }): FileService => ({
-  getPresignedUrl: async ({ token, fileName, fileType }) => {
+  getUploadPresignedUrl: async ({ token, fileName, fileType }) => {
     const body = { fileName, fileType };
-    const { status, data } = await apis['POST /post/upload/presigned']({
+    const { status, data } = await apis['POST /s3']({
       token,
       body,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', code: data.code, message: data.message };
+  },
+  getDownloadPresignedUrl: async ({ token, filePath, fileType }) => {
+    const downloadPath = new URLSearchParams({
+      filePath,
+      fileType,
+    });
+
+    const params = { filePath: downloadPath.toString() };
+
+    const { status, data } = await apis['GET /s3']({
+      token,
+      params,
     });
 
     if (status === 200) {
