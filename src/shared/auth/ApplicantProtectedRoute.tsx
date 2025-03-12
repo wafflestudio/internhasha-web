@@ -5,13 +5,15 @@ import { Outlet } from 'react-router';
 import { ReSignInModal } from '@/components/modal/ReSignInModal';
 import { PATH } from '@/entities/route';
 import { useGuardContext } from '@/shared/context/hooks';
+import { RoleContext } from '@/shared/context/RoleContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
 
 export const ApplicantProtectedRoute = () => {
   const hasReissued = useRef(false);
-  const { token, role } = useGuardContext(TokenContext);
+  const { token } = useGuardContext(TokenContext);
+  const { role } = useGuardContext(RoleContext);
   const { reissueToken } = useRefreshToken();
 
   useEffect(() => {
@@ -29,7 +31,7 @@ export const ApplicantProtectedRoute = () => {
     return <ReSignInModal />;
   }
 
-  if (role === 'NORMAL') {
+  if (role === 'APPLICANT') {
     return <Outlet />;
   }
 
