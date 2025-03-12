@@ -15,11 +15,11 @@ export const AuthProtectedRoute = () => {
   useEffect(() => {
     if (token === null && !hasReissued.current) {
       hasReissued.current = true;
+      reissueToken();
     }
-  }, [token]);
+  }, [token, reissueToken]);
 
   if (token === null && !hasReissued.current) {
-    reissueToken();
     return null;
   }
 

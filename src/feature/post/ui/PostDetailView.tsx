@@ -13,6 +13,7 @@ import { ICON_SRC } from '@/entities/asset';
 import { SkeletonPostDetailView } from '@/feature/post/ui/SkeletonPostDetailView';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
+import { RoleContext } from '@/shared/context/RoleContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
@@ -21,7 +22,8 @@ import { getEmploymentStatus } from '@/util/postFormatFunctions';
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
   const { API_BASE_URL } = useGuardContext(EnvContext);
-  const { token, role } = useGuardContext(TokenContext);
+  const { token } = useGuardContext(TokenContext);
+  const { role } = useGuardContext(RoleContext);
 
   const { toMain, toCreateCoffeeChat } = useRouteNavigation();
 
@@ -134,7 +136,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           </div>
           <div className="flex justify-between w-full">
             <span className="text-black text-4xl font-bold">{title}</span>
-            {role !== 'CURATOR' && (
+            {role !== 'COMPANY' && (
               <div className="content-center">
                 {isBookmarked ? (
                   <button
@@ -181,7 +183,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               </span>
             </div>
           </div>
-          {role !== 'CURATOR' && (
+          {role !== 'COMPANY' && (
             <div className="flex flex-col gap-3">
               <Button
                 onClick={() => {

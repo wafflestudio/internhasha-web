@@ -1,32 +1,23 @@
-import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useLocation } from 'react-router';
 
 import { FormContainer } from '@/components/form/FormContainer';
 import { LabelContainer } from '@/components/label/LabelContainer';
 import { ProgressBar } from '@/components/progressBar/ProgressBar';
-import {
-  FormErrorResponse,
-  FormInfoResponse,
-} from '@/components/response/formResponse';
+import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ICON_SRC } from '@/entities/asset';
-import { createErrorMessage } from '@/entities/errors';
 import { authPresentation } from '@/feature/auth/presentation/authPresentation';
-import { useGuardContext } from '@/shared/context/hooks';
-import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 type PreviousForm = {
-  authProvider: 'LOCAL';
-  localId: string;
   password: string;
   username: string;
 };
 
 type LocalSignUpInitialBody = {
-  body: PreviousForm | undefined;
+  body?: PreviousForm;
 };
 
 export const LocalSignUpForm = () => {
@@ -34,48 +25,23 @@ export const LocalSignUpForm = () => {
   const state = location.state as LocalSignUpInitialBody | null;
 
   const { toVerifyEmail } = useRouteNavigation();
-  const { password, passwordConfirm, localId, username } =
-    authPresentation.useValidator({ initialState: state?.body });
-  const [localIdCheckSuccess, setLocalIdCheckSuccess] = useState(false);
+  const { password, passwordConfirm, username } = authPresentation.useValidator(
+    { initialState: state?.body },
+  );
   const [isUsernameFocused, setIsUsernameFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordConfirmFocused, setIsPasswordConfirmFocused] =
     useState(false);
   const [responseMessage, setResponseMessage] = useState('');
 
-  const { checkLocalId, isPending } = useCheckLocalId({
-    setLocalIdCheckSuccess,
-    setResponseMessage,
-  });
-
-  const checkLocalIdDisable = localId.isError || localIdCheckSuccess;
   const signUpDisable =
-    username.isError ||
-    localId.isError ||
-    password.isError ||
-    passwordConfirm.isError;
-
-  const handleClickUsernameDuplicateCheck = () => {
-    if (checkLocalIdDisable) return;
-    checkLocalId({ localId: localId.value });
-    setResponseMessage('');
-  };
+    username.isError || password.isError || passwordConfirm.isError;
 
   const onSubmit = () => {
     if (username.isError) {
       setResponseMessage(
         '실명은 한글명 2~6자 이내, 영문명 2~20자 이내로 구성되어야 합니다.',
       );
-      return;
-    }
-    if (localId.isError) {
-      setResponseMessage(
-        '아이디는 3~20자 이내의 영어 대소문자 또는 숫자 또는 -, _로 구성되어야 합니다.',
-      );
-      return;
-    }
-    if (!localIdCheckSuccess) {
-      setResponseMessage('아이디 중복확인이 완료되지 않았습니다.');
       return;
     }
     if (password.isError) {
@@ -89,8 +55,6 @@ export const LocalSignUpForm = () => {
 
     toVerifyEmail({
       body: {
-        authProvider: 'LOCAL',
-        localId: localId.value,
         password: password.value,
         username: username.value,
       },
@@ -116,39 +80,11 @@ export const LocalSignUpForm = () => {
               onBlur={() => {
                 setIsUsernameFocused(false);
               }}
-              disabled={isPending}
             />
             {isUsernameFocused && username.isError && (
               <FormErrorResponse>
                 한글명 또는 영문명을 작성해주세요.
               </FormErrorResponse>
-            )}
-          </LabelContainer>
-          <LabelContainer label="아이디" id="localId">
-            <div className="flex gap-2">
-              <Input
-                id="localId"
-                value={localId.value}
-                onChange={(e) => {
-                  setLocalIdCheckSuccess(false);
-                  localId.onChange(e.target.value);
-                }}
-                placeholder="아이디를 입력해주세요."
-                disabled={isPending}
-              />
-              <Button
-                variant="outline"
-                onClick={(event) => {
-                  event.preventDefault();
-                  handleClickUsernameDuplicateCheck();
-                }}
-                disabled={isPending || checkLocalIdDisable}
-              >
-                중복확인
-              </Button>
-            </div>
-            {localIdCheckSuccess && (
-              <FormInfoResponse>사용할 수 있는 아이디입니다.</FormInfoResponse>
             )}
           </LabelContainer>
           <LabelContainer label="비밀번호" id="password">
@@ -166,7 +102,6 @@ export const LocalSignUpForm = () => {
                 setIsPasswordFocused(false);
               }}
               placeholder="비밀번호를 입력해주세요."
-              disabled={isPending}
             />
             {isPasswordFocused && password.isError && (
               <div className="flex flex-col gap-1">
@@ -251,7 +186,6 @@ export const LocalSignUpForm = () => {
                 passwordConfirm.onChange(e.target.value);
               }}
               placeholder="비밀번호를 한번 더 입력해주세요."
-              disabled={isPending}
             />
             {isPasswordConfirmFocused && passwordConfirm.isError && (
               <FormErrorResponse>
@@ -265,45 +199,10 @@ export const LocalSignUpForm = () => {
             <FormErrorResponse>{responseMessage}</FormErrorResponse>
           )}
         </div>
-        <Button form="SignUpForm" disabled={isPending || signUpDisable}>
+        <Button form="SignUpForm" disabled={signUpDisable}>
           다음
         </Button>
       </FormContainer>
     </>
   );
-};
-
-const useCheckLocalId = ({
-  setLocalIdCheckSuccess,
-  setResponseMessage,
-}: {
-  setLocalIdCheckSuccess(input: boolean): void;
-  setResponseMessage(input: string): void;
-}) => {
-  const { authService } = useGuardContext(ServiceContext);
-
-  const { mutate: checkLocalId, isPending } = useMutation({
-    mutationFn: ({ localId }: { localId: string }) => {
-      return authService.checkLocalIdDuplicate({ localId });
-    },
-    onSuccess: (response) => {
-      if (response.type === 'success') {
-        setLocalIdCheckSuccess(true);
-      } else {
-        setLocalIdCheckSuccess(false);
-        setResponseMessage(createErrorMessage(response.code));
-      }
-    },
-    onError: () => {
-      setLocalIdCheckSuccess(false);
-      setResponseMessage(
-        '회원가입에 실패했습니다. 잠시 후에 다시 실행해주세요.',
-      );
-    },
-  });
-
-  return {
-    checkLocalId,
-    isPending,
-  };
 };

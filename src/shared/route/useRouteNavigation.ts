@@ -3,21 +3,12 @@ import { useNavigate } from 'react-router';
 import type { Series } from '@/entities/post';
 import { PATH } from '@/entities/route';
 
-type VerifyMailBody =
-  | {
-      authProvider: 'GOOGLE';
-      token: string;
-    }
-  | {
-      authProvider: 'LOCAL';
-      localId: string;
-      password: string;
-      username: string;
-    };
+type VerifyMailBody = {
+  password: string;
+  username: string;
+};
 
 type PreviousForm = {
-  authProvider: 'LOCAL';
-  localId: string;
   password: string;
   username: string;
 };
@@ -52,11 +43,10 @@ export const useRouteNavigation = () => {
   const navigate = useNavigate();
   const {
     INDEX,
-    SIGN_IN_SELECT,
-    SIGN_UP_SELECT,
+    SIGN_IN,
     VERIFY_EMAIL,
     FIND_ACCOUNT,
-    SIGN_UP_LOCAL,
+    SIGN_UP,
     SIGN_UP_COMPLETE,
     COFFEE_CHAT_LIST,
     CREATE_COMPANY,
@@ -74,10 +64,7 @@ export const useRouteNavigation = () => {
       void navigate(POST_DETAIL(postId));
     },
     toSignInSelect: () => {
-      void navigate(SIGN_IN_SELECT);
-    },
-    toSignUpSelect: () => {
-      void navigate(SIGN_UP_SELECT);
+      void navigate(SIGN_IN);
     },
     toFindAccount: () => {
       void navigate(FIND_ACCOUNT);
@@ -85,8 +72,8 @@ export const useRouteNavigation = () => {
     toVerifyEmail: ({ body }: { body: VerifyMailBody }) => {
       void navigate(VERIFY_EMAIL, { state: { body } });
     },
-    toSignUpLocal: ({ body }: { body?: PreviousForm }) => {
-      void navigate(SIGN_UP_LOCAL, { state: { body } });
+    toSignUp: ({ body }: { body?: PreviousForm }) => {
+      void navigate(SIGN_UP, { state: { body } });
     },
     toSignUpComplete: () => {
       void navigate(SIGN_UP_COMPLETE);

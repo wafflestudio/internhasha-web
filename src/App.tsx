@@ -23,12 +23,11 @@ import { CreateProfilePage } from '@/pages/CreateProfilePage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { FindAccountPage } from '@/pages/FindAccountPage';
 import { LandingPage } from '@/pages/LandingPage';
-import { LocalSignUpPage } from '@/pages/LocalSignUpPage';
 import { MyPage } from '@/pages/MyPage';
 import { PostDetailPage } from '@/pages/PostDetailPage';
-import { SignInSelectPage } from '@/pages/SignInSelectPage';
+import { SignInPage } from '@/pages/SignInPage';
 import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
-import { SignUpSelectPage } from '@/pages/SignUpSelectPage';
+import { SignUpPage } from '@/pages/SignUpPage';
 import { VentureCapitalMyPage } from '@/pages/VentureCapitalMyPage';
 import { ApplicantProtectedRoute } from '@/shared/auth/ApplicantProtectedRoute';
 import { AuthCompanySwitchRoute } from '@/shared/auth/AuthAdminSwitchRoute';
@@ -46,6 +45,8 @@ import { implRolesFilterLocalStorageRepository } from '@/shared/rolesFilter/loca
 import { implRolesFilterStateRepository } from '@/shared/rolesFilter/state';
 import { implTokenStateRepository } from '@/shared/token/state';
 
+import { RoleContext } from './shared/context/RoleContext';
+
 const RouterProvider = () => {
   return (
     <Routes>
@@ -53,10 +54,9 @@ const RouterProvider = () => {
         <Route path={PATH.INDEX} element={<LandingPage />} />
       </Route>
       <Route path={PATH.POST_DETAIL} element={<PostDetailPage />} />
-      <Route path={PATH.SIGN_IN_SELECT} element={<SignInSelectPage />} />
+      <Route path={PATH.SIGN_IN} element={<SignInPage />} />
       <Route path={PATH.FIND_ACCOUNT} element={<FindAccountPage />} />
-      <Route path={PATH.SIGN_UP_SELECT} element={<SignUpSelectPage />} />
-      <Route path={PATH.SIGN_UP_LOCAL} element={<LocalSignUpPage />} />
+      <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
       <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
       <Route path={PATH.SIGN_UP_COMPLETE} element={<SignUpCompletePage />} />
       <Route element={<AuthProtectedRoute />}>
@@ -104,7 +104,7 @@ export const App = () => {
     implRolesFilterLocalStorageRepository();
 
   const [token, setToken] = useState<string | null>(null);
-  const [role, setRole] = useState<'NORMAL' | 'CURATOR' | null>(null);
+  const [role, setRole] = useState<'APPLICANT' | 'COMPANY' | null>(null);
   const [activeCategory, setActiveCategory] = useState<RolesFilterCategory>(
     rolesFilterLocalStorageRepository.getActiveJobCategory,
   );
@@ -199,15 +199,17 @@ export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ServiceContext.Provider value={services}>
-        <TokenContext.Provider value={{ token, role }}>
-          <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID}>
-            <RolesFilterContext.Provider
-              value={{ activeCategory, isFilterDropdownOpen }}
-            >
-              <RouterProvider />
-            </RolesFilterContext.Provider>
-          </GoogleOAuthProvider>
-        </TokenContext.Provider>
+        <RoleContext.Provider value={{ role }}>
+          <TokenContext.Provider value={{ token }}>
+            <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID}>
+              <RolesFilterContext.Provider
+                value={{ activeCategory, isFilterDropdownOpen }}
+              >
+                <RouterProvider />
+              </RolesFilterContext.Provider>
+            </GoogleOAuthProvider>
+          </TokenContext.Provider>
+        </RoleContext.Provider>
       </ServiceContext.Provider>
     </QueryClientProvider>
   );
