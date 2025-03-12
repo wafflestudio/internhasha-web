@@ -1,5 +1,5 @@
 // DTO
-export type UserRole = 'APPLICANT' | 'COMPANY';
+type UserRole = 'APPLICANT' | 'COMPANY';
 
 type UserDTO = {
   id: string;

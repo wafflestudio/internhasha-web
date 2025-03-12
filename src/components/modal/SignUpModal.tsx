@@ -3,7 +3,7 @@ import { ModalFloatBackground } from '@/components/ui/layout';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const SignUpModal = ({ onClose }: { onClose(): void }) => {
-  const { toSignUpSelect } = useRouteNavigation();
+  const { toSignUp } = useRouteNavigation();
 
   return (
     <ModalFloatBackground variant="transparent">
@@ -15,7 +15,12 @@ export const SignUpModal = ({ onClose }: { onClose(): void }) => {
         <Button variant="secondary" onClick={onClose} className="flex-1">
           닫기
         </Button>
-        <Button onClick={toSignUpSelect} className="flex-1">
+        <Button
+          onClick={() => {
+            toSignUp({});
+          }}
+          className="flex-1"
+        >
           회원가입 페이지로
         </Button>
       </div>
