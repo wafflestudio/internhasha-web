@@ -2,7 +2,9 @@ import { getExternalServerApis, getLocalServerApis } from './apis';
 import type {
   ErrorResponse,
   ExternalCallParams,
+  ExternalFileCallParams,
   InternalCallParams,
+  InternalFileCallParams,
   ResponseNecessary,
 } from './entities';
 
@@ -10,12 +12,15 @@ type ImplApiProps = {
   externalCall(_: ExternalCallParams): Promise<ResponseNecessary>;
 };
 
+type ImplExternalApiProps = {
+  externalFileCall(_: ExternalFileCallParams): Promise<ResponseNecessary>;
+};
+
 export const implApi = ({ externalCall }: ImplApiProps) => {
   const internalCall = async <R extends ResponseNecessary>(content: {
     method: string;
     path: string;
-    contentType?: string;
-    body?: Record<string, unknown> | File;
+    body?: Record<string, unknown>;
     token?: string;
   }) => {
     const response = await externalCall({
@@ -23,9 +28,7 @@ export const implApi = ({ externalCall }: ImplApiProps) => {
       path: content.path,
       body: content.body,
       headers: {
-        ...(content.contentType !== undefined
-          ? { 'content-type': content.contentType }
-          : { 'content-type': 'application/json;charset=UTF-8' }),
+        'content-type': 'application/json;charset=UTF-8',
         ...(content.token !== undefined
           ? { Authorization: `Bearer ${content.token}` }
           : {}),
@@ -48,14 +51,36 @@ export const implApi = ({ externalCall }: ImplApiProps) => {
     p: InternalCallParams & { token?: string },
   ) => internalCall<R | ErrorResponse>(p);
 
-  return {
-    ...getLocalServerApis({
-      callWithToken,
-      callWithoutToken,
-      callWithOptionalToken,
-    }),
-    ...getExternalServerApis({ callWithoutToken }),
+  return getLocalServerApis({
+    callWithToken,
+    callWithoutToken,
+    callWithOptionalToken,
+  });
+};
+
+export const implExternalApi = ({ externalFileCall }: ImplExternalApiProps) => {
+  const internalFileCall = async <R extends ResponseNecessary>(content: {
+    method: string;
+    path: string;
+    contentType: string;
+    body: File;
+  }) => {
+    const response = await externalFileCall({
+      method: content.method,
+      path: content.path,
+      body: content.body,
+      headers: {
+        'content-type': content.contentType,
+      },
+    });
+
+    return response as R;
   };
+  const callWithFile = <R extends ResponseNecessary>(
+    p: InternalFileCallParams,
+  ) => internalFileCall<R | ErrorResponse>(p);
+
+  return getExternalServerApis({ callWithFile });
 };
 
 export type Apis = ReturnType<typeof getLocalServerApis>;

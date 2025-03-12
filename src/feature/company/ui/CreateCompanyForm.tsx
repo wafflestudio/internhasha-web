@@ -76,7 +76,6 @@ export const CreateCompanyForm = () => {
 
   const handleSubmit = () => {
     setIsSubmit(true);
-    console.log(formStates);
     if (
       formStates.companyName.isError ||
       formStates.explanation.isError ||
@@ -346,30 +345,7 @@ const useCreateCompanyWithUploads = ({
       if (file === undefined) {
         throw new Error('파일이 존재하지 않습니다.');
       }
-
-      try {
-        const response = await fetch(presignedUrl, {
-          method: 'PUT',
-          body: file,
-          headers: {
-            'Content-Type': file.type,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(
-            `Upload failed: ${response.status} ${response.statusText}`,
-          );
-        }
-
-        return { type: 'success' };
-      } catch (error) {
-        console.error('Error uploading file:', error);
-        return {
-          type: 'error',
-          message: '업로드 과정에서 오류가 발생했습니다!',
-        };
-      }
+      return fileService.uploadImage({ presignedUrl, file });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {

@@ -15,7 +15,7 @@ type UserDTO = {
 
 type UserBrief = {
   id: string;
-  role: UserRole;
+  userRole: UserRole;
 };
 
 type AuthorBriefDTO = {
