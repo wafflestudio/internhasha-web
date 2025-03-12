@@ -2,27 +2,40 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { Outlet } from 'react-router';
 
+import { ReSignInModal } from '@/components/modal/ReSignInModal';
+import { PATH } from '@/entities/route';
 import { useGuardContext } from '@/shared/context/hooks';
+import { RoleContext } from '@/shared/context/RoleContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
+import { RouteNavigator } from '@/shared/route/RouteNavigator';
 
-export const ReissueRoute = () => {
+export const ApplicantProtectedRoute = () => {
   const hasReissued = useRef(false);
   const { token } = useGuardContext(TokenContext);
+  const { role } = useGuardContext(RoleContext);
   const { reissueToken } = useRefreshToken();
 
   useEffect(() => {
     if (token === null && !hasReissued.current) {
       hasReissued.current = true;
-      reissueToken();
     }
-  }, [token, reissueToken]);
+  }, [token]);
 
   if (token === null && !hasReissued.current) {
-    console.log(token);
+    reissueToken();
+    return null;
   }
 
-  return <Outlet />;
+  if (token === null) {
+    return <ReSignInModal />;
+  }
+
+  if (role === 'APPLICANT') {
+    return <Outlet />;
+  }
+
+  return <RouteNavigator link={PATH.INDEX} />;
 };
 
 const useRefreshToken = () => {

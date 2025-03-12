@@ -1,10 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { ExternalLinkField } from '@/components/field/ExternalLinkField';
+import { HashtagField } from '@/components/field/HashtagField';
 import { ImageField } from '@/components/field/ImageField';
 import { MarkdownEditorField } from '@/components/field/MarkdownEditorField';
 import { PdfField } from '@/components/field/PdfField';
 import { StringField } from '@/components/field/StringField';
+import { StringFieldWithUnit } from '@/components/field/StringFieldWithLabel';
 import { StringSelectField } from '@/components/field/StringSelectField';
 import { FormContainer } from '@/components/form/FormContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
@@ -21,9 +24,6 @@ import {
   MAX_EXPLANATION_LENGTH,
   MAX_SLOGAN_LENGTH,
 } from '@/feature/company/presentation/companyInputPresentation';
-import { ExternalLinkField } from '@/feature/company/ui/fields/ExternalLinkField';
-import { HashtagField } from '@/feature/company/ui/fields/HashtagField';
-import { InvestAmountField } from '@/feature/company/ui/fields/InvestAmountField';
 import { InvestCompanyField } from '@/feature/company/ui/fields/InvestCompanyField';
 import { SloganField } from '@/feature/company/ui/fields/SloganField';
 import { useGuardContext } from '@/shared/context/hooks';
@@ -193,13 +193,14 @@ export const CreateCompanyForm = () => {
           errorMessage="투자 단계를 선택해주세요."
           required={true}
         />
-        <InvestAmountField
+        <StringFieldWithUnit
           label="누적 투자액"
           input={investAmount}
           unit="천만원"
           isPending={isPending}
           isSubmit={isSubmit}
           isSubmitError={formStates.investAmount.isError}
+          placeholder="10"
           errorMessage="0 이상의 10만 이하의 양의 정수로 입력해주세요."
           required={true}
         />

@@ -19,34 +19,36 @@ export const LocalLogInForm = ({
   const { localSignIn, responseMessage, isPending } = useLocalSignIn({
     setShowSignUpModal,
   });
-  const { localId, password } = authPresentation.useValidator({});
+  const { snuMail, password } = authPresentation.useValidator({});
 
   const onSubmit = () => {
-    if (localId.value !== '' || password.value !== '') {
+    if (snuMail.value !== '' || password.value !== '') {
       localSignIn({
-        localId: localId.value,
+        mail: snuMail.postfix,
         password: password.value,
       });
     }
   };
 
   const blockButton =
-    localId.value.trim() === '' || password.value.trim() === '';
+    snuMail.value.trim() === '' || password.value.trim() === '';
 
   return (
     <>
       <FormContainer id="SignInForm" handleSubmit={onSubmit}>
         <div className="flex flex-col gap-[10px]">
-          <Input
-            id="localId"
-            value={localId.value}
-            onChange={(e) => {
-              localId.onChange(e.target.value);
-            }}
-            placeholder="아이디"
-            disabled={isPending}
-            className="mt-1"
-          />
+          <div className="flex w-full gap-1 items-center">
+            <Input
+              id="email"
+              value={snuMail.value}
+              onChange={(e) => {
+                snuMail.onChange(e.target.value);
+              }}
+              placeholder="마이스누 아이디"
+              disabled={isPending}
+            />
+            <span className="text-grey-dark">@snu.ac.kr</span>
+          </div>
           <Input
             id="password"
             type="password"
@@ -86,16 +88,10 @@ const useLocalSignIn = ({
   const { toMain } = useRouteNavigation();
 
   const { mutate: localSignIn, isPending } = useMutation({
-    mutationFn: ({
-      localId,
-      password,
-    }: {
-      localId: string;
-      password: string;
-    }) => {
+    mutationFn: ({ mail, password }: { mail: string; password: string }) => {
       return authService.signIn({
-        authType: 'LOCAL',
-        info: { type: 'LOCAL', localLoginId: localId, password },
+        mail,
+        password,
       });
     },
     onSuccess: (response) => {

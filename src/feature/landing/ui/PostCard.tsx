@@ -5,6 +5,7 @@ import { ICON_SRC } from '@/entities/asset';
 import type { BriefPost } from '@/entities/post';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
+import { RoleContext } from '@/shared/context/RoleContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { getEmploymentStatus } from '@/util/postFormatFunctions';
@@ -20,7 +21,8 @@ export const PostCard = ({
   onDetailClick,
   setShowSignInModal,
 }: PostCardProps) => {
-  const { token, role } = useGuardContext(TokenContext);
+  const { token } = useGuardContext(TokenContext);
+  const { role } = useGuardContext(RoleContext);
   const { API_BASE_URL } = useGuardContext(EnvContext);
   const { addBookmark, isPending: isAddBookmarkPending } = useAddBookmark();
   const { deleteBookmark, isPending: isDeleteBookmarkPending } =
@@ -112,7 +114,7 @@ export const PostCard = ({
               투자 누적 {investAmount.toLocaleString()}천만원
             </Badge>
           </div>
-          {role !== 'CURATOR' && (
+          {role !== 'COMPANY' && (
             <div>
               {isBookmarked ? (
                 <button

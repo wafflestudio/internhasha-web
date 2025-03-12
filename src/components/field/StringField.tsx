@@ -13,6 +13,7 @@ type StringFieldProps = {
   isSubmit: boolean;
   isSubmitError: boolean;
   errorMessage: string;
+  maxLength?: number;
   infoMessage?: string;
   required?: boolean;
   placeholder?: string;
@@ -25,6 +26,7 @@ export const StringField = ({
   isSubmit,
   isSubmitError,
   errorMessage,
+  maxLength,
   infoMessage,
   required,
   placeholder,
@@ -40,7 +42,18 @@ export const StringField = ({
         }}
       />
       <div className="flex flex-col gap-1">
-        <FormInfoResponse>{infoMessage}</FormInfoResponse>
+        {maxLength !== undefined ? (
+          <div className="flex w-full justify-between">
+            <FormInfoResponse>{infoMessage}</FormInfoResponse>
+            <span
+              className={`text-sm ${input.value.length > maxLength ? 'text-red' : 'text-grey-normal'}`}
+            >
+              {input.value.length}/{maxLength}
+            </span>
+          </div>
+        ) : (
+          <FormInfoResponse>{infoMessage}</FormInfoResponse>
+        )}
         {isSubmit && isSubmitError && (
           <FormErrorResponse>{errorMessage}</FormErrorResponse>
         )}

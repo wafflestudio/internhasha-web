@@ -5,8 +5,9 @@ import type {
   SuccessResponse,
 } from '../../entities';
 import type {
-  AccessTokenRequest,
   BookmarkPageParams,
+  ChangePasswordRequest,
+  CheckSnuMailVerificationRequest,
   CoffeeChatIdParams,
   CoffeeChatListResponse,
   CoffeeChatResponse,
@@ -14,9 +15,7 @@ import type {
   CreateCoffeeChatRequest,
   CreateCompanyRequest,
   CreatePostRequest,
-  EmailVerifyRequest,
-  GoogleEmailResponse,
-  IdRequest,
+  MailRequest,
   PositionRespone,
   PostBriefDTO,
   PostDetailResponse,
@@ -59,76 +58,75 @@ export const getLocalServerApis = ({
   callWithOptionalToken,
 }: GetApisProps) =>
   ({
-    'POST /user/signup': ({ body }: { body: SignUpRequest }) =>
+    'POST /auth/user': ({ body }: { body: SignUpRequest }) =>
       callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
         method: 'POST',
-        path: 'user/signup',
+        path: 'auth/user',
         body,
       }),
-    'POST /user/snu-mail-verification/google-email': ({
-      body,
-    }: {
-      body: AccessTokenRequest;
-    }) =>
-      callWithoutToken<SuccessResponse<GoogleEmailResponse>>({
-        method: 'POST',
-        path: 'user/snu-mail-verification/google-email',
-        body,
-      }),
-    'POST /user/snu-mail-verification/request': ({
-      body,
-    }: {
-      body: SnuMailRequest;
-    }) =>
-      callWithoutToken<SuccessResponse<void>>({
-        method: 'POST',
-        path: 'user/snu-mail-verification/request',
-        body,
-      }),
-    'POST /user/snu-mail-verification/verify': ({
-      body,
-    }: {
-      body: EmailVerifyRequest;
-    }) =>
-      callWithoutToken<SuccessResponse<void>>({
-        method: 'POST',
-        path: 'user/snu-mail-verification/verify',
-        body,
-      }),
-    'POST /user/help/find-Id': ({ body }: { body: SnuMailRequest }) =>
-      callWithoutToken<SuccessResponse<void>>({
-        method: 'POST',
-        path: 'user/help/find-Id',
-        body,
-      }),
-    'POST /user/help/reset-password': ({ body }: { body: SnuMailRequest }) =>
-      callWithoutToken<SuccessResponse<void>>({
-        method: 'POST',
-        path: 'user/help/reset-password',
-        body,
-      }),
-    'POST /user/signin': ({ body }: { body: SignInRequest }) =>
-      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
-        method: 'POST',
-        path: 'user/signin',
-        body,
-      }),
-    'POST /user/signup/check-id': ({ body }: { body: IdRequest }) =>
-      callWithoutToken<SuccessResponse<void>>({
-        method: 'POST',
-        path: 'user/signup/check-id',
-        body,
-      }),
-    'POST /user/refresh-token': () =>
-      callWithoutToken<SuccessResponse<TokenResponse>>({
-        method: 'POST',
-        path: 'user/refresh-token',
-      }),
-    'POST /user/signout': ({ token }: { token: string }) =>
+    'DELETE /auth/user': ({ token }: { token: string }) =>
       callWithToken<SuccessResponse<void>>({
-        method: 'POST',
-        path: 'user/signout',
+        method: 'DELETE',
+        path: 'auth/user',
         token,
+      }),
+    'POST /auth/user/session': ({ body }: { body: SignInRequest }) =>
+      callWithoutToken<SuccessResponse<UserWithTokenResponse>>({
+        method: 'POST',
+        path: 'auth/user/session',
+        body,
+      }),
+    'DELETE /auth/user/session': ({ token }: { token: string }) =>
+      callWithToken<SuccessResponse<void>>({
+        method: 'DELETE',
+        path: 'auth/user/session',
+        token,
+      }),
+    'GET /auth/token': () =>
+      callWithoutToken<SuccessResponse<TokenResponse>>({
+        method: 'GET',
+        path: 'auth/token',
+      }),
+    'POST /auth/mail': ({ body }: { body: MailRequest }) =>
+      callWithoutToken<SuccessResponse<void>>({
+        method: 'POST',
+        path: 'auth/mail',
+        body,
+      }),
+    'POST /auth/mail/verify': ({ body }: { body: SnuMailRequest }) =>
+      callWithoutToken<SuccessResponse<void>>({
+        method: 'POST',
+        path: 'auth/mail/verify',
+        body,
+      }),
+    'POST /auth/mail/validate': ({
+      body,
+    }: {
+      body: CheckSnuMailVerificationRequest;
+    }) =>
+      callWithoutToken<SuccessResponse<void>>({
+        method: 'POST',
+        path: 'auth/mail/validate',
+        body,
+      }),
+    'PATCH /auth/password': ({
+      token,
+      body,
+    }: {
+      token: string;
+      body: ChangePasswordRequest;
+    }) =>
+      callWithToken<SuccessResponse<void>>({
+        method: 'PATCH',
+        path: 'auth/password',
+        body,
+        token,
+      }),
+    'POST /auth/password': ({ body }: { body: MailRequest }) =>
+      callWithoutToken<SuccessResponse<void>>({
+        method: 'POST',
+        path: 'auth/password',
+        body,
       }),
     'GET /user/me': ({ token }: { token: string }) =>
       callWithToken<SuccessResponse<UserResponse>>({

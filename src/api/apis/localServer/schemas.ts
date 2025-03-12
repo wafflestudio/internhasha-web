@@ -1,5 +1,5 @@
 // DTO
-type UserRole = 'NORMAL' | 'CURATOR';
+type UserRole = 'APPLICANT' | 'COMPANY';
 
 type UserDTO = {
   id: string;
@@ -11,6 +11,11 @@ type UserDTO = {
   phoneNumber?: string;
   profileImageLink: string;
   isMerged: boolean;
+};
+
+type UserBrief = {
+  id: string;
+  role: UserRole;
 };
 
 type AuthorBriefDTO = {
@@ -96,29 +101,6 @@ type CoffeeChatDTO = {
   createdAt: string;
 };
 
-type LocalApplicantInfo = {
-  type: 'LOCAL_NORMAL';
-  name: string;
-  localLoginId: string;
-  snuMail: string;
-  password: string;
-};
-
-type PostAdminInfo = {
-  type: 'LOCAL_CURATOR';
-  secretPassword: string;
-  name: string;
-  localLoginId: string;
-  password: string;
-};
-
-type SocialApplicantInfo = {
-  type: 'SOCIAL_NORMAL';
-  provider: 'google';
-  snuMail: string;
-  token: string;
-};
-
 // Params
 export type PostPathParams = {
   postPath: string;
@@ -141,40 +123,48 @@ export type BookmarkPageParams = {
 };
 
 // Request
-export type SignUpRequest = {
-  authType: 'LOCAL_NORMAL' | 'SOCIAL_NORMAL' | 'LOCAL_CURATOR';
-  info: LocalApplicantInfo | PostAdminInfo | SocialApplicantInfo;
-};
+export type SignUpRequest =
+  | {
+      authType: 'APPLICANT';
+      info: {
+        type: 'APPLICANT';
+        name: string;
+        mail: string;
+        password: string;
+      };
+    }
+  | {
+      authType: 'COMPANY';
+      info: {
+        type: 'COMPANY';
+        name: string;
+        secretPassword: string;
+        password: string;
+        mail: string;
+      };
+    };
 
 export type SignInRequest = {
-  authType: 'LOCAL' | 'SOCIAL';
-  info:
-    | {
-        type: 'LOCAL';
-        localLoginId: string;
-        password: string;
-      }
-    | {
-        type: 'SOCIAL';
-        provider: 'google';
-        token: string;
-      };
+  mail: string;
+  password: string;
 };
 
-export type AccessTokenRequest = {
-  accessToken: string;
+export type MailRequest = {
+  mail: string;
 };
+
 export type SnuMailRequest = {
   snuMail: string;
 };
 
-export type EmailVerifyRequest = {
+export type CheckSnuMailVerificationRequest = {
   snuMail: string;
   code: string;
 };
 
-export type IdRequest = {
-  id: string;
+export type ChangePasswordRequest = {
+  oldPassword: string;
+  newPassword: string;
 };
 
 export type CreateAndUpdatePostRequest = Omit<
@@ -218,12 +208,16 @@ export type CreatePostRequest = {
 };
 
 // Response
-export type UserResponse = Omit<UserDTO, 'isMerged'>;
-
 export type UserWithTokenResponse = {
-  user: UserDTO;
+  user: UserBrief;
   token: string;
 };
+
+export type TokenResponse = {
+  accessToken: string;
+};
+
+export type UserResponse = Omit<UserDTO, 'isMerged'>;
 
 export type PostsResponse = {
   posts: PostBriefDTO[];
@@ -246,14 +240,6 @@ export type PositionRespone = Pick<
   | 'employmentEndDate'
   | 'isActive'
 >;
-
-export type TokenResponse = {
-  accessToken: string;
-};
-
-export type GoogleEmailResponse = {
-  googleEmail: string;
-};
 
 export type CoffeeChatResponse = CoffeeChatDTO;
 

@@ -1,9 +1,8 @@
 export const PATH = {
   INDEX: '/',
   POST_DETAIL: '/post/:postId',
-  SIGN_IN_SELECT: '/signin',
-  SIGN_UP_SELECT: '/signup',
-  SIGN_UP_LOCAL: '/signup/local',
+  SIGN_IN: '/signin',
+  SIGN_UP: '/signup',
   SIGN_UP_COMPLETE: '/signup/complete',
   FIND_ACCOUNT: '/find-account',
   VERIFY_EMAIL: '/verify-email',
@@ -13,6 +12,7 @@ export const PATH = {
   COFFEE_CHAT_DETAIL: '/coffeeChat/:coffeeChatId',
   CREATE_COMPANY: '/company/create',
   CREATE_POST: '/post/create/:companyId',
+  CREATE_PROFILE: '/profile/create',
   MAKE: {
     POST_DETAIL: (postId: string) => `/post/${postId}`,
     CREATE_COFFEE_CHAT: (postId: string) => `/post/${postId}/coffeeChat/create`,

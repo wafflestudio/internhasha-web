@@ -1,4 +1,4 @@
-type UserRole = 'NORMAL' | 'CURATOR';
+type UserRole = 'APPLICANT' | 'COMPANY';
 
 export type User = {
   id: string;

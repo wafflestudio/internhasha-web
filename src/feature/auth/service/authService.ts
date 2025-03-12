@@ -1,65 +1,27 @@
-import type { Apis } from '@/api';
+import type { Apis, LocalServerDTO } from '@/api';
 import type { ServiceResponse } from '@/entities/response';
-import type { User } from '@/entities/user';
 import type { RoleStateRepository } from '@/shared/role/state';
 import type { TokenStateRepository } from '@/shared/token/state';
 
 export type AuthService = {
   signUp({
-    authType,
-    info,
+    name,
+    mail,
+    password,
   }: {
-    authType: 'LOCAL_NORMAL' | 'SOCIAL_NORMAL' | 'LOCAL_CURATOR';
-    info:
-      | {
-          type: 'LOCAL_NORMAL';
-          name: string;
-          localLoginId: string;
-          snuMail: string;
-          password: string;
-        }
-      | {
-          type: 'SOCIAL_NORMAL';
-          provider: 'google';
-          snuMail: string;
-          token: string;
-        }
-      | {
-          type: 'LOCAL_CURATOR';
-          secretPassword: string;
-          name: string;
-          localLoginId: string;
-          password: string;
-        };
-  }): ServiceResponse<{
-    user: Omit<User, 'createdAt' | 'updatedAt'>;
-    token: string;
-  }>;
+    name: string;
+    mail: string;
+    password: string;
+  }): ServiceResponse<LocalServerDTO.UserWithTokenResponse>;
   signIn({
-    authType,
-    info,
+    mail,
+    password,
   }: {
-    authType: 'LOCAL' | 'SOCIAL';
-    info:
-      | {
-          type: 'LOCAL';
-          localLoginId: string;
-          password: string;
-        }
-      | {
-          type: 'SOCIAL';
-          provider: 'google';
-          token: string;
-        };
-  }): ServiceResponse<{
-    user: Omit<User, 'createdAt' | 'updatedAt'>;
-    token: string;
-  }>;
-  checkGoogleEmail({
-    token,
-  }: {
-    token: string;
-  }): ServiceResponse<{ googleEmail: string }>;
+    mail: string;
+    password: string;
+  }): ServiceResponse<LocalServerDTO.UserWithTokenResponse>;
+  logout({ token }: { token: string }): ServiceResponse<void>;
+  reissueAccessToken(): ServiceResponse<LocalServerDTO.TokenResponse>;
   sendEmailCode({ snuMail }: { snuMail: string }): ServiceResponse<void>;
   verifyCode({
     snuMail,
@@ -68,15 +30,7 @@ export type AuthService = {
     snuMail: string;
     code: string;
   }): ServiceResponse<void>;
-  checkLocalIdDuplicate({
-    localId,
-  }: {
-    localId: string;
-  }): ServiceResponse<void>;
-  reissueAccessToken(): ServiceResponse<{ accessToken: string }>;
-  logout({ token }: { token: string }): ServiceResponse<void>;
-  sendEmailId({ snuMail }: { snuMail: string }): ServiceResponse<void>;
-  sendEmailPassword({ snuMail }: { snuMail: string }): ServiceResponse<void>;
+  sendEmailPassword({ mail }: { mail: string }): ServiceResponse<void>;
 };
 
 export const implAuthService = ({
@@ -88,15 +42,23 @@ export const implAuthService = ({
   tokenStateRepository: TokenStateRepository;
   roleStateRepository: RoleStateRepository;
 }): AuthService => ({
-  signUp: async ({ authType, info }) => {
-    const body = { authType, info };
-    const { status, data } = await apis['POST /user/signup']({ body });
+  signUp: async ({ name, mail, password }) => {
+    const body: LocalServerDTO.SignUpRequest = {
+      authType: 'APPLICANT',
+      info: {
+        type: 'APPLICANT',
+        name,
+        mail,
+        password,
+      },
+    };
+    const { status, data } = await apis['POST /auth/user']({ body });
 
     if (status === 200) {
       const token = data.token;
 
       tokenStateRepository.setToken({ token });
-      roleStateRepository.setRole({ role: data.user.userRole });
+      roleStateRepository.setRole({ role: data.user.role });
 
       return {
         type: 'success',
@@ -105,15 +67,15 @@ export const implAuthService = ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-  signIn: async ({ authType, info }) => {
-    const body = { authType, info };
-    const { status, data } = await apis['POST /user/signin']({ body });
+  signIn: async ({ mail, password }) => {
+    const body = { mail, password };
+    const { status, data } = await apis['POST /auth/user/session']({ body });
 
     if (status === 200) {
       const token = data.token;
 
       tokenStateRepository.setToken({ token });
-      roleStateRepository.setRole({ role: data.user.userRole });
+      roleStateRepository.setRole({ role: data.user.role });
 
       return {
         type: 'success',
@@ -124,9 +86,7 @@ export const implAuthService = ({
   },
   sendEmailCode: async ({ snuMail }) => {
     const body = { snuMail };
-    const { status, data } = await apis[
-      'POST /user/snu-mail-verification/request'
-    ]({
+    const { status, data } = await apis['POST /auth/mail/verify']({
       body,
     });
 
@@ -140,23 +100,7 @@ export const implAuthService = ({
   },
   verifyCode: async ({ code, snuMail }) => {
     const body = { snuMail, code };
-    const { status, data } = await apis[
-      'POST /user/snu-mail-verification/verify'
-    ]({
-      body,
-    });
-
-    if (status === 200) {
-      return {
-        type: 'success',
-        data,
-      };
-    }
-    return { type: 'error', code: data.code, message: data.message };
-  },
-  checkLocalIdDuplicate: async ({ localId }) => {
-    const body = { id: localId };
-    const { status, data } = await apis['POST /user/signup/check-id']({
+    const { status, data } = await apis['POST /auth/mail/validate']({
       body,
     });
 
@@ -169,7 +113,7 @@ export const implAuthService = ({
     return { type: 'error', code: data.code, message: data.message };
   },
   reissueAccessToken: async () => {
-    const { status, data } = await apis['POST /user/refresh-token']();
+    const { status, data } = await apis['GET /auth/token']();
 
     if (status === 200) {
       const accessToken = data.accessToken;
@@ -184,24 +128,8 @@ export const implAuthService = ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-  checkGoogleEmail: async ({ token }) => {
-    const body = { accessToken: token };
-    const { status, data } = await apis[
-      'POST /user/snu-mail-verification/google-email'
-    ]({
-      body,
-    });
-
-    if (status === 200) {
-      return {
-        type: 'success',
-        data,
-      };
-    }
-    return { type: 'error', code: data.code, message: data.message };
-  },
   logout: async ({ token }) => {
-    const { status, data } = await apis['POST /user/signout']({ token });
+    const { status, data } = await apis['DELETE /auth/user/session']({ token });
 
     tokenStateRepository.removeToken();
     roleStateRepository.removeRole();
@@ -214,23 +142,9 @@ export const implAuthService = ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-  sendEmailId: async ({ snuMail }) => {
-    const body = { snuMail };
-    const { status, data } = await apis['POST /user/help/find-Id']({
-      body,
-    });
-
-    if (status === 200) {
-      return {
-        type: 'success',
-        data,
-      };
-    }
-    return { type: 'error', code: data.code, message: data.message };
-  },
-  sendEmailPassword: async ({ snuMail }) => {
-    const body = { snuMail };
-    const { status, data } = await apis['POST /user/help/reset-password']({
+  sendEmailPassword: async ({ mail }) => {
+    const body = { mail };
+    const { status, data } = await apis['POST /auth/password']({
       body,
     });
 

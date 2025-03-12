@@ -1,26 +1,15 @@
-import { Button } from '@/components/ui/button';
 import { ModalBackgroundWithHeader } from '@/components/ui/layout';
-import { GoogleSocialSignUpButton } from '@/feature/auth';
+import { LocalSignUpForm } from '@/feature/auth';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
-export const SignUpSelectPage = () => {
-  const { toSignInSelect, toSignUpLocal } = useRouteNavigation();
+export const SignUpPage = () => {
+  const { toSignInSelect } = useRouteNavigation();
 
   return (
-    <ModalBackgroundWithHeader>
+    <ModalBackgroundWithHeader className="py-[50px]">
       <div className="flex flex-col gap-[46px]">
         <h2 className="text-2xl font-bold text-center">회원가입</h2>
-        <div className="flex flex-col gap-[10px]">
-          <GoogleSocialSignUpButton />
-          <Button
-            onClick={() => {
-              toSignUpLocal({});
-            }}
-            className="w-full"
-          >
-            일반 회원가입
-          </Button>
-        </div>
+        <LocalSignUpForm />
         <div className="text-center">
           <p className="text-sm text-grey-normal">
             이미 계정이 있으신가요?{' '}

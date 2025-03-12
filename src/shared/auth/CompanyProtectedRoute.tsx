@@ -5,23 +5,25 @@ import { Outlet } from 'react-router';
 import { ReSignInModal } from '@/components/modal/ReSignInModal';
 import { PATH } from '@/entities/route';
 import { useGuardContext } from '@/shared/context/hooks';
+import { RoleContext } from '@/shared/context/RoleContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
 
 export const CompanyProtectedRoute = () => {
   const hasReissued = useRef(false);
-  const { token, role } = useGuardContext(TokenContext);
+  const { token } = useGuardContext(TokenContext);
+  const { role } = useGuardContext(RoleContext);
   const { reissueToken } = useRefreshToken();
 
   useEffect(() => {
     if (token === null && !hasReissued.current) {
       hasReissued.current = true;
+      reissueToken();
     }
-  }, [token]);
+  }, [token, reissueToken]);
 
   if (token === null && !hasReissued.current) {
-    reissueToken();
     return null;
   }
 
@@ -29,7 +31,7 @@ export const CompanyProtectedRoute = () => {
     return <ReSignInModal />;
   }
 
-  if (role === 'CURATOR') {
+  if (role === 'COMPANY') {
     return <Outlet />;
   }
 
