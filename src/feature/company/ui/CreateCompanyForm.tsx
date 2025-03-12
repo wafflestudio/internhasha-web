@@ -11,6 +11,7 @@ import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { createErrorMessage } from '@/entities/errors';
+import type { FileType } from '@/entities/file';
 import type { Series } from '@/entities/post';
 import type { CreateCompanyRequest } from '@/entities/post';
 import { seriesList } from '@/entities/post';
@@ -28,6 +29,7 @@ import { SloganField } from '@/feature/company/ui/fields/SloganField';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
+import { fileFormatPresentation } from '@/shared/file/fileFormatPresentation';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatSeries } from '@/util/postFormatFunctions';
 
@@ -74,6 +76,7 @@ export const CreateCompanyForm = () => {
 
   const handleSubmit = () => {
     setIsSubmit(true);
+    console.log(formStates);
     if (
       formStates.companyName.isError ||
       formStates.explanation.isError ||
@@ -112,9 +115,9 @@ export const CreateCompanyForm = () => {
         links: formStates.links.value,
         tags: formStates.tags.value,
       },
-      pdfFile:
+      irDeckFile:
         irDeckPreview.value !== null ? irDeckPreview.value.file : undefined,
-      imageFile: imagePreview.value.file,
+      companyThumbnailFile: imagePreview.value.file,
     })
       .then(() => {
         return;
@@ -297,6 +300,7 @@ const useCreateCompanyWithUploads = ({
   setResponseMessage(input: string): void;
 }) => {
   const { fileService, postService } = useGuardContext(ServiceContext);
+  const { formatFileNameToS3Key } = fileFormatPresentation();
   const { token } = useGuardContext(TokenContext);
   const queryClient = useQueryClient();
 
@@ -309,12 +313,12 @@ const useCreateCompanyWithUploads = ({
       fileType,
     }: {
       fileName: string;
-      fileType: string;
+      fileType: FileType;
     }) => {
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return fileService.getPresignedUrl({ token, fileName, fileType });
+      return fileService.getUploadPresignedUrl({ token, fileName, fileType });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
@@ -404,94 +408,76 @@ const useCreateCompanyWithUploads = ({
 
   const handleCreateCompany = async ({
     companyInfo,
-    pdfFile,
-    imageFile,
+    irDeckFile,
+    companyThumbnailFile,
   }: {
     companyInfo: Omit<CreateCompanyRequest, 'irDeckLink' | 'imageLink'>;
-    pdfFile?: File;
-    imageFile: File;
+    irDeckFile?: File;
+    companyThumbnailFile: File;
   }) => {
     try {
       setIsPending(true);
 
-      const generateRandomString = () => {
-        const RANDOM_STRING_LENGTH = 10;
-        const characters =
-          'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        return Array.from({ length: RANDOM_STRING_LENGTH }, () =>
-          characters.charAt(Math.floor(Math.random() * characters.length)),
-        ).join('');
-      };
-
-      const randomizedPdfFile =
-        pdfFile !== undefined
-          ? `static/${generateRandomString()}-${pdfFile.name}`
-          : undefined;
-      const randomizedImageFile = `static/${generateRandomString()}-${imageFile.name}`;
-
-      const [pdfPresignedUrlResponse, imagePresignedUrlResponse] =
+      const [irDeckPresignedUrlResponse, companyThumbnailPresignedUrlResponse] =
         await Promise.all([
-          pdfFile !== undefined && randomizedPdfFile !== undefined
+          irDeckFile !== undefined
             ? getPresignedUrl({
-                fileName: randomizedPdfFile,
-                fileType: pdfFile.type,
+                fileName: irDeckFile.name,
+                fileType: 'IR_DECK',
               })
             : Promise.resolve(null),
           getPresignedUrl({
-            fileName: randomizedImageFile,
-            fileType: imageFile.type,
+            fileName: companyThumbnailFile.name,
+            fileType: 'COMPANY_THUMBNAIL',
           }),
         ]);
 
       if (
-        pdfPresignedUrlResponse?.type === 'error' ||
-        imagePresignedUrlResponse.type === 'error'
+        irDeckPresignedUrlResponse?.type === 'error' ||
+        companyThumbnailPresignedUrlResponse.type === 'error'
       ) {
         setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
         setIsPending(false);
         return;
       }
 
-      const [pdfUploadResponse, imageUploadResponse] = await Promise.all([
-        pdfPresignedUrlResponse !== null
-          ? uploadFile({
-              presignedUrl: pdfPresignedUrlResponse.data.presignedUrl,
-              file: pdfFile,
-            })
-          : null,
-        uploadFile({
-          presignedUrl: imagePresignedUrlResponse.data.presignedUrl,
-          file: imageFile,
-        }),
-      ]);
+      const [irDeckUploadResponse, companyThumbnailUploadResponse] =
+        await Promise.all([
+          irDeckPresignedUrlResponse !== null
+            ? uploadFile({
+                presignedUrl: irDeckPresignedUrlResponse.data.url,
+                file: irDeckFile,
+              })
+            : null,
+          uploadFile({
+            presignedUrl: companyThumbnailPresignedUrlResponse.data.url,
+            file: companyThumbnailFile,
+          }),
+        ]);
 
       if (
-        pdfUploadResponse?.type === 'error' ||
-        imageUploadResponse.type === 'error'
+        irDeckUploadResponse?.type === 'error' ||
+        companyThumbnailUploadResponse.type === 'error'
       ) {
         setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
         setIsPending(false);
         return;
       }
-
-      const getS3ObjectPath = (url: string): string => {
-        const pathname = new URL(url).pathname;
-        return pathname.startsWith('/') ? pathname.slice(1) : pathname;
-      };
-
-      const pdfS3Key =
-        pdfPresignedUrlResponse?.type === 'success'
-          ? getS3ObjectPath(pdfPresignedUrlResponse.data.presignedUrl)
-          : undefined;
-      const imageS3Key = getS3ObjectPath(
-        imagePresignedUrlResponse.data.presignedUrl,
-      );
 
       createCompany({
         companyContents: {
           ...companyInfo,
-          irDeckLink: pdfS3Key,
-          imageLink: imageS3Key,
+          irDeckLink:
+            irDeckFile !== undefined
+              ? formatFileNameToS3Key({
+                  fileName: irDeckFile.name,
+                  fileType: 'IR_DECK',
+                })
+              : undefined,
+          imageLink: formatFileNameToS3Key({
+            fileName: companyThumbnailFile.name,
+            fileType: 'COMPANY_THUMBNAIL',
+          }),
         },
       });
     } catch {

@@ -1,4 +1,5 @@
 import type { Apis, ExternalApis, LocalServerDTO } from '@/api';
+import type { FileType } from '@/entities/file';
 import type { ServiceResponse } from '@/entities/response';
 
 export type FileService = {
@@ -9,7 +10,7 @@ export type FileService = {
   }: {
     token: string;
     fileName: string;
-    fileType: string;
+    fileType: FileType;
   }): ServiceResponse<LocalServerDTO.S3DownloadResp>;
   getDownloadPresignedUrl({
     token,
@@ -18,7 +19,7 @@ export type FileService = {
   }: {
     token: string;
     filePath: string;
-    fileType: string;
+    fileType: FileType;
   }): ServiceResponse<LocalServerDTO.S3DownloadResp>;
   uploadImage({
     presignedUrl,
