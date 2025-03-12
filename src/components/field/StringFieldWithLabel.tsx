@@ -6,36 +6,37 @@ import {
 import { Input } from '@/components/ui/input';
 import type { Input as InputType } from '@/entities/input';
 
-type InvestAmountFieldProps = {
+type StringFieldWithUnitProps = {
   label: string;
   input: InputType<string>;
   unit: string;
   isPending: boolean;
   isSubmit: boolean;
   isSubmitError: boolean;
+  placeholder: string;
   errorMessage: string;
   infoMessage?: string;
   required?: boolean;
 };
 
-export const InvestAmountField = ({
+export const StringFieldWithUnit = ({
   label,
   input,
   unit,
   isPending,
   isSubmit,
   isSubmitError,
+  placeholder,
   errorMessage,
   infoMessage,
   required,
-}: InvestAmountFieldProps) => {
+}: StringFieldWithUnitProps) => {
   return (
     <LabelContainer label={label} required={required}>
       <div className="flex items-center gap-2">
         <Input
-          id="investAmount"
           value={input.value}
-          placeholder="100"
+          placeholder={placeholder}
           disabled={isPending}
           onChange={(e) => {
             input.onChange(e.target.value);
