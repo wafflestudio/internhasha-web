@@ -57,7 +57,6 @@ const RouterProvider = () => {
       <Route path={PATH.SIGN_UP_LOCAL} element={<LocalSignUpPage />} />
       <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
       <Route path={PATH.SIGN_UP_COMPLETE} element={<SignUpCompletePage />} />
-      <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
       <Route element={<AuthProtectedRoute />}>
         <Route
           path={PATH.MY_PAGE}
@@ -80,6 +79,7 @@ const RouterProvider = () => {
       </Route>
       <Route element={<CompanyProtectedRoute />}>
         <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
+        <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
       </Route>
     </Routes>
   );
