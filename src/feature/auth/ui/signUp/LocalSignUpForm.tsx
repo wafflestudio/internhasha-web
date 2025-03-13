@@ -8,7 +8,8 @@ import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ICON_SRC } from '@/entities/asset';
-import { authPresentation } from '@/feature/auth/presentation/authPresentation';
+import { authFormPresentation } from '@/feature/auth/presentation/authFormPresentation';
+import { authInputPresentation } from '@/feature/auth/presentation/authInputPresentation';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 type PreviousForm = {
@@ -25,9 +26,12 @@ export const LocalSignUpForm = () => {
   const state = location.state as LocalSignUpInitialBody | null;
 
   const { toVerifyEmail } = useRouteNavigation();
-  const { password, passwordConfirm, username } = authPresentation.useValidator(
-    { initialState: state?.body },
-  );
+  const { inputStates, formStates } = authFormPresentation.useValidator({
+    authInputPresentation,
+    initialState: state?.body,
+  });
+  const { password, passwordConfirm, username } = inputStates;
+
   const [isUsernameFocused, setIsUsernameFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordConfirmFocused, setIsPasswordConfirmFocused] =
@@ -55,8 +59,8 @@ export const LocalSignUpForm = () => {
 
     toVerifyEmail({
       body: {
-        password: password.value,
-        username: username.value,
+        password: formStates.password.value,
+        username: formStates.username.value,
       },
     });
   };

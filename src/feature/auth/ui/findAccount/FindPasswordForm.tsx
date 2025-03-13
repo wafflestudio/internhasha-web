@@ -10,20 +10,25 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { createErrorMessage } from '@/entities/errors';
-import { authPresentation } from '@/feature/auth/presentation/authPresentation';
+import { authFormPresentation } from '@/feature/auth/presentation/authFormPresentation';
+import { authInputPresentation } from '@/feature/auth/presentation/authInputPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 
 export const FindPasswordForm = () => {
-  const { snuMail } = authPresentation.useValidator({});
+  const { inputStates, formStates } = authFormPresentation.useValidator({
+    authInputPresentation,
+  });
+
+  const { mail } = inputStates;
 
   const { sendPassword, sendSuccess, responseMessage, isPending } =
     useSendPassword();
 
-  const sendPasswordDisable = snuMail.isError || sendSuccess;
+  const sendPasswordDisable = mail.isError || sendSuccess;
 
   const onSubmit = () => {
-    sendPassword({ mail: snuMail.postfix });
+    sendPassword({ mail: formStates.mail.value });
   };
 
   return (
@@ -32,12 +37,12 @@ export const FindPasswordForm = () => {
         <LabelContainer label="이메일" id="email">
           <div className="relative">
             <Input
-              id="email"
-              value={snuMail.value}
+              id="mail"
+              value={mail.value}
               onChange={(e) => {
-                snuMail.onChange(e.target.value);
+                mail.onChange(e.target.value);
               }}
-              placeholder="마이스누 아이디"
+              placeholder="가입한 이메일"
               className="pr-[84px]"
             />
             <span

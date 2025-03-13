@@ -4,6 +4,10 @@ export type Input<TInput> = {
   onChange: (input: TInput) => void;
 };
 
+export type InputWithDetailedError<TInput> = Input<TInput> & {
+  detailedError: Record<string, boolean>;
+};
+
 export type SelectInput<TSelect> = {
   isError: boolean;
   value: TSelect;
