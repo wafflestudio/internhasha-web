@@ -11,14 +11,14 @@ export type FileService = {
     token: string;
     fileName: string;
     fileType: FileType;
-  }): ServiceResponse<LocalServerDTO.S3DownloadResp>;
+  }): ServiceResponse<LocalServerDTO.S3UploadResp>;
   getDownloadPresignedUrl({
     token,
-    filePath,
+    s3Key,
     fileType,
   }: {
     token: string;
-    filePath: string;
+    s3Key: string;
     fileType: FileType;
   }): ServiceResponse<LocalServerDTO.S3DownloadResp>;
   uploadImage({
@@ -52,9 +52,9 @@ export const implFileService = ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-  getDownloadPresignedUrl: async ({ token, filePath, fileType }) => {
+  getDownloadPresignedUrl: async ({ token, s3Key, fileType }) => {
     const downloadPath = new URLSearchParams({
-      filePath,
+      s3Key,
       fileType,
     });
 

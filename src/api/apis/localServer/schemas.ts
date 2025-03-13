@@ -252,5 +252,4 @@ export type S3UploadResp = {
 
 export type S3DownloadResp = {
   url: string;
-  s3Key: string;
 };
