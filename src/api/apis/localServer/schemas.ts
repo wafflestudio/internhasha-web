@@ -110,7 +110,7 @@ export type PostIdParams = {
   postId: string;
 };
 
-export type S3UploadParams = {
+export type S3DownloadParams = {
   filePath: string;
 };
 

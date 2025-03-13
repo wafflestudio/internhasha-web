@@ -22,8 +22,8 @@ import type {
   PostIdParams,
   PostPathParams,
   PostsResponse,
+  S3DownloadParams,
   S3DownloadResp,
-  S3UploadParams,
   S3UploadReq,
   SignInRequest,
   SignUpRequest,
@@ -248,7 +248,7 @@ export const getLocalServerApis = ({
       params,
     }: {
       token: string;
-      params: S3UploadParams;
+      params: S3DownloadParams;
     }) => {
       return callWithToken<SuccessResponse<S3DownloadResp>>({
         method: 'GET',
