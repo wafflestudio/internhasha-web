@@ -245,6 +245,11 @@ export type CoffeeChatResponse = CoffeeChatDTO;
 
 export type CoffeeChatListResponse = { coffeeChatList: CoffeeChatDTO[] };
 
+export type S3UploadResp = {
+  url: string;
+  s3Key: string;
+};
+
 export type S3DownloadResp = {
   url: string;
 };

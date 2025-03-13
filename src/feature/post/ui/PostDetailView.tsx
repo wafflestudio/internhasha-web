@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import MDEditor from '@uiw/react-md-editor';
 import { useState } from 'react';
 
+import { DownloadButtonWithPresignedUrl } from '@/components/button/DownloadButtonWithPresignedUrl';
 import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal';
 import { SignInForCoffeeChatModal } from '@/components/modal/SignInForCoffeChatModal';
 import { Badge } from '@/components/ui/badge';
@@ -285,18 +286,15 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                       IR Deck 자료
                     </span>
 
-                    <a
-                      href={`${API_BASE_URL}/${irDeckLink}`}
-                      target="_blank"
-                      download={true}
-                      rel="noopener noreferrer"
-                      className="flex items-center w-fit px-[10px] py-[6px] gap-1 rounded-sm bg-grey-light"
+                    <DownloadButtonWithPresignedUrl
+                      s3Key={irDeckLink}
+                      type="IR_DECK"
                     >
                       <img src={ICON_SRC.DOWNLOAD} />
                       <span className="text-grey-dark font-semibold">
                         PDF 다운로드
                       </span>
-                    </a>
+                    </DownloadButtonWithPresignedUrl>
                   </div>
                 )}
             </section>

@@ -25,6 +25,7 @@ import type {
   S3DownloadParams,
   S3DownloadResp,
   S3UploadReq,
+  S3UploadResp,
   SignInRequest,
   SignUpRequest,
   SnuMailRequest,
@@ -236,7 +237,7 @@ export const getLocalServerApis = ({
       });
     },
     'POST /s3': ({ token, body }: { token: string; body: S3UploadReq }) => {
-      return callWithToken<SuccessResponse<S3DownloadResp>>({
+      return callWithToken<SuccessResponse<S3UploadResp>>({
         method: 'POST',
         path: 's3',
         token,

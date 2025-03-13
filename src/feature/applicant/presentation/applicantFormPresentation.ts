@@ -7,7 +7,6 @@ import type {
 import type { JobMinorCategory } from '@/entities/post';
 import type { ApplicantInputPresentation } from '@/feature/applicant/presentation/applicantInputPresentation';
 import { convertEmptyStringToUndefined } from '@/lib/responseConverter';
-import { fileFormatPresentation } from '@/shared/file/fileFormatPresentation';
 
 type ExternalLink = {
   link: string;
@@ -57,9 +56,9 @@ type ApplicantFormPresentation = {
       slogan: InputForForm<string | undefined>;
       explanation: InputForForm<string | undefined>;
       stack: InputForForm<string[] | undefined>;
-      imageKey: InputForForm<string | undefined>;
-      cvKey: InputForForm<string | undefined>;
-      portfolioKey: InputForForm<string | undefined>;
+      imagePreview: InputForForm<{ file: File; url: string } | null>;
+      cvPreview: InputForForm<{ file: File; url: string } | null>;
+      portfolioPreview: Input<{ file: File; url: string } | null>;
       links: InputForForm<ExternalLink[] | undefined>;
     };
   };
@@ -100,8 +99,6 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
     } = applicantInputPresentation.useValidator({
       initialState: initialStateForInput,
     });
-
-    const { formatFileNameToS3Key } = fileFormatPresentation();
 
     const filteredLinks = links.value.filter(
       (item) =>
@@ -152,40 +149,13 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
           isError: stack.isError,
           value: stack.value.length !== 0 ? stack.value : undefined,
         },
-        imageKey: {
-          isError: imagePreview.isError,
-          value:
-            imagePreview.value !== null
-              ? formatFileNameToS3Key({
-                  fileName: imagePreview.value.file.name,
-                  fileType: 'APPLICANT_THUMBNAIL',
-                })
-              : undefined,
-        },
-        cvKey: {
-          isError: cvPreview.isError,
-          value:
-            cvPreview.value !== null
-              ? formatFileNameToS3Key({
-                  fileName: cvPreview.value.file.name,
-                  fileType: 'CV',
-                })
-              : undefined,
-        },
-        portfolioKey: {
-          isError: portfolioPreview.isError,
-          value:
-            portfolioPreview.value !== null
-              ? formatFileNameToS3Key({
-                  fileName: portfolioPreview.value.file.name,
-                  fileType: 'PORTFOLIO',
-                })
-              : undefined,
-        },
         links: {
           isError: links.isError,
           value: filteredLinks.length !== 0 ? filteredLinks : undefined,
         },
+        imagePreview,
+        cvPreview,
+        portfolioPreview,
       },
     };
   },
