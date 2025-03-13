@@ -165,10 +165,22 @@ export const App = () => {
   };
 
   const externalServerCall = async (content: ExternalFileCallParams) => {
+    const getBody = (body: Record<string, unknown> | File | undefined) => {
+      if (body === undefined) {
+        return undefined;
+      }
+      if (body instanceof File) {
+        return body;
+      }
+      return JSON.stringify(body);
+    };
+
     const response = await fetch(content.path, {
       method: content.method,
       headers: content.headers,
-      body: content.body,
+      ...(getBody(content.body) !== undefined
+        ? { body: getBody(content.body) }
+        : {}),
     });
 
     const responseBody = (await response.json().catch(() => null)) as unknown;

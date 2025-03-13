@@ -31,7 +31,7 @@ export type ExternalCallParams = {
 export type ExternalFileCallParams = {
   method: string;
   path: string;
-  body: File;
+  body?: Record<string, unknown> | File;
   headers?: Record<string, string>;
 };
 
@@ -45,6 +45,6 @@ export type InternalCallParams = {
 export type InternalFileCallParams = {
   method: string;
   path: string;
-  contentType: string;
-  body: File;
+  contentType?: string;
+  body?: Record<string, unknown> | File;
 };

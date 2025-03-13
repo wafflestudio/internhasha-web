@@ -62,15 +62,17 @@ export const implExternalApi = ({ externalFileCall }: ImplExternalApiProps) => {
   const internalFileCall = async <R extends ResponseNecessary>(content: {
     method: string;
     path: string;
-    contentType: string;
-    body: File;
+    contentType?: string;
+    body?: Record<string, unknown> | File;
   }) => {
     const response = await externalFileCall({
       method: content.method,
       path: content.path,
       body: content.body,
       headers: {
-        'content-type': content.contentType,
+        ...(content.contentType !== undefined
+          ? { 'content-type': content.contentType }
+          : {}),
       },
     });
 
