@@ -5,7 +5,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Route, Routes } from 'react-router';
 
-import { type ExternalCallParams, implApi } from '@/api';
+import {
+  type ExternalCallParams,
+  type ExternalFileCallParams,
+  implApi,
+} from '@/api';
 import type { RolesFilterCategory } from '@/entities/filter';
 import { PATH } from '@/entities/route';
 import { implAuthService } from '@/feature/auth';
@@ -45,6 +49,7 @@ import { implRolesFilterLocalStorageRepository } from '@/shared/rolesFilter/loca
 import { implRolesFilterStateRepository } from '@/shared/rolesFilter/state';
 import { implTokenStateRepository } from '@/shared/token/state';
 
+import { implExternalApi } from './api/client';
 import { RoleContext } from './shared/context/RoleContext';
 
 const RouterProvider = () => {
@@ -83,8 +88,8 @@ const RouterProvider = () => {
         <Route path={PATH.CREATE_PROFILE} element={<CreateProfilePage />} />
       </Route>
       <Route element={<CompanyProtectedRoute />}>
-        <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
         <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
+        <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
       </Route>
     </Routes>
   );
@@ -159,12 +164,22 @@ export const App = () => {
     };
   };
 
-  const externalServerCall = async (content: ExternalCallParams) => {
+  const externalServerCall = async (content: ExternalFileCallParams) => {
+    const getBody = (body: Record<string, unknown> | File | undefined) => {
+      if (body === undefined) {
+        return undefined;
+      }
+      if (body instanceof File) {
+        return body;
+      }
+      return JSON.stringify(body);
+    };
+
     const response = await fetch(content.path, {
       method: content.method,
       headers: content.headers,
-      ...(content.body !== undefined
-        ? { body: JSON.stringify(content.body) }
+      ...(getBody(content.body) !== undefined
+        ? { body: getBody(content.body) }
         : {}),
     });
 
@@ -176,8 +191,13 @@ export const App = () => {
     };
   };
 
-  const apis = implApi({ externalCall: localServerCall });
-  const externalApis = implApi({ externalCall: externalServerCall });
+  const apis = implApi({
+    externalCall: localServerCall,
+  });
+
+  const externalApis = implExternalApi({
+    externalFileCall: externalServerCall,
+  });
 
   const services = {
     authService: implAuthService({

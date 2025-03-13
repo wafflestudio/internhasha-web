@@ -19,7 +19,7 @@ export const ReissueRoute = () => {
   }, [token, reissueToken]);
 
   if (token === null && !hasReissued.current) {
-    console.log(token);
+    return null;
   }
 
   return <Outlet />;

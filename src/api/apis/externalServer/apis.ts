@@ -1,14 +1,14 @@
 import type {
   ErrorResponse,
-  InternalCallParams,
+  InternalFileCallParams,
   ResponseNecessary,
   SuccessResponse,
 } from '../../entities';
 import type { UploadFileRequest } from './schemas';
 
 type GetApisProps = {
-  callWithoutToken: <R extends ResponseNecessary>(
-    p: InternalCallParams & { token?: never },
+  callWithFile: <R extends ResponseNecessary>(
+    p: InternalFileCallParams,
   ) => Promise<R | ErrorResponse>;
 };
 
@@ -21,7 +21,7 @@ type Api = (_: {
   query: never;
 }) => Promise<{ status: number; data: unknown }>;
 
-export const getExternalServerApis = ({ callWithoutToken }: GetApisProps) =>
+export const getExternalServerApis = ({ callWithFile }: GetApisProps) =>
   ({
     'PUT upload-file': ({
       path,
@@ -32,7 +32,7 @@ export const getExternalServerApis = ({ callWithoutToken }: GetApisProps) =>
       body: UploadFileRequest;
       contentType: string;
     }) =>
-      callWithoutToken<SuccessResponse<void>>({
+      callWithFile<SuccessResponse<void>>({
         method: 'PUT',
         contentType,
         path,

@@ -15,7 +15,6 @@ import type {
   CreateCoffeeChatRequest,
   CreateCompanyRequest,
   CreatePostRequest,
-  FileUploadRequest,
   MailRequest,
   PositionRespone,
   PostBriefDTO,
@@ -23,7 +22,9 @@ import type {
   PostIdParams,
   PostPathParams,
   PostsResponse,
-  PresignedUrlResponse,
+  S3DownloadParams,
+  S3DownloadResp,
+  S3UploadReq,
   SignInRequest,
   SignUpRequest,
   SnuMailRequest,
@@ -234,18 +235,25 @@ export const getLocalServerApis = ({
         token,
       });
     },
-    'POST /post/upload/presigned': ({
-      token,
-      body,
-    }: {
-      token: string;
-      body: FileUploadRequest;
-    }) => {
-      return callWithToken<SuccessResponse<PresignedUrlResponse>>({
+    'POST /s3': ({ token, body }: { token: string; body: S3UploadReq }) => {
+      return callWithToken<SuccessResponse<S3DownloadResp>>({
         method: 'POST',
-        path: 'post/upload/presigned',
+        path: 's3',
         token,
         body,
+      });
+    },
+    'GET /s3': ({
+      token,
+      params,
+    }: {
+      token: string;
+      params: S3DownloadParams;
+    }) => {
+      return callWithToken<SuccessResponse<S3DownloadResp>>({
+        method: 'GET',
+        path: `s3?${params.filePath}`,
+        token,
       });
     },
     'POST /post/:postId/bookmark': ({

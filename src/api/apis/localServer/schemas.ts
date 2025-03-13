@@ -15,7 +15,7 @@ type UserDTO = {
 
 type UserBrief = {
   id: string;
-  role: UserRole;
+  userRole: UserRole;
 };
 
 type AuthorBriefDTO = {
@@ -110,6 +110,10 @@ export type PostIdParams = {
   postId: string;
 };
 
+export type S3DownloadParams = {
+  filePath: string;
+};
+
 export type CoffeeChatIdParams = {
   coffeeChatId: string;
 };
@@ -173,7 +177,7 @@ export type CreateCoffeeChatRequest = {
   content: string;
 };
 
-export type FileUploadRequest = {
+export type S3UploadReq = {
   fileName: string;
   fileType: string;
 };
@@ -241,6 +245,6 @@ export type CoffeeChatResponse = CoffeeChatDTO;
 
 export type CoffeeChatListResponse = { coffeeChatList: CoffeeChatDTO[] };
 
-export type PresignedUrlResponse = {
-  presignedUrl: string;
+export type S3DownloadResp = {
+  url: string;
 };

@@ -58,7 +58,7 @@ export const implAuthService = ({
       const token = data.token;
 
       tokenStateRepository.setToken({ token });
-      roleStateRepository.setRole({ role: data.user.role });
+      roleStateRepository.setRole({ role: data.user.userRole });
 
       return {
         type: 'success',
@@ -75,7 +75,7 @@ export const implAuthService = ({
       const token = data.token;
 
       tokenStateRepository.setToken({ token });
-      roleStateRepository.setRole({ role: data.user.role });
+      roleStateRepository.setRole({ role: data.user.userRole });
 
       return {
         type: 'success',
