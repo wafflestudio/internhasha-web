@@ -29,7 +29,6 @@ import { SloganField } from '@/feature/company/ui/fields/SloganField';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
-import { fileFormatPresentation } from '@/shared/file/fileFormatPresentation';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatSeries } from '@/util/postFormatFunctions';
 
@@ -300,7 +299,6 @@ const useCreateCompanyWithUploads = ({
   setResponseMessage(input: string): void;
 }) => {
   const { fileService, postService } = useGuardContext(ServiceContext);
-  const { formatFileNameToS3Key } = fileFormatPresentation();
   const { token } = useGuardContext(TokenContext);
   const queryClient = useQueryClient();
 
@@ -445,16 +443,10 @@ const useCreateCompanyWithUploads = ({
         companyContents: {
           ...companyInfo,
           irDeckLink:
-            irDeckFile !== undefined
-              ? formatFileNameToS3Key({
-                  fileName: irDeckFile.name,
-                  fileType: 'IR_DECK',
-                })
+            irDeckPresignedUrlResponse !== null
+              ? irDeckPresignedUrlResponse.data.s3Key
               : undefined,
-          imageLink: formatFileNameToS3Key({
-            fileName: companyThumbnailFile.name,
-            fileType: 'COMPANY_THUMBNAIL',
-          }),
+          imageLink: companyThumbnailPresignedUrlResponse.data.s3Key,
         },
       });
     } catch {
