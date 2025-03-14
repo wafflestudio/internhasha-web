@@ -110,8 +110,8 @@ export const EmailVerifyForm = () => {
       <FormContainer id="EmailVerifyForm" handleSubmit={onSubmit}>
         <ProgressBar totalProgress={2} present={2} />
         <LabelContainer label="이메일" id="email">
-          <div className="flex relative gap-2 items-center">
-            <div className="flex w-full gap-1 items-center">
+          <div className="flex gap-2 items-center">
+            <div className="flex relative w-full gap-1 items-center">
               <Input
                 id="email"
                 value={snuMailPrefix.value}
@@ -121,7 +121,9 @@ export const EmailVerifyForm = () => {
                 placeholder="마이스누 아이디"
                 disabled={isPending}
               />
-              <span className="text-grey-dark">@snu.ac.kr</span>
+              <span className="absolute top-[11px] right-[8px] text-sm text-grey-normal">
+                @snu.ac.kr
+              </span>
             </div>
             {!verifySuccess && (
               <Button
