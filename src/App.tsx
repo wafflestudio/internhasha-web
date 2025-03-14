@@ -10,6 +10,7 @@ import {
   type ExternalFileCallParams,
   implApi,
 } from '@/api';
+import { implExternalApi } from '@/api/client';
 import type { RolesFilterCategory } from '@/entities/filter';
 import { PATH } from '@/entities/route';
 import { implAuthService } from '@/feature/auth';
@@ -25,10 +26,10 @@ import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
 import { CreateProfilePage } from '@/pages/CreateProfilePage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
-import { FindAccountPage } from '@/pages/FindAccountPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { MyPage } from '@/pages/MyPage';
 import { PostDetailPage } from '@/pages/PostDetailPage';
+import { ResetPasswordPage } from '@/pages/ResetPasswordPage';
 import { SignInPage } from '@/pages/SignInPage';
 import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
 import { SignUpPage } from '@/pages/SignUpPage';
@@ -40,6 +41,7 @@ import { CompanyProtectedRoute } from '@/shared/auth/CompanyProtectedRoute';
 import { ReissueRoute } from '@/shared/auth/ReissueRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
+import { RoleContext } from '@/shared/context/RoleContext';
 import { RolesFilterContext } from '@/shared/context/RolesFilterContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -49,9 +51,6 @@ import { implRolesFilterLocalStorageRepository } from '@/shared/rolesFilter/loca
 import { implRolesFilterStateRepository } from '@/shared/rolesFilter/state';
 import { implTokenStateRepository } from '@/shared/token/state';
 
-import { implExternalApi } from './api/client';
-import { RoleContext } from './shared/context/RoleContext';
-
 const RouterProvider = () => {
   return (
     <Routes>
@@ -60,7 +59,7 @@ const RouterProvider = () => {
       </Route>
       <Route path={PATH.POST_DETAIL} element={<PostDetailPage />} />
       <Route path={PATH.SIGN_IN} element={<SignInPage />} />
-      <Route path={PATH.FIND_ACCOUNT} element={<FindAccountPage />} />
+      <Route path={PATH.RESET_PASSWORD} element={<ResetPasswordPage />} />
       <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
       <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
       <Route path={PATH.SIGN_UP_COMPLETE} element={<SignUpCompletePage />} />
