@@ -1,3 +1,6 @@
-export { implApi, type Apis, type ExternalApis } from './client';
-export type { ExternalCallParams, ExternalFileCallParams } from './entities';
-export type * as LocalServerDTO from './apis/localServer/schemas';
+export { implApi, type Apis, type ExternalApis } from '@/api/client';
+export type {
+  ExternalCallParams,
+  ExternalFileCallParams,
+} from '@/api/entities';
+export type * as LocalServerDTO from '@/api/apis/localServer/schemas';

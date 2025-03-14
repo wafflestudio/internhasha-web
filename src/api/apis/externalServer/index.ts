@@ -1,1 +1,1 @@
-export { getExternalServerApis } from './apis';
+export { getExternalServerApis } from '@/api/apis/externalServer/apis';

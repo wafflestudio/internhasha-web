@@ -1,4 +1,4 @@
-import { getExternalServerApis, getLocalServerApis } from './apis';
+import { getExternalServerApis, getLocalServerApis } from '@/api/apis';
 import type {
   ErrorResponse,
   ExternalCallParams,
@@ -6,7 +6,7 @@ import type {
   InternalCallParams,
   InternalFileCallParams,
   ResponseNecessary,
-} from './entities';
+} from '@/api/entities';
 
 type ImplApiProps = {
   externalCall(_: ExternalCallParams): Promise<ResponseNecessary>;

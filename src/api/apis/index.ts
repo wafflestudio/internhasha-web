@@ -1,2 +1,2 @@
-export { getExternalServerApis } from './externalServer';
-export { getLocalServerApis } from './localServer';
+export { getExternalServerApis } from '@/api/apis/externalServer';
+export { getLocalServerApis } from '@/api/apis//localServer';

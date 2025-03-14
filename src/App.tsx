@@ -1,4 +1,4 @@
-import './index.css';
+import '@/index.css';
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -10,6 +10,7 @@ import {
   type ExternalFileCallParams,
   implApi,
 } from '@/api';
+import { implExternalApi } from '@/api/client';
 import type { RolesFilterCategory } from '@/entities/filter';
 import { PATH } from '@/entities/route';
 import { implAuthService } from '@/feature/auth';
@@ -40,6 +41,7 @@ import { CompanyProtectedRoute } from '@/shared/auth/CompanyProtectedRoute';
 import { ReissueRoute } from '@/shared/auth/ReissueRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
+import { RoleContext } from '@/shared/context/RoleContext';
 import { RolesFilterContext } from '@/shared/context/RolesFilterContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -48,9 +50,6 @@ import { implRoleStateRepository } from '@/shared/role/state';
 import { implRolesFilterLocalStorageRepository } from '@/shared/rolesFilter/localstorage';
 import { implRolesFilterStateRepository } from '@/shared/rolesFilter/state';
 import { implTokenStateRepository } from '@/shared/token/state';
-
-import { implExternalApi } from './api/client';
-import { RoleContext } from './shared/context/RoleContext';
 
 const RouterProvider = () => {
   return (
