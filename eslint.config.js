@@ -1,10 +1,6 @@
 import react from '@woohm402/eslint-config-react';
 
 export default [
-  ...react({
-    tsconfigRootDir: import.meta.dirname,
-    envAllowedFiles: ['src/App.tsx'],
-  }),
   {
     ignores: [
       '.yarn',
@@ -13,5 +9,14 @@ export default [
       'dist',
       'src/components/ui/calendar.tsx',
     ],
+  },
+  ...react({
+    tsconfigRootDir: import.meta.dirname,
+    envAllowedFiles: ['src/App.tsx'],
+  }),
+  {
+    rules: {
+      'no-restricted-imports': ['error', { patterns: ['./*', '../*'] }],
+    },
   },
 ];
