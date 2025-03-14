@@ -32,7 +32,7 @@ export const CoffeeChatDetailView = ({
   }
 
   const coffeeChatDetail = coffeeChatDetailData.data;
-
+  console.log('coffeeChatDetail', coffeeChatDetail);
   return (
     <>
       <div className="flex w-full py-10 bg-gray-50">
@@ -47,9 +47,9 @@ export const CoffeeChatDetailView = ({
             {/* Profile Section */}
             <div className="flex gap-4 items-center">
               <div className="w-[40px] h-[40px] overflow-hidden">
-                {coffeeChatDetail.author.profileImageLink != null ? (
+                {coffeeChatDetail.company.imageKey !== '' ? (
                   <img
-                    src={`${API_BASE_URL}/${coffeeChatDetail.author.profileImageLink}`}
+                    src={`${API_BASE_URL}/${coffeeChatDetail.company.imageKey}`}
                     alt="프로필 이미지"
                     className="w-[40px] h-[40px] object-cover border border-gray-200"
                   />
@@ -59,7 +59,7 @@ export const CoffeeChatDetailView = ({
               </div>
               <div>
                 <p className="text-gray-900 text-lg font-semibold align-center">
-                  {coffeeChatDetail.companyName}
+                  {coffeeChatDetail.company.name}
                 </p>
               </div>
             </div>
