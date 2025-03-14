@@ -29,7 +29,7 @@ export const CoffeeChatListView = () => {
             }}
           >
             <span className="w-[350px] text-grey-darker font-semibold truncate">
-              {coffeeChat.companyName}
+              {coffeeChat.company.name}
             </span>
             <span className="text-sm text-grey-normal">
               {getFormatDate(coffeeChat.createdAt)}

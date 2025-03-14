@@ -28,13 +28,15 @@ export type CoffeeChatService = {
     coffeeChatContents: CoffeeChatRequest;
     postId: string;
   }) => ServiceResponse<CoffeeChat>;
-  deleteCoffeeChat: ({
+  cancelCoffeeChat: ({
     token,
     coffeeChatId,
+    body,
   }: {
     token: string;
     coffeeChatId: string;
-  }) => ServiceResponse<void>;
+    body: { coffeeChatStatus: 'CANCELED' };
+  }) => ServiceResponse<CoffeeChat>;
 };
 
 export const implCoffeeChatService = ({
@@ -103,17 +105,20 @@ export const implCoffeeChatService = ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-  deleteCoffeeChat: async ({
+  cancelCoffeeChat: async ({
     token,
     coffeeChatId,
+    body,
   }: {
     token: string;
     coffeeChatId: string;
+    body: { coffeeChatStatus: 'CANCELED' };
   }) => {
     const params = { coffeeChatId };
-    const { status, data } = await apis['DELETE /coffeeChat/:coffeeChatId']({
+    const { status, data } = await apis['PATCH /coffeeChat/:coffeeChatId']({
       token,
       params,
+      body,
     });
 
     if (status === 200) {

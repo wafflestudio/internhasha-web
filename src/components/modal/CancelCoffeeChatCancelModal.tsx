@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { ModalFloatBackground } from '@/components/ui/layout';
 import { useDialog } from '@/shared/modal/hooks';
 
-export const CancelCoffeeChatDeleteModal = ({
+export const CancelCoffeeChatCancelModal = ({
   onClose,
   onCancel,
 }: {
@@ -24,10 +24,10 @@ export const CancelCoffeeChatDeleteModal = ({
         </p>
       </div>
       <div className="flex gap-2">
-        <Button variant="destructive" onClick={onClose} className="flex-1">
+        <Button variant="destructive" onClick={onCancel} className="flex-1">
           예
         </Button>
-        <Button variant="secondary" onClick={handleCancel} className="flex-1">
+        <Button variant="secondary" onClick={onClose} className="flex-1">
           아니오
         </Button>
       </div>

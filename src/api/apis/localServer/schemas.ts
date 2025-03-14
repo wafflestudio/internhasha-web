@@ -176,6 +176,10 @@ export type CreateCoffeeChatRequest = {
   content: string;
 };
 
+export type CancelCoffeeChatRequest = {
+  coffeeChatStatus: 'CANCELED';
+};
+
 export type S3UploadReq = {
   fileName: string;
   fileType: string;
