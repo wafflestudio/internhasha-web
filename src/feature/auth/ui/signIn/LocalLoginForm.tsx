@@ -6,7 +6,8 @@ import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { createErrorMessage } from '@/entities/errors';
-import { authPresentation } from '@/feature/auth/presentation/authPresentation';
+import { authFormPresentation } from '@/feature/auth/presentation/authFormPresentation';
+import { authInputPresentation } from '@/feature/auth/presentation/authInputPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
@@ -16,22 +17,34 @@ export const LocalLogInForm = ({
 }: {
   setShowSignUpModal(input: boolean): void;
 }) => {
-  const { localSignIn, responseMessage, isPending } = useLocalSignIn({
-    setShowSignUpModal,
-  });
-  const { snuMail, password } = authPresentation.useValidator({});
+  const [responseMessage, setResponseMessage] = useState('');
 
-  const onSubmit = () => {
-    if (snuMail.value !== '' || password.value !== '') {
-      localSignIn({
-        mail: snuMail.postfix,
-        password: password.value,
-      });
-    }
-  };
+  const { localSignIn, isPending } = useLocalSignIn({
+    setShowSignUpModal,
+    setResponseMessage,
+  });
+  const { inputStates, formStates } = authFormPresentation.useValidator({
+    authInputPresentation,
+  });
+  const { snuMailPrefix, password } = inputStates;
 
   const blockButton =
-    snuMail.value.trim() === '' || password.value.trim() === '';
+    snuMailPrefix.value.trim() === '' || password.value.trim() === '';
+
+  const onSubmit = () => {
+    if (formStates.snuMail.isError) {
+      setResponseMessage('잘못된 스누메일 형식입니다.');
+      return;
+    }
+    if (formStates.password.isError) {
+      setResponseMessage('비밀번호 형식이 잘못되었습니다.');
+      return;
+    }
+    localSignIn({
+      mail: formStates.snuMail.value,
+      password: formStates.password.value,
+    });
+  };
 
   return (
     <>
@@ -40,9 +53,9 @@ export const LocalLogInForm = ({
           <div className="flex w-full gap-1 items-center">
             <Input
               id="email"
-              value={snuMail.value}
+              value={snuMailPrefix.value}
               onChange={(e) => {
-                snuMail.onChange(e.target.value);
+                snuMailPrefix.onChange(e.target.value);
               }}
               placeholder="마이스누 아이디"
               disabled={isPending}
@@ -80,11 +93,13 @@ export const LocalLogInForm = ({
 
 const useLocalSignIn = ({
   setShowSignUpModal,
+  setResponseMessage,
 }: {
   setShowSignUpModal(input: boolean): void;
+  setResponseMessage(input: string): void;
 }) => {
   const { authService } = useGuardContext(ServiceContext);
-  const [responseMessage, setResponseMessage] = useState('');
+
   const { toMain } = useRouteNavigation();
 
   const { mutate: localSignIn, isPending } = useMutation({
@@ -116,5 +131,5 @@ const useLocalSignIn = ({
     },
   });
 
-  return { localSignIn, responseMessage, isPending };
+  return { localSignIn, isPending };
 };

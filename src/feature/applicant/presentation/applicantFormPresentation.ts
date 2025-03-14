@@ -13,7 +13,7 @@ type ExternalLink = {
   description: string;
 };
 
-type InitialState = {
+type InitialFormState = {
   enrollYear?: number;
   department?: string;
   positions?: JobMinorCategory[];
@@ -31,7 +31,7 @@ type ApplicantFormPresentation = {
     initialState,
     applicantInputPresentation,
   }: {
-    initialState?: InitialState;
+    initialState?: InitialFormState;
     applicantInputPresentation: ApplicantInputPresentation;
   }): {
     inputStates: {

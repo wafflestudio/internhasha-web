@@ -13,7 +13,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { createErrorMessage } from '@/entities/errors';
 import { PATH } from '@/entities/route';
-import { authPresentation } from '@/feature/auth/presentation/authPresentation';
+import { authFormPresentation } from '@/feature/auth/presentation/authFormPresentation';
+import { authInputPresentation } from '@/feature/auth/presentation/authInputPresentation';
 import { RedirectSignInModal } from '@/feature/auth/ui/signUp/RedirectSignInModal';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -37,7 +38,11 @@ export const EmailVerifyForm = () => {
   const { toSignUp } = useRouteNavigation();
   const [showSendCodeError, setShowSendCodeError] = useState(false);
   const [showModal, setShowModal] = useState<'NONE' | 'REDIRECT'>('NONE');
-  const { snuMail, code } = authPresentation.useValidator({});
+  const { inputStates, formStates } = authFormPresentation.useValidator({
+    authInputPresentation,
+  });
+  const { snuMailPrefix, code } = inputStates;
+
   const {
     sendCode,
     sendSuccess,
@@ -58,11 +63,11 @@ export const EmailVerifyForm = () => {
     isPending: isPendingLocalSignUp,
   } = useLocalSignUp({ setShowModal });
 
-  const sendCodeDisable = snuMail.isError;
+  const sendCodeDisable = snuMailPrefix.isError;
   const verifyEmailDisable =
-    snuMail.isError || !sendSuccess || code.isError || verifySuccess;
+    snuMailPrefix.isError || !sendSuccess || code.isError || verifySuccess;
   const signUpDisable =
-    snuMail.isError || code.isError || !verifySuccess || isCodeExpired;
+    snuMailPrefix.isError || code.isError || !verifySuccess || isCodeExpired;
 
   const isPending = isPendingSend || isPendingVerify || isPendingLocalSignUp;
 
@@ -76,18 +81,21 @@ export const EmailVerifyForm = () => {
       setShowSendCodeError(true);
       return;
     }
-    sendCode({ snuMail: snuMail.postfix });
+    sendCode({ snuMail: formStates.snuMail.value });
   };
 
   const handleClickVerifyEmailButton = () => {
     if (verifyEmailDisable) return;
-    emailVerify({ snuMail: snuMail.postfix, code: code.value });
+    emailVerify({
+      snuMail: formStates.snuMail.value,
+      code: formStates.code.value,
+    });
   };
 
   const onSubmit = () => {
     if (signUpDisable) return;
     localSignUp({
-      snuMail: snuMail.postfix,
+      snuMail: formStates.snuMail.value,
       password: body.password,
       username: body.username,
     });
@@ -106,9 +114,9 @@ export const EmailVerifyForm = () => {
             <div className="flex w-full gap-1 items-center">
               <Input
                 id="email"
-                value={snuMail.value}
+                value={snuMailPrefix.value}
                 onChange={(e) => {
-                  snuMail.onChange(e.target.value);
+                  snuMailPrefix.onChange(e.target.value);
                 }}
                 placeholder="마이스누 아이디"
                 disabled={isPending}
@@ -127,7 +135,7 @@ export const EmailVerifyForm = () => {
               </Button>
             )}
           </div>
-          {showSendCodeError && snuMail.isError && (
+          {showSendCodeError && snuMailPrefix.isError && (
             <div>유효하지 않은 스누메일입니다.</div>
           )}
           <div>{codeResponseMessage}</div>
