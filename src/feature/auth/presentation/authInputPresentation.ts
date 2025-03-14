@@ -24,7 +24,7 @@ export type AuthInputPresentation = {
 const EMAIL_PREFIX_REGEX = /^[a-zA-Z0-9._%+-]+$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PASSWORD_REGEX =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!^*])[A-Za-z\d@#$!^*]{8,20}$/;
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!*()]).{8,20}$/;
 const PASSWORD_DETAIL_REGEX = {
   ENGLISH_REGEX: /(?=.*[A-Z])(?=.*[a-z])/,
   NUMBER_REGEX: /\d/,
