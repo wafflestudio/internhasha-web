@@ -16,8 +16,8 @@ export const SignInPage = () => {
 
   return (
     <ModalBackgroundWithHeader>
-      <div className="flex flex-col gap-[46px]">
-        <h2 className="text-2xl font-bold text-center">로그인</h2>
+      <div className="flex flex-col gap-[32px]">
+        <h2 className="text-22 font-bold text-center">로그인</h2>
         <Tabs defaultValue="APPLICANT" className="flex flex-col gap-[30px]">
           <TabsList className="flex p-[6px] rounded-[10px] bg-grey-light">
             <TabsTrigger value="APPLICANT" variant="button" className="flex-1">
@@ -36,7 +36,7 @@ export const SignInPage = () => {
           <section className="flex flex-col gap-[10px]">
             <div className="flex justify-end">
               <a
-                className="text-grey-normal-active text-sm underline-offset-4 hover:cursor-pointer hover:underline hover:decoration-grey-normal-active"
+                className="text-grey-normal-active text-13 font-regular underline-offset-4 hover:cursor-pointer hover:underline hover:decoration-grey-normal-active"
                 onClick={toFindAccount}
               >
                 비밀번호 찾기
@@ -45,10 +45,10 @@ export const SignInPage = () => {
           </section>
           <section className="flex flex-col w-full gap-[18px]">
             <div className="text-center">
-              <p className="text-sm text-grey-normal">
+              <p className="text-14 font-medium text-grey-normal">
                 아직 계정이 없으신가요?{' '}
                 <a
-                  className="text-grey-dark-active underline-offset-4 hover:cursor-pointer hover:underline hover:decoration-grey-dark-active"
+                  className="text-14 font-regular text-grey-dark-active underline-offset-4 hover:cursor-pointer hover:underline hover:decoration-grey-dark-active"
                   onClick={() => {
                     toSignUp({});
                   }}

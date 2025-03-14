@@ -12,7 +12,7 @@ const tabsTriggerVariants = cva('inline-flex items-center justify-center', {
       default:
         'disabled:opacity-50 data-[state=active]:underline data-[state=active]:underline-2 data-[state=active]:underline-offset-8',
       button:
-        'flex-1 h-[42px] whitespace-nowrap rounded-[8px] text-grey-normal text-sm font-semibold ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-black',
+        'flex-1 h-[42px] whitespace-nowrap rounded-[8px] text-grey-normal text-14-regular ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-black',
     },
   },
   defaultVariants: {
@@ -27,7 +27,7 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      'flex text-grey-darker gap-[8px] text-lg rounded-none bg-grey-light',
+      'flex text-grey-darker gap-[8px] font-14-regular rounded-none bg-grey-light',
       className,
     )}
     {...props}
@@ -42,10 +42,13 @@ interface TabsTriggerProps
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   TabsTriggerProps
->(({ className, variant, ...props }, ref) => (
+>(({ className, variant, disabled, ...props }, ref) => (
   <TabsPrimitive.Trigger
     ref={ref}
-    className={cn(tabsTriggerVariants({ variant, className }))}
+    className={cn(
+      tabsTriggerVariants({ variant, className }),
+      disabled !== false && 'text-grey-normal-hover',
+    )}
     {...props}
   />
 ));
