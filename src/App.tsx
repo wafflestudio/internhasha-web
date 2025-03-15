@@ -19,7 +19,6 @@ import { implPostService } from '@/feature/post';
 import { implUserService } from '@/feature/user';
 import { implVentureCapitalService } from '@/feature/ventureCapital';
 import { CoffeeChatDetailPage } from '@/pages/CoffeeChatDetailPage';
-import { CoffeeChatListPage } from '@/pages/CoffeeChatListPage';
 import { CreateCoffeeChatPage } from '@/pages/CreateCoffeeChatPage';
 import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
@@ -84,7 +83,6 @@ const RouterProvider = () => {
           path={PATH.CREATE_COFFEE_CHAT}
           element={<CreateCoffeeChatPage />}
         />
-        <Route path={PATH.COFFEE_CHAT_LIST} element={<CoffeeChatListPage />} />
         <Route path={PATH.CREATE_PROFILE} element={<CreateProfilePage />} />
       </Route>
       <Route element={<CompanyProtectedRoute />}>

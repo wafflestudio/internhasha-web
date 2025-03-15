@@ -159,7 +159,7 @@ const useCancelCoffeeChat = ({
 }) => {
   const { coffeeChatService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
-  const { toCoffeeChatList } = useRouteNavigation();
+  const { toMyPage } = useRouteNavigation();
   const queryClient = useQueryClient();
 
   const { mutate: cancelCoffeeChat, isPending } = useMutation({
@@ -182,7 +182,7 @@ const useCancelCoffeeChat = ({
     onSuccess: async (response) => {
       if (response.type === 'success') {
         await queryClient.invalidateQueries();
-        toCoffeeChatList();
+        toMyPage();
       } else {
         setResponseMessage(response.code);
       }
