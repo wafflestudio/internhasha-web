@@ -1,7 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { CancelCoffeeChatDeleteModal } from '@/components/modal/CancelCoffeeChatDeleteModal';
+import type { CancelCoffeeChatRequest } from '@/api/apis/localServer/schemas';
+import { CancelCoffeeChatCancelModal } from '@/components/modal/CancelCoffeeChatCancelModal';
+import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { SkeletonCoffeeChatDetailView } from '@/feature/coffeeChat/ui/SkeletonCoffeeChatDetailView';
 import { EnvContext } from '@/shared/context/EnvContext';
@@ -18,8 +20,19 @@ export const CoffeeChatDetailView = ({
 }) => {
   const { coffeeChatDetailData } = useGetCoffeeChatDetail({ coffeeChatId });
   const { API_BASE_URL } = useGuardContext(EnvContext);
+  const [responseMessage, setResponseMessage] = useState('');
   const { toMyPage } = useRouteNavigation();
   const [isCancel, setIsCancel] = useState(false);
+  const { cancelCoffeeChat, isPending } = useCancelCoffeeChat({
+    setResponseMessage,
+  });
+
+  const handleCancel = () => {
+    cancelCoffeeChat({
+      coffeeChatId: coffeeChatId,
+      body: { coffeeChatStatus: 'CANCELED' },
+    });
+  };
 
   if (coffeeChatDetailData === undefined) {
     return <SkeletonCoffeeChatDetailView />;
@@ -30,9 +43,7 @@ export const CoffeeChatDetailView = ({
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
   }
-
   const coffeeChatDetail = coffeeChatDetailData.data;
-
   return (
     <>
       <div className="flex w-full py-10 bg-gray-50">
@@ -47,9 +58,9 @@ export const CoffeeChatDetailView = ({
             {/* Profile Section */}
             <div className="flex gap-4 items-center">
               <div className="w-[40px] h-[40px] overflow-hidden">
-                {coffeeChatDetail.author.profileImageLink != null ? (
+                {coffeeChatDetail.company.imageKey !== '' ? (
                   <img
-                    src={`${API_BASE_URL}/${coffeeChatDetail.author.profileImageLink}`}
+                    src={`${API_BASE_URL}/${coffeeChatDetail.company.imageKey}`}
                     alt="프로필 이미지"
                     className="w-[40px] h-[40px] object-cover border border-gray-200"
                   />
@@ -59,7 +70,7 @@ export const CoffeeChatDetailView = ({
               </div>
               <div>
                 <p className="text-gray-900 text-lg font-semibold align-center">
-                  {coffeeChatDetail.companyName}
+                  {coffeeChatDetail.company.name}
                 </p>
               </div>
             </div>
@@ -85,6 +96,7 @@ export const CoffeeChatDetailView = ({
                 variant="secondary"
                 onClick={toMyPage}
                 className="w-full mt-20"
+                disabled={isPending}
               >
                 목록으로
               </Button>
@@ -94,6 +106,7 @@ export const CoffeeChatDetailView = ({
                   setIsCancel(true);
                 }}
                 className="w-full mt-20"
+                disabled={isPending}
               >
                 취소하기
               </Button>
@@ -101,13 +114,16 @@ export const CoffeeChatDetailView = ({
           </div>
         </div>
       </div>
+      {responseMessage !== '' && (
+        <FormErrorResponse>{responseMessage}</FormErrorResponse>
+      )}
       {isCancel && (
-        <CancelCoffeeChatDeleteModal
+        <CancelCoffeeChatCancelModal
           onClose={() => {
             setIsCancel(false);
           }}
           onCancel={() => {
-            setIsCancel(false);
+            handleCancel();
           }}
         />
       )}
@@ -134,4 +150,49 @@ const useGetCoffeeChatDetail = ({ coffeeChatId }: { coffeeChatId: string }) => {
   });
 
   return { coffeeChatDetailData: coffeeChatDetailData };
+};
+
+const useCancelCoffeeChat = ({
+  setResponseMessage,
+}: {
+  setResponseMessage(input: string): void;
+}) => {
+  const { coffeeChatService } = useGuardContext(ServiceContext);
+  const { token } = useGuardContext(TokenContext);
+  const { toMyPage } = useRouteNavigation();
+  const queryClient = useQueryClient();
+
+  const { mutate: cancelCoffeeChat, isPending } = useMutation({
+    mutationFn: ({
+      coffeeChatId,
+      body,
+    }: {
+      coffeeChatId: string;
+      body: CancelCoffeeChatRequest;
+    }) => {
+      if (token === null) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+      return coffeeChatService.cancelCoffeeChat({
+        token,
+        coffeeChatId,
+        body,
+      });
+    },
+    onSuccess: async (response) => {
+      if (response.type === 'success') {
+        await queryClient.invalidateQueries();
+        toMyPage();
+      } else {
+        setResponseMessage(response.code);
+      }
+    },
+    onError: () => {
+      setResponseMessage('취소에 실패했습니다. 잠시 후에 다시 실행해주세요.');
+    },
+  });
+  return {
+    cancelCoffeeChat,
+    isPending,
+  };
 };

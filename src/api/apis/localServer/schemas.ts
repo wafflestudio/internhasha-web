@@ -83,22 +83,21 @@ export type PostBriefDTO = Omit<
   | 'detail'
 >;
 
+type CoffeeChatStatus = 'WAITING' | 'ACCEPTED' | 'CANCELED' | 'REJECTED';
+
 type CoffeeChatDTO = {
   id: string;
-  positionTitle: string;
-  companyName: string;
-  author: {
-    id: string;
-    name: string;
-    userRole: UserRole;
-    snuMail: string;
-    phoneNumber?: string;
-    profileImageLink?: string;
-  };
   postId: string;
-  content: string;
-  phoneNumber: string;
+  title: string;
+  company: {
+    name: string;
+    imageKey: string;
+  };
   createdAt: string;
+  updatedAt: string;
+  coffeeChatStatus: CoffeeChatStatus;
+  changed: boolean;
+  content: string;
 };
 
 // Params
@@ -175,6 +174,10 @@ export type CreateAndUpdatePostRequest = Omit<
 export type CreateCoffeeChatRequest = {
   phoneNumber: string;
   content: string;
+};
+
+export type CancelCoffeeChatRequest = {
+  coffeeChatStatus: 'CANCELED';
 };
 
 export type S3UploadReq = {

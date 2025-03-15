@@ -6,6 +6,7 @@ import type {
 } from '../../entities';
 import type {
   BookmarkPageParams,
+  CancelCoffeeChatRequest,
   ChangePasswordRequest,
   CheckSnuMailVerificationRequest,
   CoffeeChatIdParams,
@@ -198,6 +199,22 @@ export const getLocalServerApis = ({
         method: 'GET',
         path: `coffeeChat/${params.coffeeChatId}`,
         token,
+      });
+    },
+    'PATCH /coffeeChat/:coffeeChatId': ({
+      token,
+      params,
+      body,
+    }: {
+      token: string;
+      params: CoffeeChatIdParams;
+      body: CancelCoffeeChatRequest;
+    }) => {
+      return callWithToken<SuccessResponse<CoffeeChatResponse>>({
+        method: 'PATCH',
+        path: `coffeeChat/${params.coffeeChatId}`,
+        token,
+        body,
       });
     },
     'GET /coffeeChat': ({ token }: { token: string }) => {

@@ -9,7 +9,7 @@ export const CoffeeChatDetailPage = () => {
   const { coffeeChatId } = useParams<{ coffeeChatId: string }>();
 
   if (coffeeChatId === undefined) {
-    return <RouteNavigator link={PATH.COFFEE_CHAT_LIST} />;
+    return <RouteNavigator link={PATH.MY_PAGE} />;
   }
   return (
     <div className="min-h-screen bg-gray-50">

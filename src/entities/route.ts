@@ -8,7 +8,6 @@ export const PATH = {
   VERIFY_EMAIL: '/verify-email',
   MY_PAGE: '/mypage',
   CREATE_COFFEE_CHAT: '/post/:postId/coffeeChat/create',
-  COFFEE_CHAT_LIST: '/coffeeChat',
   COFFEE_CHAT_DETAIL: '/coffeeChat/:coffeeChatId',
   CREATE_COMPANY: '/company/create',
   CREATE_POST: '/post/create/:companyId',

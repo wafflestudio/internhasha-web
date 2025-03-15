@@ -1,17 +1,18 @@
-import type { User } from '@/entities/user';
+type CoffeeChatStatus = 'WAITING' | 'ACCEPTED' | 'CANCELED' | 'REJECTED';
 
 export type CoffeeChat = {
   id: string;
-  positionTitle: string;
-  companyName: string;
   postId: string;
-  author: Pick<
-    User,
-    'id' | 'name' | 'userRole' | 'snuMail' | 'phoneNumber' | 'profileImageLink'
-  >;
-  content: string;
-  phoneNumber: string;
+  title: string;
+  company: {
+    name: string;
+    imageKey: string;
+  };
   createdAt: string;
+  updatedAt: string;
+  coffeeChatStatus: CoffeeChatStatus;
+  changed: boolean;
+  content: string;
 };
 
 export type CoffeeChatListResponse = {

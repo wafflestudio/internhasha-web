@@ -48,7 +48,6 @@ export const useRouteNavigation = () => {
     FIND_ACCOUNT,
     SIGN_UP,
     SIGN_UP_COMPLETE,
-    COFFEE_CHAT_LIST,
     CREATE_COMPANY,
     MY_PAGE,
     CREATE_PROFILE,
@@ -80,9 +79,6 @@ export const useRouteNavigation = () => {
     },
     toCreateCoffeeChat: ({ postId }: { postId: string }) => {
       void navigate(CREATE_COFFEE_CHAT(postId));
-    },
-    toCoffeeChatList: () => {
-      void navigate(COFFEE_CHAT_LIST);
     },
     toCoffeeChatDetail: ({ coffeeChatId }: { coffeeChatId: string }) => {
       void navigate(COFFEE_CHAT_DETAIL(coffeeChatId));
