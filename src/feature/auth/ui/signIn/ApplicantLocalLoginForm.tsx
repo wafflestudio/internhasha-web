@@ -12,7 +12,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
-export const LocalLogInForm = ({
+export const ApplicantLocalLogInForm = ({
   setShowSignUpModal,
 }: {
   setShowSignUpModal(input: boolean): void;
@@ -50,9 +50,9 @@ export const LocalLogInForm = ({
     <>
       <FormContainer id="SignInForm" handleSubmit={onSubmit}>
         <div className="flex flex-col gap-[10px]">
-          <div className="flex w-full gap-1 items-center">
+          <div className="flex relative w-full gap-1 items-center">
             <Input
-              id="email"
+              id="snuMail"
               value={snuMailPrefix.value}
               onChange={(e) => {
                 snuMailPrefix.onChange(e.target.value);
@@ -60,7 +60,9 @@ export const LocalLogInForm = ({
               placeholder="마이스누 아이디"
               disabled={isPending}
             />
-            <span className="text-grey-dark">@snu.ac.kr</span>
+            <span className="absolute top-[12px] right-[8px] text-sm text-grey-normal">
+              @snu.ac.kr
+            </span>
           </div>
           <Input
             id="password"
