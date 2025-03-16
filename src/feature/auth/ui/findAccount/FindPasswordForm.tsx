@@ -45,11 +45,6 @@ export const FindPasswordForm = () => {
               placeholder="가입한 이메일"
               className="pr-[84px]"
             />
-            <span
-              className={`absolute top-[11px] right-3 ${sendPasswordDisable ? 'text-grey' : 'text-black'} text-sm`}
-            >
-              @snu.ac.kr
-            </span>
           </div>
           {sendSuccess && (
             <FormInfoResponse>

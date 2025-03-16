@@ -45,7 +45,7 @@ export const useRouteNavigation = () => {
     INDEX,
     SIGN_IN,
     VERIFY_EMAIL,
-    FIND_ACCOUNT,
+    RESET_PASSWORD,
     SIGN_UP,
     SIGN_UP_COMPLETE,
     CREATE_COMPANY,
@@ -66,7 +66,7 @@ export const useRouteNavigation = () => {
       void navigate(SIGN_IN);
     },
     toFindAccount: () => {
-      void navigate(FIND_ACCOUNT);
+      void navigate(RESET_PASSWORD);
     },
     toVerifyEmail: ({ body }: { body: VerifyMailBody }) => {
       void navigate(VERIFY_EMAIL, { state: { body } });
