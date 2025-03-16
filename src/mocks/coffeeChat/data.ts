@@ -1,84 +1,82 @@
-import type { CoffeeChatResponse } from '@/mocks/coffeeChat/schemas';
+import {
+  type CoffeeChatResponse,
+  CoffeeChatStatus,
+} from '@/mocks/coffeeChat/schemas';
 
 export const mockCoffeeChats: CoffeeChatResponse[] = [
   {
     id: '1',
-    postId: 'post1',
-    author: {
-      id: 'author1',
-      snuMail: 'mail1',
-      username: 'string',
-      phoneNumber: 'string',
-      isAdmin: false,
-      localId: 'string1',
-      googleId: 'string1',
+    postId: '371c8818-9538-4baa-b9f2-908d2fd5b5c8',
+    title: 'React 프론트엔드 개발자',
+    company: {
+      name: 'A 기업',
     },
-    content: '프론트엔드 개발자 포지션에 지원합니다.',
-    phoneNumber: '010-1234-5678',
-    createdAt: '2025-01-01T10:00:00Z',
+    createdAt: '2025-03-13T15:48:33.253748',
+    updatedAt: '2025-03-13T15:48:33.253748',
+    coffeeChatStatus: CoffeeChatStatus.WAITING,
+    changed: false,
+    applicant: {
+      name: '웨이',
+    },
   },
   {
     id: '2',
     postId: 'post2',
-    author: {
-      id: 'author2',
-      snuMail: 'mail2',
-      username: 'string',
-      phoneNumber: 'string',
-      isAdmin: false,
-      localId: 'string2',
-      googleId: 'string2',
+    title: '백엔드 개발자',
+    company: {
+      name: 'B 기업',
     },
-    content: '백엔드 개발자로 지원하고 싶습니다.',
-    phoneNumber: '010-2345-6789',
     createdAt: '2025-01-02T11:00:00Z',
+    updatedAt: '2025-01-02T11:00:00Z',
+    coffeeChatStatus: CoffeeChatStatus.ACCEPTED,
+    changed: true,
+    applicant: {
+      name: '지원자2',
+    },
   },
   {
     id: '3',
     postId: 'post3',
-    author: {
-      id: 'author3',
-      snuMail: 'mail3',
-      username: 'string',
-      phoneNumber: 'string',
-      isAdmin: false,
-      localId: 'string3',
-      googleId: 'string3',
+    title: '디자이너',
+    company: {
+      name: 'C 기업',
     },
-    content: '디자이너 포지션에 관심이 있습니다.',
-    phoneNumber: '010-3456-7890',
     createdAt: '2025-01-03T12:00:00Z',
+    updatedAt: '2025-01-03T12:00:00Z',
+    coffeeChatStatus: CoffeeChatStatus.CANCELED,
+    changed: false,
+    applicant: {
+      name: '지원자3',
+    },
   },
   {
     id: '4',
     postId: 'post4',
-    author: {
-      id: 'author4',
-      snuMail: 'mail4',
-      username: 'string',
-      phoneNumber: 'string',
-      isAdmin: false,
-      localId: 'string4',
-      googleId: 'string4',
+    title: '데이터 엔지니어',
+    company: {
+      name: 'D 기업',
     },
-    content: '데이터 엔지니어 지원합니다.',
-    phoneNumber: '010-4567-8901',
     createdAt: '2025-01-04T13:00:00Z',
+    updatedAt: '2025-01-04T13:00:00Z',
+    coffeeChatStatus: CoffeeChatStatus.REJECTED,
+    changed: true,
+    applicant: {
+      name: '지원자4',
+    },
   },
   {
     id: '5',
     postId: 'post5',
-    author: {
-      id: 'author5',
-      snuMail: 'mail5',
-      username: 'string',
-      phoneNumber: 'string',
-      isAdmin: false,
-      localId: 'string5',
-      googleId: 'string5',
+    title: '마케터',
+    company: {
+      name: 'E 기업',
     },
-    content: '마케터로 지원하고 싶습니다.',
-    phoneNumber: '010-5678-9012',
     createdAt: '2025-01-05T14:00:00Z',
+    updatedAt: '2025-01-05T14:00:00Z',
+    coffeeChatStatus: CoffeeChatStatus.WAITING,
+    changed: false,
+    applicant: {
+      name: '지원자5',
+    },
   },
 ];
