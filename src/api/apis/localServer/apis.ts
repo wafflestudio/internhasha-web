@@ -1,10 +1,4 @@
 import type {
-  ErrorResponse,
-  InternalCallParams,
-  ResponseNecessary,
-  SuccessResponse,
-} from '../../entities';
-import type {
   BookmarkPageParams,
   CancelCoffeeChatRequest,
   ChangePasswordRequest,
@@ -33,7 +27,13 @@ import type {
   TokenResponse,
   UserResponse,
   UserWithTokenResponse,
-} from './schemas';
+} from '@/api/apis/localServer/schemas';
+import type {
+  ErrorResponse,
+  InternalCallParams,
+  ResponseNecessary,
+  SuccessResponse,
+} from '@/api/entities';
 
 type GetApisProps = {
   callWithToken: <R extends ResponseNecessary>(

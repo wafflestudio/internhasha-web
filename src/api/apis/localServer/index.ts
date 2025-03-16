@@ -1,1 +1,1 @@
-export { getLocalServerApis } from './apis';
+export { getLocalServerApis } from '@/api/apis/localServer/apis';

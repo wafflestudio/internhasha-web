@@ -1,10 +1,10 @@
+import type { UploadFileRequest } from '@/api/apis/externalServer/schemas';
 import type {
   ErrorResponse,
   InternalFileCallParams,
   ResponseNecessary,
   SuccessResponse,
-} from '../../entities';
-import type { UploadFileRequest } from './schemas';
+} from '@/api/entities';
 
 type GetApisProps = {
   callWithFile: <R extends ResponseNecessary>(
