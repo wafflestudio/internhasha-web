@@ -1,11 +1,13 @@
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useGetCoffeeChatCount } from '@/feature/coffeeChat/ui/CoffeeChatTabs';
 import { CompanyCoffeeChatListView } from '@/feature/coffeeChat/ui/CompanyCoffeeChatListView';
 import { MyPage } from '@/feature/ventureCapital/ui/MyPage';
 import { MyPostList } from '@/feature/ventureCapital/ui/MyPostList';
-
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
+import { TokenContext } from '@/shared/context/TokenContext';
 export const VentureCapitalMyTab = () => {
   const [currentTab, setCurrentTab] = useState<
     'POST' | 'COFFEE_CHAT' | 'MYPAGE'
@@ -52,4 +54,21 @@ export const VentureCapitalMyTab = () => {
       </div>
     </Tabs>
   );
+};
+const useGetCoffeeChatCount = () => {
+  const { token } = useGuardContext(TokenContext);
+  const { coffeeChatService } = useGuardContext(ServiceContext);
+
+  const { data: coffeeChatCountData } = useQuery({
+    queryKey: ['coffeeChatService', 'getCoffeeChatCount', token] as const,
+    queryFn: ({ queryKey: [, , t] }) => {
+      if (t === null) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+      return coffeeChatService.getCoffeeChatCount({ token: t });
+    },
+    enabled: token !== null,
+  });
+
+  return { coffeeChatCountData };
 };

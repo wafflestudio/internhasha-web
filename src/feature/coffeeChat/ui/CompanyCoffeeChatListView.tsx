@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import type { CoffeeChatStatusRequest } from '@/api/apis/localServer/schemas';
@@ -9,7 +10,6 @@ import { Check } from '@/components/ui/check';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TagCoffeeChat } from '@/components/ui/tagCoffeeChat';
 import { ICON_SRC } from '@/entities/asset';
-import { useGetCoffeeChatList } from '@/feature/coffeeChat/ui/CoffeeChatListView';
 import { NoCoffeeChat } from '@/feature/coffeeChat/ui/NoCoffeeChat';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -163,6 +163,41 @@ export const CompanyCoffeeChatListView = () => {
       )}
     </div>
   );
+};
+
+const useGetCoffeeChatList = () => {
+  const { token } = useGuardContext(TokenContext);
+  const { coffeeChatService } = useGuardContext(ServiceContext);
+
+  const { data: coffeeChatListData } = useQuery({
+    queryKey: ['coffeeChatService', 'getCoffeeChatList', token] as const,
+    queryFn: ({ queryKey: [, , t] }) => {
+      if (t === null) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+      return coffeeChatService.getCoffeeChatList({ token: t });
+    },
+    enabled: token !== null,
+  });
+
+  if (coffeeChatListData?.type === 'success') {
+    coffeeChatListData.data.coffeeChatList.sort((a, b) => {
+      if (
+        a.coffeeChatStatus === 'WAITING' &&
+        b.coffeeChatStatus !== 'WAITING'
+      ) {
+        return -1;
+      }
+      if (
+        a.coffeeChatStatus !== 'WAITING' &&
+        b.coffeeChatStatus === 'WAITING'
+      ) {
+        return 1;
+      }
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }
+  return { coffeeChatListData };
 };
 
 const useUpdateCoffeeChatStatus = ({

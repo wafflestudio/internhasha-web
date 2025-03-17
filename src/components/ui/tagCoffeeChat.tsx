@@ -7,26 +7,26 @@ import {
 } from '@/entities/coffeeChat';
 import { cn } from '@/lib/utils';
 
-const tagVariants = cva(
+const tagClassName = cva(
   'inline-flex items-center rounded-sm px-2 py-1.5 text-sm font-regular text-13 text transition-colors border-transparent focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
-        default: 'bg-yellow-light-hover text-yellow-darker',
+        pending: 'bg-yellow-light-hover text-yellow-darker',
         accepted: 'bg-green-light-hover text-green-darker',
         canceled: 'bg-red-light-hover text-grey-darker',
         rejected: 'bg-red-light-hover text-red-darker',
       },
     },
     defaultVariants: {
-      variant: 'default',
+      variant: 'pending',
     },
   },
 );
 
 interface TagProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof tagVariants> {
+    VariantProps<typeof tagClassName> {
   coffeeChatStatus: CoffeeChatStatus;
 }
 
@@ -37,7 +37,7 @@ export function TagCoffeeChat({
 }: TagProps) {
   const { variant, label } = COFFEE_CHAT_STATUS_MAP[coffeeChatStatus];
   return (
-    <div className={cn(tagVariants({ variant }), className)} {...props}>
+    <div className={cn(tagClassName({ variant }), className)} {...props}>
       {label}
     </div>
   );

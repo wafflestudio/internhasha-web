@@ -2,6 +2,7 @@ import type {
   BookmarkPageParams,
   ChangePasswordRequest,
   CheckSnuMailVerificationRequest,
+  CoffeeChatCountResponse,
   CoffeeChatIdParams,
   CoffeeChatListResponse,
   CoffeeChatResponse,
@@ -202,7 +203,7 @@ export const getLocalServerApis = ({
       });
     },
     'GET /coffeeChat/count': ({ token }: { token: string }) => {
-      return callWithToken<SuccessResponse<{ num: number }>>({
+      return callWithToken<SuccessResponse<CoffeeChatCountResponse>>({
         method: 'GET',
         path: 'coffeeChat/count',
         token,

@@ -120,7 +120,9 @@ export type S3DownloadParams = {
 export type CoffeeChatIdParams = {
   coffeeChatId: string;
 };
-
+export type CoffeeChatCountResponse = {
+  num: number;
+};
 export type BookmarkPageParams = {
   bookmarkPage?: string;
 };

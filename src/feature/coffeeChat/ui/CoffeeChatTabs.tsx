@@ -45,7 +45,7 @@ export const CoffeeChatTabs = () => {
     </Tabs>
   );
 };
-export const useGetCoffeeChatCount = () => {
+const useGetCoffeeChatCount = () => {
   const { token } = useGuardContext(TokenContext);
   const { coffeeChatService } = useGuardContext(ServiceContext);
 

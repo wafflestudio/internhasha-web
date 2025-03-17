@@ -21,8 +21,7 @@ export const CoffeeChatListView = () => {
   }
   if (
     coffeeChatListData?.type === 'success' &&
-    Array.isArray(coffeeChatListData.data) &&
-    coffeeChatListData.data.length === 0
+    coffeeChatListData.data.coffeeChatList.length === 0
   ) {
     return <NoCoffeeChat />;
   }
@@ -70,7 +69,7 @@ export const CoffeeChatListView = () => {
   );
 };
 
-export const useGetCoffeeChatList = () => {
+const useGetCoffeeChatList = () => {
   const { token } = useGuardContext(TokenContext);
   const { coffeeChatService } = useGuardContext(ServiceContext);
 
