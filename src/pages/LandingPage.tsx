@@ -55,7 +55,7 @@ export const LandingPage = () => {
 
           {/* 게시글 리스트 및 상단 필터 */}
           <div className="order-2 flex-1 px-2 lg:order-none">
-            <h2 className="text-2xl font-bold">인턴 공고</h2>
+            <h2 className="text-30 font-bold">인턴 공고</h2>
             {/* 상단 필터 섹션 */}
             <div className="flex items-center justify-between py-6">
               <FilterSection
