@@ -8,7 +8,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 export const CoffeeChatTabs = () => {
-  const { coffeeChatCountData } = useGetCoffeeChatList();
+  const { coffeeChatCountData } = useGetCoffeeChatCount();
 
   if (coffeeChatCountData?.type === 'error') {
     return (
@@ -45,7 +45,7 @@ export const CoffeeChatTabs = () => {
     </Tabs>
   );
 };
-export const useGetCoffeeChatList = () => {
+export const useGetCoffeeChatCount = () => {
   const { token } = useGuardContext(TokenContext);
   const { coffeeChatService } = useGuardContext(ServiceContext);
 

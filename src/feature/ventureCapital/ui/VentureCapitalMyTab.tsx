@@ -1,51 +1,49 @@
 import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ICON_SRC } from '@/entities/asset';
-import { MyCompanyList } from '@/feature/ventureCapital/ui/MyCompanyList';
+import { useGetCoffeeChatCount } from '@/feature/coffeeChat/ui/CoffeeChatTabs';
+import { CompanyCoffeeChatListView } from '@/feature/coffeeChat/ui/CompanyCoffeeChatListView';
 import { MyPage } from '@/feature/ventureCapital/ui/MyPage';
 import { MyPostList } from '@/feature/ventureCapital/ui/MyPostList';
-import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const VentureCapitalMyTab = () => {
-  const { toCreateCompany } = useRouteNavigation();
   const [currentTab, setCurrentTab] = useState<
-    'COMPANY' | 'COFFEE_CHAT' | 'MYPAGE'
-  >('COMPANY');
+    'POST' | 'COFFEE_CHAT' | 'MYPAGE'
+  >('COFFEE_CHAT');
+  const { coffeeChatCountData } = useGetCoffeeChatCount();
+
+  if (coffeeChatCountData?.type === 'error') {
+    return (
+      <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
+    );
+  }
   return (
     <Tabs
-      defaultValue="COMPANY"
+      defaultValue="COFFEE_CHAT"
       className="w-full"
       value={currentTab}
       onValueChange={(value) => {
-        setCurrentTab(value as 'COMPANY' | 'COFFEE_CHAT' | 'MYPAGE');
+        setCurrentTab(value as 'POST' | 'COFFEE_CHAT' | 'MYPAGE');
       }}
     >
       <div className="flex flex-col gap-[30px]">
-        <div className="flex flex-col gap-4 xs:flex-row w-full xs:justify-between">
-          <TabsList className="flex text-lg font-semibold">
-            <TabsTrigger value="COMPANY">관리 기업</TabsTrigger>
-            <TabsTrigger value="COFFEE_CHAT">작성한 공고</TabsTrigger>
-            <TabsTrigger value="MYPAGE">내 정보</TabsTrigger>
-          </TabsList>
-          {currentTab === 'COMPANY' && (
-            <Button
-              size="sm"
-              onClick={() => {
-                toCreateCompany({});
-              }}
-            >
-              <img src={ICON_SRC.PLUS} className="text-md" />
-              회사 추가
-            </Button>
-          )}
-        </div>
+        <TabsList className="flex gap-[30px]">
+          <TabsTrigger value="COFFEE_CHAT" className="gap-1">
+            나에게 신청된 커피챗
+            {coffeeChatCountData?.type === 'success' && (
+              <span className="float-end flex items-center justify-center w-4 h-4 text-white text-11 font-medium bg-[#B3261E] rounded-full ml-1 no-underline data-[state=active]:no-underline">
+                {coffeeChatCountData.data.num}
+              </span>
+            )}
+          </TabsTrigger>
+          <TabsTrigger value="POST">작성한 공고</TabsTrigger>
+          <TabsTrigger value="MYPAGE">내 정보</TabsTrigger>
+        </TabsList>
 
-        <TabsContent value="COMPANY">
-          <MyCompanyList />
-        </TabsContent>
         <TabsContent value="COFFEE_CHAT">
+          <CompanyCoffeeChatListView />
+        </TabsContent>
+        <TabsContent value="POST">
           <MyPostList />
         </TabsContent>
         <TabsContent value="MYPAGE">

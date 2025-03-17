@@ -35,7 +35,7 @@ export const COFFEE_CHAT_STATUS_MAP: Record<
   CoffeeChatStatusMapEntry
 > = {
   WAITING: { status: 'WAITING', variant: 'default', label: '대기중' },
-  ACCEPTED: { status: 'ACCEPTED', variant: 'accepted', label: '수락됨' },
+  ACCEPTED: { status: 'ACCEPTED', variant: 'accepted', label: '성사됨' },
   CANCELED: { status: 'CANCELED', variant: 'canceled', label: '취소됨' },
   REJECTED: { status: 'REJECTED', variant: 'rejected', label: '거절됨' },
 };

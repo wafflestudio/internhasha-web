@@ -70,7 +70,7 @@ export const CoffeeChatListView = () => {
   );
 };
 
-const useGetCoffeeChatList = () => {
+export const useGetCoffeeChatList = () => {
   const { token } = useGuardContext(TokenContext);
   const { coffeeChatService } = useGuardContext(ServiceContext);
 
@@ -85,5 +85,22 @@ const useGetCoffeeChatList = () => {
     enabled: token !== null,
   });
 
+  if (coffeeChatListData?.type === 'success') {
+    coffeeChatListData.data.coffeeChatList.sort((a, b) => {
+      if (
+        a.coffeeChatStatus === 'WAITING' &&
+        b.coffeeChatStatus !== 'WAITING'
+      ) {
+        return -1;
+      }
+      if (
+        a.coffeeChatStatus !== 'WAITING' &&
+        b.coffeeChatStatus === 'WAITING'
+      ) {
+        return 1;
+      }
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }
   return { coffeeChatListData };
 };
