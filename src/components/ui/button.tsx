@@ -10,21 +10,20 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-grey-darker text-white hover:bg-grey-dark-hover disabled:bg-grey-normal',
+          'bg-grey-800 text-white hover:bg-grey-900 disabled:bg-grey-300',
         destructive:
-          'bg-red-normal text-white hover:bg-red-normal-hover disabled:bg-red-light',
+          'bg-red-normal hover:bg-red-normal-hover disabled:bg-red-light text-white',
         outline:
-          'border border-input bg-white text-black shadow-sm hover:bg-grey-light diabled:text-bg-grey-light disabled:text-grey-normal',
+          'diabled:text-grey-50 border border-grey-200 bg-white text-grey-900 shadow-sm hover:bg-grey-50',
         secondary:
-          'bg-grey-light text-grey-normal-active hover:bg-grey-light-active disabled:bg-grey-light',
-        ghost:
-          'text-grey-normal-active hover:bg-grey-light hover:text-grey-darker',
+          'bg-grey-100 text-grey-600 hover:bg-grey-200 disabled:bg-grey-50',
+        ghost: 'text-grey-900 hover:bg-grey-200',
         link: 'text-primary underline-offset-4 hover:underline',
         selected:
-          'border border-2 border-grey-dark bg-grey-light-hover text-black hover:bg-grey-light-active diabled:text-bg-grey-light disabled:text-grey-normal',
+          'disabled:text-bg-grey-50 border border-2 border-grey-300 bg-grey-100 text-grey-800 hover:bg-grey-200 disabled:text-grey-300',
       },
       size: {
-        default: 'h-[42px] px-4 py-2 items-center',
+        default: 'h-[42px] items-center px-4 py-2',
         sm: 'h-8 rounded-md px-3 text-xs',
         lg: 'h-10 rounded-md px-8',
         icon: 'h-9 w-9',

@@ -19,11 +19,11 @@ export const CoffeeChatTabs = () => {
   return (
     <Tabs defaultValue="COFFEE_CHAT" className="w-full">
       <div className="flex flex-col gap-[30px]">
-        <TabsList className="flex  gap-[30px]">
+        <TabsList className="flex gap-[30px]">
           <TabsTrigger value="COFFEE_CHAT" className="gap-1">
             신청한 커피챗
             {coffeeChatCountData?.type === 'success' && (
-              <span className="float-end flex items-center justify-center w-4 h-4 text-white text-11 font-medium bg-[#B3261E] rounded-full ml-1 no-underline data-[state=active]:no-underline">
+              <span className="float-end ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#B3261E] text-11 font-medium text-white no-underline data-[state=active]:no-underline">
                 {coffeeChatCountData.data.num}
               </span>
             )}

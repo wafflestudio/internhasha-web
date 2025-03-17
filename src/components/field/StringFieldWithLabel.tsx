@@ -43,7 +43,7 @@ export const StringFieldWithUnit = ({
           }}
           className="w-[190px]"
         />
-        <span className="text-grey-dark-hover">{unit}</span>
+        <span className="text-grey-700">{unit}</span>
       </div>
       <div className="flex flex-col gap-1">
         {infoMessage !== undefined && (

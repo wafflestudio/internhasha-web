@@ -23,8 +23,8 @@ export const UpdateCoffeeChatStatusModal = ({
       isVisible={isVisible}
       onOutSlideClick={handleConfirm}
     >
-      <div className="flex flex-col text-center pt-4">
-        <p className="text-14 font-regular text-grey-darker">
+      <div className="flex flex-col pt-4 text-center">
+        <p className="text-14 font-regular text-grey-900">
           총 {selectedCount}개의 커피챗을{' '}
           {status === 'ACCEPTED' ? '성사시키' : '거절하'}시겠습니까?
         </p>

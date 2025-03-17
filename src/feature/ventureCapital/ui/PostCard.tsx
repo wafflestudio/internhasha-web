@@ -27,55 +27,50 @@ export const PostCard = ({ post, onDetailClick }: PostCardProps) => {
 
   return (
     <div
-      className="border border-gray-200 rounded-lg shadow-sm bg-white hover:shadow-md cursor-pointer transition-shadow"
+      className="cursor-pointer rounded-lg border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md"
       onClick={() => {
         onDetailClick(id);
       }}
     >
       {/* 직군 & 마감일 */}
-      <div className="flex h-[50px] relative justify-between items-center rounded-t-lg px-[22px] bg-gray-200">
+      <div className="relative flex h-[50px] items-center justify-between rounded-t-lg bg-gray-200 px-[22px]">
         <div className="flex items-center gap-2">
-          <img src={ICON_SRC.PERSON} className="w-6 h-6" />
-          <span className="text-grey-darker">{title}</span>
+          <img src={ICON_SRC.PERSON} className="h-6 w-6" />
+          <span className="text-grey-900">{title}</span>
         </div>
 
-        <span className="text-grey-normal-hover">
+        <span className="text-grey-800">
           {employmentEndDate === null
             ? '상시 채용'
             : getEmploymentStatus(employmentEndDate)}
         </span>
         {/* 삼각형 */}
-        <div
-          className="absolute text-lg bottom-[-8px] right-6
-                  w-0 h-0 border-l-[10px] border-l-transparent
-                  border-r-[10px] border-r-transparent
-                  border-t-[10px] border-t-gray-200"
-        ></div>
+        <div className="absolute bottom-[-8px] right-6 h-0 w-0 border-l-[10px] border-r-[10px] border-t-[10px] border-l-transparent border-r-transparent border-t-gray-200 text-lg"></div>
       </div>
 
       <section className="flex flex-col gap-4 px-[22px] py-[18px]">
         {/* 회사 정보 */}
         <div className="flex items-center gap-[14px]">
           {/* 회사 이미지 */}
-          <div className="w-[40px] h-[40px] rounded-lg bg-gray-100 overflow-hidden">
+          <div className="h-[40px] w-[40px] overflow-hidden rounded-lg bg-gray-100">
             <img
               src={`${API_BASE_URL}/${imageLink}`}
               alt={companyName}
-              className="w-full h-full object-cover"
+              className="h-full w-full object-cover"
             />
           </div>
           <div className="flex flex-col gap-1">
-            <h3 className="text-lg font-semibold text-grey-darker">
+            <h3 className="text-lg font-semibold text-grey-900">
               {companyName}
             </h3>
-            <span className="text-sm text-grey-normal">{author.name} 추천</span>
+            <span className="text-sm text-grey-300">{author.name} 추천</span>
           </div>
         </div>
 
-        <div className="w-full min-h-[62px] text-grey-dark-hover">{slogan}</div>
+        <div className="min-h-[62px] w-full text-grey-700">{slogan}</div>
 
         {/* 시리즈 및 투자 정보 */}
-        <div className="flex w-full justify-between py-1 gap-3">
+        <div className="flex w-full justify-between gap-3 py-1">
           <div className="flex items-center gap-2">
             <SeriesBadge series={series} />
             <Badge variant="secondary">

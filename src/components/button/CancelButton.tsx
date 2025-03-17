@@ -12,7 +12,7 @@ export const CancelButton = ({
     <div
       onClick={onClick}
       className={cn(
-        'flex justify-center items-center w-[20px] h-[20px] bg-grey-normal text-white rounded-full p-1 text-xs hover:bg-grey-normal-hover transition',
+        'flex justify-center items-center w-[20px] h-[20px] bg-grey-300 text-white rounded-full p-1 text-xs hover:bg-grey-400 transition',
         className,
       )}
     >

@@ -110,8 +110,8 @@ export const EmailVerifyForm = () => {
       <FormContainer id="EmailVerifyForm" handleSubmit={onSubmit}>
         <ProgressBar totalProgress={2} present={2} />
         <LabelContainer label="이메일" id="email">
-          <div className="flex gap-2 items-center">
-            <div className="flex relative w-full gap-1 items-center">
+          <div className="flex items-center gap-2">
+            <div className="relative flex w-full items-center gap-1">
               <Input
                 id="email"
                 value={snuMailPrefix.value}
@@ -121,7 +121,7 @@ export const EmailVerifyForm = () => {
                 placeholder="마이스누 아이디"
                 disabled={isPending}
               />
-              <span className="absolute top-[11px] right-[8px] text-sm text-grey-normal">
+              <span className="absolute right-[8px] top-[11px] text-sm text-grey-300">
                 @snu.ac.kr
               </span>
             </div>
@@ -145,7 +145,7 @@ export const EmailVerifyForm = () => {
         {sendSuccess && (
           <>
             <LabelContainer label="인증 코드" id="code">
-              <div className="flex relative gap-2">
+              <div className="relative flex gap-2">
                 <Input
                   id="code"
                   value={code.value}
@@ -156,7 +156,7 @@ export const EmailVerifyForm = () => {
                   disabled={isPending}
                 />
                 {timeLeft !== null && !verifySuccess && (
-                  <div className="absolute top-[9px] left-[210px]">
+                  <div className="absolute left-[210px] top-[9px]">
                     <FormErrorResponse>
                       {formatNumberToTime({ time: timeLeft })}
                     </FormErrorResponse>
@@ -193,10 +193,10 @@ export const EmailVerifyForm = () => {
         )}
         {sendSuccess && (
           <p className="text-center">
-            <span className="text-grey-normal">인증코드가 오지 않았다면? </span>
+            <span className="text-grey-300">인증코드가 오지 않았다면? </span>
             <a
               onClick={handleClickSendEmailCodeButton}
-              className=" underline-offset-4 hover:cursor-pointer hover:underline"
+              className="underline-offset-4 hover:cursor-pointer hover:underline"
             >
               재발송
             </a>

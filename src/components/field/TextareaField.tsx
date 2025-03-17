@@ -57,7 +57,7 @@ export const TextareaField = ({
       <textarea
         ref={textareaRef}
         placeholder={placeholder}
-        className="w-full text-sm border rounded-sm overflow-hidden px-[10px] py-[11px] placeholder:text-grey-normal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+        className="w-full text-sm border rounded-sm overflow-hidden px-[10px] py-[11px] placeholder:text-grey-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
         rows={minLine}
         value={input.value}
         disabled={isPending}
@@ -69,7 +69,7 @@ export const TextareaField = ({
         <div className="flex w-full justify-between">
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
           <span
-            className={`text-sm ${input.value.length > maxLength ? 'text-red' : 'text-grey-normal'}`}
+            className={`text-sm ${input.value.length > maxLength ? 'text-red-300' : 'text-grey-500'}`}
           >
             {input.value.length}/{maxLength}
           </span>

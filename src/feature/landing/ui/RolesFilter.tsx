@@ -57,7 +57,7 @@ export const RolesFilter = ({
   };
 
   return (
-    <div className="w-[220px] p-2 rounded-lg">
+    <div className="w-[220px] rounded-lg p-2">
       <div className="flex flex-col gap-2.5">
         {Object.keys(jobCategoryList).map((category: string) => {
           const typedCategory = category as keyof typeof jobCategoryList;
@@ -67,22 +67,21 @@ export const RolesFilter = ({
             <div key={typedCategory}>
               {/* 직무 제목 */}
               <div
-                className={`flex justify-between items-center cursor-pointer transition-colors duration-300
-                    px-5 py-2.5 rounded-lg ${activeCategory === typedCategory ? 'bg-white' : ''} hover:bg-grey-light-active`}
+                className={`flex cursor-pointer items-center justify-between rounded-lg px-5 py-2.5 transition-colors duration-300 ${activeCategory === typedCategory ? 'bg-white' : ''} hover:bg-grey-200`}
                 onClick={() => {
                   handleCategoryClick(typedCategory);
                 }}
               >
-                <span className="text-lg font-bold text-gray-800">
+                <span className="text-lg font-bold text-grey-900">
                   {typedCategory}
                 </span>
               </div>
 
               {/* 세부 카테고리 (체크박스) */}
               <div
-                className={`flex flex-col gap-3 mt-2 pl-4 overflow-hidden transition-all duration-300 ease-in-out ${
+                className={`mt-2 flex flex-col gap-3 overflow-hidden pl-4 transition-all duration-300 ease-in-out ${
                   activeCategory === typedCategory
-                    ? 'h-full opcity-100'
+                    ? 'opcity-100 h-full'
                     : 'max-h-0 opacity-0'
                 }`}
               >
@@ -99,7 +98,7 @@ export const RolesFilter = ({
                   />
                   <label
                     htmlFor={`select-all-${typedCategory}`}
-                    className="text-grey-darker cursor-pointer hover:text-grey-dark-hover font-semibold"
+                    className="transition-color cursor-pointer font-semibold text-grey-900 duration-200 hover:text-blue-300"
                   >
                     전체 선택
                   </label>
@@ -117,7 +116,7 @@ export const RolesFilter = ({
                     />
                     <label
                       htmlFor={role}
-                      className="text-grey-darker cursor-pointer hover:text-grey-dark-hover"
+                      className="transition-color cursor-pointer text-grey-900 duration-200 hover:text-blue-300"
                     >
                       {formatMinorJobToLabel(role)}
                     </label>
@@ -172,11 +171,11 @@ export const NarrowRolesFilter = ({
   };
 
   return (
-    <div className="block lg:hidden w-full p-2 rounded-lg">
+    <div className="block w-full rounded-lg p-2 lg:hidden">
       {/* 토글 드롭다운 */}
       <button
         onClick={handleClickDropdown}
-        className="w-full flex justify-between items-center px-6 py-3 bg-white rounded-lg shadow-sm"
+        className="flex w-full items-center justify-between rounded-lg bg-white px-6 py-3 shadow-sm"
       >
         <span className="text-lg font-bold text-gray-800">직무 유형 선택</span>
         <img
@@ -187,7 +186,7 @@ export const NarrowRolesFilter = ({
 
       {/* 드롭다운 내부 컨텐츠 */}
       <div
-        className={`mt-2 bg-white rounded-lg shadow-sm p-4 transition-all duration-300 ease-in-out overflow-hidden ${
+        className={`mt-2 overflow-hidden rounded-lg bg-white p-4 shadow-sm transition-all duration-300 ease-in-out ${
           isFilterDropdownOpen ? 'h-full opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
@@ -200,23 +199,20 @@ export const NarrowRolesFilter = ({
               key={typedCategory}
               className={`pb-4 ${
                 index !== Object.keys(jobCategoryList).length - 1
-                  ? 'border-b border-gray-300'
+                  ? 'border-b border-grey-200'
                   : ''
               }`}
             >
               {/* 직무 제목 */}
-              <div
-                className="flex justify-between items-center cursor-pointer
-                      px-6 py-3 rounded-lg"
-              >
-                <span className="text-md font-bold text-gray-800">
+              <div className="flex cursor-pointer items-center justify-between rounded-lg px-6 py-3">
+                <span className="text-md font-bold text-grey-900">
                   {typedCategory}
                 </span>
               </div>
 
               {/* 세부 카테고리 (체크박스) */}
-              <div className="">
-                <div className="flex flex-col gap-3 mt-2 pl-4">
+              <div>
+                <div className="mt-2 flex flex-col gap-3 pl-4">
                   {/* 전체 선택 체크박스 */}
                   <div className="flex items-center gap-2">
                     <Checkbox
@@ -230,7 +226,7 @@ export const NarrowRolesFilter = ({
                     />
                     <label
                       htmlFor={`select-all-${typedCategory}`}
-                      className="text-grey-darker cursor-pointer hover:text-grey-dark-hover font-semibold"
+                      className="transition-color cursor-pointer font-semibold text-grey-900 duration-200 hover:text-blue-300"
                     >
                       전체 선택
                     </label>
@@ -248,7 +244,7 @@ export const NarrowRolesFilter = ({
                       />
                       <label
                         htmlFor={role}
-                        className="text-grey-darker cursor-pointer hover:text-grey-dark-hover"
+                        className="transition-color cursor-pointer text-grey-900 duration-200 hover:text-blue-300"
                       >
                         {formatMinorJobToLabel(role)}
                       </label>

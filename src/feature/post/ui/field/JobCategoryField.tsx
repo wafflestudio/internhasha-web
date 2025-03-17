@@ -53,18 +53,18 @@ export const JobCategoryField = ({
           : '직무를 선택해주세요.'}
         <img
           src={ICON_SRC.ARROW}
-          className={`${showFilter === 'CATEGORY' ? 'rotate-0' : 'rotate-180'} transition-rotate ease-in-out duration-300`}
+          className={`${showFilter === 'CATEGORY' ? 'rotate-0' : 'rotate-180'} transition-rotate duration-300 ease-in-out`}
         />
       </Button>
       <section className="relative">
         <div
-          className={`absolute left-0 top-0 flex gap-2 w-[364px] z-50 rounded-lg bg-white shadow-lg overflow-hidden transition-all duration-300 ${
+          className={`absolute left-0 top-0 z-50 flex w-[364px] gap-2 overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-300 ${
             showFilter === 'CATEGORY' && !isPending
-              ? 'opacity-100 scale-100'
-              : 'opacity-0 pointer-events-none'
+              ? 'scale-100 opacity-100'
+              : 'pointer-events-none opacity-0'
           }`}
         >
-          <div className="flex flex-col gap-2 w-[162px] px-2 border-r">
+          <div className="flex w-[162px] flex-col gap-2 border-r px-2">
             {JOB_MAJOR_CATEGORIES.map((category) => {
               const formattedLabel = formatMajorJobToLabel(category);
 
@@ -78,14 +78,14 @@ export const JobCategoryField = ({
                     e.preventDefault();
                     input.major.onChange(category as JobMajorCategory);
                   }}
-                  className={`text-grey-darker justify-start ${input.major.value === category ? 'bg-grey-light font-bold' : ''}`}
+                  className={`justify-start ${input.major.value === category ? 'bg-grey-50 font-bold' : ''}`}
                 >
                   {formatMajorJobToLabel(category)}
                 </Button>
               );
             })}
           </div>
-          <div className="flex flex-col gap-2 w-[202px]">
+          <div className="flex w-[202px] flex-col gap-2">
             {JOB_CATEGORY_MAP[input.major.value].map((subCategory) => (
               <Button
                 variant="ghost"
@@ -96,7 +96,7 @@ export const JobCategoryField = ({
                   input.minor.onChange(subCategory);
                   onClick();
                 }}
-                className={`text-grey-darker justify-start ${input.minor.value === subCategory ? 'bg-grey-light font-bold' : ''}`}
+                className={`justify-start ${input.minor.value === subCategory ? 'bg-grey-50 font-bold' : ''}`}
               >
                 {formatMinorJobToLabel(subCategory)}
               </Button>

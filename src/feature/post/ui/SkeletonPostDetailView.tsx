@@ -2,37 +2,37 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export const SkeletonPostDetailView = () => {
   return (
-    <div className="max-w-screen-md mx-auto gap-12 p-10 flex flex-col md:flex-row">
-      <div className="flex flex-col gap-5 flex-1">
+    <div className="mx-auto flex max-w-screen-md flex-col gap-12 p-10 md:flex-row">
+      <div className="flex flex-1 flex-col gap-5">
         {/* 헤더 */}
-        <div className="flex flex-col justify-between items-start gap-2">
+        <div className="flex flex-col items-start justify-between gap-2">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gray-200 rounded-lg object-cover" />
+            <div className="h-10 w-10 rounded-lg bg-grey-200 object-cover" />
             <Skeleton className="h-6 w-40" />
           </div>
-          <div className="flex justify-between w-full">
+          <div className="flex w-full justify-between">
             <Skeleton className="h-12 w-60" />
-            <Skeleton className="w-[30px] h-[30px] rounded-full" />
+            <Skeleton className="h-[30px] w-[30px]" />
           </div>
         </div>
 
         {/* 회사 소개 */}
         <div className="flex flex-col gap-10">
-          <div className="border-none flex flex-col gap-5 p-4 bg-gray-100 rounded-lg">
+          <div className="flex flex-col gap-5 rounded-lg border-none p-4">
             <Skeleton className="h-6 w-32" />
             <Skeleton className="h-5 w-full" />
           </div>
 
           {/* 투자 정보 */}
-          <div className="flex flex-col gap-4 space-y-4 py-6 px-4 sm:py-6 sm:px-8 rounded-lg bg-gray-100">
-            <div className="flex flex-col gap-8 sm:gap-16 xs:flex-row">
-              <div className="flex items-center flex-1 gap-4">
+          <div className="flex flex-col gap-4 space-y-4 rounded-lg bg-grey-50 px-4 py-6 sm:px-8 sm:py-6">
+            <div className="flex flex-col gap-8 xs:flex-row sm:gap-16">
+              <div className="flex flex-1 items-center gap-4">
                 <Skeleton className="h-[20px] w-[80px]" />
-                <Skeleton className="h-[30px] w-[120px] rounded-full" />
+                <Skeleton className="h-[30px] w-[120px]" />
               </div>
-              <div className="flex items-center flex-1 gap-4">
+              <div className="flex flex-1 items-center gap-4">
                 <Skeleton className="h-[20px] w-[80px]" />
-                <Skeleton className="h-[30px] w-[120px] rounded-full" />
+                <Skeleton className="h-[30px] w-[120px]" />
               </div>
             </div>
             {/* 투자사 */}
@@ -48,12 +48,12 @@ export const SkeletonPostDetailView = () => {
             {[1, 2].map((_, index) => (
               <div
                 key={index}
-                className="flex flex-col gap-5 items-center xs:flex-row"
+                className="flex flex-col items-center gap-5 xs:flex-row"
               >
                 <Skeleton className="h-[20px] w-[80px]" />
                 <Skeleton
                   key={index}
-                  className="flex items-center px-3 py-2 gap-1 rounded-lg bg-gray-200 h-[40px] w-[80px]"
+                  className="flex h-[40px] w-[80px] items-center gap-1 rounded-lg bg-grey-200 px-3 py-2"
                 />
               </div>
             ))}
@@ -62,12 +62,9 @@ export const SkeletonPostDetailView = () => {
           {/* 태그 */}
           <section>
             <Skeleton className="h-[20px] w-[80px]" />
-            <div className="flex flex-wrap gap-2 mt-[10px]">
+            <div className="mt-[10px] flex flex-wrap gap-2">
               {[1, 2, 3, 4, 5].map((_, index) => (
-                <Skeleton
-                  key={index}
-                  className="bg-gray-200 h-[30px] w-[100px]"
-                />
+                <Skeleton key={index} className="h-[30px] w-[100px]" />
               ))}
             </div>
           </section>
@@ -76,12 +73,12 @@ export const SkeletonPostDetailView = () => {
         {/* 상세 공고 글 */}
         <section className="flex flex-col gap-7">
           <Skeleton className="h-[30px] w-[200px]" />
-          <Skeleton className="bg-gray-200 px-6 py-4 h-[150px]" />
+          <Skeleton className="h-[150px] px-6 py-4" />
         </section>
       </div>
 
       {/* 채용 정보 및 버튼 */}
-      <div className="flex flex-col flex-1 w-full gap-5 my-36">
+      <div className="my-36 flex w-full flex-1 flex-col gap-5">
         {/* 채용 마감일 */}
         <Skeleton className="h-[20px] w-full" />
 
@@ -89,7 +86,9 @@ export const SkeletonPostDetailView = () => {
         {[1, 2].map((_, index) => (
           <Skeleton
             key={index}
-            className={`bg-gray-${index === 0 ? '600' : '200'} h-[50px]`}
+            className={
+              index === 0 ? 'h-[50px] bg-grey-800' : 'h-[50px] bg-grey-200'
+            }
           />
         ))}
       </div>

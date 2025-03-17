@@ -33,7 +33,7 @@ export const DownloadButtonWithPresignedUrl = ({
       href={downloadPresignedUrl.data.url}
       target="_blank"
       download={true}
-      className="flex items-center w-fit px-[10px] py-[6px] gap-1 rounded-sm bg-grey-light"
+      className="flex items-center w-fit px-[10px] py-[6px] gap-1 rounded-sm bg-grey-50"
       rel="noreferrer"
     >
       {children}

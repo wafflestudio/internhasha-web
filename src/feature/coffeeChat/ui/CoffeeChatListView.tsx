@@ -27,12 +27,12 @@ export const CoffeeChatListView = () => {
   }
 
   return (
-    <div className="flex flex-col w-full gap-3">
+    <div className="flex w-full flex-col gap-3 text-grey-900">
       {coffeeChatListData !== undefined ? (
         coffeeChatListData.data.coffeeChatList.map((coffeeChat) => (
           <div
             key={coffeeChat.id}
-            className="flex px-6 h-[50px] justify-between items-center cursor-pointer bg-white rounded-xl duration-300 hover:shadow-md"
+            className="flex h-[50px] cursor-pointer items-center justify-between rounded-xl bg-white px-6 duration-300 hover:shadow-md"
             onClick={() => {
               toCoffeeChatDetail({ coffeeChatId: coffeeChat.id });
             }}
@@ -40,12 +40,12 @@ export const CoffeeChatListView = () => {
             <div className="flex items-center gap-2">
               {/* TODO: changed 말고 다른 read 변수에 따라 변해야함 */}
               {coffeeChat.changed && <img src={ICON_SRC.BADGES} />}
-              <span className="text-grey-darker font-regular text-14 truncate">
+              <span className="truncate text-14 font-regular">
                 {coffeeChat.company.name}
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-grey-normal">
+              <span className="text-sm text-grey-300">
                 {getShortenedDate(coffeeChat.createdAt)}
               </span>
               <TagCoffeeChat coffeeChatStatus={coffeeChat.coffeeChatStatus} />
@@ -57,10 +57,10 @@ export const CoffeeChatListView = () => {
           {Array.from({ length: 12 }).map((_, idx) => (
             <div
               key={`loading-${idx}`}
-              className="flex px-[24px] h-[50px] justify-between items-center cursor-pointer bg-white rounded-md"
+              className="flex h-[50px] cursor-pointer items-center justify-between rounded-md bg-white px-[24px]"
             >
-              <Skeleton className="w-[350px] h-[18px]" />
-              <Skeleton className="w-[80px] h-6" />
+              <Skeleton className="h-[18px] w-[350px]" />
+              <Skeleton className="h-6 w-[80px]" />
             </div>
           ))}
         </>

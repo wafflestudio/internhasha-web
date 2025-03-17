@@ -50,7 +50,7 @@ export const ExternalLinkField = ({
         {input.value.map((item, index) => (
           <div
             key={`external-link-${index}`}
-            className="flex relative flex-col gap-2 p-3 border shadow-sm rounded-md"
+            className="flex relative flex-col gap-2 p-3 border border-grey-200 rounded-md"
           >
             <Input
               value={item.description}

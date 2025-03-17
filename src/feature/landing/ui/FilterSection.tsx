@@ -314,14 +314,14 @@ export const FilterSection = ({
                   }
                   className="flex flex-col gap-[10px]"
                 >
-                  <div className="flex gap-[10px] text-sm text-grey-darker">
+                  <div className="flex gap-[10px] text-sm text-grey-900">
                     <RadioGroupItem value="ALL" id="recruiting-all" />
                     <Label htmlFor="recruiting-all">전체</Label>
                   </div>
                   {RECRUITING_FILTER_VALUE.map((option, idx) => (
                     <div
                       key={`recruiting-filter-${idx}`}
-                      className="flex gap-[10px] text-sm text-grey-darker"
+                      className="flex gap-[10px] text-sm text-grey-900"
                     >
                       <RadioGroupItem
                         value={String(option.value)}
@@ -378,7 +378,7 @@ export const FilterSection = ({
             <PopoverContent>
               <div className="flex flex-col p-5 gap-[30px]">
                 <div className="flex flex-col gap-[10px]">
-                  <div className="flex gap-[10px] text-sm text-grey-darker">
+                  <div className="flex gap-[10px] text-sm text-grey-900">
                     <Checkbox
                       value="ALL"
                       id="series-all"
@@ -392,7 +392,7 @@ export const FilterSection = ({
                   {SERIES_FILTER_VALUE.map((option, idx) => (
                     <div
                       key={`series-filter-${idx}`}
-                      className="flex gap-[10px] text-sm text-grey-darker"
+                      className="flex gap-[10px] text-sm text-grey-900"
                     >
                       <Checkbox
                         value={option.value}
@@ -460,14 +460,14 @@ export const FilterSection = ({
                   value={investAmountSelect}
                   className="flex flex-col gap-[10px]"
                 >
-                  <div className="flex gap-[10px] text-sm text-grey-darker">
+                  <div className="flex gap-[10px] text-sm text-grey-900">
                     <RadioGroupItem value="ALL" id="invest-amount-all" />
                     <Label htmlFor="invest-amount-all">전체</Label>
                   </div>
                   {INVEST_AMOUNT_VALUE.map((option, idx) => (
                     <div
                       key={`invest-amount-filter-${idx}`}
-                      className="flex gap-[10px] text-sm text-grey-darker"
+                      className="flex gap-[10px] text-sm text-grey-900"
                     >
                       <RadioGroupItem
                         value={option.value}
@@ -499,7 +499,7 @@ export const FilterSection = ({
           </Popover>
         </div>
         <Button
-          variant="secondary"
+          variant="ghost"
           size="sm"
           className="px-2"
           onClick={handleClickAllResetButton}
@@ -547,7 +547,7 @@ export const FilterSection = ({
               {ORDER_FILTER_VALUE.map((option, idx) => (
                 <div
                   key={`order-filter-${idx}`}
-                  className="flex gap-[10px] text-sm text-grey-darker"
+                  className="flex gap-[10px] text-sm text-grey-900"
                 >
                   <RadioGroupItem
                     value={String(option.value)}

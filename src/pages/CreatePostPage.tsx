@@ -30,7 +30,7 @@ export const CreatePostPage = () => {
     return (
       <div className="min-h-screen">
         <GlobalNavigationBar />
-        <div className="flex flex-col w-[280px] sm:w-[700px] justify-center gap-[50px] mx-auto my-[30px]">
+        <div className="mx-auto my-[30px] flex w-[280px] flex-col justify-center gap-[50px] sm:w-[700px]">
           <h2 className="text-2xl font-bold">회사 정보 작성</h2>
           <CreatePostForm companyId={companyId} />
         </div>

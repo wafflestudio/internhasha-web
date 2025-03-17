@@ -42,7 +42,7 @@ export const HashtagField = ({
           {input.value.map((tag, index) => (
             <div
               key={`tag-${tag}`}
-              className="inline-flex items-center gap-1 bg-grey-light-active px-2 py-1 rounded-md"
+              className="inline-flex items-center gap-1 bg-grey-100 px-2 py-1 rounded-md"
             >
               <span className="text-sm">{tag}</span>
               <CancelButton

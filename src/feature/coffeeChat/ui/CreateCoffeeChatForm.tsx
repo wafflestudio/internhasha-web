@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { StringField } from '@/components/field/StringField';
+import { TextareaField } from '@/components/field/TextareaField';
 import { FormContainer } from '@/components/form/FormContainer';
-import { LabelContainer } from '@/components/label/LabelContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
@@ -17,9 +18,9 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const CreateCoffeeChatForm = ({ postId }: { postId: string }) => {
+  const [isSubmit, setIsSubmit] = useState(false);
   const [isCancel, setIsCancel] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
-  const [phoneNumberTouched, setPhoneNumberTouched] = useState(false);
 
   const { createCoffeeChat, isPending } = useCreateCoffeeChat({
     setResponseMessage,
@@ -30,10 +31,8 @@ export const CreateCoffeeChatForm = ({ postId }: { postId: string }) => {
   const { toPost } = useRouteNavigation();
 
   const handleSubmit = () => {
-    const isPhoneNumberValid = !phoneNumber.isError;
-    const isContentsValid = !contents.isError;
-
-    if (!isPhoneNumberValid || !isContentsValid) {
+    setIsSubmit(true);
+    if (phoneNumber.isError || contents.isError) {
       return;
     }
 
@@ -51,116 +50,69 @@ export const CreateCoffeeChatForm = ({ postId }: { postId: string }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center gap-8 px-10">
-      <div className="w-full max-w-2xl">
-        <p className="w-full text-left text-3xl py-7 font-bold text-gray-700">
-          커피챗 신청서 작성
-        </p>
-        <FormContainer
-          id="CreateCoffeeChatForm"
-          handleSubmit={handleSubmit}
-          className={'text-sm w-full bg-white rounded-lg'}
-        >
-          <LabelContainer
-            label="전화번호"
-            id="phoneNumber"
-            className={'font-medium text-gray-700 w-full'}
-          >
-            <input
-              id="phoneNumber"
-              value={phoneNumber.value}
-              disabled={isPending}
-              onChange={(e) => {
-                phoneNumber.onChange(e.target.value);
-                setPhoneNumberTouched(true);
-              }}
-              placeholder="010-0000-0000"
-              className="w-full border border-gray-300 rounded-md
-                focus:ring-blue-500 focus:border-blue-500
-                placeholder:text-gray-400 placeholder:top-0 placeholder:left-0
-                p-3 resize-none overflow-auto"
-            />
-            {phoneNumberTouched && phoneNumber.isError && (
-              <FormErrorResponse>
-                전화번호 양식에 맞게 작성해주세요. (예시: 010-0000-0000)
-              </FormErrorResponse>
-            )}
-          </LabelContainer>
+    <>
+      <FormContainer handleSubmit={handleSubmit}>
+        <StringField
+          label="전화번호"
+          input={phoneNumber}
+          isPending={isPending}
+          isSubmit={isSubmit}
+          isSubmitError={phoneNumber.isError}
+          placeholder="010-0000-0000"
+          errorMessage="전화번호 양식에 맞게 작성해주세요. (예시: 010-0000-0000)"
+          required={true}
+        />
 
-          <LabelContainer
-            label="내용"
-            id="contents"
-            className="font-medium text-gray-700 h-80"
-          >
-            <textarea
-              id="contents"
-              value={contents.value}
-              disabled={isPending}
-              onChange={(e) => {
-                contents.onChange(e.target.value);
-              }}
-              placeholder="간단한 자기소개, 커피챗 신청 사유, 가능한 시간대를 작성해주세요"
-              className="w-full h-full border border-gray-300 rounded-md
-                focus:ring-blue-500 focus:border-blue-500
-                placeholder:text-gray-400 placeholder:top-0 placeholder:left-0
-                p-3 resize-none overflow-auto"
-            />
-            <div className="flex flex-col w-full gap-2">
-              <span
-                className={`text-sm text-right ${contents.value.length > CONTENTS_MAX_LENGTH ? 'text-red' : 'text-grey-normal'}`}
-              >
-                {contents.value.length}/{CONTENTS_MAX_LENGTH}
-              </span>
-            </div>
-          </LabelContainer>
+        <TextareaField
+          label="내용"
+          input={contents}
+          isPending={isPending}
+          isSubmit={isSubmit}
+          isSubmitError={contents.isError}
+          maxLength={CONTENTS_MAX_LENGTH}
+          placeholder="간단한 자기소개, 커피챗 신청 사유, 가능한 시간대를 작성해주세요"
+          errorMessage={`내용은 ${CONTENTS_MAX_LENGTH}자 이내로 작성해주세요.`}
+          minLine={7}
+        />
 
-          <div className="flex gap-2">
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={(e) => {
-                e.preventDefault();
-                handleClickCancelButton();
-              }}
-              disabled={isPending}
-              className="flex-1 px-4 py-2 bg-gray-100 text-gray-600 rounded-md hover:bg-gray-200"
-            >
-              취소
-            </Button>
-            <Button
-              type="submit"
-              variant="default"
-              form="CreateCoffeeChatForm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleSubmit();
-              }}
-              disabled={
-                isPending ||
-                phoneNumber.value === '' ||
-                contents.value === '' ||
-                phoneNumber.isError ||
-                contents.isError
-              }
-              className="flex-1 px-4 py-2 rounded-md"
-            >
-              등록
-            </Button>
-          </div>
-          {responseMessage !== '' && (
-            <FormErrorResponse>{responseMessage}</FormErrorResponse>
-          )}
-          {isCancel && (
-            <CancelCheckModal
-              onClose={() => {
-                toPost({ postId });
-              }}
-              onCancel={closeCancelModal}
-            />
-          )}
-        </FormContainer>
-      </div>
-    </div>
+        {responseMessage !== '' && (
+          <FormErrorResponse>{responseMessage}</FormErrorResponse>
+        )}
+
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={(e) => {
+              e.preventDefault();
+              handleClickCancelButton();
+            }}
+            disabled={isPending}
+            className="flex-1"
+          >
+            취소
+          </Button>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+            disabled={isPending}
+            className="flex-1"
+          >
+            등록
+          </Button>
+        </div>
+      </FormContainer>
+      {isCancel && (
+        <CancelCheckModal
+          onClose={() => {
+            toPost({ postId });
+          }}
+          onCancel={closeCancelModal}
+        />
+      )}
+    </>
   );
 };
 

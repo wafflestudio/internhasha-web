@@ -50,7 +50,7 @@ export const ImageField = ({
   return (
     <LabelContainer label={label} required={required}>
       {input.value !== null && !input.isError ? (
-        <div className="relative w-[100px] h-[100px] border border-grey-light-hover rounded-md">
+        <div className="relative w-[100px] h-[100px] border border-grey-200 rounded-md">
           <img
             src={input.value.url}
             alt="썸네일"
@@ -69,10 +69,10 @@ export const ImageField = ({
       ) : (
         <label
           htmlFor="fileInput"
-          className="flex flex-col gap-1 justify-center items-center w-[100px] h-[100px] bg-grey-light-hover rounded-md"
+          className="flex flex-col gap-1 justify-center items-center w-[100px] h-[100px] bg-grey-100 rounded-md"
         >
           <img src={ICON_SRC.CAMERA} />
-          <span className="text-grey-normal-hover text-xs">이미지 등록</span>
+          <span className="text-grey-400 text-xs">이미지 등록</span>
         </label>
       )}
       <input

@@ -47,7 +47,7 @@ export const SloganField = ({
       <textarea
         ref={textareaRef}
         placeholder={placeholder}
-        className="w-full text-sm min-h-[auto] max-h-[240px] resize-none overflow-hidden border rounded-sm px-[10px] py-[11px] placeholder:text-grey-normal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+        className="max-h-[240px] min-h-[auto] w-full resize-none overflow-hidden rounded-sm border px-[10px] py-[11px] text-sm placeholder:text-grey-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
         value={input.value}
         rows={1}
         disabled={isPending}
@@ -59,7 +59,7 @@ export const SloganField = ({
         <div className="flex w-full justify-between">
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
           <span
-            className={`text-sm ${input.value.length > maxLength ? 'text-red' : 'text-grey-normal'}`}
+            className={`text-sm ${input.value.length > maxLength ? 'text-red-300' : 'text-grey-500'}`}
           >
             {input.value.length}/{maxLength}
           </span>
