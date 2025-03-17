@@ -50,7 +50,7 @@ export const ApplicantLocalLogInForm = ({
     <>
       <FormContainer id="SignInForm" handleSubmit={onSubmit}>
         <div className="flex flex-col gap-[10px]">
-          <div className="flex relative w-full gap-1 items-center">
+          <div className="relative flex w-full items-center gap-1">
             <Input
               id="snuMail"
               value={snuMailPrefix.value}
@@ -60,7 +60,7 @@ export const ApplicantLocalLogInForm = ({
               placeholder="마이스누 아이디"
               disabled={isPending}
             />
-            <span className="absolute top-[12px] right-[8px] text-sm text-grey-normal">
+            <span className="absolute right-[8px] top-[12px] text-sm text-grey-300">
               @snu.ac.kr
             </span>
           </div>

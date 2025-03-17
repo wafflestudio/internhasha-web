@@ -14,14 +14,14 @@ export const NoCoffeeChat = () => {
   const isCompany = role === 'COMPANY';
 
   return (
-    <div className="flex flex-col h-[300px] px-6 py-12 bg-white rounded-xl justify-around items-center">
-      <div className="flex flex-col text-center gap-4">
-        <h2 className="text-black text-22 font-regular">
+    <div className="flex h-[300px] flex-col items-center justify-around rounded-xl bg-white px-6 py-12">
+      <div className="flex flex-col gap-4 text-center">
+        <h2 className="text-22 font-regular text-grey-900">
           {isCompany
             ? '아직 신청된 커피챗이 존재하지 않습니다.'
             : '아직 커피챗을 신청하지 않았어요!'}
         </h2>
-        <p className="text-13 text-grey-darker font-regular">
+        <p className="text-13 font-regular text-grey-700">
           {isCompany
             ? '커피챗 신청이 오면 이메일로 알림을 전송해드려요!'
             : '원하는 기업에 커피챗을 신청해봐요.'}

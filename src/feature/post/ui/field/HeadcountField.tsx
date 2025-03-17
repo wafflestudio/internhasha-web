@@ -43,7 +43,7 @@ export const HeadcountField = ({
             input.onChange(e.target.value);
           }}
         />
-        <span className="text-grey-dark-hover">{unit}</span>
+        <span className="text-grey-500">{unit}</span>
       </div>
       <div className="flex flex-col gap-1">
         {infoMessage !== undefined && (

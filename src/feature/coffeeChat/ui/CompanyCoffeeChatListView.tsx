@@ -37,9 +37,8 @@ export const CompanyCoffeeChatListView = () => {
     );
   }
   if (
-    coffeeChatListData?.type === 'success' &&
-    Array.isArray(coffeeChatListData.data) &&
-    coffeeChatListData.data.length === 0
+    coffeeChatListData !== undefined &&
+    coffeeChatListData.data.coffeeChatList.length === 0
   ) {
     return <NoCoffeeChat />;
   }
@@ -75,8 +74,8 @@ export const CompanyCoffeeChatListView = () => {
   };
 
   return (
-    <div className="flex flex-col w-full gap-3">
-      <div className="flex gap-[18px] justify-end mb-[18px]">
+    <div className="flex w-full flex-col gap-3">
+      <div className="mb-[18px] flex justify-end gap-[18px]">
         <CoffeeChatButton
           variant="accept"
           onClick={() => {
@@ -108,7 +107,7 @@ export const CompanyCoffeeChatListView = () => {
             />
             <div
               key={coffeeChat.id}
-              className="flex flex-1 h-[50px] px-6 justify-between items-center cursor-pointer bg-white rounded-xl duration-300 hover:shadow-md px-4"
+              className="flex h-[50px] flex-1 cursor-pointer items-center justify-between rounded-xl bg-white px-4 px-6 duration-300 hover:shadow-md"
               onClick={() => {
                 toCoffeeChatDetail({ coffeeChatId: coffeeChat.id });
               }}
@@ -117,15 +116,15 @@ export const CompanyCoffeeChatListView = () => {
                 {coffeeChat.coffeeChatStatus === 'WAITING' && (
                   <img src={ICON_SRC.BADGES} />
                 )}
-                <span className="text-grey-darker font-regular text-14 truncate">
+                <span className="truncate text-14 font-regular text-grey-900">
                   {coffeeChat.applicant.name}
                 </span>
-                <span className="text-grey-dark-hover font-regular text-12 truncate">
+                <span className="truncate text-12 font-regular text-grey-700">
                   {coffeeChat.title}
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-grey-normal">
+                <span className="text-sm text-grey-300">
                   {getShortenedDate(coffeeChat.createdAt)}
                 </span>
                 <TagCoffeeChat coffeeChatStatus={coffeeChat.coffeeChatStatus} />
@@ -138,10 +137,10 @@ export const CompanyCoffeeChatListView = () => {
           {Array.from({ length: 12 }).map((_, idx) => (
             <div
               key={`loading-${idx}`}
-              className="flex px-[24px] h-[50px] justify-between items-center cursor-pointer bg-white rounded-md"
+              className="flex h-[50px] cursor-pointer items-center justify-between rounded-md bg-white px-[24px]"
             >
-              <Skeleton className="w-[350px] h-[18px]" />
-              <Skeleton className="w-[80px] h-6" />
+              <Skeleton className="h-[18px] w-[350px]" />
+              <Skeleton className="h-6 w-[80px]" />
             </div>
           ))}
         </>

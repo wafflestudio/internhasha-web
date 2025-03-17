@@ -51,8 +51,8 @@ export const PdfField = ({
     <LabelContainer label={label} required={required}>
       {input.value !== null && !input.isError ? (
         <div className="flex gap-2">
-          <div className="flex gap-2 jusify-between items-center w-full px-[12px] py-[11px] border rounded-md">
-            <p className="text-sm text-grey-normal">{input.value.file.name}</p>
+          <div className="jusify-between flex w-full items-center gap-2 rounded-md border border-grey-200 px-[12px] py-[11px]">
+            <p className="text-sm text-grey-300">{input.value.file.name}</p>
           </div>
           <Button disabled={isPending} onClick={removePdf}>
             삭제
@@ -61,10 +61,10 @@ export const PdfField = ({
       ) : (
         <label
           htmlFor="pdfInput"
-          className="flex gap-2 items-center w-full px-[12px] py-[11px] border rounded-md"
+          className="flex w-full items-center gap-2 rounded-md border border-grey-200 px-[12px] py-[11px]"
         >
           <img src={ICON_SRC.UPLOAD} />
-          <span className="text-sm text-grey-normal">
+          <span className="text-sm text-grey-300">
             PDF 파일만 업로드 가능해요.
           </span>
         </label>

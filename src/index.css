@@ -58,11 +58,8 @@
   }
 }
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
-    @apply bg-background text-foreground;
+    @apply text-14 font-medium leading-[1.5];
     @apply font-pretendard;
   }
 }

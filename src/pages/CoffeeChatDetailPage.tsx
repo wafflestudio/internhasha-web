@@ -12,7 +12,7 @@ export const CoffeeChatDetailPage = () => {
     return <RouteNavigator link={PATH.MY_PAGE} />;
   }
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-grey-50">
       <GlobalNavigationBar />
       <CoffeeChatDetailView coffeeChatId={coffeeChatId} />
     </div>

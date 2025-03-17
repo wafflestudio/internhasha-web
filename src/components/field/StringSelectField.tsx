@@ -45,7 +45,7 @@ export const StringSelectField = <T extends string>({
       >
         <div>
           <SelectTrigger
-            className={`${input.value !== 'NONE' ? 'text-grey-dark' : 'text-grey-normal'} w-[190px]`}
+            className={`${input.value !== 'NONE' ? 'text-grey-900' : 'text-grey-300'} w-[190px]`}
           >
             {input.value !== 'NONE'
               ? formatter(input.value)
@@ -53,7 +53,7 @@ export const StringSelectField = <T extends string>({
           </SelectTrigger>
           <SelectContent>
             {inputList.map((item, idx) => (
-              <SelectItem key={idx} value={item} className="text-grey-darker">
+              <SelectItem key={idx} value={item} className="text-grey-900">
                 {item !== 'NONE' && formatter(item)}
               </SelectItem>
             ))}

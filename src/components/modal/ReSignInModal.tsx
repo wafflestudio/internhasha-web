@@ -11,7 +11,7 @@ export const ReSignInModal = () => {
 
   return (
     <ModalBackgroundWithHeader>
-      <div className="flex flex-col text-center gap-[14px]">
+      <div className="flex flex-col gap-[14px] text-center">
         <h2 className="text-xl font-bold">인증정보가 올바르지 않아요</h2>
         <p>다시 로그인해 주세요</p>
       </div>

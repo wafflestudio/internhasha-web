@@ -5,13 +5,13 @@ import type { ReactNode } from 'react';
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { cn } from '@/lib/utils';
 
-const backgroundVariants = cva(
+const backgroundClassName = cva(
   'fixed inset-0 flex items-center justify-center',
   {
     variants: {
       variant: {
-        default: 'bg-grey-light-active',
-        transparent: 'bg-grey-light-active/50',
+        default: 'bg-grey-50',
+        transparent: 'bg-grey-900/50',
       },
     },
     defaultVariants: {
@@ -22,7 +22,7 @@ const backgroundVariants = cva(
 
 export interface ModalProps
   extends React.ButtonHTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof backgroundVariants> {
+    VariantProps<typeof backgroundClassName> {
   isVisible?: boolean;
   onOutSlideClick?: () => void;
 }
@@ -35,11 +35,11 @@ export const ModalFloatBackground = ({
 }: ModalProps) => {
   return (
     <div
-      className={cn(backgroundVariants({ variant }))}
+      className={cn(backgroundClassName({ variant }))}
       onClick={onOutSlideClick}
     >
       <div
-        className={`flex flex-col gap-[60px] bg-white rounded-2xl shadow-lg max-w-sm w-full p-6 text-center ${isVisible === undefined || isVisible ? 'animate-popup' : 'animate-popout'}`}
+        className={`flex w-full max-w-sm flex-col gap-[60px] rounded-2xl bg-white p-6 text-center shadow-lg ${isVisible === undefined || isVisible ? 'animate-popup' : 'animate-popout'}`}
         onClick={(e) => {
           e.stopPropagation();
         }}
@@ -58,15 +58,15 @@ export const ModalBackgroundWithHeader = ({
   className?: string;
 }) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <GlobalNavigationBar />
       <div
         className={cn(
-          'flex flex-col flex-1 items-center justify-center bg-gray-100',
+          'flex flex-1 flex-col items-center justify-center bg-grey-50',
           className,
         )}
       >
-        <div className="flex flex-col w-full max-w-md pt-10 pb-[30px] px-[34px] gap-5 bg-white rounded-2xl shadow-md">
+        <div className="flex w-full max-w-md flex-col gap-5 rounded-2xl bg-white px-[34px] pb-[30px] pt-10 shadow-md">
           {children}
         </div>
       </div>

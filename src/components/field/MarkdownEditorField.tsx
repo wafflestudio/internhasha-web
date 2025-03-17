@@ -42,11 +42,11 @@ export const MarkdownEditorField = ({
             input.onChange(value ?? '');
           }}
         />
-        <div className="flex flex-col gap-1 mt-1">
+        <div className="mt-1 flex flex-col gap-1">
           <div className="flex w-full justify-between">
             <FormInfoResponse>{infoMessage}</FormInfoResponse>
             <span
-              className={`text-sm ${input.value.length > maxLength ? 'text-red' : 'text-grey-normal'}`}
+              className={`text-sm ${input.value.length > maxLength ? 'text-red-300' : 'text-grey-500'}`}
             >
               {input.value.length}/{maxLength}
             </span>

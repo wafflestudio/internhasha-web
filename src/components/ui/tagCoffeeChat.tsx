@@ -8,14 +8,14 @@ import {
 import { cn } from '@/lib/utils';
 
 const tagClassName = cva(
-  'inline-flex items-center rounded-sm px-2 py-1.5 text-sm font-regular text-13 text transition-colors border-transparent focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  'text inline-flex items-center rounded-sm border-transparent px-2 py-1.5 text-13 text-sm font-regular transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
-        pending: 'bg-yellow-light-hover text-yellow-darker',
-        accepted: 'bg-green-light-hover text-green-darker',
-        canceled: 'bg-red-light-hover text-grey-darker',
-        rejected: 'bg-red-light-hover text-red-darker',
+        pending: 'bg-yellow-100 text-yellow-900',
+        accepted: 'bg-green-100 text-green-900',
+        canceled: 'bg-red-100 text-grey-900',
+        rejected: 'bg-red-100 text-red-900',
       },
     },
     defaultVariants: {

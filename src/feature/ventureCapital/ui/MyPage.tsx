@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -23,32 +22,32 @@ export const MyPage = () => {
   // const { name, snuMail, phoneNumber } = myInfoData.data;
 
   return (
-    <div className="w-full flex flex-col gap-4">
-      <Card>
+    <div className="flex w-full flex-col gap-4">
+      <div>
         {myInfoData !== undefined ? (
-          <CardContent className="flex flex-col p-4 gap-2">
-            <p className="p-2 border-b-[1px]">이름: {myInfoData.data.name}</p>
-            <p className="p-2 border-b-[1px]">
+          <div className="flex flex-col gap-2 p-4">
+            <p className="border-b-[1px] p-2">이름: {myInfoData.data.name}</p>
+            <p className="border-b-[1px] p-2">
               스누메일: {myInfoData.data.snuMail}
             </p>
-            <p className="p-2 border-b-[1px]">
+            <p className="border-b-[1px] p-2">
               전화번호: {myInfoData.data.phoneNumber}
             </p>
-          </CardContent>
+          </div>
         ) : (
-          <CardContent className="flex flex-col p-4 gap-2">
-            <p className="p-2 border-b-[1px]">
-              <Skeleton className="w-full h-6" />
+          <div className="flex flex-col gap-2 p-4">
+            <p className="border-b-[1px] p-2">
+              <Skeleton className="h-6 w-full" />
             </p>
-            <p className="p-2 border-b-[1px]">
-              <Skeleton className="w-full h-6" />
+            <p className="border-b-[1px] p-2">
+              <Skeleton className="h-6 w-full" />
             </p>
-            <p className="p-2 border-b-[1px]">
-              <Skeleton className="w-full h-6" />
+            <p className="border-b-[1px] p-2">
+              <Skeleton className="h-6 w-full" />
             </p>
-          </CardContent>
+          </div>
         )}
-      </Card>
+      </div>
 
       <div className="flex gap-2">
         {/* 정보 수정 버튼 */}

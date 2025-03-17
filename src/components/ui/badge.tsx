@@ -5,16 +5,16 @@ import type { Series } from '@/entities/post';
 import { cn } from '@/lib/utils';
 import { formatSeries } from '@/util/postFormatFunctions';
 
-const badgeVariants = cva(
-  'inline-flex items-center rounded-md px-2 py-1.5 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+const badgeClassName = cva(
+  'inline-flex items-center rounded-md px-2 py-1.5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
-        default: 'border-transparent bg-white text-grey-dark-active',
-        secondary: 'bg-grey-light-hover text-grey-darker',
-        destructive:
-          'border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80',
-        outline: 'border bg-white text-grey-darker',
+        default: 'bg-white text-grey-800',
+        primary: 'bg-grey-800 text-grey-50',
+        secondary: 'bg-grey-50 text-grey-800',
+        disabled: 'bg-grey-200 text-grey-500',
+        outline: 'border border-grey-200 bg-white text-grey-800',
       },
     },
     defaultVariants: {
@@ -25,26 +25,26 @@ const badgeVariants = cva(
 
 interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
+    VariantProps<typeof badgeClassName> {}
 
 function Badge({ className, variant, ...props }: BadgeProps) {
   return (
-    <div className={cn(badgeVariants({ variant }), className)} {...props} />
+    <div className={cn(badgeClassName({ variant }), className)} {...props} />
   );
 }
 
 const seriesBadgeVariants = cva(
-  'inline-flex items-center text-center rounded-md px-2 py-1.5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  'inline-flex items-center rounded-md px-2 py-1.5 text-center text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
-        default: 'bg-grey-light-hover text-grey-dark-active',
-        SEED: 'bg-grey-light-active text-grey-darker',
-        PRE_A: 'bg-blue-light-hover text-blue-darker',
-        A: 'bg-blue-light-hover text-blue-darker',
-        B: 'bg-red-light-hover text-red-darker',
-        C: 'bg-green-light-hover text-green-darker',
-        D: 'bg-yellow-light-hover text-yellow-darker',
+        default: 'bg-grey-50 text-grey-800',
+        SEED: 'bg-grey-200 text-grey-900',
+        PRE_A: 'bg-blue-100 text-blue-900',
+        A: 'bg-blue-100 text-blue-900',
+        B: 'bg-red-100 text-red-900',
+        C: 'bg-green-100 text-green-900',
+        D: 'bg-yellow-100 text-yellow-900',
       },
     },
     defaultVariants: {

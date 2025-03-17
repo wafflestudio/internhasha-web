@@ -6,13 +6,11 @@ import { cn } from '@/lib/utils';
 
 const Tabs = TabsPrimitive.Root;
 
-const tabsTriggerVariants = cva('inline-flex items-center justify-center', {
+const tabsListClassName = cva('font-14-regular flex text-grey-900', {
   variants: {
     variant: {
-      default:
-        'disabled:opacity-50 data-[state=active]:underline data-[state=active]:underline-2 data-[state=active]:underline-offset-8',
-      button:
-        'flex-1 h-[42px] whitespace-nowrap rounded-[8px] text-grey-normal text-14-regular ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-black',
+      default: 'gap-8',
+      button: 'flex gap-[8px] rounded-[10px] bg-grey-50 p-[6px]',
     },
   },
   defaultVariants: {
@@ -20,16 +18,31 @@ const tabsTriggerVariants = cva('inline-flex items-center justify-center', {
   },
 });
 
+const tabsTriggerClassName = cva('inline-flex items-center justify-center', {
+  variants: {
+    variant: {
+      default:
+        'data-[state=active]:underline-2 text-18 font-regular hover:text-grey-700 disabled:opacity-50 data-[state=active]:text-grey-900 data-[state=active]:underline data-[state=active]:underline-offset-8 data-[state=active]:hover:text-grey-700',
+      button:
+        'h-[42px] flex-1 whitespace-nowrap rounded-[8px] text-grey-300 ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-grey-900',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+interface TabsListProps
+  extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>,
+    VariantProps<typeof tabsListClassName> {}
+
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
->(({ className, ...props }, ref) => (
+  TabsListProps
+>(({ className, variant, ...props }, ref) => (
   <TabsPrimitive.List
     ref={ref}
-    className={cn(
-      'flex text-grey-darker gap-[8px] font-14-regular rounded-none bg-grey-light',
-      className,
-    )}
+    className={cn(tabsListClassName({ variant, className }))}
     {...props}
   />
 ));
@@ -37,19 +50,15 @@ TabsList.displayName = TabsPrimitive.List.displayName;
 
 interface TabsTriggerProps
   extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>,
-    VariantProps<typeof tabsTriggerVariants> {}
+    VariantProps<typeof tabsTriggerClassName> {}
 
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   TabsTriggerProps
->(({ className, variant, disabled, ...props }, ref) => (
+>(({ className, variant, ...props }, ref) => (
   <TabsPrimitive.Trigger
     ref={ref}
-    className={cn(
-      tabsTriggerVariants({ variant, className }),
-      disabled !== false &&
-        'text-grey-darker text-18 font-regular hover:text-grey-normal-hover',
-    )}
+    className={cn(tabsTriggerClassName({ variant, className }))}
     {...props}
   />
 ));

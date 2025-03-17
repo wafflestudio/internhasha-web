@@ -15,8 +15,8 @@ export const LabelContainer = ({
     <div
       className={`flex flex-col gap-2 ${className !== undefined ? className : ''}`}
     >
-      <label htmlFor={id} className="font-semibold">
-        {label} {required === true && <span className="text-red">*</span>}
+      <label htmlFor={id} className="font-semibold text-grey-900">
+        {label} {required === true && <span className="text-red-300">*</span>}
       </label>
       {children}
     </div>

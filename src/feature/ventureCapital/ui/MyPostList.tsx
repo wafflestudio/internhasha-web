@@ -40,17 +40,17 @@ export const MyPostList = () => {
   const PAGES_PER_GROUP = 5;
 
   return (
-    <div className="flex flex-col gap-6 flex-1 order-2 lg:order-none">
+    <div className="order-2 flex flex-1 flex-col gap-6 lg:order-none">
       {/* 상단 필터 섹션 */}
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <FilterSection
           filterElements={filterElements}
           onChangeFilters={setFilterElements}
         />
       </div>
       {/* 회사 소개 카드 */}
-      <div className="flex flex-col w-full sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl md:flex-row m-autogap-2">
-        <div className="grid w-full grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="m-autogap-2 flex w-full flex-col sm:w-screen-sm md:w-screen-md md:flex-row lg:w-screen-lg xl:max-w-screen-xl">
+        <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {postsData !== undefined ? (
             postsData.data.posts.map((item, idx) => (
               <PostCard

@@ -16,11 +16,11 @@ export const GlobalNavigationBar = () => {
   };
 
   return (
-    <header className="flex justify-center sticky top-0 z-50 bg-grey-light shadow-md">
-      <div className="flex w-full sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl px-6 py-4 justify-between items-center">
+    <header className="sticky top-0 z-50 flex justify-center bg-grey-50 shadow-md">
+      <div className="flex w-full items-center justify-between px-6 py-4 sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl">
         <h1
           onClick={toMain}
-          className="text-xl font-bold text-gray-800 transition-colors duration-150 cursor-pointer hover:text-blue-normal"
+          className="hover:text-blue-normal cursor-pointer text-xl font-bold text-gray-800 transition-colors duration-150"
         >
           인턴하샤
         </h1>

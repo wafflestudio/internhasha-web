@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 export const FormErrorResponse = ({ children }: { children: ReactNode }) => {
   return (
     <div>
-      <span className="text-red-normal text-sm mt-2">{children}</span>
+      <span className="mt-2 text-sm text-red-300">{children}</span>
     </div>
   );
 };
@@ -11,7 +11,7 @@ export const FormErrorResponse = ({ children }: { children: ReactNode }) => {
 export const FormInfoResponse = ({ children }: { children: ReactNode }) => {
   return (
     <div>
-      <span className="text-blue-normal text-sm mt-2">{children}</span>
+      <span className="mt-2 text-sm text-blue-300">{children}</span>
     </div>
   );
 };

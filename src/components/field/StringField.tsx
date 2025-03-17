@@ -46,7 +46,7 @@ export const StringField = ({
           <div className="flex w-full justify-between">
             <FormInfoResponse>{infoMessage}</FormInfoResponse>
             <span
-              className={`text-sm ${input.value.length > maxLength ? 'text-red' : 'text-grey-normal'}`}
+              className={`text-sm ${input.value.length > maxLength ? 'text-red-300' : 'text-grey-500'}`}
             >
               {input.value.length}/{maxLength}
             </span>

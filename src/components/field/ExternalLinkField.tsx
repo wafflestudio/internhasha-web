@@ -50,7 +50,7 @@ export const ExternalLinkField = ({
         {input.value.map((item, index) => (
           <div
             key={`external-link-${index}`}
-            className="flex relative flex-col gap-2 p-3 border shadow-sm rounded-md"
+            className="relative flex flex-col gap-2 rounded-md border border-grey-200 p-3"
           >
             <Input
               value={item.description}
@@ -106,7 +106,7 @@ export const ExternalLinkField = ({
                 }
                 input.onChange({ input: item, index, mode: 'REMOVE' });
               }}
-              className="absolute top-[-10px] right-[-10px]"
+              className="absolute right-[-10px] top-[-10px]"
             />
           </div>
         ))}

@@ -50,11 +50,11 @@ export const ImageField = ({
   return (
     <LabelContainer label={label} required={required}>
       {input.value !== null && !input.isError ? (
-        <div className="relative w-[100px] h-[100px] border border-grey-light-hover rounded-md">
+        <div className="relative h-[100px] w-[100px] rounded-md border border-grey-200">
           <img
             src={input.value.url}
             alt="썸네일"
-            className="w-full h-full object-cover rounded-md"
+            className="h-full w-full rounded-md object-cover"
           />
           <CancelButton
             onClick={() => {
@@ -63,16 +63,16 @@ export const ImageField = ({
               }
               removeImage();
             }}
-            className="absolute top-[-10px] right-[-10px]"
+            className="absolute right-[-10px] top-[-10px]"
           />
         </div>
       ) : (
         <label
           htmlFor="fileInput"
-          className="flex flex-col gap-1 justify-center items-center w-[100px] h-[100px] bg-grey-light-hover rounded-md"
+          className="flex h-[100px] w-[100px] flex-col items-center justify-center gap-1 rounded-md bg-grey-100"
         >
           <img src={ICON_SRC.CAMERA} />
-          <span className="text-grey-normal-hover text-xs">이미지 등록</span>
+          <span className="text-xs text-grey-400">이미지 등록</span>
         </label>
       )}
       <input

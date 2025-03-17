@@ -37,10 +37,10 @@ export const EmploymentEndDateField = ({
     <LabelContainer label={label} required={required}>
       <div className="relative">
         <div
-          className={`absolute left-0 bottom-0 mt-2 w-[340px] rounded-lg bg-white shadow-lg overflow-hidden transition-all duration-300 ${
+          className={`absolute bottom-0 left-0 mt-2 w-[340px] overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-300 ${
             showFilter === 'CALENDAR'
-              ? 'opacity-100 scale-100'
-              : 'opacity-0 pointer-events-none'
+              ? 'scale-100 opacity-100'
+              : 'pointer-events-none opacity-0'
           }`}
         >
           <Calendar

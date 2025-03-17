@@ -118,8 +118,8 @@ export const LocalSignUpForm = () => {
                   <span
                     className={
                       password.detailedError.englishError === false
-                        ? 'text-sm text-black'
-                        : 'text-sm text-grey-normal'
+                        ? 'text-sm text-grey-900'
+                        : 'text-sm text-grey-300'
                     }
                   >
                     영문 대소문자 각각 1개 이상
@@ -134,8 +134,8 @@ export const LocalSignUpForm = () => {
                   <span
                     className={
                       password.detailedError.numberError === false
-                        ? 'text-sm text-black'
-                        : 'text-sm text-grey-normal'
+                        ? 'text-sm text-grey-900'
+                        : 'text-sm text-grey-300'
                     }
                   >
                     숫자 1개 이상
@@ -150,8 +150,8 @@ export const LocalSignUpForm = () => {
                   <span
                     className={
                       password.detailedError.specialCharError === false
-                        ? 'text-sm text-black'
-                        : 'text-sm text-grey-normal'
+                        ? 'text-sm text-grey-900'
+                        : 'text-sm text-grey-300'
                     }
                   >
                     특수문자(@, #, $, !, ^, *) 1개 이상
@@ -166,8 +166,8 @@ export const LocalSignUpForm = () => {
                   <span
                     className={
                       password.detailedError.lengthError === false
-                        ? 'text-sm text-black'
-                        : 'text-sm text-grey-normal'
+                        ? 'text-sm text-grey-900'
+                        : 'text-sm text-grey-300'
                     }
                   >
                     길이는 8~20자리

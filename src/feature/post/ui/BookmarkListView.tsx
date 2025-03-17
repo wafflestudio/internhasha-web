@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ICON_SRC } from '@/entities/asset';
 import { useGuardContext } from '@/shared/context/hooks';
@@ -37,33 +38,31 @@ export const BookmarkListView = () => {
   };
 
   return (
-    <div className="flex flex-col w-full gap-3">
+    <div className="flex w-full flex-col gap-3 text-grey-900">
       {bookmarkListData !== undefined ? (
         bookmarkListData.data.posts.map((post) => (
           <div
             key={post.id}
-            className="flex flex-col xs:flex-row w-full items-start xs:item-center px-[24px] py-[10px] gap-4 justify-between cursor-pointer bg-white rounded-md duration-300 hover:shadow-md"
+            className="xs:item-center flex w-full cursor-pointer flex-col items-start justify-between gap-4 rounded-md bg-white px-[24px] py-[10px] duration-300 hover:shadow-md xs:flex-row"
             onClick={() => {
               toPost({ postId: post.id });
             }}
           >
             <div className="flex flex-1 items-center gap-4">
               <img src={ICON_SRC.BOOKMARK.SELECTED} />
-              <span className="text-grey-darker font-semibold truncate">
-                {post.title}
-              </span>
+              <span className="truncate font-semibold">{post.title}</span>
             </div>
 
-            <div className="flex items-center gap-2">
-              <span className="text-grey-dark-hover font-semibold text-left md:text-center truncate">
+            <div className="flex items-center gap-4">
+              <span className="truncate text-left font-semibold text-grey-700 md:text-center">
                 {post.companyName}
               </span>
-              <span className="w-[80px] py-1 bg-grey-darker text-center text-white text-sm rounded-md">
+              <Badge variant="primary">
                 {formatEmploymentState({
                   isActive: post.isActive,
                   employmentEndDate: post.employmentEndDate,
                 })}
-              </span>
+              </Badge>
             </div>
           </div>
         ))
@@ -72,15 +71,15 @@ export const BookmarkListView = () => {
           {Array.from({ length: 12 }).map((_, idx) => (
             <div
               key={`loading-${idx}`}
-              className="flex flex-col md:flex-row md:w-full items-start md:items-center px-[24px] py-[10px] gap-4 md:justify-between cursor-pointer bg-white rounded-md duration-300 hover:shadow-md"
+              className="flex cursor-pointer flex-col items-start gap-4 rounded-md bg-white px-[24px] py-[10px] duration-300 hover:shadow-md md:w-full md:flex-row md:items-center md:justify-between"
             >
               <div className="flex items-center gap-[18px]">
-                <Skeleton className="w-[30px] h-[30px]" />
-                <Skeleton className="w-[350px] h-[18px]" />
+                <Skeleton className="h-[30px] w-[30px]" />
+                <Skeleton className="h-[18px] w-[350px]" />
               </div>
-              <div className="flex flex-col md:flex-row items-end md:items-center w-full md:size-fit gap-2 md:gap-[30px]">
-                <Skeleton className="w-full md:w-[150px] h-[14px]" />
-                <Skeleton className="w-[62px] h-6" />
+              <div className="flex w-full flex-col items-end gap-2 md:size-fit md:flex-row md:items-center md:gap-[30px]">
+                <Skeleton className="h-[14px] w-full md:w-[150px]" />
+                <Skeleton className="h-6 w-[62px]" />
               </div>
             </div>
           ))}

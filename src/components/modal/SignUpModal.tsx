@@ -7,7 +7,7 @@ export const SignUpModal = ({ onClose }: { onClose(): void }) => {
 
   return (
     <ModalFloatBackground variant="transparent">
-      <div className="flex flex-col text-center gap-[14px]">
+      <div className="flex flex-col gap-[14px] text-center">
         <h2 className="text-xl font-bold">아직 회원가입되지 않았습니다!</h2>
         <p>회원가입 페이지로 이동하시겠습니까?</p>
       </div>
