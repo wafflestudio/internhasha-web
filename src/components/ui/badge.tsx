@@ -5,7 +5,7 @@ import type { Series } from '@/entities/post';
 import { cn } from '@/lib/utils';
 import { formatSeries } from '@/util/postFormatFunctions';
 
-const badgeVariants = cva(
+const badgeClassName = cva(
   'inline-flex items-center rounded-md px-2 py-1.5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
@@ -25,11 +25,11 @@ const badgeVariants = cva(
 
 interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
+    VariantProps<typeof badgeClassName> {}
 
 function Badge({ className, variant, ...props }: BadgeProps) {
   return (
-    <div className={cn(badgeVariants({ variant }), className)} {...props} />
+    <div className={cn(badgeClassName({ variant }), className)} {...props} />
   );
 }
 

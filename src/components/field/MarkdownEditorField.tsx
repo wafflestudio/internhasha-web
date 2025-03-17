@@ -42,7 +42,7 @@ export const MarkdownEditorField = ({
             input.onChange(value ?? '');
           }}
         />
-        <div className="flex flex-col gap-1 mt-1">
+        <div className="mt-1 flex flex-col gap-1">
           <div className="flex w-full justify-between">
             <FormInfoResponse>{infoMessage}</FormInfoResponse>
             <span

@@ -51,7 +51,7 @@ export const PdfField = ({
     <LabelContainer label={label} required={required}>
       {input.value !== null && !input.isError ? (
         <div className="flex gap-2">
-          <div className="flex gap-2 jusify-between items-center w-full px-[12px] py-[11px] border border-grey-200 rounded-md">
+          <div className="jusify-between flex w-full items-center gap-2 rounded-md border border-grey-200 px-[12px] py-[11px]">
             <p className="text-sm text-grey-300">{input.value.file.name}</p>
           </div>
           <Button disabled={isPending} onClick={removePdf}>
@@ -61,7 +61,7 @@ export const PdfField = ({
       ) : (
         <label
           htmlFor="pdfInput"
-          className="flex gap-2 items-center w-full px-[12px] py-[11px] border border-grey-200 rounded-md"
+          className="flex w-full items-center gap-2 rounded-md border border-grey-200 px-[12px] py-[11px]"
         >
           <img src={ICON_SRC.UPLOAD} />
           <span className="text-sm text-grey-300">

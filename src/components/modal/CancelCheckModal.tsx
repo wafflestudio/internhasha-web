@@ -18,7 +18,7 @@ export const CancelCheckModal = ({
       isVisible={isVisible}
       onOutSlideClick={handleCancel}
     >
-      <div className="flex flex-col text-center gap-[14px]">
+      <div className="flex flex-col gap-[14px] text-center">
         <p className="text-xl font-bold">작성을 취소하시겠어요?</p>
       </div>
       <div className="flex gap-2">

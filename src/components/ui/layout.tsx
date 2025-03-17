@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { cn } from '@/lib/utils';
 
-const backgroundVariants = cva(
+const backgroundClassName = cva(
   'fixed inset-0 flex items-center justify-center',
   {
     variants: {
@@ -22,7 +22,7 @@ const backgroundVariants = cva(
 
 export interface ModalProps
   extends React.ButtonHTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof backgroundVariants> {
+    VariantProps<typeof backgroundClassName> {
   isVisible?: boolean;
   onOutSlideClick?: () => void;
 }
@@ -35,7 +35,7 @@ export const ModalFloatBackground = ({
 }: ModalProps) => {
   return (
     <div
-      className={cn(backgroundVariants({ variant }))}
+      className={cn(backgroundClassName({ variant }))}
       onClick={onOutSlideClick}
     >
       <div

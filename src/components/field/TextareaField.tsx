@@ -57,7 +57,7 @@ export const TextareaField = ({
       <textarea
         ref={textareaRef}
         placeholder={placeholder}
-        className="w-full text-sm border rounded-sm overflow-hidden px-[10px] py-[11px] placeholder:text-grey-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+        className="w-full overflow-hidden rounded-sm border px-[10px] py-[11px] text-sm placeholder:text-grey-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
         rows={minLine}
         value={input.value}
         disabled={isPending}

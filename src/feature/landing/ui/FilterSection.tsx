@@ -273,9 +273,9 @@ export const FilterSection = ({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row w-full justify-between gap-3">
+    <div className="flex w-full flex-col justify-between gap-3 sm:flex-row">
       <div className="flex flex-row items-center gap-1 md:gap-3">
-        <div className="flex gap-[6px] items-center">
+        <div className="flex items-center gap-[6px]">
           <Popover
             onOpenChange={(open) => {
               if (open) {
@@ -299,12 +299,12 @@ export const FilterSection = ({
                   : '모집 상태'}{' '}
                 <img
                   src={ICON_SRC.ARROW}
-                  className={`${selectedFilter === 'RECRUITING' ? 'rotate-0' : 'rotate-180'} w-4 h-4 duration-300`}
+                  className={`${selectedFilter === 'RECRUITING' ? 'rotate-0' : 'rotate-180'} h-4 w-4 duration-300`}
                 />
               </Button>
             </PopoverTrigger>
             <PopoverContent>
-              <div className="flex flex-col p-5 gap-[30px]">
+              <div className="flex flex-col gap-[30px] p-5">
                 <RadioGroup
                   onValueChange={handleChangeRecruitingFilter}
                   value={
@@ -371,12 +371,12 @@ export const FilterSection = ({
                 시리즈
                 <img
                   src={ICON_SRC.ARROW}
-                  className={`${selectedFilter === 'SERIES' ? 'rotate-0' : 'rotate-180'} w-4 h-4 duration-300`}
+                  className={`${selectedFilter === 'SERIES' ? 'rotate-0' : 'rotate-180'} h-4 w-4 duration-300`}
                 />
               </Button>
             </PopoverTrigger>
             <PopoverContent>
-              <div className="flex flex-col p-5 gap-[30px]">
+              <div className="flex flex-col gap-[30px] p-5">
                 <div className="flex flex-col gap-[10px]">
                   <div className="flex gap-[10px] text-sm text-grey-900">
                     <Checkbox
@@ -449,12 +449,12 @@ export const FilterSection = ({
                 투자 금액{' '}
                 <img
                   src={ICON_SRC.ARROW}
-                  className={`${selectedFilter === 'INVEST_AMOUNT' ? 'rotate-0' : 'rotate-180'} w-4 h-4 duration-300`}
+                  className={`${selectedFilter === 'INVEST_AMOUNT' ? 'rotate-0' : 'rotate-180'} h-4 w-4 duration-300`}
                 />
               </Button>
             </PopoverTrigger>
             <PopoverContent>
-              <div className="flex flex-col p-5 gap-[30px]">
+              <div className="flex flex-col gap-[30px] p-5">
                 <RadioGroup
                   onValueChange={handleChangeInvestAmountFilter}
                   value={investAmountSelect}
@@ -529,12 +529,12 @@ export const FilterSection = ({
               : '최신순'}{' '}
             <img
               src={ICON_SRC.ARROW}
-              className={`${selectedFilter === 'ORDER' ? 'rotate-0' : 'rotate-180'} w-4 h-4 duration-300`}
+              className={`${selectedFilter === 'ORDER' ? 'rotate-0' : 'rotate-180'} h-4 w-4 duration-300`}
             />
           </Button>
         </PopoverTrigger>
         <PopoverContent>
-          <div className="flex flex-col p-5 gap-[30px]">
+          <div className="flex flex-col gap-[30px] p-5">
             <RadioGroup
               onValueChange={handleChangeOrderFilter}
               value={

@@ -18,7 +18,7 @@ export const CancelCoffeeChatCancelModal = ({
       isVisible={isVisible}
       onOutSlideClick={handleCancel}
     >
-      <div className="flex flex-col text-center gap-[14px]">
+      <div className="flex flex-col gap-[14px] text-center">
         <p className="text-[14px] font-semibold">
           정말로 이 커피챗 신청을 취소하시겠어요?
         </p>

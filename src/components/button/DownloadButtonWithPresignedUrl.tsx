@@ -33,7 +33,7 @@ export const DownloadButtonWithPresignedUrl = ({
       href={downloadPresignedUrl.data.url}
       target="_blank"
       download={true}
-      className="flex items-center w-fit px-[10px] py-[6px] gap-1 rounded-sm bg-grey-50"
+      className="flex w-fit items-center gap-1 rounded-sm bg-grey-50 px-[10px] py-[6px]"
       rel="noreferrer"
     >
       {children}
@@ -42,7 +42,7 @@ export const DownloadButtonWithPresignedUrl = ({
 };
 
 const SkeletonDownloadButtonWithPresignedUrl = () => {
-  return <Skeleton className="w-[133px] h-[36px]" />;
+  return <Skeleton className="h-[36px] w-[133px]" />;
 };
 
 const useGetDownloadPresignedUrl = ({

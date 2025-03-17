@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 const Tabs = TabsPrimitive.Root;
 
-const tabsListVariants = cva('font-14-regular flex text-grey-900', {
+const tabsListClassName = cva('font-14-regular flex text-grey-900', {
   variants: {
     variant: {
       default: 'gap-8',
@@ -18,7 +18,7 @@ const tabsListVariants = cva('font-14-regular flex text-grey-900', {
   },
 });
 
-const tabsTriggerVariants = cva('inline-flex items-center justify-center', {
+const tabsTriggerClassName = cva('inline-flex items-center justify-center', {
   variants: {
     variant: {
       default:
@@ -34,7 +34,7 @@ const tabsTriggerVariants = cva('inline-flex items-center justify-center', {
 
 interface TabsListProps
   extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>,
-    VariantProps<typeof tabsListVariants> {}
+    VariantProps<typeof tabsListClassName> {}
 
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
@@ -42,7 +42,7 @@ const TabsList = React.forwardRef<
 >(({ className, variant, ...props }, ref) => (
   <TabsPrimitive.List
     ref={ref}
-    className={cn(tabsListVariants({ variant, className }))}
+    className={cn(tabsListClassName({ variant, className }))}
     {...props}
   />
 ));
@@ -50,7 +50,7 @@ TabsList.displayName = TabsPrimitive.List.displayName;
 
 interface TabsTriggerProps
   extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>,
-    VariantProps<typeof tabsTriggerVariants> {}
+    VariantProps<typeof tabsTriggerClassName> {}
 
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
@@ -58,7 +58,7 @@ const TabsTrigger = React.forwardRef<
 >(({ className, variant, ...props }, ref) => (
   <TabsPrimitive.Trigger
     ref={ref}
-    className={cn(tabsTriggerVariants({ variant, className }))}
+    className={cn(tabsTriggerClassName({ variant, className }))}
     {...props}
   />
 ));
