@@ -145,6 +145,7 @@ export default {
         140: '1.4',
       },
       borderRadius: {
+        xl: 'calc(var(--radius) + 2px)',
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',

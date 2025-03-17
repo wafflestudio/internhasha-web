@@ -58,7 +58,8 @@ export const CoffeeChatDetailView = ({
             {/* Profile Section */}
             <div className="flex gap-4 items-center">
               <div className="w-[40px] h-[40px] overflow-hidden">
-                {coffeeChatDetail.company.imageKey !== '' ? (
+                {coffeeChatDetail.company.imageKey !== undefined &&
+                coffeeChatDetail.company.imageKey !== '' ? (
                   <img
                     src={`${API_BASE_URL}/${coffeeChatDetail.company.imageKey}`}
                     alt="프로필 이미지"

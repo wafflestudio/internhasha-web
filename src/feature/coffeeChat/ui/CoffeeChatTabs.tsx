@@ -1,17 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CompanyCoffeeChatListView } from '@/feature/coffeeChat/ui/CompanyCoffeeChatListView';
-import { MyPage } from '@/feature/ventureCapital/ui/MyPage';
-import { MyPostList } from '@/feature/ventureCapital/ui/MyPostList';
+import { CoffeeChatListView } from '@/feature/coffeeChat';
+import { BookmarkListView } from '@/feature/post/ui/BookmarkListView';
+import { MyInfo } from '@/feature/user';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
-export const VentureCapitalMyTab = () => {
-  const [currentTab, setCurrentTab] = useState<
-    'POST' | 'COFFEE_CHAT' | 'MYPAGE'
-  >('COFFEE_CHAT');
+export const CoffeeChatTabs = () => {
   const { coffeeChatCountData } = useGetCoffeeChatCount();
 
   if (coffeeChatCountData?.type === 'error') {
@@ -19,37 +15,31 @@ export const VentureCapitalMyTab = () => {
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
   }
+
   return (
-    <Tabs
-      defaultValue="COFFEE_CHAT"
-      className="w-full"
-      value={currentTab}
-      onValueChange={(value) => {
-        setCurrentTab(value as 'POST' | 'COFFEE_CHAT' | 'MYPAGE');
-      }}
-    >
+    <Tabs defaultValue="COFFEE_CHAT" className="w-full">
       <div className="flex flex-col gap-[30px]">
-        <TabsList className="flex gap-[30px]">
+        <TabsList className="flex  gap-[30px]">
           <TabsTrigger value="COFFEE_CHAT" className="gap-1">
-            나에게 신청된 커피챗
+            신청한 커피챗
             {coffeeChatCountData?.type === 'success' && (
               <span className="float-end flex items-center justify-center w-4 h-4 text-white text-11 font-medium bg-[#B3261E] rounded-full ml-1 no-underline data-[state=active]:no-underline">
                 {coffeeChatCountData.data.num}
               </span>
             )}
           </TabsTrigger>
-          <TabsTrigger value="POST">작성한 공고</TabsTrigger>
-          <TabsTrigger value="MYPAGE">내 정보</TabsTrigger>
+          <TabsTrigger value="BOOKMARK">관심 공고</TabsTrigger>
+          <TabsTrigger value="MY_INFO">내 정보</TabsTrigger>
         </TabsList>
 
         <TabsContent value="COFFEE_CHAT">
-          <CompanyCoffeeChatListView />
+          <CoffeeChatListView />
         </TabsContent>
-        <TabsContent value="POST">
-          <MyPostList />
+        <TabsContent value="BOOKMARK">
+          <BookmarkListView />
         </TabsContent>
-        <TabsContent value="MYPAGE">
-          <MyPage />
+        <TabsContent value="MY_INFO">
+          <MyInfo />
         </TabsContent>
       </div>
     </Tabs>

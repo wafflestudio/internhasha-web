@@ -1,11 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { Skeleton } from '@/components/ui/skeleton';
+import { TagCoffeeChat } from '@/components/ui/tagCoffeeChat';
+import { ICON_SRC } from '@/entities/asset';
+import { NoCoffeeChat } from '@/feature/coffeeChat/ui/NoCoffeeChat';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { getFormatDate } from '@/util/postFormatFunctions';
+import { getShortenedDate } from '@/util/postFormatFunctions';
 
 export const CoffeeChatListView = () => {
   const { coffeeChatListData } = useGetCoffeeChatList();
@@ -16,6 +19,12 @@ export const CoffeeChatListView = () => {
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
   }
+  if (
+    coffeeChatListData?.type === 'success' &&
+    coffeeChatListData.data.coffeeChatList.length === 0
+  ) {
+    return <NoCoffeeChat />;
+  }
 
   return (
     <div className="flex flex-col w-full gap-3">
@@ -23,17 +32,24 @@ export const CoffeeChatListView = () => {
         coffeeChatListData.data.coffeeChatList.map((coffeeChat) => (
           <div
             key={coffeeChat.id}
-            className="flex px-[24px] h-[50px] justify-between items-center cursor-pointer bg-white rounded-md duration-300 hover:shadow-md"
+            className="flex px-6 h-[50px] justify-between items-center cursor-pointer bg-white rounded-xl duration-300 hover:shadow-md"
             onClick={() => {
               toCoffeeChatDetail({ coffeeChatId: coffeeChat.id });
             }}
           >
-            <span className="w-[350px] text-grey-darker font-semibold truncate">
-              {coffeeChat.company.name}
-            </span>
-            <span className="text-sm text-grey-normal">
-              {getFormatDate(coffeeChat.createdAt)}
-            </span>
+            <div className="flex items-center gap-2">
+              {/* TODO: changed 말고 다른 read 변수에 따라 변해야함 */}
+              {coffeeChat.changed && <img src={ICON_SRC.BADGES} />}
+              <span className="text-grey-darker font-regular text-14 truncate">
+                {coffeeChat.company.name}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-grey-normal">
+                {getShortenedDate(coffeeChat.createdAt)}
+              </span>
+              <TagCoffeeChat coffeeChatStatus={coffeeChat.coffeeChatStatus} />
+            </div>
           </div>
         ))
       ) : (
@@ -68,5 +84,22 @@ const useGetCoffeeChatList = () => {
     enabled: token !== null,
   });
 
+  if (coffeeChatListData?.type === 'success') {
+    coffeeChatListData.data.coffeeChatList.sort((a, b) => {
+      if (
+        a.coffeeChatStatus === 'WAITING' &&
+        b.coffeeChatStatus !== 'WAITING'
+      ) {
+        return -1;
+      }
+      if (
+        a.coffeeChatStatus !== 'WAITING' &&
+        b.coffeeChatStatus === 'WAITING'
+      ) {
+        return 1;
+      }
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }
   return { coffeeChatListData };
 };

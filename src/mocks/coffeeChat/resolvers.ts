@@ -33,23 +33,22 @@ export const coffeeChatResolver: CoffeeChatResolver = {
 
   createCoffeeChat: async ({ request, params }) => {
     const { postId } = params;
-    const { phoneNumber, content } = await request.json();
+    const { name } = await request.json();
 
     const newCoffeeChat: CoffeeChatDTO = {
       id: `${mockCoffeeChats.length + 1}`,
       postId,
-      author: {
-        id: 'newAuthor',
-        snuMail: 'newMail',
-        username: 'newUser',
-        phoneNumber: 'newPhoneNumber',
-        isAdmin: false,
-        localId: 'newLocalId',
-        googleId: 'newGoogleId',
+      title: '커피챗 제목',
+      company: {
+        name: name,
       },
-      content,
-      phoneNumber,
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      applicant: {
+        name: '커피챗 지원자',
+      },
+      coffeeChatStatus: 'WAITING',
+      changed: false,
     };
 
     return HttpResponse.json(newCoffeeChat, { status: 200 });

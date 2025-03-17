@@ -1,11 +1,12 @@
 import type {
   BookmarkPageParams,
-  CancelCoffeeChatRequest,
   ChangePasswordRequest,
   CheckSnuMailVerificationRequest,
+  CoffeeChatCountResponse,
   CoffeeChatIdParams,
   CoffeeChatListResponse,
   CoffeeChatResponse,
+  CoffeeChatStatusRequest,
   CreateAndUpdatePostRequest,
   CreateCoffeeChatRequest,
   CreateCompanyRequest,
@@ -201,6 +202,14 @@ export const getLocalServerApis = ({
         token,
       });
     },
+    'GET /coffeeChat/count': ({ token }: { token: string }) => {
+      return callWithToken<SuccessResponse<CoffeeChatCountResponse>>({
+        method: 'GET',
+        path: 'coffeeChat/count',
+        token,
+      });
+    },
+
     'PATCH /coffeeChat/:coffeeChatId': ({
       token,
       params,
@@ -208,7 +217,7 @@ export const getLocalServerApis = ({
     }: {
       token: string;
       params: CoffeeChatIdParams;
-      body: CancelCoffeeChatRequest;
+      body: CoffeeChatStatusRequest;
     }) => {
       return callWithToken<SuccessResponse<CoffeeChatResponse>>({
         method: 'PATCH',

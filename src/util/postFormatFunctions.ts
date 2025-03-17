@@ -8,6 +8,10 @@ export const getFormatDate = (dateString: string): string => {
   return `${year}.${month}.${day}`;
 };
 
+export const getShortenedDate = (dateString: string): string => {
+  return getFormatDate(dateString).slice(2);
+};
+
 export const getEmploymentStatus = (employmentEndDate: string): string => {
   if (employmentEndDate === '') return '상시';
 
