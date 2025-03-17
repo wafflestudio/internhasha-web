@@ -1,6 +1,10 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
+import {
+  COFFEE_CHAT_STATUS_MAP,
+  type CoffeeChatStatus,
+} from '@/entities/coffeeChat';
 import type { Series } from '@/entities/post';
 import { cn } from '@/lib/utils';
 import { formatSeries } from '@/util/postFormatFunctions';
@@ -80,4 +84,40 @@ const SeriesBadge = ({
   );
 };
 
-export { Badge, SeriesBadge };
+const tagClassName = cva(
+  'inline-flex items-center rounded-sm px-2 py-1.5 text-sm font-regular text-13 text transition-colors border-transparent focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  {
+    variants: {
+      variant: {
+        pending: 'bg-yellow-light-hover text-yellow-darker',
+        accepted: 'bg-green-light-hover text-green-darker',
+        canceled: 'bg-red-light-hover text-grey-darker',
+        rejected: 'bg-red-light-hover text-red-darker',
+      },
+    },
+    defaultVariants: {
+      variant: 'pending',
+    },
+  },
+);
+
+interface TagProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof tagClassName> {
+  coffeeChatStatus: CoffeeChatStatus;
+}
+
+const BadgeCoffeeChat = ({
+  className,
+  coffeeChatStatus,
+  ...props
+}: TagProps) => {
+  const { variant, label } = COFFEE_CHAT_STATUS_MAP[coffeeChatStatus];
+  return (
+    <div className={cn(tagClassName({ variant }), className)} {...props}>
+      {label}
+    </div>
+  );
+};
+
+export { Badge, SeriesBadge, BadgeCoffeeChat };
