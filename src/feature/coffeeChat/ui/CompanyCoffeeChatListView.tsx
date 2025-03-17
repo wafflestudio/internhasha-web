@@ -165,7 +165,7 @@ export const CompanyCoffeeChatListView = () => {
   );
 };
 
-export const useUpdateCoffeeChatStatus = ({
+const useUpdateCoffeeChatStatus = ({
   setResponseMessage,
 }: {
   setResponseMessage(input: string): void;

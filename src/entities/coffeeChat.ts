@@ -15,10 +15,6 @@ export type CoffeeChat = {
   content: string;
 };
 
-export type CoffeeChatListResponse = {
-  coffeeChatList: CoffeeChat[];
-};
-
 export type CoffeeChatRequest = {
   phoneNumber: string;
   content: string;
