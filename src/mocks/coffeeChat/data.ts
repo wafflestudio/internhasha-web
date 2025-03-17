@@ -1,7 +1,4 @@
-import {
-  type CoffeeChatResponse,
-  CoffeeChatStatus,
-} from '@/mocks/coffeeChat/schemas';
+import { type CoffeeChatResponse } from '@/mocks/coffeeChat/schemas';
 
 export const mockCoffeeChats: CoffeeChatResponse[] = [
   {
@@ -13,7 +10,7 @@ export const mockCoffeeChats: CoffeeChatResponse[] = [
     },
     createdAt: '2025-03-13T15:48:33.253748',
     updatedAt: '2025-03-13T15:48:33.253748',
-    coffeeChatStatus: CoffeeChatStatus.WAITING,
+    coffeeChatStatus: 'WAITING',
     changed: false,
     applicant: {
       name: '웨이',
@@ -28,7 +25,7 @@ export const mockCoffeeChats: CoffeeChatResponse[] = [
     },
     createdAt: '2025-01-02T11:00:00Z',
     updatedAt: '2025-01-02T11:00:00Z',
-    coffeeChatStatus: CoffeeChatStatus.ACCEPTED,
+    coffeeChatStatus: 'ACCEPTED',
     changed: true,
     applicant: {
       name: '지원자2',
@@ -43,7 +40,7 @@ export const mockCoffeeChats: CoffeeChatResponse[] = [
     },
     createdAt: '2025-01-03T12:00:00Z',
     updatedAt: '2025-01-03T12:00:00Z',
-    coffeeChatStatus: CoffeeChatStatus.CANCELED,
+    coffeeChatStatus: 'CANCELED',
     changed: false,
     applicant: {
       name: '지원자3',
@@ -58,7 +55,7 @@ export const mockCoffeeChats: CoffeeChatResponse[] = [
     },
     createdAt: '2025-01-04T13:00:00Z',
     updatedAt: '2025-01-04T13:00:00Z',
-    coffeeChatStatus: CoffeeChatStatus.REJECTED,
+    coffeeChatStatus: 'REJECTED',
     changed: true,
     applicant: {
       name: '지원자4',
@@ -73,7 +70,7 @@ export const mockCoffeeChats: CoffeeChatResponse[] = [
     },
     createdAt: '2025-01-05T14:00:00Z',
     updatedAt: '2025-01-05T14:00:00Z',
-    coffeeChatStatus: CoffeeChatStatus.WAITING,
+    coffeeChatStatus: 'WAITING',
     changed: false,
     applicant: {
       name: '지원자5',

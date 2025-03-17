@@ -1,12 +1,7 @@
-export enum CoffeeChatStatus {
-  WAITING = 'WAITING',
-  ACCEPTED = 'ACCEPTED',
-  CANCELED = 'CANCELED',
-  REJECTED = 'REJECTED',
-}
+export type CoffeeChatStatus = 'WAITING' | 'ACCEPTED' | 'CANCELED' | 'REJECTED';
 export type CoffeeChatUserInfo = {
   name: string;
-  image?: string; // 이미지 S3 key
+  imageKey?: string; // 이미지 S3 key
 };
 export type CoffeeChatDTO = {
   id: string;

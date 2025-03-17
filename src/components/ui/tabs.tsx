@@ -47,7 +47,8 @@ const TabsTrigger = React.forwardRef<
     ref={ref}
     className={cn(
       tabsTriggerVariants({ variant, className }),
-      disabled !== false && 'text-grey-normal-hover',
+      disabled !== false &&
+        'text-grey-darker text-18 font-regular hover:text-grey-normal-hover',
     )}
     {...props}
   />

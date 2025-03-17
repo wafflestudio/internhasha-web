@@ -20,4 +20,5 @@ export const ICON_SRC = {
   DOWNLOAD: '/svg/arrow_download.svg',
   REFRESH: '/svg/refresh.svg',
   CALL: '/svg/call.svg',
+  BADGES: '/svg/badges.svg',
 };

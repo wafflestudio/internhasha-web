@@ -1,9 +1,10 @@
 import type { Apis } from '@/api';
 import type {
-  CoffeeChat,
+  CoffeeChatCount,
   CoffeeChatListResponse,
-  CoffeeChatRequest,
-} from '@/entities/coffeeChat';
+  CoffeeChatStatus,
+} from '@/api/apis/localServer/schemas';
+import type { CoffeeChat, CoffeeChatRequest } from '@/entities/coffeeChat';
 import type { ServiceResponse } from '@/entities/response';
 
 export type CoffeeChatService = {
@@ -19,6 +20,11 @@ export type CoffeeChatService = {
   }: {
     token: string;
   }) => ServiceResponse<CoffeeChatListResponse>;
+  getCoffeeChatCount: ({
+    token,
+  }: {
+    token: string;
+  }) => ServiceResponse<CoffeeChatCount>;
   createCoffeeChat: ({
     token,
     coffeeChatContents,
@@ -27,6 +33,15 @@ export type CoffeeChatService = {
     token: string;
     coffeeChatContents: CoffeeChatRequest;
     postId: string;
+  }) => ServiceResponse<CoffeeChat>;
+  updateCoffeeChatStatus: ({
+    token,
+    coffeeChatId,
+    body,
+  }: {
+    token: string;
+    coffeeChatId: string;
+    body: { coffeeChatStatus: CoffeeChatStatus };
   }) => ServiceResponse<CoffeeChat>;
   cancelCoffeeChat: ({
     token,
@@ -79,6 +94,19 @@ export const implCoffeeChatService = ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
+  getCoffeeChatCount: async ({ token }: { token: string }) => {
+    const { status, data } = await apis['GET /coffeeChat/count']({
+      token,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', code: data.code, message: data.message };
+  },
   createCoffeeChat: async ({
     token,
     coffeeChatContents,
@@ -105,6 +133,31 @@ export const implCoffeeChatService = ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
+  updateCoffeeChatStatus: async ({
+    token,
+    coffeeChatId,
+    body,
+  }: {
+    token: string;
+    coffeeChatId: string;
+    body: { coffeeChatStatus: CoffeeChatStatus };
+  }) => {
+    const params = { coffeeChatId };
+    const { status, data } = await apis['PATCH /coffeeChat/:coffeeChatId']({
+      token,
+      params,
+      body,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', code: data.code, message: data.message };
+  },
+
   cancelCoffeeChat: async ({
     token,
     coffeeChatId,

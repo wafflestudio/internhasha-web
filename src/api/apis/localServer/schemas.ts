@@ -83,16 +83,13 @@ export type PostBriefDTO = Omit<
   | 'detail'
 >;
 
-type CoffeeChatStatus = 'WAITING' | 'ACCEPTED' | 'CANCELED' | 'REJECTED';
+export type CoffeeChatStatus = 'WAITING' | 'ACCEPTED' | 'CANCELED' | 'REJECTED';
 
 type CoffeeChatDTO = {
   id: string;
   postId: string;
   title: string;
-  company: {
-    name: string;
-    imageKey: string;
-  };
+  company: CoffeeChatUserInfo;
   createdAt: string;
   updatedAt: string;
   coffeeChatStatus: CoffeeChatStatus;
@@ -100,6 +97,13 @@ type CoffeeChatDTO = {
   content: string;
 };
 
+type CoffeeChatBriefDTO = Omit<CoffeeChatDTO, 'content'> & {
+  applicant: CoffeeChatUserInfo;
+};
+type CoffeeChatUserInfo = {
+  name: string;
+  imageKey?: string;
+};
 // Params
 export type PostPathParams = {
   postPath: string;
@@ -180,6 +184,10 @@ export type CancelCoffeeChatRequest = {
   coffeeChatStatus: 'CANCELED';
 };
 
+export type CoffeeChatStatusRequest = {
+  coffeeChatStatus: CoffeeChatStatus;
+};
+
 export type S3UploadReq = {
   fileName: string;
   fileType: string;
@@ -243,10 +251,12 @@ export type PositionRespone = Pick<
   | 'employmentEndDate'
   | 'isActive'
 >;
-
+export type CoffeeChatCount = {
+  num: number;
+};
 export type CoffeeChatResponse = CoffeeChatDTO;
 
-export type CoffeeChatListResponse = { coffeeChatList: CoffeeChatDTO[] };
+export type CoffeeChatListResponse = { coffeeChatList: CoffeeChatBriefDTO[] };
 
 export type S3UploadResp = {
   url: string;
