@@ -5,6 +5,7 @@ import { LinkButton } from '@/components/button/LinkButton';
 import { ThumbnailWithPresignedUrl } from '@/components/thumbnail/ThumbnailWithPresignedUrl';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { SkeletonApplicantInfo } from '@/feature/applicant/ui/SkeletonApplicantInfo';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -14,7 +15,7 @@ export const ApplicantInfo = () => {
   const { applicantInfoData } = useApplicantInfo();
 
   if (applicantInfoData === undefined) {
-    return <div></div>;
+    return <SkeletonApplicantInfo />;
   }
 
   if (applicantInfoData.type === 'error') {

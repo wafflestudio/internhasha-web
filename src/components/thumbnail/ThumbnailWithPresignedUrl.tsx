@@ -16,7 +16,7 @@ export const ThumbnailWithPresignedUrl = ({
   const { downloadPresignedUrl } = useGetDownloadPresignedUrl({ s3Key, type });
 
   if (downloadPresignedUrl === undefined) {
-    return <SkeletonDownloadButtonWithPresignedUrl />;
+    return <Skeleton className="h-[80px] w-[80x]" />;
   }
 
   if (downloadPresignedUrl.type === 'error') {
@@ -32,10 +32,6 @@ export const ThumbnailWithPresignedUrl = ({
       />
     </div>
   );
-};
-
-const SkeletonDownloadButtonWithPresignedUrl = () => {
-  return <Skeleton className="h-[80px] w-[80x]" />;
 };
 
 const useGetDownloadPresignedUrl = ({
