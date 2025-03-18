@@ -5,6 +5,7 @@ import type { CancelCoffeeChatRequest } from '@/api/apis/localServer/schemas';
 import { CancelCoffeeChatCancelModal } from '@/components/modal/CancelCoffeeChatCancelModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
+import { TagCoffeeChat } from '@/components/ui/tagCoffeeChat';
 import { SkeletonCoffeeChatDetailView } from '@/feature/coffeeChat/ui/SkeletonCoffeeChatDetailView';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
@@ -58,8 +59,7 @@ export const CoffeeChatDetailView = ({
             {/* Profile Section */}
             <div className="flex items-center gap-4">
               <div className="h-[40px] w-[40px] overflow-hidden">
-                {coffeeChatDetail.company.imageKey !== undefined &&
-                coffeeChatDetail.company.imageKey !== '' ? (
+                {coffeeChatDetail.company.imageKey !== '' ? (
                   <img
                     src={`${API_BASE_URL}/${coffeeChatDetail.company.imageKey}`}
                     alt="프로필 이미지"
@@ -79,9 +79,7 @@ export const CoffeeChatDetailView = ({
               <span className="my-auto text-lg font-semibold text-gray-400">
                 {getFormatDate(coffeeChatDetail.createdAt)}
               </span>
-              <p className="rounded bg-gray-200 px-[8px] py-[4px] text-[13px] text-gray-900">
-                대기
-              </p>
+              <TagCoffeeChat coffeeChatStatus={coffeeChatDetail.coffeeChatStatus} />
             </div>
           </div>
 
