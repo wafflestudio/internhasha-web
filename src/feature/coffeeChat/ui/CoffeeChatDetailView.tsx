@@ -79,7 +79,9 @@ export const CoffeeChatDetailView = ({
               <span className="my-auto text-lg font-semibold text-gray-400">
                 {getFormatDate(coffeeChatDetail.createdAt)}
               </span>
-              <TagCoffeeChat coffeeChatStatus={coffeeChatDetail.coffeeChatStatus} />
+              <TagCoffeeChat
+                coffeeChatStatus={coffeeChatDetail.coffeeChatStatus}
+              />
             </div>
           </div>
 
@@ -105,7 +107,9 @@ export const CoffeeChatDetailView = ({
                   setIsCancel(true);
                 }}
                 className="mt-20 w-full"
-                disabled={isPending}
+                disabled={
+                  isPending || coffeeChatDetail.coffeeChatStatus !== 'WAITING'
+                }
               >
                 취소하기
               </Button>
