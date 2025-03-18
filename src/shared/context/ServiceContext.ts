@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import type { ApplicantService } from '@/feature/applicant/service/applicantService';
+import type { ApplicantService } from '@/feature/applicant';
 import type { AuthService } from '@/feature/auth';
 import type { CoffeeChatService } from '@/feature/coffeeChat';
 import type { LandingService } from '@/feature/landing/service/landingService';

@@ -13,7 +13,7 @@ import {
 import { implExternalApi } from '@/api/client';
 import type { RolesFilterCategory } from '@/entities/filter';
 import { PATH } from '@/entities/route';
-import { implApplicantService } from '@/feature/applicant/service/applicantService';
+import { implApplicantService } from '@/feature/applicant';
 import { implAuthService } from '@/feature/auth';
 import { implCoffeeChatService } from '@/feature/coffeeChat';
 import { implLandingService } from '@/feature/landing/service/landingService';

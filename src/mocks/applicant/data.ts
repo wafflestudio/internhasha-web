@@ -10,7 +10,7 @@ export const mockApplicant = {
   positions: ['FRONT', 'APP'],
   slogan: '혁신적인 UI/UX 개발자',
   explanation: '사용자 경험을 최우선으로 생각하는 프론트엔드 개발자입니다.',
-  stack: ['React', 'TypeScript', 'Next.js'],
+  stacks: ['React', 'TypeScript', 'Next.js'],
   imageKey: 'static/applicant_thumbnail/250310/A8SDFSKH8/chulsu.png',
   cvKey: 'static/cv/250310/A8SDFSKH8/chulsu.pdf',
   portfolioKey: 'static/portfolio/250310/A8SDFSKH8/chulsu_portfolio.pdf',
