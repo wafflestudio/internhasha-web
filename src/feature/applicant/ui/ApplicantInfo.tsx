@@ -7,9 +7,9 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 
 export const ApplicantInfo = () => {
-  const { myInfoData } = useMyInfo();
+  const { applicantInfoData } = useApplicantInfo();
 
-  if (myInfoData?.type === 'error') {
+  if (applicantInfoData?.type === 'error') {
     return (
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
@@ -18,14 +18,16 @@ export const ApplicantInfo = () => {
   return (
     <div className="flex w-full flex-col gap-4">
       <div>
-        {myInfoData !== undefined ? (
+        {applicantInfoData !== undefined ? (
           <div className="flex flex-col gap-2 p-4">
-            <p className="border-b-[1px] p-2">이름: {myInfoData.data.name}</p>
             <p className="border-b-[1px] p-2">
-              스누메일: {myInfoData.data.snuMail}
+              이름: {applicantInfoData.data.name}
             </p>
             <p className="border-b-[1px] p-2">
-              전화번호: {myInfoData.data.phoneNumber}
+              스누메일: {applicantInfoData.data.snuMail}
+            </p>
+            <p className="border-b-[1px] p-2">
+              전화번호: {applicantInfoData.data.phoneNumber}
             </p>
           </div>
         ) : (
@@ -60,17 +62,17 @@ export const ApplicantInfo = () => {
 
 const useApplicantInfo = () => {
   const { token } = useGuardContext(TokenContext);
-  const { userService } = useGuardContext(ServiceContext);
-  const { data: myInfoData } = useQuery({
-    queryKey: ['userService', 'getMyInfo', token] as const,
+  const { applicantService } = useGuardContext(ServiceContext);
+  const { data: applicantInfoData } = useQuery({
+    queryKey: ['applicantService', 'getProfile', token] as const,
     queryFn: ({ queryKey: [, , t] }) => {
       if (t === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return userService.getMyInfo({ token: t });
+      return applicantService.getProfile({ token: t });
     },
     enabled: token !== null,
   });
 
-  return { myInfoData };
+  return { applicantInfoData };
 };
