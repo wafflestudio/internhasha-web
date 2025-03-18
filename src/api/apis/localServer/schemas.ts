@@ -232,6 +232,25 @@ export type TokenResponse = {
 
 export type UserResponse = Omit<UserDTO, 'isMerged'>;
 
+export type Applicant = {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  userRole: UserRole;
+  snuMail?: string;
+  enrollYear: number;
+  department: string;
+  positions?: JobCategory[];
+  slogan?: string;
+  explanation?: string;
+  stacks?: string[];
+  imageKey?: string;
+  cvKey?: string;
+  portfolioKey?: string;
+  links?: Link[];
+};
+
 export type PostsResponse = {
   posts: PostBriefDTO[];
   paginator: {

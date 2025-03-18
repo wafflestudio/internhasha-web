@@ -28,10 +28,8 @@ export type GoogleSignUpRequest = {
 };
 
 export type LocalSignUpRequest = {
-  username: string;
-  localId: string;
+  mail: string;
   password: string;
-  snuMail: string;
 };
 
 export type LocalIdRequest = {
@@ -41,5 +39,9 @@ export type LocalIdRequest = {
 // Response
 export type UserWithTokenResponse = {
   user: UserBriefDTO;
+  accessToken: string;
+};
+
+export type AccessTokenResponse = {
   accessToken: string;
 };

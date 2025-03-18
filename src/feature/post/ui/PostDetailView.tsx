@@ -4,6 +4,7 @@ import MDEditor from '@uiw/react-md-editor';
 import { useState } from 'react';
 
 import { DownloadButtonWithPresignedUrl } from '@/components/button/DownloadButtonWithPresignedUrl';
+import { LinkButton } from '@/components/button/LinkButton';
 import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal';
 import { SignInForCoffeeChatModal } from '@/components/modal/SignInForCoffeChatModal';
 import { Badge } from '@/components/ui/badge';
@@ -253,17 +254,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                     <span className="text-lg font-semibold text-grey-800">
                       회사 홈페이지
                     </span>
-                    <a
-                      href={landingPageLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex w-fit items-center gap-1 rounded-sm bg-grey-50 px-[10px] py-[6px]"
-                    >
-                      <img src={ICON_SRC.LINK} />
-                      <span className="font-semibold text-grey-600">
-                        링크 접속
-                      </span>
-                    </a>
+                    <LinkButton link={landingPageLink}>링크 접속</LinkButton>
                   </div>
                 )}
 
@@ -300,14 +291,9 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                         <span className="text-grey-800">
                           {linkWithDescription.description}
                         </span>
-                        <a
-                          href={linkWithDescription.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="gap-1 rounded-lg bg-grey-50 p-1"
-                        >
-                          <img src={ICON_SRC.LINK} />
-                        </a>
+                        <LinkButton link={linkWithDescription.link}>
+                          링크 접속
+                        </LinkButton>
                       </div>
                     );
                   })}

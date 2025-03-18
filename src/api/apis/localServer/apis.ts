@@ -1,4 +1,5 @@
 import type {
+  Applicant,
   BookmarkPageParams,
   ChangePasswordRequest,
   CheckSnuMailVerificationRequest,
@@ -374,6 +375,13 @@ export const getLocalServerApis = ({
       return callWithToken<SuccessResponse<PostsResponse>>({
         method: 'GET',
         path: `post/position/me?${params.postPath}`,
+        token,
+      });
+    },
+    'GET /applicant/me': ({ token }: { token: string }) => {
+      return callWithToken<SuccessResponse<Applicant>>({
+        method: 'GET',
+        path: `applicant/me`,
         token,
       });
     },
