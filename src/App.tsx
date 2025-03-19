@@ -54,14 +54,14 @@ import { implTokenStateRepository } from '@/shared/token/state';
 const RouterProvider = () => {
   return (
     <Routes>
+      <Route path={PATH.SIGN_IN} element={<SignInPage />} />
+      <Route path={PATH.RESET_PASSWORD} element={<ResetPasswordPage />} />
+      <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
+      <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
+      <Route path={PATH.SIGN_UP_COMPLETE} element={<SignUpCompletePage />} />
       <Route element={<ReissueRoute />}>
         <Route path={PATH.INDEX} element={<LandingPage />} />
         <Route path={PATH.POST_DETAIL} element={<PostDetailPage />} />
-        <Route path={PATH.SIGN_IN} element={<SignInPage />} />
-        <Route path={PATH.RESET_PASSWORD} element={<ResetPasswordPage />} />
-        <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
-        <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
-        <Route path={PATH.SIGN_UP_COMPLETE} element={<SignUpCompletePage />} />
         <Route element={<AuthProtectedRoute />}>
           <Route
             path={PATH.MY_PAGE}
