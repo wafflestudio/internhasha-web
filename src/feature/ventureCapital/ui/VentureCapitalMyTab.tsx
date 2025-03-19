@@ -34,8 +34,7 @@ export const VentureCapitalMyTab = () => {
         <TabsList className="flex gap-[30px]">
           <TabsTrigger value="COFFEE_CHAT" className="gap-1">
             나에게 신청된 커피챗
-                <CoffeeChatNumberBadge />
-
+            <CoffeeChatNumberBadge />
           </TabsTrigger>
           <TabsTrigger value="POST">작성한 공고</TabsTrigger>
           <TabsTrigger value="MYPAGE">내 정보</TabsTrigger>
