@@ -85,7 +85,7 @@ const SeriesBadge = ({
 };
 
 const tagClassName = cva(
-  'inline-flex items-center rounded-sm px-2 py-1.5 text-sm font-regular text-13 text transition-colors border-transparent focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  'text inline-flex items-center rounded-sm border-transparent px-2 py-1.5 text-13 text-sm font-regular transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
