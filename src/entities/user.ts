@@ -1,4 +1,4 @@
-type UserRole = 'APPLICANT' | 'COMPANY';
+export type UserRole = 'APPLICANT' | 'COMPANY';
 
 export type User = {
   id: string;
