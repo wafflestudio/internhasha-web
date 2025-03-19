@@ -132,8 +132,6 @@ export const FilterSection = ({
     'RECRUITING' | 'SERIES' | 'INVEST_AMOUNT' | 'ORDER' | 'NONE'
   >('NONE');
 
-  console.log(postFilter);
-
   const handleChangeRecruitingFilter = (input: string) => {
     if (input === 'ALL') {
       setRecruitingSelect(undefined);
