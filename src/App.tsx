@@ -34,10 +34,8 @@ import { SignInPage } from '@/pages/SignInPage';
 import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
 import { SignUpPage } from '@/pages/SignUpPage';
 import { VentureCapitalMyPage } from '@/pages/VentureCapitalMyPage';
-import { ApplicantProtectedRoute } from '@/shared/auth/ApplicantProtectedRoute';
 import { AuthCompanySwitchRoute } from '@/shared/auth/AuthAdminSwitchRoute';
-import { AuthProtectedRoute } from '@/shared/auth/AuthProtectedRoute';
-import { CompanyProtectedRoute } from '@/shared/auth/CompanyProtectedRoute';
+import { ProtectedRoute } from '@/shared/auth/ProtectedRoute';
 import { ReissueRoute } from '@/shared/auth/ReissueRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
@@ -62,7 +60,7 @@ const RouterProvider = () => {
       <Route element={<ReissueRoute />}>
         <Route path={PATH.INDEX} element={<LandingPage />} />
         <Route path={PATH.POST_DETAIL} element={<PostDetailPage />} />
-        <Route element={<AuthProtectedRoute />}>
+        <Route element={<ProtectedRoute role="SIGN_IN" />}>
           <Route
             path={PATH.MY_PAGE}
             element={
@@ -77,14 +75,14 @@ const RouterProvider = () => {
             element={<CoffeeChatDetailPage />}
           />
         </Route>
-        <Route element={<ApplicantProtectedRoute />}>
+        <Route element={<ProtectedRoute role="APPLICANT" />}>
           <Route
             path={PATH.CREATE_COFFEE_CHAT}
             element={<CreateCoffeeChatPage />}
           />
           <Route path={PATH.CREATE_PROFILE} element={<CreateProfilePage />} />
         </Route>
-        <Route element={<CompanyProtectedRoute />}>
+        <Route element={<ProtectedRoute role="COMPANY" />}>
           <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
           <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
         </Route>
