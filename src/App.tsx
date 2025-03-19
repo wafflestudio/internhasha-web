@@ -56,38 +56,38 @@ const RouterProvider = () => {
     <Routes>
       <Route element={<ReissueRoute />}>
         <Route path={PATH.INDEX} element={<LandingPage />} />
-      </Route>
-      <Route path={PATH.POST_DETAIL} element={<PostDetailPage />} />
-      <Route path={PATH.SIGN_IN} element={<SignInPage />} />
-      <Route path={PATH.RESET_PASSWORD} element={<ResetPasswordPage />} />
-      <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
-      <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
-      <Route path={PATH.SIGN_UP_COMPLETE} element={<SignUpCompletePage />} />
-      <Route element={<AuthProtectedRoute />}>
-        <Route
-          path={PATH.MY_PAGE}
-          element={
-            <AuthCompanySwitchRoute
-              nonCompanyPage={<MyPage />}
-              companyPage={<VentureCapitalMyPage />}
-            />
-          }
-        />
-        <Route
-          path={PATH.COFFEE_CHAT_DETAIL}
-          element={<CoffeeChatDetailPage />}
-        />
-      </Route>
-      <Route element={<ApplicantProtectedRoute />}>
-        <Route
-          path={PATH.CREATE_COFFEE_CHAT}
-          element={<CreateCoffeeChatPage />}
-        />
-        <Route path={PATH.CREATE_PROFILE} element={<CreateProfilePage />} />
-      </Route>
-      <Route element={<CompanyProtectedRoute />}>
-        <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
-        <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
+        <Route path={PATH.POST_DETAIL} element={<PostDetailPage />} />
+        <Route path={PATH.SIGN_IN} element={<SignInPage />} />
+        <Route path={PATH.RESET_PASSWORD} element={<ResetPasswordPage />} />
+        <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
+        <Route path={PATH.VERIFY_EMAIL} element={<EmailVerifyPage />} />
+        <Route path={PATH.SIGN_UP_COMPLETE} element={<SignUpCompletePage />} />
+        <Route element={<AuthProtectedRoute />}>
+          <Route
+            path={PATH.MY_PAGE}
+            element={
+              <AuthCompanySwitchRoute
+                nonCompanyPage={<MyPage />}
+                companyPage={<VentureCapitalMyPage />}
+              />
+            }
+          />
+          <Route
+            path={PATH.COFFEE_CHAT_DETAIL}
+            element={<CoffeeChatDetailPage />}
+          />
+        </Route>
+        <Route element={<ApplicantProtectedRoute />}>
+          <Route
+            path={PATH.CREATE_COFFEE_CHAT}
+            element={<CreateCoffeeChatPage />}
+          />
+          <Route path={PATH.CREATE_PROFILE} element={<CreateProfilePage />} />
+        </Route>
+        <Route element={<CompanyProtectedRoute />}>
+          <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
+          <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
+        </Route>
       </Route>
     </Routes>
   );
