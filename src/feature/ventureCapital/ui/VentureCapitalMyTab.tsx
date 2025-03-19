@@ -2,12 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CoffeeChatNumberBadge } from '@/feature/coffeeChat';
 import { CompanyCoffeeChatListView } from '@/feature/coffeeChat/ui/CompanyCoffeeChatListView';
 import { MyPage } from '@/feature/ventureCapital/ui/MyPage';
 import { MyPostList } from '@/feature/ventureCapital/ui/MyPostList';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
+
 export const VentureCapitalMyTab = () => {
   const [currentTab, setCurrentTab] = useState<
     'POST' | 'COFFEE_CHAT' | 'MYPAGE'
@@ -32,11 +34,7 @@ export const VentureCapitalMyTab = () => {
         <TabsList className="flex gap-[30px]">
           <TabsTrigger value="COFFEE_CHAT" className="gap-1">
             나에게 신청된 커피챗
-            {coffeeChatCountData?.type === 'success' && (
-              <span className="float-end ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#B3261E] text-11 font-medium text-white no-underline data-[state=active]:no-underline">
-                {coffeeChatCountData.data.num}
-              </span>
-            )}
+            <CoffeeChatNumberBadge />
           </TabsTrigger>
           <TabsTrigger value="POST">작성한 공고</TabsTrigger>
           <TabsTrigger value="MYPAGE">내 정보</TabsTrigger>

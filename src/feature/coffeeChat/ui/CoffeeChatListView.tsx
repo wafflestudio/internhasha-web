@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { BadgeCoffeeChat } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { TagCoffeeChat } from '@/components/ui/tagCoffeeChat';
 import { ICON_SRC } from '@/entities/asset';
 import { NoCoffeeChat } from '@/feature/coffeeChat/ui/NoCoffeeChat';
 import { useGuardContext } from '@/shared/context/hooks';
@@ -48,7 +48,7 @@ export const CoffeeChatListView = () => {
               <span className="text-sm text-grey-300">
                 {getShortenedDate(coffeeChat.createdAt)}
               </span>
-              <TagCoffeeChat coffeeChatStatus={coffeeChat.coffeeChatStatus} />
+              <BadgeCoffeeChat coffeeChatStatus={coffeeChat.coffeeChatStatus} />
             </div>
           </div>
         ))

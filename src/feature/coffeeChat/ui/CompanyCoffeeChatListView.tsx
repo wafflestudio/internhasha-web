@@ -2,13 +2,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import type { CoffeeChatStatusRequest } from '@/api/apis/localServer/schemas';
+import type { CoffeeChatStatus } from '@/api/apis/localServer/schemas';
 import { CoffeeChatButton } from '@/components/button/CoffeeChatButton';
 import { UpdateCoffeeChatStatusModal } from '@/components/modal/UpdateCoffeeChatStatusModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
+import { BadgeCoffeeChat } from '@/components/ui/badge';
 import { Check } from '@/components/ui/check';
 import { Skeleton } from '@/components/ui/skeleton';
-import { TagCoffeeChat } from '@/components/ui/tagCoffeeChat';
 import { ICON_SRC } from '@/entities/asset';
 import { NoCoffeeChat } from '@/feature/coffeeChat/ui/NoCoffeeChat';
 import { useGuardContext } from '@/shared/context/hooks';
@@ -60,13 +60,11 @@ export const CompanyCoffeeChatListView = () => {
     setIsModalOpen(true);
   };
 
-  const handleConfirm = (
-    status: CoffeeChatStatusRequest['coffeeChatStatus'],
-  ) => {
+  const handleConfirm = (status: CoffeeChatStatus) => {
     selectedChats.forEach((coffeeChatId) => {
       updateCoffeeChatStatus({
         coffeeChatId,
-        body: { coffeeChatStatus: status },
+        coffeeChatStatus: status,
       });
     });
     setSelectedChats([]);
@@ -127,7 +125,9 @@ export const CompanyCoffeeChatListView = () => {
                 <span className="text-sm text-grey-300">
                   {getShortenedDate(coffeeChat.createdAt)}
                 </span>
-                <TagCoffeeChat coffeeChatStatus={coffeeChat.coffeeChatStatus} />
+                <BadgeCoffeeChat
+                  coffeeChatStatus={coffeeChat.coffeeChatStatus}
+                />
               </div>
             </div>
           </div>
@@ -211,10 +211,10 @@ const useUpdateCoffeeChatStatus = ({
   const { mutate: updateCoffeeChatStatus, isPending } = useMutation({
     mutationFn: ({
       coffeeChatId,
-      body,
+      coffeeChatStatus,
     }: {
       coffeeChatId: string;
-      body: CoffeeChatStatusRequest;
+      coffeeChatStatus: CoffeeChatStatus;
     }) => {
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
@@ -222,7 +222,9 @@ const useUpdateCoffeeChatStatus = ({
       return coffeeChatService.updateCoffeeChatStatus({
         token,
         coffeeChatId,
-        body,
+        body: {
+          coffeeChatStatus,
+        },
       });
     },
     onSuccess: async (response) => {
