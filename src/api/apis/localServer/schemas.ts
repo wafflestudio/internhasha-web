@@ -106,7 +106,13 @@ type CoffeeChatUserInfo = {
 };
 // Params
 export type PostPathParams = {
-  postPath: string;
+  page?: number;
+  roles?: JobCategory[];
+  investmentMax?: number;
+  investmentMin?: number;
+  series?: Series[];
+  employing?: 0 | 1;
+  order?: 0 | 1;
 };
 
 export type PostIdParams = {

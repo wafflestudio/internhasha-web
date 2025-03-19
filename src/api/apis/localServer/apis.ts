@@ -30,6 +30,7 @@ import type {
   UserResponse,
   UserWithTokenResponse,
 } from '@/api/apis/localServer/schemas';
+import { encodeQueryParams } from '@/api/apis/utils/queryEncodeUtil';
 import type {
   ErrorResponse,
   InternalCallParams,
@@ -144,12 +145,20 @@ export const getLocalServerApis = ({
     }: {
       params: PostPathParams;
       token?: string;
-    }) =>
-      callWithOptionalToken<SuccessResponse<PostsResponse>>({
+    }) => {
+      const convertedParams = {
+        ...params,
+        status: params.employing,
+        employing: undefined,
+      };
+      const queryParameters = encodeQueryParams({ params: convertedParams });
+
+      return callWithOptionalToken<SuccessResponse<PostsResponse>>({
         method: 'GET',
-        path: `post?${params.postPath}`,
+        path: `post?${queryParameters}`,
         token,
-      }),
+      });
+    },
     'GET /post/:postId': ({
       token,
       params,
@@ -210,7 +219,6 @@ export const getLocalServerApis = ({
         token,
       });
     },
-
     'PATCH /coffeeChat/:coffeeChatId': ({
       token,
       params,
@@ -313,7 +321,7 @@ export const getLocalServerApis = ({
       }
       return callWithToken<SuccessResponse<PostsResponse>>({
         method: 'GET',
-        path: `post/bookmarks?${params.bookmarkPage}`,
+        path: `post/bookmarks?${new URLSearchParams({ pages: params.bookmarkPage })}`,
         token,
       });
     },
@@ -372,9 +380,16 @@ export const getLocalServerApis = ({
       token: string;
       params: PostPathParams;
     }) => {
+      const convertedParams = {
+        ...params,
+        status: params.employing,
+        employing: undefined,
+      };
+      const queryParameters = encodeQueryParams({ params: convertedParams });
+
       return callWithToken<SuccessResponse<PostsResponse>>({
         method: 'GET',
-        path: `post/position/me?${params.postPath}`,
+        path: `post/position/me?${queryParameters}`,
         token,
       });
     },
