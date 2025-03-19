@@ -89,10 +89,10 @@ const tagClassName = cva(
   {
     variants: {
       variant: {
-        pending: 'bg-yellow-light-hover text-yellow-darker',
-        accepted: 'bg-green-light-hover text-green-darker',
-        canceled: 'bg-red-light-hover text-grey-darker',
-        rejected: 'bg-red-light-hover text-red-darker',
+        pending: 'bg-yellow-100 text-yellow-900',
+        accepted: 'bg-green-100 text-green-900',
+        canceled: 'bg-red-100 text-grey-900',
+        rejected: 'bg-red-100 text-red-900',
       },
     },
     defaultVariants: {
