@@ -1,6 +1,6 @@
 import type { Apis } from '@/api';
 import type { Paginator } from '@/entities/paginator';
-import type { BriefPost } from '@/entities/post';
+import type { BriefPost, JobMinorCategory } from '@/entities/post';
 import type { Series } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 
@@ -11,15 +11,15 @@ export type VentureCapitalService = {
     investmentMax,
     investmentMin,
     series,
-    pathStatus,
+    employing,
     token,
   }: {
     page?: number;
-    roles?: string[];
+    roles?: JobMinorCategory[];
     investmentMax?: number;
     investmentMin?: number;
     series?: Series[];
-    pathStatus?: number;
+    employing?: 0 | 1;
     token: string;
   }): ServiceResponse<{
     posts: BriefPost[];
@@ -39,27 +39,16 @@ export const implVentureCapitalService = ({
     investmentMax,
     investmentMin,
     series,
-    pathStatus,
+    employing,
     token,
   }) => {
-    const postPath = new URLSearchParams();
-
-    if (page !== undefined) postPath.append('page', page.toString());
-    if (roles !== undefined) {
-      roles.forEach((role) => {
-        postPath.append('roles', role);
-      });
-    }
-    if (investmentMax !== undefined)
-      postPath.append('investmentMax', investmentMax.toString());
-    if (investmentMin !== undefined)
-      postPath.append('investmentMin', investmentMin.toString());
-    if (series !== undefined) postPath.append('series', series.toString());
-    if (pathStatus !== undefined)
-      postPath.append('status', pathStatus.toString());
-
     const params = {
-      postPath: postPath.toString(),
+      page,
+      roles,
+      investmentMax,
+      investmentMin,
+      series,
+      employing,
     };
     const { status, data } = await apis['GET /post/position/me']({
       params,

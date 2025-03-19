@@ -144,12 +144,45 @@ export const getLocalServerApis = ({
     }: {
       params: PostPathParams;
       token?: string;
-    }) =>
-      callWithOptionalToken<SuccessResponse<PostsResponse>>({
+    }) => {
+      const queryParameters = new URLSearchParams();
+
+      if (params.pages !== undefined) {
+        queryParameters.append('page', params.pages.toString());
+      }
+      if (params.roles !== undefined) {
+        params.roles.forEach((role) => {
+          queryParameters.append('roles', role);
+        });
+      }
+      if (params.investmentMax !== undefined) {
+        queryParameters.append(
+          'investmentMax',
+          params.investmentMax.toString(),
+        );
+      }
+      if (params.investmentMin !== undefined) {
+        queryParameters.append(
+          'investmentMin',
+          params.investmentMin.toString(),
+        );
+      }
+      if (params.series !== undefined) {
+        queryParameters.append('series', params.series.toString());
+      }
+      if (params.employing !== undefined) {
+        queryParameters.append('status', params.employing.toString());
+      }
+      if (params.order !== undefined) {
+        queryParameters.append('order', params.order.toString());
+      }
+
+      return callWithOptionalToken<SuccessResponse<PostsResponse>>({
         method: 'GET',
-        path: `post?${params.postPath}`,
+        path: `post?${queryParameters}`,
         token,
-      }),
+      });
+    },
     'GET /post/:postId': ({
       token,
       params,
@@ -210,7 +243,6 @@ export const getLocalServerApis = ({
         token,
       });
     },
-
     'PATCH /coffeeChat/:coffeeChatId': ({
       token,
       params,
@@ -313,7 +345,7 @@ export const getLocalServerApis = ({
       }
       return callWithToken<SuccessResponse<PostsResponse>>({
         method: 'GET',
-        path: `post/bookmarks?${params.bookmarkPage}`,
+        path: `post/bookmarks?${new URLSearchParams({ pages: params.bookmarkPage })}`,
         token,
       });
     },
@@ -372,9 +404,38 @@ export const getLocalServerApis = ({
       token: string;
       params: PostPathParams;
     }) => {
+      const queryParameters = new URLSearchParams();
+
+      if (params.pages !== undefined) {
+        queryParameters.append('page', params.pages.toString());
+      }
+      if (params.roles !== undefined) {
+        params.roles.forEach((role) => {
+          queryParameters.append('roles', role);
+        });
+      }
+      if (params.investmentMax !== undefined) {
+        queryParameters.append(
+          'investmentMax',
+          params.investmentMax.toString(),
+        );
+      }
+      if (params.investmentMin !== undefined) {
+        queryParameters.append(
+          'investmentMin',
+          params.investmentMin.toString(),
+        );
+      }
+      if (params.series !== undefined) {
+        queryParameters.append('series', params.series.toString());
+      }
+      if (params.employing !== undefined) {
+        queryParameters.append('status', params.employing.toString());
+      }
+
       return callWithToken<SuccessResponse<PostsResponse>>({
         method: 'GET',
-        path: `post/position/me?${params.postPath}`,
+        path: `post/position/me?${queryParameters}`,
         token,
       });
     },

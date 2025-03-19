@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import type { FilterElements, Series } from '@/entities/post';
+import type { JobMinorCategory, PostFilter, Series } from '@/entities/post';
 import { PaginationBar } from '@/feature/landing/ui/PaginationBar';
 import { PostCard } from '@/feature/landing/ui/PostCard';
 import { SkeletonPostCard } from '@/feature/landing/ui/SkeletonPostCard';
@@ -11,10 +11,10 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LandingPostView = ({
-  filterElements,
+  postFilter,
   setShowSignInModal,
 }: {
-  filterElements: FilterElements;
+  postFilter: PostFilter;
   setShowSignInModal: (input: boolean) => void;
 }) => {
   const { toPost } = useRouteNavigation();
@@ -23,7 +23,7 @@ export const LandingPostView = ({
 
   const { postsData } = useGetPosts({
     page: currentPage,
-    ...filterElements,
+    ...postFilter,
   });
 
   const PAGES_PER_GROUP = 5;
@@ -93,16 +93,16 @@ const useGetPosts = ({
   investmentMax,
   investmentMin,
   series,
-  pathStatus,
+  employing,
   order,
 }: {
   page?: number;
-  roles?: string[];
+  roles?: JobMinorCategory[];
   investmentMax?: number;
   investmentMin?: number;
   series?: Series[];
-  pathStatus?: number;
-  order?: number;
+  employing?: 0 | 1;
+  order?: 0 | 1;
 }) => {
   const { postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
@@ -116,7 +116,7 @@ const useGetPosts = ({
       investmentMax,
       investmentMin,
       series,
-      pathStatus,
+      employing,
       order,
     ],
     queryFn: async () => {
@@ -126,7 +126,7 @@ const useGetPosts = ({
         investmentMax,
         investmentMin,
         series,
-        pathStatus,
+        employing,
         token,
         order,
       });

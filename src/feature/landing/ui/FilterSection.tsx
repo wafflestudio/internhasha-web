@@ -10,11 +10,11 @@ import {
 } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ICON_SRC } from '@/entities/asset';
-import { type FilterElements, type Series } from '@/entities/post';
+import { type PostFilter, type Series } from '@/entities/post';
 
 type FilterSectionProps = {
-  filterElements: FilterElements;
-  onChangeFilters: (filterElements: FilterElements) => void;
+  postFilter: PostFilter;
+  onChangeFilters: (postFilter: PostFilter) => void;
 };
 
 const RECRUITING_FILTER_VALUE = [
@@ -113,24 +113,26 @@ const VALID_ORDER_FILTER_VALUE = ORDER_FILTER_VALUE.map((item) => item.value);
 const VALID_ORDER_OPTION_VALUE = ORDER_FILTER_VALUE.map((item) => item.label);
 
 export const FilterSection = ({
-  filterElements,
+  postFilter,
   onChangeFilters,
 }: FilterSectionProps) => {
   const [recruitingSelect, setRecruitingSelect] =
-    useState<VALID_RECRUITING_FILTER_TYPE>(filterElements.pathStatus);
+    useState<VALID_RECRUITING_FILTER_TYPE>(postFilter.employing);
   const [seriesSelect, setSeriesSelect] = useState<VALID_SERIES_FILTER_TYPE>(
-    filterElements.series,
+    postFilter.series,
   );
   const [investAmountSelect, setInvestAmountSelect] =
     useState<VALID_INVEST_AMOUNT_TYPE>(
       formatLowerAndUpperToInvestAmount({
-        lower: filterElements.investmentMin,
-        upper: filterElements.investmentMax,
+        lower: postFilter.investmentMin,
+        upper: postFilter.investmentMax,
       }),
     );
   const [selectedFilter, setSelectedFilter] = useState<
     'RECRUITING' | 'SERIES' | 'INVEST_AMOUNT' | 'ORDER' | 'NONE'
   >('NONE');
+
+  console.log(postFilter);
 
   const handleChangeRecruitingFilter = (input: string) => {
     if (input === 'ALL') {
@@ -209,7 +211,7 @@ export const FilterSection = ({
 
     if (isValidOrderValue(inputToNumber)) {
       onChangeFilters({
-        ...filterElements,
+        ...postFilter,
         order: inputToNumber,
       });
     }
@@ -217,14 +219,14 @@ export const FilterSection = ({
 
   const handleClickApplyRecruitingFilter = () => {
     onChangeFilters({
-      ...filterElements,
-      pathStatus: recruitingSelect,
+      ...postFilter,
+      employing: recruitingSelect,
     });
   };
 
   const handleClickApplySeriesFilter = () => {
     onChangeFilters({
-      ...filterElements,
+      ...postFilter,
       series: seriesSelect,
     });
   };
@@ -234,7 +236,7 @@ export const FilterSection = ({
       investAmount: investAmountSelect,
     });
     onChangeFilters({
-      ...filterElements,
+      ...postFilter,
       investmentMin: lower,
       investmentMax: upper,
     });
@@ -243,22 +245,22 @@ export const FilterSection = ({
   const handleClickResetRecruitButton = () => {
     setRecruitingSelect(undefined);
     onChangeFilters({
-      ...filterElements,
-      pathStatus: undefined,
+      ...postFilter,
+      employing: undefined,
     });
   };
 
   const handleClickResetSeriesButton = () => {
     setSeriesSelect(undefined);
     onChangeFilters({
-      ...filterElements,
+      ...postFilter,
       series: undefined,
     });
   };
 
   const handleClickResetInvestAmountButton = () => {
     onChangeFilters({
-      ...filterElements,
+      ...postFilter,
       investmentMin: undefined,
       investmentMax: undefined,
     });
@@ -288,14 +290,12 @@ export const FilterSection = ({
             <PopoverTrigger asChild>
               <Button
                 variant={
-                  filterElements.pathStatus !== undefined
-                    ? 'selected'
-                    : 'secondary'
+                  postFilter.employing !== undefined ? 'selected' : 'secondary'
                 }
                 className="bg-white px-3 py-2"
               >
-                {filterElements.pathStatus !== undefined
-                  ? VALID_RECRUITING_OPTION_VALUE[filterElements.pathStatus]
+                {postFilter.employing !== undefined
+                  ? VALID_RECRUITING_OPTION_VALUE[postFilter.employing]
                   : '모집 상태'}{' '}
                 <img
                   src={ICON_SRC.ARROW}
@@ -361,8 +361,8 @@ export const FilterSection = ({
             <PopoverTrigger asChild>
               <Button
                 variant={
-                  filterElements.series !== undefined &&
-                  filterElements.series.length !== 0
+                  postFilter.series !== undefined &&
+                  postFilter.series.length !== 0
                     ? 'selected'
                     : 'secondary'
                 }
@@ -439,8 +439,8 @@ export const FilterSection = ({
             <PopoverTrigger asChild>
               <Button
                 variant={
-                  filterElements.investmentMax !== undefined ||
-                  filterElements.investmentMin !== undefined
+                  postFilter.investmentMax !== undefined ||
+                  postFilter.investmentMin !== undefined
                     ? 'selected'
                     : 'secondary'
                 }
@@ -518,13 +518,11 @@ export const FilterSection = ({
       >
         <PopoverTrigger asChild>
           <Button
-            variant={
-              filterElements.order !== undefined ? 'selected' : 'secondary'
-            }
+            variant={postFilter.order !== undefined ? 'selected' : 'secondary'}
             className="w-fit bg-white px-3 py-2"
           >
-            {filterElements.order !== undefined
-              ? VALID_ORDER_OPTION_VALUE[filterElements.order]
+            {postFilter.order !== undefined
+              ? VALID_ORDER_OPTION_VALUE[postFilter.order]
               : '최신순'}{' '}
             <img
               src={ICON_SRC.ARROW}
@@ -537,9 +535,7 @@ export const FilterSection = ({
             <RadioGroup
               onValueChange={handleChangeOrderFilter}
               value={
-                filterElements.order === undefined
-                  ? '0'
-                  : String(filterElements.order)
+                postFilter.order === undefined ? '0' : String(postFilter.order)
               }
               className="flex flex-col gap-[10px]"
             >

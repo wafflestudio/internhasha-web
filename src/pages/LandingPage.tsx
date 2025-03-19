@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal';
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
-import type { FilterElements, JobMinorCategory } from '@/entities/post';
+import type { JobMinorCategory, PostFilter } from '@/entities/post';
 import {
   FilterSection,
   NarrowRolesFilter,
@@ -11,18 +11,18 @@ import {
 import { LandingPostView } from '@/feature/landing';
 
 export const LandingPage = () => {
-  const [filterElements, setFilterElements] = useState<FilterElements>({
+  const [postFilter, setPostFilter] = useState<PostFilter>({
     roles: undefined,
     investmentMax: undefined,
     investmentMin: undefined,
     series: undefined,
-    pathStatus: undefined,
+    employing: undefined,
     order: undefined,
   });
   const [showSignInModal, setShowSignInModal] = useState(false);
 
   const handleRolesChange = (updatedRoles: JobMinorCategory[]) => {
-    setFilterElements((prev) => ({ ...prev, roles: updatedRoles }));
+    setPostFilter((prev) => ({ ...prev, roles: updatedRoles }));
   };
 
   const closeSignInModal = () => {
@@ -40,7 +40,7 @@ export const LandingPage = () => {
           {/* RolesFilter */}
           <div className="order-1 hidden md:order-none md:mt-[50px] md:block md:flex-col">
             <RolesFilter
-              roles={filterElements.roles}
+              roles={postFilter.roles}
               onChangeRoles={handleRolesChange}
             />
           </div>
@@ -48,7 +48,7 @@ export const LandingPage = () => {
           {/* NarrowRolesFilter */}
           <div className="order-1 block w-full md:order-none md:hidden">
             <NarrowRolesFilter
-              roles={filterElements.roles}
+              roles={postFilter.roles}
               onChangeRoles={handleRolesChange}
             />
           </div>
@@ -59,12 +59,12 @@ export const LandingPage = () => {
             {/* 상단 필터 섹션 */}
             <div className="flex items-center justify-between py-6">
               <FilterSection
-                filterElements={filterElements}
-                onChangeFilters={setFilterElements}
+                postFilter={postFilter}
+                onChangeFilters={setPostFilter}
               />
             </div>
             <LandingPostView
-              filterElements={filterElements}
+              postFilter={postFilter}
               setShowSignInModal={setShowSignInModal}
             />
           </div>

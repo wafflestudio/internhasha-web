@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import type { FilterElements } from '@/entities/post';
+import type { JobMinorCategory, PostFilter } from '@/entities/post';
 import type { Series } from '@/entities/post';
 import { FilterSection } from '@/feature/landing';
 import { PaginationBar } from '@/feature/landing';
@@ -13,12 +13,12 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const MyPostList = () => {
-  const [filterElements, setFilterElements] = useState<FilterElements>({
+  const [postFilter, setPostFilter] = useState<PostFilter>({
     roles: undefined,
     investmentMax: undefined,
     investmentMin: undefined,
     series: undefined,
-    pathStatus: undefined,
+    employing: undefined,
   });
   const [currentPage, setCurrentPage] = useState(0);
   const [currentGroup, setCurrentGroup] = useState(0);
@@ -27,7 +27,7 @@ export const MyPostList = () => {
 
   const { postsData } = useGetPosts({
     page: currentPage,
-    ...filterElements,
+    ...postFilter,
   });
 
   if (postsData?.type === 'error') {
@@ -44,8 +44,8 @@ export const MyPostList = () => {
       {/* 상단 필터 섹션 */}
       <div className="flex items-center justify-between">
         <FilterSection
-          filterElements={filterElements}
-          onChangeFilters={setFilterElements}
+          postFilter={postFilter}
+          onChangeFilters={setPostFilter}
         />
       </div>
       {/* 회사 소개 카드 */}
@@ -97,14 +97,14 @@ const useGetPosts = ({
   investmentMax,
   investmentMin,
   series,
-  pathStatus,
+  employing,
 }: {
   page?: number;
-  roles?: string[];
+  roles?: JobMinorCategory[];
   investmentMax?: number;
   investmentMin?: number;
   series?: Series[];
-  pathStatus?: number;
+  employing?: 0 | 1;
 }) => {
   const { ventureCapitalService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
@@ -118,7 +118,7 @@ const useGetPosts = ({
       investmentMax,
       investmentMin,
       series,
-      pathStatus,
+      employing,
     ],
     queryFn: async () => {
       if (token === null) {
@@ -131,7 +131,7 @@ const useGetPosts = ({
         investmentMax,
         investmentMin,
         series,
-        pathStatus,
+        employing,
       });
     },
   });
