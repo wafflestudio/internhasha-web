@@ -11,42 +11,36 @@ import {
   implApi,
 } from '@/api';
 import { implExternalApi } from '@/api/client';
-import type { RolesFilterCategory } from '@/entities/filter';
 import { PATH } from '@/entities/route';
 import { implApplicantService } from '@/feature/applicant';
 import { implAuthService } from '@/feature/auth';
 import { implCoffeeChatService } from '@/feature/coffeeChat';
-import { implLandingService } from '@/feature/landing/service/landingService';
+import { implCompanyService } from '@/feature/company';
 import { implPostService } from '@/feature/post';
-import { implUserService } from '@/feature/user';
-import { implVentureCapitalService } from '@/feature/ventureCapital';
+import { ApplicantMyPage } from '@/pages/ApplicantMyPage';
 import { CoffeeChatDetailPage } from '@/pages/CoffeeChatDetailPage';
+import { CompanyMyPage } from '@/pages/CompanyMyPage';
 import { CreateCoffeeChatPage } from '@/pages/CreateCoffeeChatPage';
 import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
 import { CreateProfilePage } from '@/pages/CreateProfilePage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
-import { MyPage } from '@/pages/MyPage';
 import { PostDetailPage } from '@/pages/PostDetailPage';
 import { ResetPasswordPage } from '@/pages/ResetPasswordPage';
 import { SignInPage } from '@/pages/SignInPage';
 import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
 import { SignUpPage } from '@/pages/SignUpPage';
-import { VentureCapitalMyPage } from '@/pages/VentureCapitalMyPage';
 import { AuthCompanySwitchRoute } from '@/shared/auth/AuthAdminSwitchRoute';
 import { ProtectedRoute } from '@/shared/auth/ProtectedRoute';
 import { ReissueRoute } from '@/shared/auth/ReissueRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { RoleContext } from '@/shared/context/RoleContext';
-import { RolesFilterContext } from '@/shared/context/RolesFilterContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { implFileService } from '@/shared/file/fileService';
 import { implRoleStateRepository } from '@/shared/role/state';
-import { implRolesFilterLocalStorageRepository } from '@/shared/rolesFilter/localstorage';
-import { implRolesFilterStateRepository } from '@/shared/rolesFilter/state';
 import { implTokenStateRepository } from '@/shared/token/state';
 
 const RouterProvider = () => {
@@ -65,8 +59,8 @@ const RouterProvider = () => {
             path={PATH.MY_PAGE}
             element={
               <AuthCompanySwitchRoute
-                nonCompanyPage={<MyPage />}
-                companyPage={<VentureCapitalMyPage />}
+                nonCompanyPage={<ApplicantMyPage />}
+                companyPage={<CompanyMyPage />}
               />
             }
           />
@@ -101,25 +95,12 @@ const queryClient = new QueryClient({
 });
 
 export const App = () => {
-  const rolesFilterLocalStorageRepository =
-    implRolesFilterLocalStorageRepository();
-
   const [token, setToken] = useState<string | null>(null);
   const [role, setRole] = useState<'APPLICANT' | 'COMPANY' | null>(null);
-  const [activeCategory, setActiveCategory] = useState<RolesFilterCategory>(
-    rolesFilterLocalStorageRepository.getActiveJobCategory,
-  );
-  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(
-    rolesFilterLocalStorageRepository.getIsFilterDropdownOpen,
-  );
 
   const ENV = useGuardContext(EnvContext);
   const tokenStateRepository = implTokenStateRepository({ setToken });
   const roleStateRepository = implRoleStateRepository({ setRole });
-  const rolesFilterStateRepository = implRolesFilterStateRepository({
-    setActiveCategory,
-    setIsFilterDropdownOpen,
-  });
 
   const localServerCall = async (content: ExternalCallParams) => {
     const response = await fetch(
@@ -202,15 +183,10 @@ export const App = () => {
       roleStateRepository,
     }),
     postService: implPostService({ apis }),
-    userService: implUserService({ apis }),
     coffeeChatService: implCoffeeChatService({ apis }),
     fileService: implFileService({ apis, externalApis }),
-    landingService: implLandingService({
-      rolesFilterLocalStorageRepository,
-      rolesFilterStateRepository,
-    }),
-    ventureCapitalService: implVentureCapitalService({ apis }),
     applicantService: implApplicantService({ apis }),
+    companyService: implCompanyService({ apis }),
   };
 
   return (
@@ -219,11 +195,7 @@ export const App = () => {
         <RoleContext.Provider value={{ role }}>
           <TokenContext.Provider value={{ token }}>
             <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID}>
-              <RolesFilterContext.Provider
-                value={{ activeCategory, isFilterDropdownOpen }}
-              >
-                <RouterProvider />
-              </RolesFilterContext.Provider>
+              <RouterProvider />
             </GoogleOAuthProvider>
           </TokenContext.Provider>
         </RoleContext.Provider>
