@@ -106,7 +106,7 @@ type CoffeeChatUserInfo = {
 };
 // Params
 export type PostPathParams = {
-  pages?: number;
+  page?: number;
   roles?: JobCategory[];
   investmentMax?: number;
   investmentMin?: number;

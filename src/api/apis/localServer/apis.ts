@@ -30,6 +30,7 @@ import type {
   UserResponse,
   UserWithTokenResponse,
 } from '@/api/apis/localServer/schemas';
+import { encodeQueryParams } from '@/api/apis/utils/queryEncodeUtil';
 import type {
   ErrorResponse,
   InternalCallParams,
@@ -145,37 +146,12 @@ export const getLocalServerApis = ({
       params: PostPathParams;
       token?: string;
     }) => {
-      const queryParameters = new URLSearchParams();
-
-      if (params.pages !== undefined) {
-        queryParameters.append('page', params.pages.toString());
-      }
-      if (params.roles !== undefined) {
-        params.roles.forEach((role) => {
-          queryParameters.append('roles', role);
-        });
-      }
-      if (params.investmentMax !== undefined) {
-        queryParameters.append(
-          'investmentMax',
-          params.investmentMax.toString(),
-        );
-      }
-      if (params.investmentMin !== undefined) {
-        queryParameters.append(
-          'investmentMin',
-          params.investmentMin.toString(),
-        );
-      }
-      if (params.series !== undefined) {
-        queryParameters.append('series', params.series.toString());
-      }
-      if (params.employing !== undefined) {
-        queryParameters.append('status', params.employing.toString());
-      }
-      if (params.order !== undefined) {
-        queryParameters.append('order', params.order.toString());
-      }
+      const convertedParams = {
+        ...params,
+        status: params.employing,
+        employing: undefined,
+      };
+      const queryParameters = encodeQueryParams({ params: convertedParams });
 
       return callWithOptionalToken<SuccessResponse<PostsResponse>>({
         method: 'GET',
@@ -404,34 +380,12 @@ export const getLocalServerApis = ({
       token: string;
       params: PostPathParams;
     }) => {
-      const queryParameters = new URLSearchParams();
-
-      if (params.pages !== undefined) {
-        queryParameters.append('page', params.pages.toString());
-      }
-      if (params.roles !== undefined) {
-        params.roles.forEach((role) => {
-          queryParameters.append('roles', role);
-        });
-      }
-      if (params.investmentMax !== undefined) {
-        queryParameters.append(
-          'investmentMax',
-          params.investmentMax.toString(),
-        );
-      }
-      if (params.investmentMin !== undefined) {
-        queryParameters.append(
-          'investmentMin',
-          params.investmentMin.toString(),
-        );
-      }
-      if (params.series !== undefined) {
-        queryParameters.append('series', params.series.toString());
-      }
-      if (params.employing !== undefined) {
-        queryParameters.append('status', params.employing.toString());
-      }
+      const convertedParams = {
+        ...params,
+        status: params.employing,
+        employing: undefined,
+      };
+      const queryParameters = encodeQueryParams({ params: convertedParams });
 
       return callWithToken<SuccessResponse<PostsResponse>>({
         method: 'GET',
