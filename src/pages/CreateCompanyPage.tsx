@@ -3,7 +3,7 @@ import { useLocation } from 'react-router';
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import type { Link, Series } from '@/entities/post';
 import { CreateCompanyForm } from '@/feature/company';
-import { PatchCompanyForm } from '@/feature/company/ui/PatchCompanyForm';
+import { PatchCompanyForm } from '@/feature/company';
 
 type Body = {
   companyBody?: {

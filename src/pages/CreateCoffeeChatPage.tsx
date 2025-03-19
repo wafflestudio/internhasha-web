@@ -2,7 +2,7 @@ import { useParams } from 'react-router';
 
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { PATH } from '@/entities/route';
-import { CreateCoffeeChatForm } from '@/feature/coffeeChat/ui/CreateCoffeeChatForm';
+import { CreateCoffeeChatForm } from '@/feature/coffeeChat';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
 
 export const CreateCoffeeChatPage = () => {

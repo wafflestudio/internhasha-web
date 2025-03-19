@@ -1,5 +1,5 @@
-export { CreateProfileForm } from '@/feature/applicant/ui/CreateProfileForm';
-export { ApplicantInfo } from '@/feature/applicant/ui/ApplicantInfo';
+export { CreateProfileForm } from '@/feature/applicant/ui/form/CreateProfileForm';
+export { ApplicantInfo } from '@/feature/applicant/ui/mypage/ApplicantInfo';
 export {
   implApplicantService,
   type ApplicantService,
