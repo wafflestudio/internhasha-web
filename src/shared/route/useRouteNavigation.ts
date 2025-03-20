@@ -1,47 +1,14 @@
 import { useNavigate } from 'react-router';
 
-import type { Series } from '@/entities/post';
 import { PATH } from '@/entities/route';
-
-type VerifyMailBody = {
-  password: string;
-  username: string;
-};
-
-type PreviousForm = {
-  password: string;
-  username: string;
-};
-
-type CompanyBody = {
-  id: string;
-  companyName: string;
-  explanation: string;
-  email: string;
-  slogan: string;
-  investAmount: number;
-  investCompany: string;
-  series: Series;
-  irDeckLink?: string;
-  landingPageLink?: string;
-  imageLink?: string;
-  links?: { link: string; description: string }[];
-  tags?: string[];
-};
-
-type PostBody = {
-  id: string;
-  title: string;
-  employmentEndDateTime?: string;
-  jobMajorCategory: string;
-  jobMinorCategory: string;
-  detail: string;
-  headcount: number;
-};
-
-type MyPageBody = {
-  tab: 'POST' | 'COFFEE_CHAT' | 'BOOKMARK' | 'PROFILE';
-};
+import type {
+  CompanyRouteBody,
+  MyPageRouteBody,
+  PostRouteBody,
+  PreviousSignUpFormRouteBody,
+  ProfileRouteBody,
+  VerifyMailRouteBody,
+} from '@/shared/route/scheme';
 
 export const useRouteNavigation = () => {
   const navigate = useNavigate();
@@ -72,10 +39,10 @@ export const useRouteNavigation = () => {
     toFindAccount: () => {
       void navigate(RESET_PASSWORD);
     },
-    toVerifyEmail: ({ body }: { body: VerifyMailBody }) => {
+    toVerifyEmail: ({ body }: { body: VerifyMailRouteBody }) => {
       void navigate(VERIFY_EMAIL, { state: { body } });
     },
-    toSignUp: ({ body }: { body?: PreviousForm }) => {
+    toSignUp: ({ body }: { body?: PreviousSignUpFormRouteBody }) => {
       void navigate(SIGN_UP, { state: { body } });
     },
     toSignUpComplete: () => {
@@ -87,23 +54,23 @@ export const useRouteNavigation = () => {
     toCoffeeChatDetail: ({ coffeeChatId }: { coffeeChatId: string }) => {
       void navigate(COFFEE_CHAT_DETAIL(coffeeChatId));
     },
-    toCreateCompany: ({ companyBody }: { companyBody?: CompanyBody }) => {
-      void navigate(CREATE_COMPANY, { state: { companyBody } });
+    toCreateCompany: ({ body }: { body?: CompanyRouteBody }) => {
+      void navigate(CREATE_COMPANY, { state: { body } });
     },
     toCreatePost: ({
       companyId,
-      postBody,
+      body,
     }: {
       companyId: string;
-      postBody?: PostBody;
+      body?: PostRouteBody;
     }) => {
-      void navigate(CREATE_POST(companyId), { state: { postBody } });
+      void navigate(CREATE_POST(companyId), { state: { body } });
     },
-    toMyPage: ({ myPageBody }: { myPageBody: MyPageBody }) => {
-      void navigate(MY_PAGE, { state: { myPageBody } });
+    toMyPage: ({ body }: { body?: MyPageRouteBody }) => {
+      void navigate(MY_PAGE, { state: { body } });
     },
-    toCreateProfile: () => {
-      void navigate(CREATE_PROFILE);
+    toCreateProfile: ({ body }: { body?: ProfileRouteBody }) => {
+      void navigate(CREATE_PROFILE, { state: { body } });
     },
     refreshPage: () => {
       void navigate(0);

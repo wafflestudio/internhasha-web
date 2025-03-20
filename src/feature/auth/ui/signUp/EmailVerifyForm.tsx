@@ -18,21 +18,13 @@ import { RedirectSignInModal } from '@/feature/auth/ui/signUp/RedirectSignInModa
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
+import type { VerifyMailRouteBody } from '@/shared/route/scheme';
 import { useRouteLocation } from '@/shared/route/useRouteLocation';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatNumberToTime } from '@/util/format';
 
-type VerifyMailBody = {
-  password: string;
-  username: string;
-};
-
-type EmailVerifyLocationState = {
-  body: VerifyMailBody;
-};
-
 export const EmailVerifyForm = () => {
-  const state = useRouteLocation() as EmailVerifyLocationState | null;
+  const state = useRouteLocation() as { body: VerifyMailRouteBody } | null;
 
   const { toSignUp } = useRouteNavigation();
   const [showSendCodeError, setShowSendCodeError] = useState(false);

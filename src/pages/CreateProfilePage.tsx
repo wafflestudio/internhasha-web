@@ -1,32 +1,12 @@
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
-import type { JobMinorCategory } from '@/entities/post';
 import { CreateProfileForm } from '@/feature/applicant';
+import type { ProfileRouteBody } from '@/shared/route/scheme';
 import { useRouteLocation } from '@/shared/route/useRouteLocation';
 
-type ExternalLink = {
-  link: string;
-  description: string;
-};
-
-type Body = {
-  profileBody?: {
-    enrollYear?: string;
-    department?: string;
-    positions?: JobMinorCategory[];
-    slogan?: string;
-    explanation?: string;
-    stack?: string[];
-    imagePreview?: { file: File; url: string } | null;
-    cvPreview?: { file: File; url: string } | null;
-    portfolioPreview?: { file: File; url: string } | null;
-    links?: ExternalLink[];
-  };
-};
-
 export const CreateProfilePage = () => {
-  const state = useRouteLocation() as Body | null;
+  const state = useRouteLocation() as { body: ProfileRouteBody } | null;
 
-  if (state?.profileBody === undefined) {
+  if (state === null) {
     return (
       <div className="min-h-screen">
         <GlobalNavigationBar />

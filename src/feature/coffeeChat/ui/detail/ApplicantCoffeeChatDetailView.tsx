@@ -95,7 +95,9 @@ export const CoffeeChatDetailView = ({
             <div className="flex gap-[8px]">
               <Button
                 variant="secondary"
-                onClick={toMyPage}
+                onClick={() => {
+                  toMyPage({});
+                }}
                 className="mt-20 w-full"
                 disabled={isPending}
               >
@@ -185,7 +187,7 @@ const useCancelCoffeeChat = ({
     onSuccess: async (response) => {
       if (response.type === 'success') {
         await queryClient.invalidateQueries();
-        toMyPage();
+        toMyPage({});
       } else {
         setResponseMessage(response.code);
       }

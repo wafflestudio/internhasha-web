@@ -9,20 +9,14 @@ import { Input } from '@/components/ui/input';
 import { ICON_SRC } from '@/entities/asset';
 import { authFormPresentation } from '@/feature/auth/presentation/authFormPresentation';
 import { authInputPresentation } from '@/feature/auth/presentation/authInputPresentation';
+import type { PreviousSignUpFormRouteBody } from '@/shared/route/scheme';
 import { useRouteLocation } from '@/shared/route/useRouteLocation';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
-type PreviousForm = {
-  password: string;
-  username: string;
-};
-
-type LocalSignUpInitialBody = {
-  body?: PreviousForm;
-};
-
 export const LocalSignUpForm = () => {
-  const state = useRouteLocation() as LocalSignUpInitialBody | null;
+  const state = useRouteLocation() as {
+    body: PreviousSignUpFormRouteBody;
+  } | null;
 
   const { toVerifyEmail } = useRouteNavigation();
   const { inputStates, formStates } = authFormPresentation.useValidator({

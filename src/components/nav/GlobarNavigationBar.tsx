@@ -41,7 +41,13 @@ export const GlobalNavigationBar = () => {
             </>
           ) : (
             <>
-              <Button onClick={toMyPage} disabled={isPending} variant="ghost">
+              <Button
+                onClick={() => {
+                  toMyPage({});
+                }}
+                disabled={isPending}
+                variant="ghost"
+              >
                 마이페이지
               </Button>
               <Button

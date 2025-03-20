@@ -2,30 +2,19 @@ import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { PATH } from '@/entities/route';
 import { CreatePostForm, PatchPostForm } from '@/feature/post';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
+import type { PostRouteBody } from '@/shared/route/scheme';
 import { useRouteLocation } from '@/shared/route/useRouteLocation';
 import { useRouteParams } from '@/shared/route/useRouteParams';
 
-type Body = {
-  postBody?: {
-    id: string;
-    title: string;
-    employmentEndDateTime?: string;
-    jobMajorCategory: string;
-    jobMinorCategory: string;
-    detail: string;
-    headcount: number;
-  };
-};
-
 export const CreatePostPage = () => {
   const { companyId } = useRouteParams<{ companyId: string }>();
-  const state = useRouteLocation() as Body | null;
+  const state = useRouteLocation() as { body: PostRouteBody } | null;
 
   if (companyId === undefined) {
     return <RouteNavigator link={PATH.INDEX} />;
   }
 
-  if (state?.postBody === undefined) {
+  if (state === null) {
     return (
       <div className="min-h-screen">
         <GlobalNavigationBar />

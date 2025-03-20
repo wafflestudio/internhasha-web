@@ -4,14 +4,9 @@ import type {
   ListInput,
   SelectInput,
 } from '@/entities/input';
-import type { JobMinorCategory } from '@/entities/post';
+import type { JobMinorCategory, Link } from '@/entities/post';
 import type { ApplicantInputPresentation } from '@/feature/applicant/presentation/applicantInputPresentation';
 import { convertEmptyStringToUndefined } from '@/lib/responseConverter';
-
-type ExternalLink = {
-  link: string;
-  description: string;
-};
 
 type InitialFormState = {
   enrollYear?: number;
@@ -23,7 +18,7 @@ type InitialFormState = {
   imagePreview?: { file: File; url: string } | null;
   cvPreview?: { file: File; url: string } | null;
   portfolioPreview?: { file: File; url: string } | null;
-  links?: ExternalLink[];
+  links?: Link[];
 };
 
 type ApplicantFormPresentation = {
@@ -46,8 +41,8 @@ type ApplicantFormPresentation = {
       imagePreview: Input<{ file: File; url: string } | null>;
       cvPreview: Input<{ file: File; url: string } | null>;
       portfolioPreview: Input<{ file: File; url: string } | null>;
-      rawLink: Input<ExternalLink>;
-      links: ListInput<ExternalLink>;
+      rawLink: Input<Link>;
+      links: ListInput<Link>;
     };
     formStates: {
       enrollYear: InputForForm<number>;
@@ -59,7 +54,7 @@ type ApplicantFormPresentation = {
       imagePreview: InputForForm<{ file: File; url: string } | null>;
       cvPreview: InputForForm<{ file: File; url: string } | null>;
       portfolioPreview: Input<{ file: File; url: string } | null>;
-      links: InputForForm<ExternalLink[] | undefined>;
+      links: InputForForm<Link[] | undefined>;
     };
   };
 };

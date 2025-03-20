@@ -1,31 +1,13 @@
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
-import type { Link, Series } from '@/entities/post';
 import { CreateCompanyForm } from '@/feature/company';
 import { PatchCompanyForm } from '@/feature/company';
+import type { CompanyRouteBody } from '@/shared/route/scheme';
 import { useRouteLocation } from '@/shared/route/useRouteLocation';
 
-type Body = {
-  companyBody?: {
-    id: string;
-    companyName: string;
-    explanation: string;
-    email: string;
-    slogan: string;
-    investAmount?: number;
-    investCompany: string[];
-    series: Series;
-    irDeckLink?: string;
-    landingPageLink?: string;
-    imageLink?: string;
-    links?: Link[];
-    tags?: string[];
-  };
-};
-
 export const CreateCompanyPage = () => {
-  const state = useRouteLocation() as Body | null;
+  const state = useRouteLocation() as { body: CompanyRouteBody } | null;
 
-  if (state?.companyBody === undefined) {
+  if (state === null) {
     return (
       <div className="min-h-screen">
         <GlobalNavigationBar />
