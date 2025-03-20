@@ -16,7 +16,7 @@ export const RewritePostModal = ({ postId }: { postId: string | null }) => {
           variant="secondary"
           onClick={() => {
             if (postId === null) {
-              toMain();
+              toMain({});
               return;
             }
             toPost({ postId });

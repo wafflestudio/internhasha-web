@@ -7,14 +7,14 @@ import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ICON_SRC } from '@/entities/asset';
+import type { PreviousSignUpFormRouteQuery } from '@/entities/route';
 import { authFormPresentation } from '@/feature/auth/presentation/authFormPresentation';
 import { authInputPresentation } from '@/feature/auth/presentation/authInputPresentation';
-import type { PreviousSignUpFormRouteBody } from '@/shared/route/scheme';
-import { useRouteLocation } from '@/shared/route/useRouteLocation';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+import { useRouteLocation } from '@/shared/route/useRouteParams';
 
 export const LocalSignUpForm = () => {
-  const body = useRouteLocation() as PreviousSignUpFormRouteBody | null;
+  const body = useRouteLocation() as PreviousSignUpFormRouteQuery | null;
 
   const { toVerifyEmail } = useRouteNavigation();
   const { inputStates, formStates } = authFormPresentation.useValidator({

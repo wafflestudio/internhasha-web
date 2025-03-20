@@ -1,10 +1,10 @@
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
+import type { ProfileRouteQuery } from '@/entities/route';
 import { CreateProfileForm } from '@/feature/applicant';
-import type { ProfileRouteBody } from '@/shared/route/scheme';
-import { useRouteLocation } from '@/shared/route/useRouteLocation';
+import { useRouteLocation } from '@/shared/route/useRouteParams';
 
 export const CreateProfilePage = () => {
-  const body = useRouteLocation() as ProfileRouteBody | null;
+  const body = useRouteLocation() as ProfileRouteQuery | null;
 
   if (body === null) {
     return (

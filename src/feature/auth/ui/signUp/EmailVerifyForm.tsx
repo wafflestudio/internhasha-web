@@ -11,20 +11,20 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { createErrorMessage } from '@/entities/errors';
-import { PATH } from '@/entities/route';
+import type { VerifyMailRouteQuery } from '@/entities/route';
 import { authFormPresentation } from '@/feature/auth/presentation/authFormPresentation';
 import { authInputPresentation } from '@/feature/auth/presentation/authInputPresentation';
 import { RedirectSignInModal } from '@/feature/auth/ui/signUp/RedirectSignInModal';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
+import { PATH } from '@/shared/route/constants';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
-import type { VerifyMailRouteBody } from '@/shared/route/scheme';
-import { useRouteLocation } from '@/shared/route/useRouteLocation';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+import { useRouteLocation } from '@/shared/route/useRouteParams';
 import { formatNumberToTime } from '@/util/format';
 
 export const EmailVerifyForm = () => {
-  const body = useRouteLocation() as VerifyMailRouteBody | null;
+  const body = useRouteLocation() as VerifyMailRouteQuery | null;
 
   const { toSignUp } = useRouteNavigation();
   const [showSendCodeError, setShowSendCodeError] = useState(false);

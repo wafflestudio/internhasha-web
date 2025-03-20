@@ -10,16 +10,19 @@ export const GlobalNavigationBar = () => {
   const { token } = useGuardContext(TokenContext);
   const { logout, isPending } = useLogout();
   const { toSignUp, toSignInSelect, toMyPage, toMain } = useRouteNavigation();
+
   const handleClickLogoutButton = () => {
     logout();
-    toMain();
+    toMain({});
   };
 
   return (
     <header className="sticky top-0 z-50 flex justify-center bg-grey-50 shadow-md">
       <div className="flex w-full items-center justify-between px-6 py-4 sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl">
         <h1
-          onClick={toMain}
+          onClick={() => {
+            toMain({});
+          }}
           className="hover:text-blue-normal cursor-pointer text-xl font-bold text-gray-800 transition-colors duration-150"
         >
           인턴하샤
@@ -43,7 +46,7 @@ export const GlobalNavigationBar = () => {
             <>
               <Button
                 onClick={() => {
-                  toMyPage({ body: { tab: 'PROFILE' } });
+                  toMyPage({});
                 }}
                 disabled={isPending}
                 variant="ghost"

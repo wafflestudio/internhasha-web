@@ -1,16 +1,16 @@
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { MyPageRouteQuery } from '@/entities/route';
 import {
   CoffeeChatNumberBadge,
   CompanyCoffeeChatListView,
 } from '@/feature/coffeeChat';
 import { CompanyProfile } from '@/feature/company';
 import { MyPostList } from '@/feature/post/ui/mypage/company/MyPostList';
-import type { MyPageRouteBody } from '@/shared/route/scheme';
-import { useRouteLocation } from '@/shared/route/useRouteLocation';
+import { useRouteQueryParams } from '@/shared/route/useRouteParams';
 
 export const CompanyMyPage = () => {
-  const body = useRouteLocation() as MyPageRouteBody | null;
+  const queryParams = useRouteQueryParams() as MyPageRouteQuery | null;
 
   return (
     <div className="min-h-screen bg-grey-50">
@@ -20,7 +20,9 @@ export const CompanyMyPage = () => {
         <h1 className="text-2xl font-bold text-grey-900">마이페이지</h1>
         <Tabs
           defaultValue={
-            body !== null && body.tab !== 'BOOKMARK' ? body.tab : 'COFFEE_CHAT'
+            queryParams !== null && queryParams.tab !== 'BOOKMARK'
+              ? queryParams.tab
+              : 'COFFEE_CHAT'
           }
           className="w-full"
         >

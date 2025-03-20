@@ -1,11 +1,11 @@
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
-import { PATH } from '@/entities/route';
 import { CreateCoffeeChatForm } from '@/feature/coffeeChat';
+import { PATH } from '@/shared/route/constants';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
-import { useRouteParams } from '@/shared/route/useRouteParams';
+import { useRoutePathParams } from '@/shared/route/useRouteParams';
 
 export const CreateCoffeeChatPage = () => {
-  const { postId } = useRouteParams<{ postId: string }>();
+  const { postId } = useRoutePathParams<{ postId: string }>();
 
   if (postId === undefined) {
     return <RouteNavigator link={PATH.INDEX} />;

@@ -1,14 +1,14 @@
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
-import { PATH } from '@/entities/route';
+import type { PostRouteQuery } from '@/entities/route';
 import { CreatePostForm, PatchPostForm } from '@/feature/post';
+import { PATH } from '@/shared/route/constants';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
-import type { PostRouteBody } from '@/shared/route/scheme';
-import { useRouteLocation } from '@/shared/route/useRouteLocation';
-import { useRouteParams } from '@/shared/route/useRouteParams';
+import { useRouteLocation } from '@/shared/route/useRouteParams';
+import { useRoutePathParams } from '@/shared/route/useRouteParams';
 
 export const CreatePostPage = () => {
-  const { companyId } = useRouteParams<{ companyId: string }>();
-  const body = useRouteLocation() as PostRouteBody | null;
+  const { companyId } = useRoutePathParams<{ companyId: string }>();
+  const body = useRouteLocation() as PostRouteQuery | null;
 
   if (companyId === undefined) {
     return <RouteNavigator link={PATH.INDEX} />;

@@ -198,7 +198,12 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
         </div>
       </FormContainer>
       {showModal === 'CANCEL' && (
-        <CancelCheckModal onClose={toMain} onCancel={closeCancelModal} />
+        <CancelCheckModal
+          onClose={() => {
+            toMain({});
+          }}
+          onCancel={closeCancelModal}
+        />
       )}
       {showModal === 'NEXT' && <RewritePostModal postId={postId} />}
     </>

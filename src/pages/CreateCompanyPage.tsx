@@ -1,11 +1,11 @@
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
+import type { CompanyRouteQuery } from '@/entities/route';
 import { CreateCompanyForm } from '@/feature/company';
 import { PatchCompanyForm } from '@/feature/company';
-import type { CompanyRouteBody } from '@/shared/route/scheme';
-import { useRouteLocation } from '@/shared/route/useRouteLocation';
+import { useRouteLocation } from '@/shared/route/useRouteParams';
 
 export const CreateCompanyPage = () => {
-  const body = useRouteLocation() as CompanyRouteBody | null;
+  const body = useRouteLocation() as CompanyRouteQuery | null;
 
   if (body === null) {
     return (

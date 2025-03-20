@@ -1,24 +1,32 @@
 import { useState } from 'react';
 
 import type { JobMinorCategory, PostFilter } from '@/entities/post';
+import type { PostFilterRouteQuery } from '@/entities/route';
 import { FilterSection } from '@/feature/post/ui/landing/FilterSection';
 import { LandingPostView } from '@/feature/post/ui/landing/LandingPostView';
 import { NarrowRolesFilter } from '@/feature/post/ui/landing/RolesFilter';
 import { RolesFilter } from '@/feature/post/ui/landing/RolesFilter';
+import { useRouteQueryParams } from '@/shared/route/useRouteParams';
 
 export const LandingPageView = ({
   setShowSignInModal,
 }: {
   setShowSignInModal(input: boolean): void;
 }) => {
-  const [postFilter, setFilterElements] = useState<PostFilter>({
-    roles: undefined,
-    investmentMax: undefined,
-    investmentMin: undefined,
-    series: undefined,
-    employing: undefined,
-    order: undefined,
-  });
+  // TODO: queryParams를 전역으로 올려서 어떤 페이지에서 뒤로가기를 수행하더라도 필터링과 페이지네이션이 유지되도록 수정
+  const queryParams = useRouteQueryParams() as PostFilterRouteQuery | null;
+  const [postFilter, setFilterElements] = useState<PostFilter>(
+    queryParams !== null
+      ? queryParams
+      : {
+          roles: undefined,
+          investmentMax: undefined,
+          investmentMin: undefined,
+          series: undefined,
+          employing: undefined,
+          order: undefined,
+        },
+  );
 
   const handleRolesChange = (updatedRoles: JobMinorCategory[]) => {
     setFilterElements((prev) => ({ ...prev, roles: updatedRoles }));

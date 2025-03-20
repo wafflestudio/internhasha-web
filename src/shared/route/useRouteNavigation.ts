@@ -1,37 +1,43 @@
 import { useNavigate } from 'react-router';
 
-import { PATH } from '@/entities/route';
 import type {
-  CompanyRouteBody,
-  MyPageRouteBody,
-  PostRouteBody,
-  PreviousSignUpFormRouteBody,
-  ProfileRouteBody,
-  VerifyMailRouteBody,
-} from '@/shared/route/scheme';
+  CompanyRouteQuery,
+  MyPageRouteQuery,
+  PostFilterRouteQuery,
+  PostRouteQuery,
+  PreviousSignUpFormRouteQuery,
+  ProfileRouteQuery,
+  VerifyMailRouteQuery,
+} from '@/entities/route';
+import { PATH } from '@/shared/route/constants';
+import { routeFormatPresentation } from '@/shared/route/routeFormatPresentation';
 
 export const useRouteNavigation = () => {
   const navigate = useNavigate();
   const {
-    INDEX,
     SIGN_IN,
     VERIFY_EMAIL,
     RESET_PASSWORD,
     SIGN_UP,
     SIGN_UP_COMPLETE,
     CREATE_COMPANY,
-    MY_PAGE,
     CREATE_PROFILE,
   } = PATH;
-  const { POST_DETAIL, CREATE_COFFEE_CHAT, COFFEE_CHAT_DETAIL, CREATE_POST } =
-    PATH.MAKE;
+  const {
+    INDEX,
+    POST_DETAIL,
+    CREATE_COFFEE_CHAT,
+    COFFEE_CHAT_DETAIL,
+    CREATE_POST,
+    MY_PAGE,
+  } = routeFormatPresentation.formatRoutes();
 
   return {
-    toMain: () => {
-      void navigate(INDEX);
+    toMain: ({ query }: { query?: PostFilterRouteQuery }) => {
+      void navigate(INDEX({ query }));
     },
     toPost: ({ postId }: { postId: string }) => {
-      void navigate(POST_DETAIL(postId));
+      void navigate(POST_DETAIL({ postId }));
     },
     toSignInSelect: () => {
       void navigate(SIGN_IN);
@@ -39,22 +45,22 @@ export const useRouteNavigation = () => {
     toFindAccount: () => {
       void navigate(RESET_PASSWORD);
     },
-    toVerifyEmail: ({ body }: { body: VerifyMailRouteBody }) => {
+    toVerifyEmail: ({ body }: { body: VerifyMailRouteQuery }) => {
       void navigate(VERIFY_EMAIL, { state: { ...body } });
     },
-    toSignUp: ({ body }: { body?: PreviousSignUpFormRouteBody }) => {
+    toSignUp: ({ body }: { body?: PreviousSignUpFormRouteQuery }) => {
       void navigate(SIGN_UP, { state: { ...body } });
     },
     toSignUpComplete: () => {
       void navigate(SIGN_UP_COMPLETE);
     },
     toCreateCoffeeChat: ({ postId }: { postId: string }) => {
-      void navigate(CREATE_COFFEE_CHAT(postId));
+      void navigate(CREATE_COFFEE_CHAT({ postId }));
     },
     toCoffeeChatDetail: ({ coffeeChatId }: { coffeeChatId: string }) => {
-      void navigate(COFFEE_CHAT_DETAIL(coffeeChatId));
+      void navigate(COFFEE_CHAT_DETAIL({ coffeeChatId }));
     },
-    toCreateCompany: ({ body }: { body?: CompanyRouteBody }) => {
+    toCreateCompany: ({ body }: { body?: CompanyRouteQuery }) => {
       void navigate(CREATE_COMPANY, { state: { ...body } });
     },
     toCreatePost: ({
@@ -62,14 +68,14 @@ export const useRouteNavigation = () => {
       body,
     }: {
       companyId: string;
-      body?: PostRouteBody;
+      body?: PostRouteQuery;
     }) => {
-      void navigate(CREATE_POST(companyId), { state: { ...body } });
+      void navigate(CREATE_POST({ companyId }), { state: { ...body } });
     },
-    toMyPage: ({ body }: { body?: MyPageRouteBody }) => {
-      void navigate(MY_PAGE, { state: { ...body } });
+    toMyPage: ({ query }: { query?: MyPageRouteQuery }) => {
+      void navigate(MY_PAGE({ query }));
     },
-    toCreateProfile: ({ body }: { body?: ProfileRouteBody }) => {
+    toCreateProfile: ({ body }: { body?: ProfileRouteQuery }) => {
       void navigate(CREATE_PROFILE, { state: { ...body } });
     },
     refreshPage: () => {
