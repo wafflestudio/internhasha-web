@@ -106,7 +106,13 @@ type CoffeeChatUserInfo = {
 };
 // Params
 export type PostPathParams = {
-  postPath: string;
+  page?: number;
+  roles?: JobCategory[];
+  investmentMax?: number;
+  investmentMin?: number;
+  series?: Series[];
+  employing?: 0 | 1;
+  order?: 0 | 1;
 };
 
 export type PostIdParams = {
@@ -231,6 +237,25 @@ export type TokenResponse = {
 };
 
 export type UserResponse = Omit<UserDTO, 'isMerged'>;
+
+export type Applicant = {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  userRole: UserRole;
+  snuMail?: string;
+  enrollYear: number;
+  department: string;
+  positions?: JobCategory[];
+  slogan?: string;
+  explanation?: string;
+  stacks?: string[];
+  imageKey?: string;
+  cvKey?: string;
+  portfolioKey?: string;
+  links?: Link[];
+};
 
 export type PostsResponse = {
   posts: PostBriefDTO[];

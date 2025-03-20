@@ -1,3 +1,4 @@
+import { applicantHandlers } from '@/mocks/applicant/handlers';
 import { authHandlers } from '@/mocks/auth/handlers';
 import { coffeeChatHandlers } from '@/mocks/coffeeChat/handlers';
 import { echoHandlers } from '@/mocks/echo/handlers';
@@ -8,4 +9,5 @@ export const handlers = [
   ...authHandlers,
   ...postsHandlers,
   ...coffeeChatHandlers,
+  ...applicantHandlers,
 ];

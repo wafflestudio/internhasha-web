@@ -4,6 +4,7 @@ import type {
   BriefPost,
   CreateCompanyRequest,
   CreatePostRequest,
+  JobMinorCategory,
   PositionDTO,
   PostResponse,
   Series,
@@ -17,17 +18,17 @@ export type PostService = {
     investmentMax,
     investmentMin,
     series,
-    pathStatus,
+    employing,
     token,
     order,
   }: {
     page?: number;
-    roles?: string[];
+    roles?: JobMinorCategory[];
     investmentMax?: number;
     investmentMin?: number;
     series?: Series[];
-    pathStatus?: number;
-    order?: number;
+    employing?: 0 | 1;
+    order?: 0 | 1;
     token: string | null;
   }): ServiceResponse<{
     posts: BriefPost[];
@@ -91,31 +92,18 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     investmentMax,
     investmentMin,
     series,
-    pathStatus,
+    employing,
     order,
     token,
   }) => {
-    const postPath = new URLSearchParams();
-
-    if (page !== undefined) postPath.append('page', page.toString());
-    if (roles !== undefined) {
-      roles.forEach((role) => {
-        postPath.append('roles', role);
-      });
-    }
-    if (investmentMax !== undefined)
-      postPath.append('investmentMax', investmentMax.toString());
-    if (investmentMin !== undefined)
-      postPath.append('investmentMin', investmentMin.toString());
-    if (series !== undefined) postPath.append('series', series.toString());
-    if (pathStatus !== undefined)
-      postPath.append('status', pathStatus.toString());
-    if (order !== undefined) {
-      postPath.append('order', order.toString());
-    }
-
     const params = {
-      postPath: postPath.toString(),
+      page,
+      roles,
+      investmentMax,
+      investmentMin,
+      series,
+      employing,
+      order,
     };
     const { status, data } = await apis['GET /post']({
       params,
