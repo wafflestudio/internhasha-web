@@ -4,13 +4,9 @@ import { useState } from 'react';
 import type { CancelCoffeeChatRequest } from '@/api/apis/localServer/schemas';
 import { CancelCoffeeChatCancelModal } from '@/components/modal/CancelCoffeeChatCancelModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
+import { BadgeCoffeeChat } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-<<<<<<< HEAD:src/feature/coffeeChat/ui/CoffeeChatDetailView.tsx
-import { TagCoffeeChat } from '@/components/ui/tagCoffeeChat';
-import { SkeletonCoffeeChatDetailView } from '@/feature/coffeeChat/ui/SkeletonCoffeeChatDetailView';
-=======
 import { SkeletonCoffeeChatDetailView } from '@/feature/coffeeChat/ui/detail/SkeletonCoffeeChatDetailView';
->>>>>>> origin/main:src/feature/coffeeChat/ui/detail/CoffeeChatDetailView.tsx
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -65,7 +61,7 @@ export const CoffeeChatDetailView = ({
               <div className="h-[40px] w-[40px] overflow-hidden">
                 {coffeeChatDetail.company.imageKey !== '' ? (
                   <img
-                    src={`${API_BASE_URL}/${coffeeChatDetail.company.imageKey}`}
+                    src={`${API_BASE_URL}/${coffeeChatDetail.company.imageKey as string}`}
                     alt="프로필 이미지"
                     className="h-[40px] w-[40px] border border-gray-200 object-cover"
                   />
@@ -83,7 +79,7 @@ export const CoffeeChatDetailView = ({
               <span className="my-auto text-lg font-semibold text-gray-400">
                 {getFormatDate(coffeeChatDetail.createdAt)}
               </span>
-              <TagCoffeeChat
+              <BadgeCoffeeChat
                 coffeeChatStatus={coffeeChatDetail.coffeeChatStatus}
               />
             </div>
