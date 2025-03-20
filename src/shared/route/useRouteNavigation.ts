@@ -39,6 +39,10 @@ type PostBody = {
   headcount: number;
 };
 
+type MyPageBody = {
+  tab: 'POST' | 'COFFEE_CHAT' | 'BOOKMARK' | 'PROFILE';
+};
+
 export const useRouteNavigation = () => {
   const navigate = useNavigate();
   const {
@@ -95,8 +99,8 @@ export const useRouteNavigation = () => {
     }) => {
       void navigate(CREATE_POST(companyId), { state: { postBody } });
     },
-    toMyPage: () => {
-      void navigate(MY_PAGE);
+    toMyPage: ({ myPageBody }: { myPageBody: MyPageBody }) => {
+      void navigate(MY_PAGE, { state: { myPageBody } });
     },
     toCreateProfile: () => {
       void navigate(CREATE_PROFILE);

@@ -1,9 +1,10 @@
-import { useLocation, useParams } from 'react-router';
+import { useLocation } from 'react-router';
 
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { PATH } from '@/entities/route';
 import { CreatePostForm, PatchPostForm } from '@/feature/post';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
+import { useRouteParams } from '@/shared/route/useRouteParams';
 
 type Body = {
   postBody?: {
@@ -18,7 +19,7 @@ type Body = {
 };
 
 export const CreatePostPage = () => {
-  const { companyId } = useParams<{ companyId: string }>();
+  const { companyId } = useRouteParams<{ companyId: string }>();
   const location = useLocation();
   const state = location.state as Body | null;
 
