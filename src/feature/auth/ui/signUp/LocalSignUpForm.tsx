@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router';
 
 import { FormContainer } from '@/components/form/FormContainer';
 import { LabelContainer } from '@/components/label/LabelContainer';
@@ -10,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { ICON_SRC } from '@/entities/asset';
 import { authFormPresentation } from '@/feature/auth/presentation/authFormPresentation';
 import { authInputPresentation } from '@/feature/auth/presentation/authInputPresentation';
+import { useRouteLocation } from '@/shared/route/useRouteLocation';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 type PreviousForm = {
@@ -22,8 +22,7 @@ type LocalSignUpInitialBody = {
 };
 
 export const LocalSignUpForm = () => {
-  const location = useLocation();
-  const state = location.state as LocalSignUpInitialBody | null;
+  const state = useRouteLocation() as LocalSignUpInitialBody | null;
 
   const { toVerifyEmail } = useRouteNavigation();
   const { inputStates, formStates } = authFormPresentation.useValidator({

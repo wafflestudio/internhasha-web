@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
-import { useLocation } from 'react-router';
 
 import { FormContainer } from '@/components/form/FormContainer';
 import { LabelContainer } from '@/components/label/LabelContainer';
@@ -19,6 +18,7 @@ import { RedirectSignInModal } from '@/feature/auth/ui/signUp/RedirectSignInModa
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
+import { useRouteLocation } from '@/shared/route/useRouteLocation';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatNumberToTime } from '@/util/format';
 
@@ -32,8 +32,7 @@ type EmailVerifyLocationState = {
 };
 
 export const EmailVerifyForm = () => {
-  const location = useLocation();
-  const state = location.state as EmailVerifyLocationState | null;
+  const state = useRouteLocation() as EmailVerifyLocationState | null;
 
   const { toSignUp } = useRouteNavigation();
   const [showSendCodeError, setShowSendCodeError] = useState(false);

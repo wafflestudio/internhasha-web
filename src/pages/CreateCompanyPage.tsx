@@ -1,9 +1,8 @@
-import { useLocation } from 'react-router';
-
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import type { Link, Series } from '@/entities/post';
 import { CreateCompanyForm } from '@/feature/company';
 import { PatchCompanyForm } from '@/feature/company';
+import { useRouteLocation } from '@/shared/route/useRouteLocation';
 
 type Body = {
   companyBody?: {
@@ -24,8 +23,7 @@ type Body = {
 };
 
 export const CreateCompanyPage = () => {
-  const location = useLocation();
-  const state = location.state as Body | null;
+  const state = useRouteLocation() as Body | null;
 
   if (state?.companyBody === undefined) {
     return (

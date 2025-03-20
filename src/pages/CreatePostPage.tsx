@@ -1,9 +1,8 @@
-import { useLocation } from 'react-router';
-
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { PATH } from '@/entities/route';
 import { CreatePostForm, PatchPostForm } from '@/feature/post';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
+import { useRouteLocation } from '@/shared/route/useRouteLocation';
 import { useRouteParams } from '@/shared/route/useRouteParams';
 
 type Body = {
@@ -20,8 +19,7 @@ type Body = {
 
 export const CreatePostPage = () => {
   const { companyId } = useRouteParams<{ companyId: string }>();
-  const location = useLocation();
-  const state = location.state as Body | null;
+  const state = useRouteLocation() as Body | null;
 
   if (companyId === undefined) {
     return <RouteNavigator link={PATH.INDEX} />;

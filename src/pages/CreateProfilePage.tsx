@@ -1,8 +1,7 @@
-import { useLocation } from 'react-router';
-
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import type { JobMinorCategory } from '@/entities/post';
 import { CreateProfileForm } from '@/feature/applicant';
+import { useRouteLocation } from '@/shared/route/useRouteLocation';
 
 type ExternalLink = {
   link: string;
@@ -25,8 +24,7 @@ type Body = {
 };
 
 export const CreateProfilePage = () => {
-  const location = useLocation();
-  const state = location.state as Body | null;
+  const state = useRouteLocation() as Body | null;
 
   if (state?.profileBody === undefined) {
     return (
