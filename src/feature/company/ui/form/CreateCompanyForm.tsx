@@ -371,7 +371,7 @@ const useCreateCompanyWithUploads = ({
     onSuccess: async (response) => {
       if (response.type === 'success') {
         await queryClient.invalidateQueries();
-        toMyPage({});
+        toMyPage({ body: { tab: 'PROFILE' } });
       }
     },
     onError: () => {

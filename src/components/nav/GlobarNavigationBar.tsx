@@ -43,7 +43,7 @@ export const GlobalNavigationBar = () => {
             <>
               <Button
                 onClick={() => {
-                  toMyPage({});
+                  toMyPage({ body: { tab: 'PROFILE' } });
                 }}
                 disabled={isPending}
                 variant="ghost"

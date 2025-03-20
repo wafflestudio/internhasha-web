@@ -14,14 +14,12 @@ import { useRouteLocation } from '@/shared/route/useRouteLocation';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LocalSignUpForm = () => {
-  const state = useRouteLocation() as {
-    body: PreviousSignUpFormRouteBody;
-  } | null;
+  const body = useRouteLocation() as PreviousSignUpFormRouteBody | null;
 
   const { toVerifyEmail } = useRouteNavigation();
   const { inputStates, formStates } = authFormPresentation.useValidator({
     authInputPresentation,
-    initialState: state?.body,
+    initialState: body !== null ? body : undefined,
   });
   const { password, passwordConfirm, username } = inputStates;
 

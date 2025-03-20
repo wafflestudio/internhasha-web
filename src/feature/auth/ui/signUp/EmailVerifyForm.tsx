@@ -24,7 +24,7 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatNumberToTime } from '@/util/format';
 
 export const EmailVerifyForm = () => {
-  const state = useRouteLocation() as { body: VerifyMailRouteBody } | null;
+  const body = useRouteLocation() as VerifyMailRouteBody | null;
 
   const { toSignUp } = useRouteNavigation();
   const [showSendCodeError, setShowSendCodeError] = useState(false);
@@ -62,10 +62,9 @@ export const EmailVerifyForm = () => {
 
   const isPending = isPendingSend || isPendingVerify || isPendingLocalSignUp;
 
-  if (state === null) {
+  if (body === null) {
     return <RouteNavigator link={PATH.SIGN_IN} />;
   }
-  const { body } = state;
 
   const handleClickSendEmailCodeButton = () => {
     if (sendCodeDisable) {

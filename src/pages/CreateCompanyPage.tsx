@@ -5,9 +5,9 @@ import type { CompanyRouteBody } from '@/shared/route/scheme';
 import { useRouteLocation } from '@/shared/route/useRouteLocation';
 
 export const CreateCompanyPage = () => {
-  const state = useRouteLocation() as { body: CompanyRouteBody } | null;
+  const body = useRouteLocation() as CompanyRouteBody | null;
 
-  if (state === null) {
+  if (body === null) {
     return (
       <div className="min-h-screen">
         <GlobalNavigationBar />

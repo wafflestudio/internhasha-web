@@ -4,9 +4,9 @@ import type { ProfileRouteBody } from '@/shared/route/scheme';
 import { useRouteLocation } from '@/shared/route/useRouteLocation';
 
 export const CreateProfilePage = () => {
-  const state = useRouteLocation() as { body: ProfileRouteBody } | null;
+  const body = useRouteLocation() as ProfileRouteBody | null;
 
-  if (state === null) {
+  if (body === null) {
     return (
       <div className="min-h-screen">
         <GlobalNavigationBar />

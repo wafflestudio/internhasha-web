@@ -40,10 +40,10 @@ export const useRouteNavigation = () => {
       void navigate(RESET_PASSWORD);
     },
     toVerifyEmail: ({ body }: { body: VerifyMailRouteBody }) => {
-      void navigate(VERIFY_EMAIL, { state: { body } });
+      void navigate(VERIFY_EMAIL, { state: { ...body } });
     },
     toSignUp: ({ body }: { body?: PreviousSignUpFormRouteBody }) => {
-      void navigate(SIGN_UP, { state: { body } });
+      void navigate(SIGN_UP, { state: { ...body } });
     },
     toSignUpComplete: () => {
       void navigate(SIGN_UP_COMPLETE);
@@ -55,7 +55,7 @@ export const useRouteNavigation = () => {
       void navigate(COFFEE_CHAT_DETAIL(coffeeChatId));
     },
     toCreateCompany: ({ body }: { body?: CompanyRouteBody }) => {
-      void navigate(CREATE_COMPANY, { state: { body } });
+      void navigate(CREATE_COMPANY, { state: { ...body } });
     },
     toCreatePost: ({
       companyId,
@@ -64,13 +64,13 @@ export const useRouteNavigation = () => {
       companyId: string;
       body?: PostRouteBody;
     }) => {
-      void navigate(CREATE_POST(companyId), { state: { body } });
+      void navigate(CREATE_POST(companyId), { state: { ...body } });
     },
     toMyPage: ({ body }: { body?: MyPageRouteBody }) => {
-      void navigate(MY_PAGE, { state: { body } });
+      void navigate(MY_PAGE, { state: { ...body } });
     },
     toCreateProfile: ({ body }: { body?: ProfileRouteBody }) => {
-      void navigate(CREATE_PROFILE, { state: { body } });
+      void navigate(CREATE_PROFILE, { state: { ...body } });
     },
     refreshPage: () => {
       void navigate(0);

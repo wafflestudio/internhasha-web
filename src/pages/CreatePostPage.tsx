@@ -8,13 +8,13 @@ import { useRouteParams } from '@/shared/route/useRouteParams';
 
 export const CreatePostPage = () => {
   const { companyId } = useRouteParams<{ companyId: string }>();
-  const state = useRouteLocation() as { body: PostRouteBody } | null;
+  const body = useRouteLocation() as PostRouteBody | null;
 
   if (companyId === undefined) {
     return <RouteNavigator link={PATH.INDEX} />;
   }
 
-  if (state === null) {
+  if (body === null) {
     return (
       <div className="min-h-screen">
         <GlobalNavigationBar />
