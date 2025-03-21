@@ -10,27 +10,6 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { formatMinorJobToLabel } from '@/util/format';
 
-const mockApplicantData = {
-  name: '홍길동',
-  snuMail: 'example@snu.ac.kr',
-  enrollYear: '2021',
-  department: '컴퓨터공학부',
-  positions: ['FRONTEND', 'BACKEND'],
-  slogan: '열정적인 개발자를 꿈꾸고 있습니다.',
-  explanation:
-    '안녕하세요, 웹 개발에 관심이 많은 학생입니다. React와 Node.js를 주로 사용합니다.',
-  stacks: ['React', 'TypeScript', 'Node.js'],
-  imageKey: undefined,
-  cvKey: undefined,
-  portfolioKey: undefined,
-  links: [
-    {
-      description: 'GitHub',
-      link: 'https://github.com/example',
-    },
-  ],
-};
-
 export const ApplicantInfo = () => {
   const { applicantInfoData } = useApplicantInfo();
 
@@ -38,26 +17,11 @@ export const ApplicantInfo = () => {
     return <SkeletonApplicantInfo />;
   }
 
-  // if (applicantInfoData.type === 'error') {
-  //   return (
-  //     <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
-  //   );
-  // }
-
-  // const {
-  //   name,
-  //   snuMail,
-  //   enrollYear,
-  //   department,
-  //   positions,
-  //   slogan,
-  //   explanation,
-  //   stacks,
-  //   imageKey,
-  //   cvKey,
-  //   portfolioKey,
-  //   links,
-  // } = applicantInfoData.data;
+  if (applicantInfoData.type === 'error') {
+    return (
+      <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
+    );
+  }
 
   const {
     name,
@@ -72,10 +36,7 @@ export const ApplicantInfo = () => {
     cvKey,
     portfolioKey,
     links,
-  } =
-    applicantInfoData.type === 'error'
-      ? mockApplicantData
-      : applicantInfoData.data;
+  } = applicantInfoData.data;
 
   const formattedPositions = positions?.map((position) =>
     formatMinorJobToLabel(position),
