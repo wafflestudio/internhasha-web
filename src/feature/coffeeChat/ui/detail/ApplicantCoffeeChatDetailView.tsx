@@ -30,8 +30,10 @@ export const CoffeeChatDetailView = ({
 
   const handleCancel = () => {
     cancelCoffeeChat({
-      coffeeChatId: coffeeChatId,
-      body: { coffeeChatStatus: 'CANCELED' },
+      body: {
+        coffeeChatStatus: 'CANCELED',
+        coffeeChatList: [coffeeChatId],
+      },
     });
   };
 
@@ -168,19 +170,12 @@ const useCancelCoffeeChat = ({
   const queryClient = useQueryClient();
 
   const { mutate: cancelCoffeeChat, isPending } = useMutation({
-    mutationFn: ({
-      coffeeChatId,
-      body,
-    }: {
-      coffeeChatId: string;
-      body: CancelCoffeeChatRequest;
-    }) => {
+    mutationFn: ({ body }: { body: CancelCoffeeChatRequest }) => {
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
       return coffeeChatService.cancelCoffeeChat({
         token,
-        coffeeChatId,
         body,
       });
     },

@@ -190,10 +190,12 @@ export type CreateCoffeeChatRequest = {
 
 export type CancelCoffeeChatRequest = {
   coffeeChatStatus: 'CANCELED';
+  coffeeChatList: string[];
 };
 
 export type CoffeeChatStatusRequest = {
   coffeeChatStatus: CoffeeChatStatus;
+  coffeeChatList: string[];
 };
 
 export type S3UploadReq = {

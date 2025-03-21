@@ -38,7 +38,6 @@ export const ApplicantCoffeeChatListView = () => {
             }}
           >
             <div className="flex items-center gap-2">
-              {/* TODO: changed 말고 다른 read 변수에 따라 변해야함 */}
               {coffeeChat.changed && <img src={ICON_SRC.BADGES} />}
               <span className="truncate text-14 font-regular">
                 {coffeeChat.company.name}

@@ -61,11 +61,9 @@ export const CompanyCoffeeChatListView = () => {
   };
 
   const handleConfirm = (status: CoffeeChatStatus) => {
-    selectedChats.forEach((coffeeChatId) => {
-      updateCoffeeChatStatus({
-        coffeeChatId,
-        coffeeChatStatus: status,
-      });
+    updateCoffeeChatStatus({
+      coffeeChatList: selectedChats,
+      coffeeChatStatus: status,
     });
     setSelectedChats([]);
     setIsModalOpen(false);
@@ -210,10 +208,10 @@ const useUpdateCoffeeChatStatus = ({
 
   const { mutate: updateCoffeeChatStatus, isPending } = useMutation({
     mutationFn: ({
-      coffeeChatId,
+      coffeeChatList,
       coffeeChatStatus,
     }: {
-      coffeeChatId: string;
+      coffeeChatList: string[];
       coffeeChatStatus: CoffeeChatStatus;
     }) => {
       if (token === null) {
@@ -221,9 +219,9 @@ const useUpdateCoffeeChatStatus = ({
       }
       return coffeeChatService.updateCoffeeChatStatus({
         token,
-        coffeeChatId,
         body: {
           coffeeChatStatus,
+          coffeeChatList,
         },
       });
     },

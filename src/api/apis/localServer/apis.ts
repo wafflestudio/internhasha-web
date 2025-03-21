@@ -219,18 +219,16 @@ export const getLocalServerApis = ({
         token,
       });
     },
-    'PATCH /coffeeChat/:coffeeChatId': ({
+    'PATCH /coffeeChat': ({
       token,
-      params,
       body,
     }: {
       token: string;
-      params: CoffeeChatIdParams;
       body: CoffeeChatStatusRequest;
     }) => {
       return callWithToken<SuccessResponse<CoffeeChatResponse>>({
         method: 'PATCH',
-        path: `coffeeChat/${params.coffeeChatId}`,
+        path: `coffeeChat`,
         token,
         body,
       });
