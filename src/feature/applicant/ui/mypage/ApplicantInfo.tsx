@@ -4,12 +4,32 @@ import { DownloadButtonWithPresignedUrl } from '@/components/button/DownloadButt
 import { LinkButton } from '@/components/button/LinkButton';
 import { ThumbnailWithPresignedUrl } from '@/components/thumbnail/ThumbnailWithPresignedUrl';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { SkeletonApplicantInfo } from '@/feature/applicant/ui/mypage/SkeletonApplicantInfo';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { formatMinorJobToLabel } from '@/util/format';
+
+const mockApplicantData = {
+  name: '홍길동',
+  snuMail: 'example@snu.ac.kr',
+  enrollYear: '2021',
+  department: '컴퓨터공학부',
+  positions: ['FRONTEND', 'BACKEND'],
+  slogan: '열정적인 개발자를 꿈꾸고 있습니다.',
+  explanation:
+    '안녕하세요, 웹 개발에 관심이 많은 학생입니다. React와 Node.js를 주로 사용합니다.',
+  stacks: ['React', 'TypeScript', 'Node.js'],
+  imageKey: undefined,
+  cvKey: undefined,
+  portfolioKey: undefined,
+  links: [
+    {
+      description: 'GitHub',
+      link: 'https://github.com/example',
+    },
+  ],
+};
 
 export const ApplicantInfo = () => {
   const { applicantInfoData } = useApplicantInfo();
@@ -18,11 +38,26 @@ export const ApplicantInfo = () => {
     return <SkeletonApplicantInfo />;
   }
 
-  if (applicantInfoData.type === 'error') {
-    return (
-      <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
-    );
-  }
+  // if (applicantInfoData.type === 'error') {
+  //   return (
+  //     <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
+  //   );
+  // }
+
+  // const {
+  //   name,
+  //   snuMail,
+  //   enrollYear,
+  //   department,
+  //   positions,
+  //   slogan,
+  //   explanation,
+  //   stacks,
+  //   imageKey,
+  //   cvKey,
+  //   portfolioKey,
+  //   links,
+  // } = applicantInfoData.data;
 
   const {
     name,
@@ -37,14 +72,17 @@ export const ApplicantInfo = () => {
     cvKey,
     portfolioKey,
     links,
-  } = applicantInfoData.data;
+  } =
+    applicantInfoData.type === 'error'
+      ? mockApplicantData
+      : applicantInfoData.data;
 
   const formattedPositions = positions?.map((position) =>
     formatMinorJobToLabel(position),
   );
 
   return (
-    <div className="flex w-full flex-col gap-6 rounded-lg bg-white px-[24px] py-[48px] text-grey-900">
+    <>
       <section className="flex gap-4">
         {imageKey !== undefined ? (
           <ThumbnailWithPresignedUrl s3Key={imageKey} type="USER_THUMBNAIL" />
@@ -124,19 +162,7 @@ export const ApplicantInfo = () => {
           </div>
         </div>
       </section>
-
-      <div className="flex gap-2">
-        {/* 정보 수정 버튼 */}
-        <Button variant="outline" className="flex-1">
-          정보 수정하기
-        </Button>
-
-        {/* 회원 탈퇴 버튼 */}
-        <Button variant="destructive" className="flex-1">
-          회원 탈퇴하기
-        </Button>
-      </div>
-    </div>
+    </>
   );
 };
 

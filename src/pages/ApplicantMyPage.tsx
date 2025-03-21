@@ -30,7 +30,9 @@ export const ApplicantMyPage = () => {
               <BookmarkListView />
             </TabsContent>
             <TabsContent value="MY_INFO">
-              <ApplicantInfo />
+              <div className="flex w-[700px] flex-col gap-6 rounded-lg bg-white px-[24px] py-[48px] text-grey-900">
+                <ApplicantInfo />
+              </div>
             </TabsContent>
           </div>
         </Tabs>
