@@ -4,7 +4,6 @@ import { DownloadButtonWithPresignedUrl } from '@/components/button/DownloadButt
 import { LinkButton } from '@/components/button/LinkButton';
 import { ThumbnailWithPresignedUrl } from '@/components/thumbnail/ThumbnailWithPresignedUrl';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { SkeletonApplicantInfo } from '@/feature/applicant/ui/mypage/SkeletonApplicantInfo';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -44,7 +43,7 @@ export const ApplicantInfo = () => {
   );
 
   return (
-    <div className="flex w-full flex-col gap-6 rounded-lg bg-white px-[24px] py-[48px] text-grey-900">
+    <>
       <section className="flex gap-4">
         {imageKey !== undefined ? (
           <ThumbnailWithPresignedUrl s3Key={imageKey} type="USER_THUMBNAIL" />
@@ -124,19 +123,7 @@ export const ApplicantInfo = () => {
           </div>
         </div>
       </section>
-
-      <div className="flex gap-2">
-        {/* 정보 수정 버튼 */}
-        <Button variant="outline" className="flex-1">
-          정보 수정하기
-        </Button>
-
-        {/* 회원 탈퇴 버튼 */}
-        <Button variant="destructive" className="flex-1">
-          회원 탈퇴하기
-        </Button>
-      </div>
-    </div>
+    </>
   );
 };
 

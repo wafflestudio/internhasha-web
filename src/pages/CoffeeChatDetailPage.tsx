@@ -2,7 +2,9 @@ import { useParams } from 'react-router';
 
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { PATH } from '@/entities/route';
-import { CoffeeChatDetailView } from '@/feature/coffeeChat';
+import { ApplicantCoffeeChatDetailView } from '@/feature/coffeeChat';
+import { CompanyCoffeeChatDetailView } from '@/feature/coffeeChat';
+import { AuthCompanySwitchRoute } from '@/shared/auth/AuthAdminSwitchRoute';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
 
 export const CoffeeChatDetailPage = () => {
@@ -14,7 +16,12 @@ export const CoffeeChatDetailPage = () => {
   return (
     <div className="min-h-screen bg-grey-50">
       <GlobalNavigationBar />
-      <CoffeeChatDetailView coffeeChatId={coffeeChatId} />
+      <AuthCompanySwitchRoute
+        nonCompanyPage={
+          <ApplicantCoffeeChatDetailView coffeeChatId={coffeeChatId} />
+        }
+        companyPage={<CompanyCoffeeChatDetailView />}
+      />
     </div>
   );
 };
