@@ -18,6 +18,7 @@ import {
 import { EmploymentEndDateField } from '@/feature/post/ui/form/fields/EmploymentEndDateField';
 import { HeadcountField } from '@/feature/post/ui/form/fields/HeadcountField';
 import { JobCategoryField } from '@/feature/post/ui/form/fields/JobCategoryField';
+import { SalaryField } from '@/feature/post/ui/form/fields/SalaryField';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -33,6 +34,8 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
     'NONE',
   );
   const [responseMessage, setResponseMessage] = useState('');
+  const [disableSalary, setDisableSalary] = useState(false);
+  const [disableEmploymentEndDate, setDisableEmploymentEndDate] = useState(false);
   const { toMain } = useRouteNavigation();
 
   const onSuccessSubmit = ({ id }: { id: string }) => {
@@ -53,6 +56,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
     jobMajorCategory,
     jobMinorCategory,
     headcount,
+    salary,
     detail,
     employmentEndDate,
   } = inputStates;
@@ -61,9 +65,10 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
     setIsSubmit(true);
     if (
       formStates.title.isError ||
-      formStates.employmentEndDateTime.isError ||
+      !disableEmploymentEndDate && formStates.employmentEndDateTime.isError ||
       formStates.job.isError ||
       formStates.headcount.isError ||
+      !disableSalary && formStates.salary.isError ||
       formStates.detail.isError
     ) {
       return;
@@ -137,11 +142,27 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
               isSubmit={isSubmit}
               isSubmitError={formStates.headcount.isError}
               errorMessage={'모집 인원은 0 또는 양의 정수여야 합니다.'}
+              infoMessage="0명일 경우 '0'을 작성해주세요."
               placeholder="모집 인원 수"
               required={true}
             />
           </div>
         </div>
+        <SalaryField
+          label="월급"
+          input={salary}
+          unit="원"
+          isDisabled={disableSalary}
+          onCheckboxClick={() => {
+            setDisableSalary(!disableSalary);
+          }}
+          isPending={isPending}
+          isSubmit={isSubmit}
+          isSubmitError={!disableSalary && formStates.salary.isError}
+          errorMessage="월급은 0 또는 양의 정수여야 합니다."
+          placeholder="월급 액수"
+          required={true}
+        />
         <MarkdownEditorField
           label="상세 공고 글"
           input={detail}
@@ -162,18 +183,21 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
             }
             setShowFilter('NONE');
           }}
+          onCheckboxClick={() => {
+            setDisableEmploymentEndDate(!disableEmploymentEndDate);
+          }}
           input={employmentEndDate}
           isPending={isPending}
+          isDisabled={disableEmploymentEndDate}
           isSubmit={isSubmit}
-          isSubmitError={formStates.employmentEndDateTime.isError}
-          infoMessage={`채용 마감일을 설정하지 않으면 '상시' 상태로 등록돼요.`}
-          errorMessage="올바른 채용 마감일을 선택해주세요."
+          isSubmitError={!disableEmploymentEndDate && formStates.employmentEndDateTime.isError}
+          errorMessage="올바른 채용 마감일 또는 상시 채용을 선택해주세요."
           required={true}
         />
         {responseMessage !== '' && (
           <FormErrorResponse>{responseMessage}</FormErrorResponse>
         )}
-        <div className="flex gap-2">
+        <div className="flex mt-[46px] gap-2">
           <Button
             variant="secondary"
             onClick={(e) => {

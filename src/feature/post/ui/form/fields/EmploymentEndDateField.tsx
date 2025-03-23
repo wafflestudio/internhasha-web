@@ -5,6 +5,8 @@ import {
 } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import { ICON_SRC } from '@/entities/asset';
 import type { Input } from '@/entities/input';
 
@@ -12,8 +14,10 @@ type EmploymentEndDateField = {
   label: string;
   showFilter: string;
   onClick(): void;
+  onCheckboxClick(): void;
   input: Input<string>;
   isPending: boolean;
+  isDisabled: boolean;
   isSubmit: boolean;
   isSubmitError: boolean;
   errorMessage: string;
@@ -25,8 +29,10 @@ export const EmploymentEndDateField = ({
   label,
   showFilter,
   onClick,
+  onCheckboxClick,
   input,
   isPending,
+  isDisabled,
   isSubmit,
   isSubmitError,
   errorMessage,
@@ -70,6 +76,7 @@ export const EmploymentEndDateField = ({
           e.preventDefault();
           onClick();
         }}
+        disabled={isDisabled}
         variant="outline"
         className="w-full justify-start"
       >
@@ -86,6 +93,14 @@ export const EmploymentEndDateField = ({
         <img src={ICON_SRC.CALENDAR} />
       </Button>
       <div className="flex flex-col gap-1">
+        <div className="flex gap-[10px] text-grey-900">
+          <Checkbox
+            id="always-hire"
+            checked={isDisabled}
+            onCheckedChange={onCheckboxClick}
+          />
+          <Label htmlFor="always-hire">상시 채용</Label>
+        </div>
         <FormInfoResponse>{infoMessage}</FormInfoResponse>
         {isSubmit && isSubmitError && (
           <FormErrorResponse>{errorMessage}</FormErrorResponse>

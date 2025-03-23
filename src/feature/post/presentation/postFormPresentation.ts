@@ -7,6 +7,7 @@ type InitialState = {
   title?: string;
   job?: JobMinorCategory | 'NONE';
   headcount?: number;
+  salary?: number;
   detail?: string;
   employmentEndDateTime?: string;
 };
@@ -24,6 +25,7 @@ type PostFormPresentation = {
       jobMajorCategory: SelectInput<JobMajorCategory>;
       jobMinorCategory: SelectInput<JobMinorCategory | 'NONE'>;
       headcount: Input<string>;
+      salary: Input<string>;
       detail: Input<string>;
       employmentEndDate: Input<string>;
     };
@@ -31,6 +33,7 @@ type PostFormPresentation = {
       title: InputForForm<string>;
       job: InputForForm<JobMinorCategory | 'NONE'>;
       headcount: InputForForm<number>;
+      salary: InputForForm<number>;
       detail: InputForForm<string>;
       employmentEndDateTime: InputForForm<string>;
     };
@@ -63,6 +66,10 @@ export const postFormPresentation: PostFormPresentation = {
         initialState?.headcount !== undefined
           ? String(initialState.headcount)
           : undefined,
+      salary:
+          initialState?.headcount !== undefined
+            ? String(initialState.headcount)
+            : undefined,
       detail: initialState?.detail,
       employmentEndDate: initialState?.employmentEndDateTime,
     };
@@ -72,6 +79,7 @@ export const postFormPresentation: PostFormPresentation = {
       jobMajorCategory,
       jobMinorCategory,
       headcount,
+      salary,
       detail,
       employmentEndDate,
     } = postInputPresentation.useValidator({
@@ -100,6 +108,7 @@ export const postFormPresentation: PostFormPresentation = {
         jobMajorCategory,
         jobMinorCategory,
         headcount,
+        salary,
         detail,
         employmentEndDate,
       },
@@ -119,6 +128,12 @@ export const postFormPresentation: PostFormPresentation = {
             Number(headcount.value) < 0,
           value: Number(headcount.value),
         },
+        salary: {
+          isError:
+            salary.isError ||
+            Number(salary.value) < 0,
+          value: Number(salary.value),
+        },
         detail: {
           isError: detail.isError || detail.value.length === 0,
           value: detail.value,
@@ -127,6 +142,7 @@ export const postFormPresentation: PostFormPresentation = {
           isError:
             !checkOverToday(employmentEndDate.value) ||
             employmentEndDate.isError ||
+            employmentEndDate.value === '' ||
             (employmentEndDateTime !== '' &&
               !DATE_TIME_REGEX.test(employmentEndDateTime)),
           value: employmentEndDateTime,
