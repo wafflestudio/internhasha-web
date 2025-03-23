@@ -287,7 +287,12 @@ export const CreateCompanyForm = () => {
         </div>
       </FormContainer>
       {isCancel && (
-        <CancelCheckModal onClose={toMain} onCancel={closeCancelModal} />
+        <CancelCheckModal
+          onClose={() => {
+            toMain({});
+          }}
+          onCancel={closeCancelModal}
+        />
       )}
     </>
   );
@@ -371,7 +376,7 @@ const useCreateCompanyWithUploads = ({
     onSuccess: async (response) => {
       if (response.type === 'success') {
         await queryClient.invalidateQueries();
-        toMyPage();
+        toMyPage({ query: { tab: 'PROFILE' } });
       }
     },
     onError: () => {

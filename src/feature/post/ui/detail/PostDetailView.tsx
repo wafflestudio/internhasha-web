@@ -191,7 +191,12 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               >
                 커피챗 신청하기
               </Button>
-              <Button variant="outline" onClick={toMain}>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  toMain({});
+                }}
+              >
                 목록으로
               </Button>
             </div>

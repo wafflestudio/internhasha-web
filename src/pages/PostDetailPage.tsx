@@ -1,12 +1,11 @@
-import { useParams } from 'react-router';
-
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
-import { PATH } from '@/entities/route';
 import { PostDetailView } from '@/feature/post';
+import { PATH } from '@/shared/route/constants';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
+import { useRoutePathParams } from '@/shared/route/useRouteParams';
 
 export const PostDetailPage = () => {
-  const { postId } = useParams<{ postId: string }>();
+  const { postId } = useRoutePathParams<{ postId: string }>();
 
   if (postId === undefined) {
     return <RouteNavigator link={PATH.INDEX} />;

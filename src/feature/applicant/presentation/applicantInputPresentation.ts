@@ -1,12 +1,7 @@
 import { useState } from 'react';
 
 import type { Input, ListInput, SelectInput } from '@/entities/input';
-import type { JobMinorCategory } from '@/entities/post';
-
-type ExternalLink = {
-  link: string;
-  description: string;
-};
+import type { JobMinorCategory, Link } from '@/entities/post';
 
 type InitialInputState = {
   enrollYear?: string;
@@ -18,7 +13,7 @@ type InitialInputState = {
   imagePreview?: { file: File; url: string } | null;
   cvPreview?: { file: File; url: string } | null;
   portfolioPreview?: { file: File; url: string } | null;
-  links?: ExternalLink[];
+  links?: Link[];
 };
 
 export type ApplicantInputPresentation = {
@@ -34,8 +29,8 @@ export type ApplicantInputPresentation = {
     imagePreview: Input<{ file: File; url: string } | null>;
     cvPreview: Input<{ file: File; url: string } | null>;
     portfolioPreview: Input<{ file: File; url: string } | null>;
-    rawLink: Input<ExternalLink>;
-    links: ListInput<ExternalLink>;
+    rawLink: Input<Link>;
+    links: ListInput<Link>;
   };
 };
 
@@ -115,11 +110,11 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
         ? initialState.portfolioPreview
         : null,
     );
-    const [rawLink, setRawLink] = useState<ExternalLink>({
+    const [rawLink, setRawLink] = useState<Link>({
       link: '',
       description: '',
     });
-    const [links, setLinks] = useState<ExternalLink[]>(
+    const [links, setLinks] = useState<Link[]>(
       initialState?.links !== undefined
         ? initialState.links
         : [{ link: '', description: '' }],
@@ -209,7 +204,7 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
       }
       return true;
     };
-    const isRawlinksValid = (input: ExternalLink) => {
+    const isRawlinksValid = (input: Link) => {
       const trimmedDescription = input.description.trim();
       const trimmedLink = input.link.trim();
 
@@ -234,7 +229,7 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
       }
       return true;
     };
-    const isExternalLinkValid = (input: ExternalLink[]) => {
+    const isExternalLinkValid = (input: Link[]) => {
       const filteredExternalLink = input.filter(
         (item) =>
           item.link.trim().length !== 0 && item.description.trim().length !== 0,
@@ -334,12 +329,12 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
       mode,
     }:
       | {
-          input: ExternalLink;
+          input: Link;
           index?: never;
           mode: 'ADD';
         }
       | {
-          input: ExternalLink;
+          input: Link;
           index: number;
           mode: 'PATCH' | 'REMOVE';
         }) => {

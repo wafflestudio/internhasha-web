@@ -1,66 +1,43 @@
 import { useNavigate } from 'react-router';
 
-import type { Series } from '@/entities/post';
-import { PATH } from '@/entities/route';
-
-type VerifyMailBody = {
-  password: string;
-  username: string;
-};
-
-type PreviousForm = {
-  password: string;
-  username: string;
-};
-
-type CompanyBody = {
-  id: string;
-  companyName: string;
-  explanation: string;
-  email: string;
-  slogan: string;
-  investAmount: number;
-  investCompany: string;
-  series: Series;
-  irDeckLink?: string;
-  landingPageLink?: string;
-  imageLink?: string;
-  links?: { link: string; description: string }[];
-  tags?: string[];
-};
-
-type PostBody = {
-  id: string;
-  title: string;
-  employmentEndDateTime?: string;
-  jobMajorCategory: string;
-  jobMinorCategory: string;
-  detail: string;
-  headcount: number;
-};
+import type {
+  CompanyRouteQuery,
+  MyPageRouteQuery,
+  PostFilterRouteQuery,
+  PostRouteQuery,
+  PreviousSignUpFormRouteQuery,
+  ProfileRouteQuery,
+  VerifyMailRouteQuery,
+} from '@/entities/route';
+import { PATH } from '@/shared/route/constants';
+import { routeFormatPresentation } from '@/shared/route/routeFormatPresentation';
 
 export const useRouteNavigation = () => {
   const navigate = useNavigate();
   const {
-    INDEX,
     SIGN_IN,
     VERIFY_EMAIL,
     RESET_PASSWORD,
     SIGN_UP,
     SIGN_UP_COMPLETE,
     CREATE_COMPANY,
-    MY_PAGE,
     CREATE_PROFILE,
   } = PATH;
-  const { POST_DETAIL, CREATE_COFFEE_CHAT, COFFEE_CHAT_DETAIL, CREATE_POST } =
-    PATH.MAKE;
+  const {
+    INDEX,
+    POST_DETAIL,
+    CREATE_COFFEE_CHAT,
+    COFFEE_CHAT_DETAIL,
+    CREATE_POST,
+    MY_PAGE,
+  } = routeFormatPresentation.formatRoutes();
 
   return {
-    toMain: () => {
-      void navigate(INDEX);
+    toMain: ({ query }: { query?: PostFilterRouteQuery }) => {
+      void navigate(INDEX({ query }));
     },
     toPost: ({ postId }: { postId: string }) => {
-      void navigate(POST_DETAIL(postId));
+      void navigate(POST_DETAIL({ postId }));
     },
     toSignInSelect: () => {
       void navigate(SIGN_IN);
@@ -68,38 +45,38 @@ export const useRouteNavigation = () => {
     toFindAccount: () => {
       void navigate(RESET_PASSWORD);
     },
-    toVerifyEmail: ({ body }: { body: VerifyMailBody }) => {
-      void navigate(VERIFY_EMAIL, { state: { body } });
+    toVerifyEmail: ({ body }: { body: VerifyMailRouteQuery }) => {
+      void navigate(VERIFY_EMAIL, { state: { ...body } });
     },
-    toSignUp: ({ body }: { body?: PreviousForm }) => {
-      void navigate(SIGN_UP, { state: { body } });
+    toSignUp: ({ body }: { body?: PreviousSignUpFormRouteQuery }) => {
+      void navigate(SIGN_UP, { state: { ...body } });
     },
     toSignUpComplete: () => {
       void navigate(SIGN_UP_COMPLETE);
     },
     toCreateCoffeeChat: ({ postId }: { postId: string }) => {
-      void navigate(CREATE_COFFEE_CHAT(postId));
+      void navigate(CREATE_COFFEE_CHAT({ postId }));
     },
     toCoffeeChatDetail: ({ coffeeChatId }: { coffeeChatId: string }) => {
-      void navigate(COFFEE_CHAT_DETAIL(coffeeChatId));
+      void navigate(COFFEE_CHAT_DETAIL({ coffeeChatId }));
     },
-    toCreateCompany: ({ companyBody }: { companyBody?: CompanyBody }) => {
-      void navigate(CREATE_COMPANY, { state: { companyBody } });
+    toCreateCompany: ({ body }: { body?: CompanyRouteQuery }) => {
+      void navigate(CREATE_COMPANY, { state: { ...body } });
     },
     toCreatePost: ({
       companyId,
-      postBody,
+      body,
     }: {
       companyId: string;
-      postBody?: PostBody;
+      body?: PostRouteQuery;
     }) => {
-      void navigate(CREATE_POST(companyId), { state: { postBody } });
+      void navigate(CREATE_POST({ companyId }), { state: { ...body } });
     },
-    toMyPage: () => {
-      void navigate(MY_PAGE);
+    toMyPage: ({ query }: { query?: MyPageRouteQuery }) => {
+      void navigate(MY_PAGE({ query }));
     },
-    toCreateProfile: () => {
-      void navigate(CREATE_PROFILE);
+    toCreateProfile: ({ body }: { body?: ProfileRouteQuery }) => {
+      void navigate(CREATE_PROFILE, { state: { ...body } });
     },
     refreshPage: () => {
       void navigate(0);

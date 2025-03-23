@@ -11,14 +11,14 @@ import {
   implApi,
 } from '@/api';
 import { implExternalApi } from '@/api/client';
-import { PATH } from '@/entities/route';
 import { implApplicantService } from '@/feature/applicant';
 import { implAuthService } from '@/feature/auth';
 import { implCoffeeChatService } from '@/feature/coffeeChat';
 import { implCompanyService } from '@/feature/company';
 import { implPostService } from '@/feature/post';
+import { ApplicantCoffeeChatDetailPage } from '@/pages/ApplicantCoffeeChatDetailPage';
 import { ApplicantMyPage } from '@/pages/ApplicantMyPage';
-import { CoffeeChatDetailPage } from '@/pages/CoffeeChatDetailPage';
+import { CompanyCoffeeChatDetailPage } from '@/pages/CompanyCoffeeChatDetailPage';
 import { CompanyMyPage } from '@/pages/CompanyMyPage';
 import { CreateCoffeeChatPage } from '@/pages/CreateCoffeeChatPage';
 import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
@@ -41,6 +41,7 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { implFileService } from '@/shared/file/fileService';
 import { implRoleStateRepository } from '@/shared/role/state';
+import { PATH } from '@/shared/route/constants';
 import { implTokenStateRepository } from '@/shared/token/state';
 
 const RouterProvider = () => {
@@ -66,7 +67,12 @@ const RouterProvider = () => {
           />
           <Route
             path={PATH.COFFEE_CHAT_DETAIL}
-            element={<CoffeeChatDetailPage />}
+            element={
+              <AuthCompanySwitchRoute
+                nonCompanyPage={<ApplicantCoffeeChatDetailPage />}
+                companyPage={<CompanyCoffeeChatDetailPage />}
+              />
+            }
           />
         </Route>
         <Route element={<ProtectedRoute role="APPLICANT" />}>

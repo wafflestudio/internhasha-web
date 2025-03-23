@@ -1,18 +1,16 @@
-import { useState } from 'react';
-
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { MyPageRouteQuery } from '@/entities/route';
 import {
   CoffeeChatNumberBadge,
   CompanyCoffeeChatListView,
 } from '@/feature/coffeeChat';
 import { CompanyProfile } from '@/feature/company';
 import { MyPostList } from '@/feature/post/ui/mypage/company/MyPostList';
+import { useRouteQueryParams } from '@/shared/route/useRouteParams';
 
 export const CompanyMyPage = () => {
-  const [currentTab, setCurrentTab] = useState<
-    'POST' | 'COFFEE_CHAT' | 'PROFILE'
-  >('COFFEE_CHAT');
+  const queryParams = useRouteQueryParams() as MyPageRouteQuery | null;
 
   return (
     <div className="min-h-screen bg-grey-50">
@@ -21,12 +19,12 @@ export const CompanyMyPage = () => {
       <div className="mx-auto flex w-full flex-col gap-10 px-6 py-[30px] sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl">
         <h1 className="text-2xl font-bold text-grey-900">마이페이지</h1>
         <Tabs
-          defaultValue="COFFEE_CHAT"
+          defaultValue={
+            queryParams !== null && queryParams.tab !== 'BOOKMARK'
+              ? queryParams.tab
+              : 'COFFEE_CHAT'
+          }
           className="w-full"
-          value={currentTab}
-          onValueChange={(value) => {
-            setCurrentTab(value as 'POST' | 'COFFEE_CHAT' | 'PROFILE');
-          }}
         >
           <div className="flex flex-col gap-[30px]">
             <TabsList className="flex gap-[30px]">

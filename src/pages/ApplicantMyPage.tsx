@@ -1,18 +1,25 @@
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { MyPageRouteQuery } from '@/entities/route';
 import { ApplicantInfo } from '@/feature/applicant';
 import { ApplicantCoffeeChatListView } from '@/feature/coffeeChat';
 import { CoffeeChatNumberBadge } from '@/feature/coffeeChat';
 import { BookmarkListView } from '@/feature/post/ui/mypage/applicant/BookmarkListView';
+import { useRouteQueryParams } from '@/shared/route/useRouteParams';
 
 export const ApplicantMyPage = () => {
+  const queryParams = useRouteQueryParams() as MyPageRouteQuery | null;
+
   return (
     <div className="min-h-screen bg-grey-50">
       <GlobalNavigationBar />
       {/* 메인 컨텐츠 */}
       <div className="mx-auto flex w-full flex-col gap-10 px-6 py-[30px] sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl">
         <h1 className="text-2xl font-bold text-grey-900">마이페이지</h1>
-        <Tabs defaultValue="COFFEE_CHAT" className="w-full">
+        <Tabs
+          defaultValue={queryParams !== null ? queryParams.tab : 'COFFEE_CHAT'}
+          className="w-full"
+        >
           <div className="flex flex-col gap-[30px]">
             <TabsList className="flex gap-[30px]">
               <TabsTrigger value="COFFEE_CHAT" className="gap-1">
@@ -20,7 +27,7 @@ export const ApplicantMyPage = () => {
                 <CoffeeChatNumberBadge />
               </TabsTrigger>
               <TabsTrigger value="BOOKMARK">관심 공고</TabsTrigger>
-              <TabsTrigger value="MY_INFO">내 정보</TabsTrigger>
+              <TabsTrigger value="PROFILE">내 정보</TabsTrigger>
             </TabsList>
 
             <TabsContent value="COFFEE_CHAT">
@@ -29,10 +36,8 @@ export const ApplicantMyPage = () => {
             <TabsContent value="BOOKMARK">
               <BookmarkListView />
             </TabsContent>
-            <TabsContent value="MY_INFO">
-              <div className="flex w-[700px] flex-col gap-6 rounded-lg bg-white px-[24px] py-[48px] text-grey-900">
-                <ApplicantInfo />
-              </div>
+            <TabsContent value="PROFILE">
+              <ApplicantInfo />
             </TabsContent>
           </div>
         </Tabs>

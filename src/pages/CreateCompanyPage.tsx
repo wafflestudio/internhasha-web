@@ -1,33 +1,13 @@
-import { useLocation } from 'react-router';
-
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
-import type { Link, Series } from '@/entities/post';
+import type { CompanyRouteQuery } from '@/entities/route';
 import { CreateCompanyForm } from '@/feature/company';
 import { PatchCompanyForm } from '@/feature/company';
-
-type Body = {
-  companyBody?: {
-    id: string;
-    companyName: string;
-    explanation: string;
-    email: string;
-    slogan: string;
-    investAmount?: number;
-    investCompany: string[];
-    series: Series;
-    irDeckLink?: string;
-    landingPageLink?: string;
-    imageLink?: string;
-    links?: Link[];
-    tags?: string[];
-  };
-};
+import { useRouteLocation } from '@/shared/route/useRouteParams';
 
 export const CreateCompanyPage = () => {
-  const location = useLocation();
-  const state = location.state as Body | null;
+  const body = useRouteLocation() as CompanyRouteQuery | null;
 
-  if (state?.companyBody === undefined) {
+  if (body === null) {
     return (
       <div className="min-h-screen">
         <GlobalNavigationBar />

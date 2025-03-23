@@ -8,7 +8,7 @@ export const NoCoffeeChat = () => {
   const { role } = useGuardContext(RoleContext);
 
   const handleButtonClick = () => {
-    toMain();
+    toMain({});
   };
 
   const isCompany = role === 'COMPANY';

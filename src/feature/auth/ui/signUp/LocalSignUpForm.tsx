@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router';
 
 import { FormContainer } from '@/components/form/FormContainer';
 import { LabelContainer } from '@/components/label/LabelContainer';
@@ -8,27 +7,19 @@ import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ICON_SRC } from '@/entities/asset';
+import type { PreviousSignUpFormRouteQuery } from '@/entities/route';
 import { authFormPresentation } from '@/feature/auth/presentation/authFormPresentation';
 import { authInputPresentation } from '@/feature/auth/presentation/authInputPresentation';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-
-type PreviousForm = {
-  password: string;
-  username: string;
-};
-
-type LocalSignUpInitialBody = {
-  body?: PreviousForm;
-};
+import { useRouteLocation } from '@/shared/route/useRouteParams';
 
 export const LocalSignUpForm = () => {
-  const location = useLocation();
-  const state = location.state as LocalSignUpInitialBody | null;
+  const body = useRouteLocation() as PreviousSignUpFormRouteQuery | null;
 
   const { toVerifyEmail } = useRouteNavigation();
   const { inputStates, formStates } = authFormPresentation.useValidator({
     authInputPresentation,
-    initialState: state?.body,
+    initialState: body !== null ? body : undefined,
   });
   const { password, passwordConfirm, username } = inputStates;
 

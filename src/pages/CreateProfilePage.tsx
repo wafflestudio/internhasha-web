@@ -1,34 +1,12 @@
-import { useLocation } from 'react-router';
-
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
-import type { JobMinorCategory } from '@/entities/post';
+import type { ProfileRouteQuery } from '@/entities/route';
 import { CreateProfileForm } from '@/feature/applicant';
-
-type ExternalLink = {
-  link: string;
-  description: string;
-};
-
-type Body = {
-  profileBody?: {
-    enrollYear?: string;
-    department?: string;
-    positions?: JobMinorCategory[];
-    slogan?: string;
-    explanation?: string;
-    stack?: string[];
-    imagePreview?: { file: File; url: string } | null;
-    cvPreview?: { file: File; url: string } | null;
-    portfolioPreview?: { file: File; url: string } | null;
-    links?: ExternalLink[];
-  };
-};
+import { useRouteLocation } from '@/shared/route/useRouteParams';
 
 export const CreateProfilePage = () => {
-  const location = useLocation();
-  const state = location.state as Body | null;
+  const body = useRouteLocation() as ProfileRouteQuery | null;
 
-  if (state?.profileBody === undefined) {
+  if (body === null) {
     return (
       <div className="min-h-screen">
         <GlobalNavigationBar />

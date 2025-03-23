@@ -1,0 +1,15 @@
+export const PATH = {
+  INDEX: '/',
+  POST_DETAIL: '/post/:postId',
+  SIGN_IN: '/signin',
+  SIGN_UP: '/signup',
+  SIGN_UP_COMPLETE: '/signup/complete',
+  RESET_PASSWORD: '/reset-password',
+  VERIFY_EMAIL: '/verify-email',
+  MY_PAGE: '/mypage',
+  CREATE_COFFEE_CHAT: '/post/:postId/coffeeChat/create',
+  COFFEE_CHAT_DETAIL: '/coffeeChat/:coffeeChatId',
+  CREATE_COMPANY: '/company/create',
+  CREATE_POST: '/post/create/:companyId',
+  CREATE_PROFILE: '/profile/create',
+};

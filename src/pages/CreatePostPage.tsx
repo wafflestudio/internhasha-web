@@ -1,32 +1,20 @@
-import { useLocation, useParams } from 'react-router';
-
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
-import { PATH } from '@/entities/route';
+import type { PostRouteQuery } from '@/entities/route';
 import { CreatePostForm, PatchPostForm } from '@/feature/post';
+import { PATH } from '@/shared/route/constants';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
-
-type Body = {
-  postBody?: {
-    id: string;
-    title: string;
-    employmentEndDateTime?: string;
-    jobMajorCategory: string;
-    jobMinorCategory: string;
-    detail: string;
-    headcount: number;
-  };
-};
+import { useRouteLocation } from '@/shared/route/useRouteParams';
+import { useRoutePathParams } from '@/shared/route/useRouteParams';
 
 export const CreatePostPage = () => {
-  const { companyId } = useParams<{ companyId: string }>();
-  const location = useLocation();
-  const state = location.state as Body | null;
+  const { companyId } = useRoutePathParams<{ companyId: string }>();
+  const body = useRouteLocation() as PostRouteQuery | null;
 
   if (companyId === undefined) {
     return <RouteNavigator link={PATH.INDEX} />;
   }
 
-  if (state?.postBody === undefined) {
+  if (body === null) {
     return (
       <div className="min-h-screen">
         <GlobalNavigationBar />

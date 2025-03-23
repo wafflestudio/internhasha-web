@@ -43,7 +43,7 @@ export const ApplicantInfo = () => {
   );
 
   return (
-    <>
+    <div className="flex w-[700px] flex-col gap-6 rounded-lg bg-white px-[24px] py-[48px] text-grey-900">
       <section className="flex gap-4">
         {imageKey !== undefined ? (
           <ThumbnailWithPresignedUrl s3Key={imageKey} type="USER_THUMBNAIL" />
@@ -123,7 +123,7 @@ export const ApplicantInfo = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

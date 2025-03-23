@@ -113,7 +113,7 @@ const useLocalSignIn = ({
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        toMain();
+        toMain({});
       } else {
         if (response.code === 'USER_004') {
           setShowSignUpModal(true);
@@ -127,9 +127,7 @@ const useLocalSignIn = ({
       }
     },
     onError: () => {
-      setResponseMessage(
-        '회원가입에 실패했습니다. 잠시 후에 다시 실행해주세요.',
-      );
+      setResponseMessage('로그인에 실패했습니다. 잠시 후에 다시 실행해주세요.');
     },
   });
 

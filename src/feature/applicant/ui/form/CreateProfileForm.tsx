@@ -179,7 +179,12 @@ export const CreateProfileForm = () => {
         </div>
       </FormContainer>
       {isCancel && (
-        <CancelCheckModal onClose={toMain} onCancel={closeCancelModal} />
+        <CancelCheckModal
+          onClose={() => {
+            toMain({});
+          }}
+          onCancel={closeCancelModal}
+        />
       )}
     </>
   );

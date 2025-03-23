@@ -4,13 +4,8 @@ import type {
   ListInput,
   SelectInput,
 } from '@/entities/input';
-import type { Series } from '@/entities/post';
+import type { Link, Series } from '@/entities/post';
 import type { CompanyInputPresentation } from '@/feature/company/presentation/companyInputPresentation';
-
-type ExternalLink = {
-  link: string;
-  description: string;
-};
 
 type InitialState = {
   companyName?: string;
@@ -25,7 +20,7 @@ type InitialState = {
   landingPageLink?: string;
   imagePreview?: { file: File; url: string } | null;
   imageLink?: string;
-  links?: ExternalLink[];
+  links?: Link[];
   tags?: string[];
 };
 
@@ -49,8 +44,8 @@ type CompanyFormPresentation = {
       irDeckPreview: Input<{ file: File; url: string } | null>;
       landingPageLink: Input<string>;
       imagePreview: Input<{ file: File; url: string } | null>;
-      rawLink: Input<ExternalLink>;
-      links: ListInput<ExternalLink>;
+      rawLink: Input<Link>;
+      links: ListInput<Link>;
       rawTag: Input<string>;
       tags: ListInput<string>;
     };
@@ -63,7 +58,7 @@ type CompanyFormPresentation = {
       investCompany: InputForForm<string>;
       series: InputForForm<Series | 'NONE'>;
       landingPageLink: InputForForm<string | undefined>;
-      links: InputForForm<ExternalLink[] | undefined>;
+      links: InputForForm<Link[] | undefined>;
       tags: InputForForm<{ tag: string }[] | undefined>;
     };
   };

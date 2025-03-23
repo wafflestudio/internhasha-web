@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
-import { useLocation } from 'react-router';
 
 import { FormContainer } from '@/components/form/FormContainer';
 import { LabelContainer } from '@/components/label/LabelContainer';
@@ -12,28 +11,20 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { createErrorMessage } from '@/entities/errors';
-import { PATH } from '@/entities/route';
+import type { VerifyMailRouteQuery } from '@/entities/route';
 import { authFormPresentation } from '@/feature/auth/presentation/authFormPresentation';
 import { authInputPresentation } from '@/feature/auth/presentation/authInputPresentation';
 import { RedirectSignInModal } from '@/feature/auth/ui/signUp/RedirectSignInModal';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
+import { PATH } from '@/shared/route/constants';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+import { useRouteLocation } from '@/shared/route/useRouteParams';
 import { formatNumberToTime } from '@/util/format';
 
-type VerifyMailBody = {
-  password: string;
-  username: string;
-};
-
-type EmailVerifyLocationState = {
-  body: VerifyMailBody;
-};
-
 export const EmailVerifyForm = () => {
-  const location = useLocation();
-  const state = location.state as EmailVerifyLocationState | null;
+  const body = useRouteLocation() as VerifyMailRouteQuery | null;
 
   const { toSignUp } = useRouteNavigation();
   const [showSendCodeError, setShowSendCodeError] = useState(false);
@@ -71,10 +62,9 @@ export const EmailVerifyForm = () => {
 
   const isPending = isPendingSend || isPendingVerify || isPendingLocalSignUp;
 
-  if (state === null) {
+  if (body === null) {
     return <RouteNavigator link={PATH.SIGN_IN} />;
   }
-  const { body } = state;
 
   const handleClickSendEmailCodeButton = () => {
     if (sendCodeDisable) {
