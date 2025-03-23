@@ -19,7 +19,7 @@ export const CreatePostPage = () => {
       <div className="min-h-screen">
         <GlobalNavigationBar />
         <div className="mx-auto my-[30px] flex w-[280px] flex-col justify-center gap-[50px] sm:w-[700px]">
-          <h2 className="text-30 text-bold text-grey-900">인턴 공고 작성</h2>
+          <h2 className="text-bold text-30 text-grey-900">인턴 공고 작성</h2>
           <CreatePostForm companyId={companyId} />
         </div>
       </div>

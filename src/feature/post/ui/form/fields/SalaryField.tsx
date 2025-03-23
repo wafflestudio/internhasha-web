@@ -42,7 +42,11 @@ export const SalaryField = ({
       <div className="flex items-center gap-2 md:w-[249px]">
         <Input
           id="salary"
-          value={input.value !== '' ? Number(input.value).toLocaleString('ko-KR') : ""}
+          value={
+            input.value !== ''
+              ? Number(input.value).toLocaleString('ko-KR')
+              : ''
+          }
           disabled={isPending || isDisabled}
           placeholder={placeholder}
           onChange={(e) => {

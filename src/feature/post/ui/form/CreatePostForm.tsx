@@ -35,7 +35,8 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
   );
   const [responseMessage, setResponseMessage] = useState('');
   const [disableSalary, setDisableSalary] = useState(false);
-  const [disableEmploymentEndDate, setDisableEmploymentEndDate] = useState(false);
+  const [disableEmploymentEndDate, setDisableEmploymentEndDate] =
+    useState(false);
   const { toMain } = useRouteNavigation();
 
   const onSuccessSubmit = ({ id }: { id: string }) => {
@@ -65,10 +66,10 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
     setIsSubmit(true);
     if (
       formStates.title.isError ||
-      !disableEmploymentEndDate && formStates.employmentEndDateTime.isError ||
+      (!disableEmploymentEndDate && formStates.employmentEndDateTime.isError) ||
       formStates.job.isError ||
       formStates.headcount.isError ||
-      !disableSalary && formStates.salary.isError ||
+      (!disableSalary && formStates.salary.isError) ||
       formStates.detail.isError
     ) {
       return;
@@ -190,14 +191,17 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           isPending={isPending}
           isDisabled={disableEmploymentEndDate}
           isSubmit={isSubmit}
-          isSubmitError={!disableEmploymentEndDate && formStates.employmentEndDateTime.isError}
+          isSubmitError={
+            !disableEmploymentEndDate &&
+            formStates.employmentEndDateTime.isError
+          }
           errorMessage="올바른 채용 마감일 또는 상시 채용을 선택해주세요."
           required={true}
         />
         {responseMessage !== '' && (
           <FormErrorResponse>{responseMessage}</FormErrorResponse>
         )}
-        <div className="flex mt-[46px] gap-2">
+        <div className="mt-[46px] flex gap-2">
           <Button
             variant="secondary"
             onClick={(e) => {

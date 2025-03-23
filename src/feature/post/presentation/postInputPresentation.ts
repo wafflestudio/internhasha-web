@@ -83,7 +83,7 @@ export const postInputPresentation: PostInputPresentation = {
 
     const handleSalaryChange = (input: string) => {
       setSalary(input.replace(/[^0-9]/g, ''));
-    }
+    };
 
     return {
       title: {

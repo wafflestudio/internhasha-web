@@ -67,9 +67,9 @@ export const postFormPresentation: PostFormPresentation = {
           ? String(initialState.headcount)
           : undefined,
       salary:
-          initialState?.headcount !== undefined
-            ? String(initialState.headcount)
-            : undefined,
+        initialState?.headcount !== undefined
+          ? String(initialState.headcount)
+          : undefined,
       detail: initialState?.detail,
       employmentEndDate: initialState?.employmentEndDateTime,
     };
@@ -129,9 +129,7 @@ export const postFormPresentation: PostFormPresentation = {
           value: Number(headcount.value),
         },
         salary: {
-          isError:
-            salary.isError ||
-            Number(salary.value) < 0,
+          isError: salary.isError || Number(salary.value) < 0,
           value: Number(salary.value),
         },
         detail: {
