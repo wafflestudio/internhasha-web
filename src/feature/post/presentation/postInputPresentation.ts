@@ -9,6 +9,7 @@ type InitialState = {
   jobMajorCategory?: JobMajorCategory;
   jobMinorCategory?: JobMinorCategory | 'NONE';
   headcount?: string;
+  salary?: string;
   detail?: string;
   employmentEndDate?: string;
 };
@@ -19,6 +20,7 @@ export type PostInputPresentation = {
     jobMajorCategory: SelectInput<JobMajorCategory>;
     jobMinorCategory: SelectInput<JobMinorCategory | 'NONE'>;
     headcount: Input<string>;
+    salary: Input<string>;
     detail: Input<string>;
     employmentEndDate: Input<string>;
   };
@@ -27,6 +29,7 @@ export type PostInputPresentation = {
 const TITLE_MAX_LENGTH = 500;
 export const CONTENT_MAX_LENGTH = 10000;
 const HEADCOUNT_REGEX = /^\s*$|^[0-9]+$/;
+const SALARY_REGEX = /^[0-9]+$/;
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 
 export const postInputPresentation: PostInputPresentation = {
@@ -48,6 +51,9 @@ export const postInputPresentation: PostInputPresentation = {
     );
     const [headcount, setHeadcount] = useState(
       initialState?.headcount !== undefined ? initialState.headcount : '',
+    );
+    const [salary, setSalary] = useState(
+      initialState?.salary !== undefined ? initialState.salary : '',
     );
     const [detail, setDetail] = useState(
       initialState?.detail !== undefined
@@ -75,6 +81,10 @@ export const postInputPresentation: PostInputPresentation = {
       setJobMinorCategory('NONE');
     };
 
+    const handleSalaryChange = (input: string) => {
+      setSalary(input.replace(/[^0-9]/g, ''));
+    };
+
     return {
       title: {
         isError: title.length > TITLE_MAX_LENGTH || title.length === 0,
@@ -95,6 +105,11 @@ export const postInputPresentation: PostInputPresentation = {
         isError: !HEADCOUNT_REGEX.test(headcount),
         value: headcount,
         onChange: setHeadcount,
+      },
+      salary: {
+        isError: !SALARY_REGEX.test(salary),
+        value: salary,
+        onChange: handleSalaryChange,
       },
       detail: {
         isError: detail.length > CONTENT_MAX_LENGTH || detail.length === 0,
