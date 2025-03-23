@@ -3,7 +3,9 @@ import type {
   BookmarkPageParams,
   ChangePasswordRequest,
   CheckSnuMailVerificationRequest,
+  CoffeeChatApplicant,
   CoffeeChatCountResponse,
+  CoffeeChatDetailList,
   CoffeeChatIdParams,
   CoffeeChatListResponse,
   CoffeeChatResponse,
@@ -226,7 +228,7 @@ export const getLocalServerApis = ({
       token: string;
       body: CoffeeChatStatusRequest;
     }) => {
-      return callWithToken<SuccessResponse<CoffeeChatResponse>>({
+      return callWithToken<SuccessResponse<CoffeeChatDetailList>>({
         method: 'PATCH',
         path: `coffeeChat`,
         token,
@@ -249,7 +251,7 @@ export const getLocalServerApis = ({
       params: PostIdParams;
       body: CreateCoffeeChatRequest;
     }) => {
-      return callWithToken<SuccessResponse<CoffeeChatResponse>>({
+      return callWithToken<SuccessResponse<CoffeeChatApplicant>>({
         method: 'POST',
         path: `coffeeChat/${params.postId}`,
         token,

@@ -1,6 +1,8 @@
 import type { Apis } from '@/api';
 import type {
+  CoffeeChatApplicant,
   CoffeeChatCount,
+  CoffeeChatDetailList,
   CoffeeChatListResponse,
   CoffeeChatStatus,
 } from '@/api/apis/localServer/schemas';
@@ -33,21 +35,21 @@ export type CoffeeChatService = {
     token: string;
     coffeeChatContents: CoffeeChatRequest;
     postId: string;
-  }) => ServiceResponse<CoffeeChat>;
+  }) => ServiceResponse<CoffeeChatApplicant>;
   updateCoffeeChatStatus: ({
     token,
     body,
   }: {
     token: string;
     body: { coffeeChatStatus: CoffeeChatStatus; coffeeChatList: string[] };
-  }) => ServiceResponse<CoffeeChat>;
+  }) => ServiceResponse<CoffeeChatDetailList>;
   cancelCoffeeChat: ({
     token,
     body,
   }: {
     token: string;
     body: { coffeeChatStatus: 'CANCELED'; coffeeChatList: string[] };
-  }) => ServiceResponse<CoffeeChat>;
+  }) => ServiceResponse<CoffeeChatDetailList>;
 };
 
 export const implCoffeeChatService = ({
