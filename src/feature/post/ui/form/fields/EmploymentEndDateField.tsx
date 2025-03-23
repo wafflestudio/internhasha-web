@@ -1,3 +1,4 @@
+import { CheckboxWithLabel } from '@/components/checkbox/CheckboxWithLabel';
 import { LabelContainer } from '@/components/label/LabelContainer';
 import {
   FormErrorResponse,
@@ -5,8 +6,6 @@ import {
 } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
 import { ICON_SRC } from '@/entities/asset';
 import type { Input } from '@/entities/input';
 
@@ -93,14 +92,12 @@ export const EmploymentEndDateField = ({
         <img src={ICON_SRC.CALENDAR} />
       </Button>
       <div className="flex flex-col gap-1">
-        <div className="flex gap-[10px] text-grey-900">
-          <Checkbox
-            id="always-hire"
-            checked={isDisabled}
-            onCheckedChange={onCheckboxClick}
-          />
-          <Label htmlFor="always-hire">상시 채용</Label>
-        </div>
+        <CheckboxWithLabel
+          label="상시 채용"
+          checkboxId="always-hire"
+          checked={isDisabled}
+          onCheckboxClick={onCheckboxClick}
+        />
         <FormInfoResponse>{infoMessage}</FormInfoResponse>
         {isSubmit && isSubmitError && (
           <FormErrorResponse>{errorMessage}</FormErrorResponse>

@@ -1,11 +1,10 @@
+import { CheckboxWithLabel } from '@/components/checkbox/CheckboxWithLabel';
 import { LabelContainer } from '@/components/label/LabelContainer';
 import {
   FormErrorResponse,
   FormInfoResponse,
 } from '@/components/response/formResponse';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import type { Input as InputType } from '@/entities/input';
 
 type SalaryFieldProps = {
@@ -56,14 +55,12 @@ export const SalaryField = ({
         <span className="text-grey-500">{unit}</span>
       </div>
       <div className="flex flex-col gap-1">
-        <div className="flex gap-[10px] text-grey-900">
-          <Checkbox
-            id="salary-later"
-            checked={isDisabled}
-            onCheckedChange={onCheckboxClick}
-          />
-          <Label htmlFor="salary-later">추후 협의</Label>
-        </div>
+        <CheckboxWithLabel
+          label="추후 협의"
+          checkboxId="salary-later"
+          checked={isDisabled}
+          onCheckboxClick={onCheckboxClick}
+        />
         {infoMessage !== undefined && (
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
         )}
