@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { CancelCoffeeChatRequest } from '@/api/apis/localServer/schemas';
 import { CancelCoffeeChatCancelModal } from '@/components/modal/CancelCoffeeChatCancelModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
-import { BadgeCoffeeChat } from '@/components/ui/badge';
+import { TagStatus } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { SkeletonCoffeeChatDetailView } from '@/feature/coffeeChat/ui/detail/SkeletonCoffeeChatDetailView';
 import { EnvContext } from '@/shared/context/EnvContext';
@@ -81,9 +81,7 @@ export const CoffeeChatDetailView = ({
               <span className="my-auto text-lg font-semibold text-gray-400">
                 {getFormatDate(coffeeChatDetail.createdAt)}
               </span>
-              <BadgeCoffeeChat
-                coffeeChatStatus={coffeeChatDetail.coffeeChatStatus}
-              />
+              <TagStatus coffeeChatStatus={coffeeChatDetail.coffeeChatStatus} />
             </div>
           </div>
 
