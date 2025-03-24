@@ -6,8 +6,8 @@ import type { CoffeeChatStatus } from '@/api/apis/localServer/schemas';
 import { CoffeeChatButton } from '@/components/button/CoffeeChatButton';
 import { UpdateCoffeeChatStatusModal } from '@/components/modal/UpdateCoffeeChatStatusModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
-import { BadgeCoffeeChat } from '@/components/ui/badge';
-import { Check } from '@/components/ui/check';
+import { TagStatus } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ICON_SRC } from '@/entities/asset';
 import { NoCoffeeChat } from '@/feature/coffeeChat/ui/mypage/common/NoCoffeeChat';
@@ -94,7 +94,7 @@ export const CompanyCoffeeChatListView = () => {
       {coffeeChatListData !== undefined ? (
         coffeeChatListData.data.coffeeChatList.map((coffeeChat) => (
           <div key={coffeeChat.id} className="flex items-center gap-3">
-            <Check
+            <Checkbox
               checked={selectedChats.includes(coffeeChat.id)}
               onClick={() => {
                 handleSelectChat(coffeeChat.id);
@@ -123,9 +123,7 @@ export const CompanyCoffeeChatListView = () => {
                 <span className="text-sm text-grey-300">
                   {getShortenedDate(coffeeChat.createdAt)}
                 </span>
-                <BadgeCoffeeChat
-                  coffeeChatStatus={coffeeChat.coffeeChatStatus}
-                />
+                <TagStatus coffeeChatStatus={coffeeChat.coffeeChatStatus} />
               </div>
             </div>
           </div>

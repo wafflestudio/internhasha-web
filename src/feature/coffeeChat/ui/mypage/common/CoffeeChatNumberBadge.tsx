@@ -16,7 +16,7 @@ export const CoffeeChatNumberBadge = () => {
   }
 
   return (
-    <span className="float-end ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-700 text-11 font-medium text-white no-underline data-[state=active]:no-underline">
+    <span className="float-end ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-red text-11 font-medium text-white no-underline data-[state=active]:no-underline">
       {coffeeChatCountData.data.num}
     </span>
   );
