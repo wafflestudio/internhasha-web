@@ -45,10 +45,10 @@ export type CoffeeChatService = {
   }) => ServiceResponse<CoffeeChatDetailList>;
   cancelCoffeeChat: ({
     token,
-    body,
+    coffeeChatList,
   }: {
     token: string;
-    body: { coffeeChatStatus: 'CANCELED'; coffeeChatList: string[] };
+    coffeeChatList: string[];
   }) => ServiceResponse<CoffeeChatDetailList>;
 };
 
@@ -154,14 +154,14 @@ export const implCoffeeChatService = ({
 
   cancelCoffeeChat: async ({
     token,
-    body,
+    coffeeChatList,
   }: {
     token: string;
-    body: { coffeeChatStatus: 'CANCELED'; coffeeChatList: string[] };
+    coffeeChatList: string[];
   }) => {
     const { status, data } = await apis['PATCH /coffeeChat']({
       token,
-      body,
+      body: { coffeeChatStatus: 'CANCELED', coffeeChatList },
     });
 
     if (status === 200) {

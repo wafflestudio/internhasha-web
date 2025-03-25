@@ -220,11 +220,6 @@ export type CreateCoffeeChatRequest = {
   content: string;
 };
 
-export type CancelCoffeeChatRequest = {
-  coffeeChatStatus: 'CANCELED';
-  coffeeChatList: string[];
-};
-
 export type CoffeeChatStatusRequest = {
   coffeeChatStatus: CoffeeChatStatus;
   coffeeChatList: string[];

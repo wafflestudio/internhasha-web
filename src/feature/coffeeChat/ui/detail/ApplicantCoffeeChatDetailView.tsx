@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import type { CancelCoffeeChatRequest } from '@/api/apis/localServer/schemas';
 import { CancelCoffeeChatCancelModal } from '@/components/modal/CancelCoffeeChatCancelModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { TagStatus } from '@/components/ui/badge';
@@ -30,10 +29,7 @@ export const CoffeeChatDetailView = ({
 
   const handleCancel = () => {
     cancelCoffeeChat({
-      body: {
-        coffeeChatStatus: 'CANCELED',
-        coffeeChatList: [coffeeChatId],
-      },
+      coffeeChatList: [coffeeChatId],
     });
   };
 
@@ -168,13 +164,13 @@ const useCancelCoffeeChat = ({
   const queryClient = useQueryClient();
 
   const { mutate: cancelCoffeeChat, isPending } = useMutation({
-    mutationFn: ({ body }: { body: CancelCoffeeChatRequest }) => {
+    mutationFn: ({ coffeeChatList }: { coffeeChatList: string[] }) => {
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
       return coffeeChatService.cancelCoffeeChat({
         token,
-        body,
+        coffeeChatList,
       });
     },
     onSuccess: async (response) => {
