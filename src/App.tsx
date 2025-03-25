@@ -103,10 +103,11 @@ const queryClient = new QueryClient({
 export const App = () => {
   const [token, setToken] = useState<string | null>(null);
   const [role, setRole] = useState<'APPLICANT' | 'COMPANY' | null>(null);
+  const [id, setId] = useState<string | null>(null);
 
   const ENV = useGuardContext(EnvContext);
   const tokenStateRepository = implTokenStateRepository({ setToken });
-  const roleStateRepository = implRoleStateRepository({ setRole });
+  const roleStateRepository = implRoleStateRepository({ setRole, setId });
 
   const localServerCall = async (content: ExternalCallParams) => {
     const response = await fetch(
@@ -198,7 +199,7 @@ export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ServiceContext.Provider value={services}>
-        <RoleContext.Provider value={{ role }}>
+        <RoleContext.Provider value={{ role, id }}>
           <TokenContext.Provider value={{ token }}>
             <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID}>
               <RouterProvider />

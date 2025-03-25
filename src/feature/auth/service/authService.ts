@@ -76,6 +76,7 @@ export const implAuthService = ({
 
       tokenStateRepository.setToken({ token });
       roleStateRepository.setRole({ role: data.user.userRole });
+      roleStateRepository.setId({ id: data.user.id });
 
       return {
         type: 'success',

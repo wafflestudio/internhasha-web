@@ -1,5 +1,7 @@
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ICON_SRC } from '@/entities/asset';
 import type { MyPageRouteQuery } from '@/entities/route';
 import {
   CoffeeChatNumberBadge,
@@ -7,10 +9,15 @@ import {
 } from '@/feature/coffeeChat';
 import { CompanyProfile } from '@/feature/company';
 import { MyPostList } from '@/feature/post/ui/mypage/company/MyPostList';
+import { useGuardContext } from '@/shared/context/hooks';
+import { RoleContext } from '@/shared/context/RoleContext';
+import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { useRouteQueryParams } from '@/shared/route/useRouteParams';
 
 export const CompanyMyPage = () => {
   const queryParams = useRouteQueryParams() as MyPageRouteQuery | null;
+  const { id } = useGuardContext(RoleContext);
+  const { toCreatePost } = useRouteNavigation();
 
   return (
     <div className="min-h-screen bg-grey-50">
@@ -27,13 +34,24 @@ export const CompanyMyPage = () => {
           className="w-full"
         >
           <div className="flex flex-col gap-[30px]">
-            <TabsList className="flex gap-[30px]">
+            <TabsList className="align flex gap-[30px]">
               <TabsTrigger value="COFFEE_CHAT" className="gap-1">
                 나에게 신청된 커피챗
                 <CoffeeChatNumberBadge />
               </TabsTrigger>
               <TabsTrigger value="POST">작성한 공고</TabsTrigger>
               <TabsTrigger value="PROFILE">내 정보</TabsTrigger>
+              <TabsContent value="POST" className="ml-auto">
+                <Button
+                  onClick={() => {
+                    if (id === null) return;
+                    toCreatePost({ companyId: id, body: null });
+                  }}
+                >
+                  <img src={ICON_SRC.PLUS} />
+                  공고 추가
+                </Button>
+              </TabsContent>
             </TabsList>
 
             <TabsContent value="COFFEE_CHAT">
