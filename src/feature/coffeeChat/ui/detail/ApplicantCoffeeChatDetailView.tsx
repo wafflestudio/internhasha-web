@@ -30,8 +30,8 @@ export const CoffeeChatDetailView = ({
 
   const handleCancel = () => {
     updateCoffeeChatStatus({
-      coffeeChatId: coffeeChatId,
-      body: { coffeeChatStatus: 'CANCELED' },
+      coffeeChatList: [coffeeChatId],
+      coffeeChatStatus: 'CANCELED',
     });
   };
 

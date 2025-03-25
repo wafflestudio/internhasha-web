@@ -24,8 +24,8 @@ export const CoffeeChatDetailView = ({
 
   const handleStatusChange = (status: 'ACCEPTED' | 'REJECTED') => {
     updateCoffeeChatStatus({
-      coffeeChatId,
-      body: { coffeeChatStatus: status },
+      coffeeChatList: [coffeeChatId],
+      coffeeChatStatus: status,
     });
   };
 

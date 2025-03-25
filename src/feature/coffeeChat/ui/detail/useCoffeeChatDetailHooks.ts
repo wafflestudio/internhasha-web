@@ -43,19 +43,21 @@ export const useUpdateCoffeeChatStatus = ({
 
   const { mutate: updateCoffeeChatStatus, isPending } = useMutation({
     mutationFn: ({
-      coffeeChatId,
-      body,
+      coffeeChatList,
+      coffeeChatStatus,
     }: {
-      coffeeChatId: string;
-      body: { coffeeChatStatus: CoffeeChatStatus };
+      coffeeChatList: string[];
+      coffeeChatStatus: CoffeeChatStatus;
     }) => {
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
       return coffeeChatService.updateCoffeeChatStatus({
         token,
-        coffeeChatId,
-        body,
+        body: {
+          coffeeChatStatus,
+          coffeeChatList,
+        },
       });
     },
     onSuccess: async (response) => {
