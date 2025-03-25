@@ -292,7 +292,7 @@ const useCreateApplicantProfileWithUploads = ({
     },
     onError: () => {
       setResponseMessage(
-        '이미지 업로드에 실패했습니다. 잠시 후에 다시 실행해주세요.',
+        '파일 업로드에 실패했습니다. 잠시 후에 다시 실행해주세요.',
       );
     },
   });
