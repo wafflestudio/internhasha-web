@@ -226,6 +226,19 @@ export type CreatePostRequest = {
   companyId: string;
 };
 
+export type PutApplicantRequest = {
+  enrollYear: number;
+  department: string;
+  positions?: JobCategory[];
+  slogan?: string;
+  explanation?: string;
+  stacks?: string[];
+  imageKey?: string;
+  cvKey?: string;
+  portfolioKey?: string;
+  links?: Link[];
+};
+
 // Response
 export type UserWithTokenResponse = {
   user: UserBrief;
@@ -238,7 +251,7 @@ export type TokenResponse = {
 
 export type UserResponse = Omit<UserDTO, 'isMerged'>;
 
-export type Applicant = {
+export type ApplicantResponse = {
   id: string;
   name: string;
   createdAt: string;
