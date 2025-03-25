@@ -1,3 +1,4 @@
+import { CheckboxWithLabel } from '@/components/checkbox/CheckboxWithLabel';
 import { LabelContainer } from '@/components/label/LabelContainer';
 import {
   FormErrorResponse,
@@ -6,10 +7,12 @@ import {
 import { Input } from '@/components/ui/input';
 import type { Input as InputType } from '@/entities/input';
 
-type HeadcountFieldProps = {
+type SalaryFieldProps = {
   label: string;
   input: InputType<string>;
   unit: string;
+  isDisabled: boolean;
+  onCheckboxClick(): void;
   isPending: boolean;
   isSubmit: boolean;
   isSubmitError: boolean;
@@ -19,10 +22,12 @@ type HeadcountFieldProps = {
   required?: boolean;
 };
 
-export const HeadcountField = ({
+export const SalaryField = ({
   label,
   input,
   unit,
+  isDisabled,
+  onCheckboxClick,
   isPending,
   isSubmit,
   isSubmitError,
@@ -30,14 +35,18 @@ export const HeadcountField = ({
   infoMessage,
   placeholder,
   required,
-}: HeadcountFieldProps) => {
+}: SalaryFieldProps) => {
   return (
     <LabelContainer label={label} required={required}>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 md:w-[249px]">
         <Input
-          id="headCount"
-          value={input.value}
-          disabled={isPending}
+          id="salary"
+          value={
+            input.value !== ''
+              ? Number(input.value).toLocaleString('ko-KR')
+              : ''
+          }
+          disabled={isPending || isDisabled}
           placeholder={placeholder}
           onChange={(e) => {
             input.onChange(e.target.value);
@@ -46,6 +55,12 @@ export const HeadcountField = ({
         <span className="text-grey-500">{unit}</span>
       </div>
       <div className="flex flex-col gap-1">
+        <CheckboxWithLabel
+          label="추후 협의"
+          checkboxId="salary-later"
+          checked={isDisabled}
+          onCheckboxClick={onCheckboxClick}
+        />
         {infoMessage !== undefined && (
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
         )}

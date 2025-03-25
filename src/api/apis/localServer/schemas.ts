@@ -85,7 +85,7 @@ export type PostBriefDTO = Omit<
 
 export type CoffeeChatStatus = 'WAITING' | 'ACCEPTED' | 'CANCELED' | 'REJECTED';
 
-type CoffeeChatDTO = {
+export type CoffeeChatApplicant = {
   id: string;
   postId: string;
   title: string;
@@ -97,7 +97,39 @@ type CoffeeChatDTO = {
   content: string;
 };
 
-type CoffeeChatBriefDTO = Omit<CoffeeChatDTO, 'content'> & {
+type CoffeeChatCompany = {
+  id: string;
+  postId: string;
+  title: string;
+  company: CoffeeChatUserInfo;
+  createdAt: string;
+  updatedAt: string;
+  coffeeChatStatus: CoffeeChatStatus;
+  changed: boolean;
+  content: string;
+  applicant: Applicant;
+};
+
+export type CoffeeChatDetailList =
+  | {
+      succeeded: CoffeeChatApplicant[];
+      failed: CoffeeChatApplicant[];
+    }
+  | {
+      succeeded: CoffeeChatCompany[];
+      failed: CoffeeChatCompany[];
+    };
+
+type CoffeeChatBriefDTO = {
+  id: string;
+  postId: string;
+  title: string;
+  company: CoffeeChatUserInfo;
+  createdAt: string;
+  updatedAt: string;
+  coffeeChatStatus: CoffeeChatStatus;
+  changed: boolean;
+  content: string;
   applicant: CoffeeChatUserInfo;
 };
 type CoffeeChatUserInfo = {
@@ -188,12 +220,9 @@ export type CreateCoffeeChatRequest = {
   content: string;
 };
 
-export type CancelCoffeeChatRequest = {
-  coffeeChatStatus: 'CANCELED';
-};
-
 export type CoffeeChatStatusRequest = {
   coffeeChatStatus: CoffeeChatStatus;
+  coffeeChatList: string[];
 };
 
 export type S3UploadReq = {
@@ -263,7 +292,7 @@ export type ApplicantResponse = {
   positions?: JobCategory[];
   slogan?: string;
   explanation?: string;
-  stacks?: string[];
+  stacks?: string[]; //TODO: stack ??
   imageKey?: string;
   cvKey?: string;
   portfolioKey?: string;
@@ -294,7 +323,7 @@ export type PositionRespone = Pick<
 export type CoffeeChatCount = {
   num: number;
 };
-export type CoffeeChatResponse = CoffeeChatDTO;
+export type CoffeeChatResponse = CoffeeChatApplicant | CoffeeChatCompany;
 
 export type CoffeeChatListResponse = { coffeeChatList: CoffeeChatBriefDTO[] };
 

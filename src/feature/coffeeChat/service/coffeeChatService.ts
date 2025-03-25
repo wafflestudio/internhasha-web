@@ -1,6 +1,8 @@
 import type { Apis } from '@/api';
 import type {
+  CoffeeChatApplicant,
   CoffeeChatCount,
+  CoffeeChatDetailList,
   CoffeeChatListResponse,
   CoffeeChatStatus,
 } from '@/api/apis/localServer/schemas';
@@ -33,25 +35,21 @@ export type CoffeeChatService = {
     token: string;
     coffeeChatContents: CoffeeChatRequest;
     postId: string;
-  }) => ServiceResponse<CoffeeChat>;
+  }) => ServiceResponse<CoffeeChatApplicant>;
   updateCoffeeChatStatus: ({
     token,
-    coffeeChatId,
     body,
   }: {
     token: string;
-    coffeeChatId: string;
-    body: { coffeeChatStatus: CoffeeChatStatus };
-  }) => ServiceResponse<CoffeeChat>;
+    body: { coffeeChatStatus: CoffeeChatStatus; coffeeChatList: string[] };
+  }) => ServiceResponse<CoffeeChatDetailList>;
   cancelCoffeeChat: ({
     token,
-    coffeeChatId,
-    body,
+    coffeeChatList,
   }: {
     token: string;
-    coffeeChatId: string;
-    body: { coffeeChatStatus: 'CANCELED' };
-  }) => ServiceResponse<CoffeeChat>;
+    coffeeChatList: string[];
+  }) => ServiceResponse<CoffeeChatDetailList>;
 };
 
 export const implCoffeeChatService = ({
@@ -135,17 +133,13 @@ export const implCoffeeChatService = ({
   },
   updateCoffeeChatStatus: async ({
     token,
-    coffeeChatId,
     body,
   }: {
     token: string;
-    coffeeChatId: string;
-    body: { coffeeChatStatus: CoffeeChatStatus };
+    body: { coffeeChatStatus: CoffeeChatStatus; coffeeChatList: string[] };
   }) => {
-    const params = { coffeeChatId };
-    const { status, data } = await apis['PATCH /coffeeChat/:coffeeChatId']({
+    const { status, data } = await apis['PATCH /coffeeChat']({
       token,
-      params,
       body,
     });
 
@@ -160,18 +154,14 @@ export const implCoffeeChatService = ({
 
   cancelCoffeeChat: async ({
     token,
-    coffeeChatId,
-    body,
+    coffeeChatList,
   }: {
     token: string;
-    coffeeChatId: string;
-    body: { coffeeChatStatus: 'CANCELED' };
+    coffeeChatList: string[];
   }) => {
-    const params = { coffeeChatId };
-    const { status, data } = await apis['PATCH /coffeeChat/:coffeeChatId']({
+    const { status, data } = await apis['PATCH /coffeeChat']({
       token,
-      params,
-      body,
+      body: { coffeeChatStatus: 'CANCELED', coffeeChatList },
     });
 
     if (status === 200) {

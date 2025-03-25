@@ -1,3 +1,4 @@
+import { CheckboxWithLabel } from '@/components/checkbox/CheckboxWithLabel';
 import { LabelContainer } from '@/components/label/LabelContainer';
 import {
   FormErrorResponse,
@@ -12,8 +13,10 @@ type EmploymentEndDateField = {
   label: string;
   showFilter: string;
   onClick(): void;
+  onCheckboxClick(): void;
   input: Input<string>;
   isPending: boolean;
+  isDisabled: boolean;
   isSubmit: boolean;
   isSubmitError: boolean;
   errorMessage: string;
@@ -25,8 +28,10 @@ export const EmploymentEndDateField = ({
   label,
   showFilter,
   onClick,
+  onCheckboxClick,
   input,
   isPending,
+  isDisabled,
   isSubmit,
   isSubmitError,
   errorMessage,
@@ -70,6 +75,7 @@ export const EmploymentEndDateField = ({
           e.preventDefault();
           onClick();
         }}
+        disabled={isDisabled}
         variant="outline"
         className="w-full justify-start"
       >
@@ -86,6 +92,12 @@ export const EmploymentEndDateField = ({
         <img src={ICON_SRC.CALENDAR} />
       </Button>
       <div className="flex flex-col gap-1">
+        <CheckboxWithLabel
+          label="상시 채용"
+          checkboxId="always-hire"
+          checked={isDisabled}
+          onCheckboxClick={onCheckboxClick}
+        />
         <FormInfoResponse>{infoMessage}</FormInfoResponse>
         {isSubmit && isSubmitError && (
           <FormErrorResponse>{errorMessage}</FormErrorResponse>
