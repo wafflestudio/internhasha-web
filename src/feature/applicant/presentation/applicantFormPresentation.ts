@@ -14,7 +14,7 @@ type InitialFormState = {
   positions?: JobMinorCategory[];
   slogan?: string;
   explanation?: string;
-  stack?: string[];
+  stacks?: string[];
   imagePreview?: { file: File; url: string } | null;
   cvPreview?: { file: File; url: string } | null;
   portfolioPreview?: { file: File; url: string } | null;
@@ -37,7 +37,7 @@ type ApplicantFormPresentation = {
       slogan: Input<string>;
       explanation: Input<string>;
       rawStack: Input<string>;
-      stack: ListInput<string>;
+      stacks: ListInput<string>;
       imagePreview: Input<{ file: File; url: string } | null>;
       cvPreview: Input<{ file: File; url: string } | null>;
       portfolioPreview: Input<{ file: File; url: string } | null>;
@@ -50,7 +50,7 @@ type ApplicantFormPresentation = {
       positions: InputForForm<JobMinorCategory[] | undefined>;
       slogan: InputForForm<string | undefined>;
       explanation: InputForForm<string | undefined>;
-      stack: InputForForm<string[] | undefined>;
+      stacks: InputForForm<string[] | undefined>;
       imagePreview: InputForForm<{ file: File; url: string } | null>;
       cvPreview: InputForForm<{ file: File; url: string } | null>;
       portfolioPreview: Input<{ file: File; url: string } | null>;
@@ -70,7 +70,7 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
       positions: initialState?.positions,
       slogan: initialState?.slogan,
       explanation: initialState?.explanation,
-      stack: initialState?.stack,
+      stacks: initialState?.stacks,
       imagePreview: initialState?.imagePreview,
       cvPreview: initialState?.cvPreview,
       portfolioPreview: initialState?.portfolioPreview,
@@ -85,7 +85,7 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
       slogan,
       explanation,
       rawStack,
-      stack,
+      stacks,
       imagePreview,
       cvPreview,
       portfolioPreview,
@@ -109,7 +109,7 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
         slogan,
         explanation,
         rawStack,
-        stack,
+        stacks,
         imagePreview,
         cvPreview,
         portfolioPreview,
@@ -140,9 +140,9 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
           isError: explanation.isError,
           value: convertEmptyStringToUndefined(explanation.value),
         },
-        stack: {
-          isError: stack.isError,
-          value: stack.value.length !== 0 ? stack.value : undefined,
+        stacks: {
+          isError: stacks.isError,
+          value: stacks.value.length !== 0 ? stacks.value : undefined,
         },
         links: {
           isError: links.isError,

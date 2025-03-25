@@ -49,7 +49,7 @@ export const StringSelectField = <T extends string>({
           >
             {input.value !== 'NONE'
               ? formatter(input.value)
-              : '시리즈를 선택해주세요.'}
+              : '값을 선택해주세요.'}
           </SelectTrigger>
           <SelectContent>
             {inputList.map((item, idx) => (

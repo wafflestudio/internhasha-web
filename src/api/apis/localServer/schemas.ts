@@ -97,6 +97,25 @@ export type CoffeeChatApplicant = {
   content: string;
 };
 
+type Applicant = {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  userRole: UserRole;
+  snuMail?: string;
+  enrollYear: number;
+  department: string;
+  positions?: JobCategory[];
+  slogan?: string;
+  explanation?: string;
+  stacks?: string[];
+  imageKey?: string;
+  cvKey?: string;
+  portfolioKey?: string;
+  links?: Link[];
+};
+
 type CoffeeChatCompany = {
   id: string;
   postId: string;
@@ -136,6 +155,7 @@ type CoffeeChatUserInfo = {
   name: string;
   imageKey?: string;
 };
+
 // Params
 export type PostPathParams = {
   page?: number;
@@ -255,6 +275,19 @@ export type CreatePostRequest = {
   companyId: string;
 };
 
+export type PutApplicantRequest = {
+  enrollYear: number;
+  department: string;
+  positions?: JobCategory[];
+  slogan?: string;
+  explanation?: string;
+  stacks?: string[];
+  imageKey?: string;
+  cvKey?: string;
+  portfolioKey?: string;
+  links?: Link[];
+};
+
 // Response
 export type UserWithTokenResponse = {
   user: UserBrief;
@@ -267,24 +300,7 @@ export type TokenResponse = {
 
 export type UserResponse = Omit<UserDTO, 'isMerged'>;
 
-export type Applicant = {
-  id: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  userRole: UserRole;
-  snuMail?: string;
-  enrollYear: number;
-  department: string;
-  positions?: JobCategory[];
-  slogan?: string;
-  explanation?: string;
-  stacks?: string[]; //TODO: stack ??
-  imageKey?: string;
-  cvKey?: string;
-  portfolioKey?: string;
-  links?: Link[];
-};
+export type ApplicantResponse = Applicant;
 
 export type PostsResponse = {
   posts: PostBriefDTO[];

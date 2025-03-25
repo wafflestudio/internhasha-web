@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { ExternalLinkField } from '@/components/field/ExternalLinkField';
@@ -9,17 +10,38 @@ import { StringFieldWithUnit } from '@/components/field/StringFieldWithLabel';
 import { TextareaField } from '@/components/field/TextareaField';
 import { FormContainer } from '@/components/form/FormContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
+import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
+import type { JobMinorCategory, Link } from '@/entities/post';
 import { applicantFormPresentation } from '@/feature/applicant/presentation/applicantFormPresentation';
 import {
   applicantInputPresentation,
   MAX_EXPLANATION_LENGTH,
   MAX_SLOGAN_LENGTH,
 } from '@/feature/applicant/presentation/applicantInputPresentation';
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
+import { TokenContext } from '@/shared/context/TokenContext';
+import { useGetPresignedUrl, useUploadFile } from '@/shared/file/hooks';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
+type CreateApplicantProfileRequest = {
+  enrollYear: number;
+  department: string;
+  positions?: JobMinorCategory[];
+  slogan?: string;
+  explanation?: string;
+  stacks?: string[];
+  imageKey?: string;
+  cvKey?: string;
+  portfolioKey?: string;
+  links?: Link[];
+};
+
 export const CreateProfileForm = () => {
+  const [isSubmit, setIsSubmit] = useState(false);
   const [isCancel, setIsCancel] = useState(false);
+  const [responseMessage, setResponseMessage] = useState('');
 
   const { inputStates, formStates } = applicantFormPresentation.useValidator({
     applicantInputPresentation,
@@ -31,7 +53,7 @@ export const CreateProfileForm = () => {
     slogan,
     explanation,
     rawStack,
-    stack,
+    stacks,
     imagePreview,
     cvPreview,
     portfolioPreview,
@@ -49,14 +71,56 @@ export const CreateProfileForm = () => {
     setIsCancel(false);
   };
 
-  // TODO: API 연결 이후 삭제
-  const handleSubmit = () => {};
-  const isPending = false;
-  const isSubmit = false;
+  const { handleCreateApplicantProfile, isPending } =
+    useCreateApplicantProfileWithUploads({
+      setResponseMessage: setResponseMessage,
+    });
+
+  const handleSubmit = () => {
+    setIsSubmit(true);
+    if (
+      formStates.enrollYear.isError ||
+      formStates.department.isError ||
+      formStates.slogan.isError ||
+      formStates.explanation.isError ||
+      formStates.stacks.isError ||
+      formStates.links.isError
+    ) {
+      return;
+    }
+
+    handleCreateApplicantProfile({
+      applicantInfo: {
+        enrollYear: formStates.enrollYear.value,
+        department: formStates.department.value,
+        slogan: formStates.slogan.value,
+        explanation: formStates.explanation.value,
+        stacks: formStates.stacks.value,
+        links: formStates.links.value,
+      },
+      imagePreview:
+        imagePreview.value !== null ? imagePreview.value.file : null,
+      cvPreview: cvPreview.value !== null ? cvPreview.value.file : null,
+      portfolioPreview:
+        portfolioPreview.value !== null ? portfolioPreview.value.file : null,
+    })
+      .then(() => {
+        return;
+      })
+      .catch(() => {
+        return;
+      });
+  };
 
   return (
     <>
       <FormContainer handleSubmit={handleSubmit} className="gap-10">
+        <div className="flex flex-col gap-[10px]">
+          <h3 className="text-22 font-semibold">필수 작성 항목</h3>
+          <p className="text-12 font-regular text-grey-600">
+            아래 항목은 필수로 작성해주세요.
+          </p>
+        </div>
         <StringField
           label="학과"
           input={department}
@@ -103,11 +167,11 @@ export const CreateProfileForm = () => {
         />
         <HashtagField
           label="상세 기술 스택"
-          input={stack}
+          input={stacks}
           rawInput={rawStack}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={formStates.stack.isError}
+          isSubmitError={formStates.stacks.isError}
           placeholder="사용할 수 있는 상세 기술 스택을 입력해주세요.(최대 10개)"
           infoMessage="기술 스택은 엔터로 구분되며 한 개당 최대 20자까지 입력할 수 있어요."
           inputErrorMessage="기존 태그와 중복되지 않는 20자 이하의 태그를 작성해주세요."
@@ -154,6 +218,9 @@ export const CreateProfileForm = () => {
           errorMessage="외부 소개 링크는 최대 5개까지 입력 가능하며 링크는 https로 시작해야 합니다."
           inputErrorMessage="중복되지 않는 유효한 링크와 100자 이내의 설명글을 입력해주세요."
         />
+        {responseMessage !== '' && (
+          <FormErrorResponse>{responseMessage}</FormErrorResponse>
+        )}
         <div className="flex gap-2">
           <Button
             variant="secondary"
@@ -188,4 +255,157 @@ export const CreateProfileForm = () => {
       )}
     </>
   );
+};
+
+const useCreateApplicantProfileWithUploads = ({
+  setResponseMessage,
+}: {
+  setResponseMessage(input: string): void;
+}) => {
+  const { applicantService } = useGuardContext(ServiceContext);
+  const { token } = useGuardContext(TokenContext);
+  const queryClient = useQueryClient();
+  const { getPresignedUrl } = useGetPresignedUrl({ setResponseMessage });
+  const { uploadFile } = useUploadFile({ setResponseMessage });
+
+  const [isPending, setIsPending] = useState(false);
+  const { toMyPage } = useRouteNavigation();
+
+  const { mutate: createApplicantProfile } = useMutation({
+    mutationFn: ({
+      applicantContents,
+    }: {
+      applicantContents: CreateApplicantProfileRequest;
+    }) => {
+      if (token === null) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+      return applicantService.putProfile({ token, body: applicantContents });
+    },
+    onSuccess: async (response) => {
+      if (response.type === 'success') {
+        await queryClient.invalidateQueries();
+        toMyPage({ query: { tab: 'PROFILE' } });
+      }
+    },
+    onError: () => {
+      setResponseMessage(
+        '프로필 저장에 실패했습니다. 잠시 후에 다시 실행해주세요.',
+      );
+    },
+  });
+
+  const handleCreateApplicantProfile = async ({
+    applicantInfo,
+    imagePreview,
+    cvPreview,
+    portfolioPreview,
+  }: {
+    applicantInfo: Omit<
+      CreateApplicantProfileRequest,
+      'imageKey' | 'cvKey' | 'portfolioKey'
+    >;
+    imagePreview: File | null;
+    cvPreview: File | null;
+    portfolioPreview: File | null;
+  }) => {
+    try {
+      setIsPending(true);
+
+      const [
+        applicantThumbnailPresignedUrlResponse,
+        cvPresignedUrlResponse,
+        portfolioPresignedUrlResponse,
+      ] = await Promise.all([
+        imagePreview !== null
+          ? getPresignedUrl({
+              fileName: imagePreview.name,
+              fileType: 'USER_THUMBNAIL',
+            })
+          : Promise.resolve(null),
+        cvPreview !== null
+          ? getPresignedUrl({
+              fileName: cvPreview.name,
+              fileType: 'CV',
+            })
+          : Promise.resolve(null),
+        portfolioPreview !== null
+          ? getPresignedUrl({
+              fileName: portfolioPreview.name,
+              fileType: 'PORTFOLIO',
+            })
+          : Promise.resolve(null),
+      ]);
+
+      if (
+        applicantThumbnailPresignedUrlResponse?.type === 'error' ||
+        cvPresignedUrlResponse?.type === 'error' ||
+        portfolioPresignedUrlResponse?.type === 'error'
+      ) {
+        setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
+        return;
+      }
+
+      const [
+        applicantThumbnailUploadResponse,
+        cvUploadResponse,
+        portfolioUploadResponse,
+      ] = await Promise.all([
+        applicantThumbnailPresignedUrlResponse !== null
+          ? uploadFile({
+              presignedUrl: applicantThumbnailPresignedUrlResponse.data.url,
+              file: imagePreview !== null ? imagePreview : undefined,
+            })
+          : null,
+        cvPresignedUrlResponse !== null
+          ? uploadFile({
+              presignedUrl: cvPresignedUrlResponse.data.url,
+              file: cvPreview !== null ? cvPreview : undefined,
+            })
+          : null,
+        portfolioPresignedUrlResponse !== null
+          ? uploadFile({
+              presignedUrl: portfolioPresignedUrlResponse.data.url,
+              file: portfolioPreview !== null ? portfolioPreview : undefined,
+            })
+          : null,
+      ]);
+
+      if (
+        applicantThumbnailUploadResponse?.type === 'error' ||
+        cvUploadResponse?.type === 'error' ||
+        portfolioUploadResponse?.type === 'error'
+      ) {
+        setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
+        return;
+      }
+
+      createApplicantProfile({
+        applicantContents: {
+          ...applicantInfo,
+          imageKey:
+            applicantThumbnailPresignedUrlResponse !== null
+              ? applicantThumbnailPresignedUrlResponse.data.s3Key
+              : undefined,
+          cvKey:
+            cvPresignedUrlResponse !== null
+              ? cvPresignedUrlResponse.data.s3Key
+              : undefined,
+          portfolioKey:
+            portfolioPresignedUrlResponse !== null
+              ? portfolioPresignedUrlResponse.data.s3Key
+              : undefined,
+        },
+      });
+    } catch {
+      setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  return {
+    handleCreateApplicantProfile,
+    isPending,
+  };
 };

@@ -1,5 +1,5 @@
 import type {
-  Applicant,
+  ApplicantResponse,
   BookmarkPageParams,
   ChangePasswordRequest,
   CheckSnuMailVerificationRequest,
@@ -21,6 +21,7 @@ import type {
   PostIdParams,
   PostPathParams,
   PostsResponse,
+  PutApplicantRequest,
   S3DownloadParams,
   S3DownloadResp,
   S3UploadReq,
@@ -394,10 +395,24 @@ export const getLocalServerApis = ({
       });
     },
     'GET /applicant/me': ({ token }: { token: string }) => {
-      return callWithToken<SuccessResponse<Applicant>>({
+      return callWithToken<SuccessResponse<ApplicantResponse>>({
         method: 'GET',
         path: `applicant/me`,
         token,
+      });
+    },
+    'PUT /applicant/me': ({
+      token,
+      body,
+    }: {
+      token: string;
+      body: PutApplicantRequest;
+    }) => {
+      return callWithToken<SuccessResponse<ApplicantResponse>>({
+        method: 'PUT',
+        path: `applicant/me`,
+        token,
+        body,
       });
     },
   }) satisfies Record<string, Api>;

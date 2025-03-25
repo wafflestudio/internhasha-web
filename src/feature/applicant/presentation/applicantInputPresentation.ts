@@ -9,7 +9,7 @@ type InitialInputState = {
   positions?: JobMinorCategory[];
   slogan?: string;
   explanation?: string;
-  stack?: string[];
+  stacks?: string[];
   imagePreview?: { file: File; url: string } | null;
   cvPreview?: { file: File; url: string } | null;
   portfolioPreview?: { file: File; url: string } | null;
@@ -25,7 +25,7 @@ export type ApplicantInputPresentation = {
     slogan: Input<string>;
     explanation: Input<string>;
     rawStack: Input<string>;
-    stack: ListInput<string>;
+    stacks: ListInput<string>;
     imagePreview: Input<{ file: File; url: string } | null>;
     cvPreview: Input<{ file: File; url: string } | null>;
     portfolioPreview: Input<{ file: File; url: string } | null>;
@@ -85,8 +85,8 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
       initialState?.explanation !== undefined ? initialState.explanation : '',
     );
     const [rawStack, setRawStack] = useState('');
-    const [stack, setStack] = useState<string[]>(
-      initialState?.stack !== undefined ? initialState.stack : [],
+    const [stacks, setStacks] = useState<string[]>(
+      initialState?.stacks !== undefined ? initialState.stacks : [],
     );
     const [imagePreview, setImagePreview] = useState<{
       file: File;
@@ -137,7 +137,7 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
       if (trimmedInput.length > MAX_STACK_LENTH) {
         return false;
       }
-      if (stack.some((item) => item.trim() === trimmedInput)) {
+      if (stacks.some((item) => item.trim() === trimmedInput)) {
         return false;
       }
       return true;
@@ -304,7 +304,7 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
           mode: 'PATCH' | 'REMOVE';
           index: number;
         }) => {
-      setStack((prevState) => {
+      setStacks((prevState) => {
         switch (mode) {
           case 'ADD':
             return isRawStackValid(input) ? [...prevState, input] : prevState;
@@ -394,9 +394,9 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
         value: rawStack,
         onChange: setRawStack,
       },
-      stack: {
-        isError: !isStackValid(stack),
-        value: stack,
+      stacks: {
+        isError: !isStackValid(stacks),
+        value: stacks,
         onChange: handleStackChange,
       },
       imagePreview: {
