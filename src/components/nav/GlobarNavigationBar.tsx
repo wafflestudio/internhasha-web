@@ -33,7 +33,10 @@ export const GlobalNavigationBar = () => {
         </h1>
 
         <div className="flex items-center gap-5">
-          <img src={ICON_SRC.GNB.SEARCH} />
+          {/* TODO: 검색기능*/}
+          {/* <Button variant="ghost">
+            <img src={ICON_SRC.GNB.SEARCH} />
+          </Button> */}
           {token == null ? (
             <>
               <Button
