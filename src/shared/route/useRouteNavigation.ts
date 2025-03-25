@@ -68,7 +68,7 @@ export const useRouteNavigation = () => {
       body,
     }: {
       companyId: string;
-      body?: PostRouteQuery;
+      body?: PostRouteQuery | null;
     }) => {
       if (body === undefined) {
         void navigate(CREATE_POST({ companyId }));
