@@ -84,14 +84,14 @@ const SeriesBadge = ({
   );
 };
 
-const tagClassName = cva(
-  'text inline-flex items-center rounded-sm border-transparent px-2 py-1.5 text-13 text-sm font-regular transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+const tagStatusClassName = cva(
+  'text inline-flex items-center rounded-sm border-transparent px-2 py-1.5 text-13 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
         pending: 'bg-yellow-100 text-yellow-900',
         accepted: 'bg-green-100 text-green-900',
-        canceled: 'bg-red-100 text-grey-900',
+        canceled: 'bg-grey-200 text-grey-900',
         rejected: 'bg-red-100 text-red-900',
       },
     },
@@ -103,21 +103,17 @@ const tagClassName = cva(
 
 interface TagProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof tagClassName> {
+    VariantProps<typeof tagStatusClassName> {
   coffeeChatStatus: CoffeeChatStatus;
 }
 
-const BadgeCoffeeChat = ({
-  className,
-  coffeeChatStatus,
-  ...props
-}: TagProps) => {
+const TagStatus = ({ className, coffeeChatStatus, ...props }: TagProps) => {
   const { variant, label } = COFFEE_CHAT_STATUS_MAP[coffeeChatStatus];
   return (
-    <div className={cn(tagClassName({ variant }), className)} {...props}>
+    <div className={cn(tagStatusClassName({ variant }), className)} {...props}>
       {label}
     </div>
   );
 };
 
-export { Badge, SeriesBadge, BadgeCoffeeChat };
+export { Badge, SeriesBadge, TagStatus };

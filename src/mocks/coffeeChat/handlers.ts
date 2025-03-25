@@ -19,6 +19,7 @@ export const coffeeChatHandlers = [
 
   http.post('*/api/coffeeChat/:postId', coffeeChatResolver.createCoffeeChat),
 
+  http.patch('*/api/coffeeChat', coffeeChatResolver.updateCoffeeChatStatus),
   http.delete(
     '*/api/coffeeChat/:coffeeChatId',
     coffeeChatResolver.deleteCoffeeChat,

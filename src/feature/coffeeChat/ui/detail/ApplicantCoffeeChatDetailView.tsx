@@ -1,10 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import type { CancelCoffeeChatRequest } from '@/api/apis/localServer/schemas';
 import { CancelCoffeeChatCancelModal } from '@/components/modal/CancelCoffeeChatCancelModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
-import { BadgeCoffeeChat } from '@/components/ui/badge';
+import { TagStatus } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { SkeletonCoffeeChatDetailView } from '@/feature/coffeeChat/ui/detail/SkeletonCoffeeChatDetailView';
 import { EnvContext } from '@/shared/context/EnvContext';
@@ -30,8 +29,7 @@ export const CoffeeChatDetailView = ({
 
   const handleCancel = () => {
     cancelCoffeeChat({
-      coffeeChatId: coffeeChatId,
-      body: { coffeeChatStatus: 'CANCELED' },
+      coffeeChatList: [coffeeChatId],
     });
   };
 
@@ -79,9 +77,7 @@ export const CoffeeChatDetailView = ({
               <span className="my-auto text-lg font-semibold text-gray-400">
                 {getFormatDate(coffeeChatDetail.createdAt)}
               </span>
-              <BadgeCoffeeChat
-                coffeeChatStatus={coffeeChatDetail.coffeeChatStatus}
-              />
+              <TagStatus coffeeChatStatus={coffeeChatDetail.coffeeChatStatus} />
             </div>
           </div>
 
@@ -168,20 +164,13 @@ const useCancelCoffeeChat = ({
   const queryClient = useQueryClient();
 
   const { mutate: cancelCoffeeChat, isPending } = useMutation({
-    mutationFn: ({
-      coffeeChatId,
-      body,
-    }: {
-      coffeeChatId: string;
-      body: CancelCoffeeChatRequest;
-    }) => {
+    mutationFn: ({ coffeeChatList }: { coffeeChatList: string[] }) => {
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
       return coffeeChatService.cancelCoffeeChat({
         token,
-        coffeeChatId,
-        body,
+        coffeeChatList,
       });
     },
     onSuccess: async (response) => {

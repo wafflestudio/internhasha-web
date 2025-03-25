@@ -22,7 +22,7 @@ const tabsTriggerClassName = cva('inline-flex items-center justify-center', {
   variants: {
     variant: {
       default:
-        'data-[state=active]:underline-2 text-18 font-regular hover:text-grey-700 disabled:opacity-50 data-[state=active]:text-grey-900 data-[state=active]:underline data-[state=active]:underline-offset-8 data-[state=active]:hover:text-grey-700',
+        'data-[state=active]:underline-2 text-18 font-semibold hover:text-grey-700 disabled:opacity-50 data-[state=active]:text-grey-900 data-[state=active]:underline data-[state=active]:decoration-grey-900 data-[state=active]:decoration-2 data-[state=active]:underline-offset-8 data-[state=active]:hover:text-grey-700',
       button:
         'h-[42px] flex-1 whitespace-nowrap rounded-[8px] text-grey-300 ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-grey-900',
     },

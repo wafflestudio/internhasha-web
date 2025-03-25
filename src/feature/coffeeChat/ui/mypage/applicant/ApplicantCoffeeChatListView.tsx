@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { BadgeCoffeeChat } from '@/components/ui/badge';
+import { TagStatus } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ICON_SRC } from '@/entities/asset';
 import { NoCoffeeChat } from '@/feature/coffeeChat/ui/mypage/common/NoCoffeeChat';
@@ -38,7 +38,6 @@ export const ApplicantCoffeeChatListView = () => {
             }}
           >
             <div className="flex items-center gap-2">
-              {/* TODO: changed 말고 다른 read 변수에 따라 변해야함 */}
               {coffeeChat.changed && <img src={ICON_SRC.BADGES} />}
               <span className="truncate text-14 font-regular">
                 {coffeeChat.company.name}
@@ -48,7 +47,7 @@ export const ApplicantCoffeeChatListView = () => {
               <span className="text-sm text-grey-300">
                 {getShortenedDate(coffeeChat.createdAt)}
               </span>
-              <BadgeCoffeeChat coffeeChatStatus={coffeeChat.coffeeChatStatus} />
+              <TagStatus coffeeChatStatus={coffeeChat.coffeeChatStatus} />
             </div>
           </div>
         ))
