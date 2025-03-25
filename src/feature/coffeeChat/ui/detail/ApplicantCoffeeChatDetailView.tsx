@@ -1,4 +1,3 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { CancelCoffeeChatCancelModal } from '@/components/modal/CancelCoffeeChatCancelModal';
@@ -6,10 +5,12 @@ import { FormErrorResponse } from '@/components/response/formResponse';
 import { TagStatus } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { SkeletonCoffeeChatDetailView } from '@/feature/coffeeChat/ui/detail/SkeletonCoffeeChatDetailView';
+import {
+  useGetCoffeeChatDetail,
+  useUpdateCoffeeChatStatus,
+} from '@/feature/coffeeChat/ui/detail/useCoffeeChatDetailHooks';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
-import { ServiceContext } from '@/shared/context/ServiceContext';
-import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { getFormatDate } from '@/util/postFormatFunctions';
 
@@ -23,13 +24,14 @@ export const CoffeeChatDetailView = ({
   const [responseMessage, setResponseMessage] = useState('');
   const { toMyPage } = useRouteNavigation();
   const [isCancel, setIsCancel] = useState(false);
-  const { cancelCoffeeChat, isPending } = useCancelCoffeeChat({
+  const { updateCoffeeChatStatus, isPending } = useUpdateCoffeeChatStatus({
     setResponseMessage,
   });
 
   const handleCancel = () => {
-    cancelCoffeeChat({
+    updateCoffeeChatStatus({
       coffeeChatList: [coffeeChatId],
+      coffeeChatStatus: 'CANCELED',
     });
   };
 
@@ -130,63 +132,4 @@ export const CoffeeChatDetailView = ({
       )}
     </>
   );
-};
-
-const useGetCoffeeChatDetail = ({ coffeeChatId }: { coffeeChatId: string }) => {
-  const { token } = useGuardContext(TokenContext);
-  const { coffeeChatService } = useGuardContext(ServiceContext);
-
-  const { data: coffeeChatDetailData } = useQuery({
-    queryKey: ['user', 'coffeeChat', coffeeChatId, token] as const,
-    queryFn: ({ queryKey: [, , , t] }) => {
-      if (t === null) {
-        throw new Error('토큰이 존재하지 않습니다.');
-      }
-      return coffeeChatService.getCoffeeChatDetail({
-        token: t,
-        coffeeChatId: coffeeChatId,
-      });
-    },
-    enabled: token !== null,
-  });
-
-  return { coffeeChatDetailData: coffeeChatDetailData };
-};
-
-const useCancelCoffeeChat = ({
-  setResponseMessage,
-}: {
-  setResponseMessage(input: string): void;
-}) => {
-  const { coffeeChatService } = useGuardContext(ServiceContext);
-  const { token } = useGuardContext(TokenContext);
-  const { toMyPage } = useRouteNavigation();
-  const queryClient = useQueryClient();
-
-  const { mutate: cancelCoffeeChat, isPending } = useMutation({
-    mutationFn: ({ coffeeChatList }: { coffeeChatList: string[] }) => {
-      if (token === null) {
-        throw new Error('토큰이 존재하지 않습니다.');
-      }
-      return coffeeChatService.cancelCoffeeChat({
-        token,
-        coffeeChatList,
-      });
-    },
-    onSuccess: async (response) => {
-      if (response.type === 'success') {
-        await queryClient.invalidateQueries();
-        toMyPage({ query: { tab: 'COFFEE_CHAT' } });
-      } else {
-        setResponseMessage(response.code);
-      }
-    },
-    onError: () => {
-      setResponseMessage('취소에 실패했습니다. 잠시 후에 다시 실행해주세요.');
-    },
-  });
-  return {
-    cancelCoffeeChat,
-    isPending,
-  };
 };

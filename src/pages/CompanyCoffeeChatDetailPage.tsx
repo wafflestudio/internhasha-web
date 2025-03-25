@@ -14,8 +14,7 @@ export const CompanyCoffeeChatDetailPage = () => {
   return (
     <div className="min-h-screen bg-grey-50">
       <GlobalNavigationBar />
-      {/* TODO: coffee chat id를 넘기기  */}
-      <CompanyCoffeeChatDetailView />
+      <CompanyCoffeeChatDetailView coffeeChatId={coffeeChatId} />
     </div>
   );
 };
