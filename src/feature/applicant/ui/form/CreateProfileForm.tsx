@@ -12,8 +12,6 @@ import { FormContainer } from '@/components/form/FormContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
-import { createErrorMessage } from '@/entities/errors';
-import type { FileType } from '@/entities/file';
 import type { JobMinorCategory, Link } from '@/entities/post';
 import { applicantFormPresentation } from '@/feature/applicant/presentation/applicantFormPresentation';
 import {
@@ -24,6 +22,7 @@ import {
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
+import { useGetPresignedUrl, useUploadFile } from '@/shared/file/hooks';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 type CreateApplicantProfileRequest = {
@@ -263,64 +262,14 @@ const useCreateApplicantProfileWithUploads = ({
 }: {
   setResponseMessage(input: string): void;
 }) => {
-  const { fileService, applicantService } = useGuardContext(ServiceContext);
+  const { applicantService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
   const queryClient = useQueryClient();
+  const { getPresignedUrl } = useGetPresignedUrl({ setResponseMessage });
+  const { uploadFile } = useUploadFile({ setResponseMessage });
 
   const [isPending, setIsPending] = useState(false);
   const { toMyPage } = useRouteNavigation();
-
-  const { mutateAsync: getPresignedUrl } = useMutation({
-    mutationFn: ({
-      fileName,
-      fileType,
-    }: {
-      fileName: string;
-      fileType: FileType;
-    }) => {
-      if (token === null) {
-        throw new Error('토큰이 존재하지 않습니다.');
-      }
-      return fileService.getUploadPresignedUrl({ token, fileName, fileType });
-    },
-    onSuccess: (response) => {
-      if (response.type === 'success') {
-        return;
-      } else {
-        setResponseMessage(createErrorMessage(response.code));
-      }
-    },
-    onError: () => {
-      setResponseMessage(
-        '파일 업로드에 실패했습니다. 잠시 후에 다시 실행해주세요.',
-      );
-    },
-  });
-
-  const { mutateAsync: uploadFile } = useMutation({
-    mutationFn: async ({
-      presignedUrl,
-      file,
-    }: {
-      presignedUrl: string;
-      file: File | undefined;
-    }) => {
-      if (file === undefined) {
-        throw new Error('파일이 존재하지 않습니다.');
-      }
-      return fileService.uploadImage({ presignedUrl, file });
-    },
-    onSuccess: (response) => {
-      if (response.type === 'success') {
-        setResponseMessage('');
-      } else {
-        setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
-      }
-    },
-    onError: () => {
-      setResponseMessage('업로드에 실패했습니다. 잠시 후에 다시 실행해주세요.');
-    },
-  });
 
   const { mutate: createApplicantProfile } = useMutation({
     mutationFn: ({
