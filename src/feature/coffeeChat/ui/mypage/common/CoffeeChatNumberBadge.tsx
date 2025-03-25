@@ -14,10 +14,10 @@ export const CoffeeChatNumberBadge = () => {
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
   }
-
+  if (coffeeChatCountData.data.num === 0) return null;
   return (
     <span className="float-end ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-red text-11 font-medium text-white no-underline data-[state=active]:no-underline">
-      {coffeeChatCountData.data.num}
+      {coffeeChatCountData.data.num >= 10 ? '9+' : coffeeChatCountData.data.num}
     </span>
   );
 };

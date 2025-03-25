@@ -1,11 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
+import { ICON_SRC } from '@/entities/asset';
+import { CoffeeChatNumberBadge } from '@/feature/coffeeChat';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-
 export const GlobalNavigationBar = () => {
   const { token } = useGuardContext(TokenContext);
   const { logout, isPending } = useLogout();
@@ -25,9 +26,14 @@ export const GlobalNavigationBar = () => {
           }}
           className="hover:text-blue-normal cursor-pointer text-xl font-bold text-gray-800 transition-colors duration-150"
         >
-          인턴하샤
+          <div className="flex gap-2">
+            <img src={ICON_SRC.GNB.ICON} />
+            <img src={ICON_SRC.GNB.LETTER} />
+          </div>
         </h1>
-        <div className="flex gap-5">
+
+        <div className="flex items-center gap-5">
+          <img src={ICON_SRC.GNB.SEARCH} />
           {token == null ? (
             <>
               <Button
@@ -52,6 +58,7 @@ export const GlobalNavigationBar = () => {
                 variant="ghost"
               >
                 마이페이지
+                <CoffeeChatNumberBadge />
               </Button>
               <Button
                 onClick={handleClickLogoutButton}
