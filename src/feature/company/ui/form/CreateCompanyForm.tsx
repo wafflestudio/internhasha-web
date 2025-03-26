@@ -58,8 +58,6 @@ export const CreateCompanyForm = () => {
     tags,
   } = inputStates;
 
-  console.log(inputStates);
-
   const { toMain } = useRouteNavigation();
 
   const handleClickCancelButton = () => {

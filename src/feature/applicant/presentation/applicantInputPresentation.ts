@@ -85,11 +85,11 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
     const [minorDepartments, setMinorDepartments] = useState(
       initialState?.minorDepartments !== undefined
         ? initialState.minorDepartments
-        : [],
+        : [''],
     );
     const [rawPosition, setRawPosition] = useState('');
     const [positions, setPositions] = useState(
-      initialState?.positions !== undefined ? initialState.positions : [],
+      initialState?.positions !== undefined ? initialState.positions : [''],
     );
     const [slogan, setSlogan] = useState(
       initialState?.slogan !== undefined ? initialState.slogan : '',

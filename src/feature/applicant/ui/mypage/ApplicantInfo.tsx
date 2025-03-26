@@ -4,6 +4,7 @@ import { DownloadButtonWithPresignedUrl } from '@/components/button/DownloadButt
 import { LinkButton } from '@/components/button/LinkButton';
 import { ThumbnailWithPresignedUrl } from '@/components/thumbnail/ThumbnailWithPresignedUrl';
 import { Badge } from '@/components/ui/badge';
+import { SeperatorLine } from '@/components/ui/separator';
 import { SkeletonApplicantInfo } from '@/feature/applicant/ui/mypage/SkeletonApplicantInfo';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -60,7 +61,7 @@ export const ApplicantInfo = () => {
         <p>{slogan}</p>
       </section>
 
-      <div className="h-[1px] w-full bg-grey-200 md:max-w-[580px]"></div>
+      <SeperatorLine />
 
       {(positions !== undefined || stacks !== undefined) && (
         <section className="flex flex-col gap-4">
@@ -103,7 +104,7 @@ export const ApplicantInfo = () => {
         </section>
       )}
 
-      <div className="h-[1px] w-full bg-grey-200 md:max-w-[580px]"></div>
+      <SeperatorLine />
 
       <section className="flex flex-col gap-4">
         <h3 className="text-22 font-bold">기타 정보</h3>

@@ -13,6 +13,7 @@ import { FormContainer } from '@/components/form/FormContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
+import { SeperatorLine } from '@/components/ui/separator';
 import type { JobMinorCategory, Link } from '@/entities/post';
 import { applicantFormPresentation } from '@/feature/applicant/presentation/applicantFormPresentation';
 import {
@@ -20,6 +21,7 @@ import {
   MAX_EXPLANATION_LENGTH,
   MAX_SLOGAN_LENGTH,
 } from '@/feature/applicant/presentation/applicantInputPresentation';
+import { DepartmentsField } from '@/feature/applicant/ui/form/fields/DepartmentField';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -137,6 +139,22 @@ export const CreateProfileForm = () => {
           errorMessage="두 자리 수 숫자로 작성해주세요. (e.g. 25)"
           required={true}
         />
+        <DepartmentsField
+          label="학과"
+          majorInput={majorDepartment}
+          minorListInput={minorDepartments}
+          minorRawInput={rawMinorDepartment}
+          isPending={isPending}
+          isSubmit={isSubmit}
+          isSubmitError={formStates.departments.isError}
+          majorPlaceholder="주전공 학과명을 입력해주세요. (예시: 컴퓨터공학부, 경제학부 등)"
+          minorPlaceholder="다전공 학과명을 입력해주세요. (예시: 컴퓨터공학부, 경제학부 등)"
+          errorMessage="희망 직무는 10개 이하로 중복되지 않게 입력해주세요."
+          inputErrorMessage="중복되지 않는 100자 이내의 직무명을 작성해주세요."
+          required={true}
+        />
+
+        <SeperatorLine />
 
         <div className="flex flex-col gap-[10px]">
           <h3 className="text-22 font-semibold">선택 작성 항목</h3>
@@ -158,6 +176,18 @@ export const CreateProfileForm = () => {
           inputErrorMessage="중복되지 않는 100자 이내의 직무명을 작성해주세요."
           required={true}
         />
+        <HashtagField
+          label="기술 스택"
+          input={stacks}
+          rawInput={rawStack}
+          isPending={isPending}
+          isSubmit={isSubmit}
+          isSubmitError={formStates.stacks.isError}
+          placeholder="사용할 수 있는 상세 기술 스택을 입력해주세요.(최대 10개)(예시: Python, Django 등)"
+          infoMessage="기술 스택은 엔터로 구분되며 한 개당 최대 30자까지 입력할 수 있어요."
+          inputErrorMessage="기존 태그와 중복되지 않는 30자 이하의 기술 스택을 작성해주세요."
+          errorMessage="하나의 기술 스택은 30자 이하, 총 10개까지 작성 가능합니다."
+        />
         <StringField
           label="한 줄 소개"
           input={slogan}
@@ -175,23 +205,12 @@ export const CreateProfileForm = () => {
           isSubmit={isSubmit}
           isSubmitError={formStates.explanation.isError}
           maxLength={MAX_EXPLANATION_LENGTH}
-          placeholder="자신에 대한 상세 소개를 작성해주세요.\n\n[예시 작성 문항]\n- 전공 및 지원 분야에 대한 관심\n- 참여한 프로젝트등의 관련 경험\n- 성격적 강점\n 팀 협업 경험\n"
+          placeholder="자신에 대한 상세 소개를 작성해주세요.\n\n[예시 작성 문항]\n- 전공 및 지원 분야에 대한 관심\n- 참여한 프로젝트등의 관련 경험\n- 성격적 강점\n- 팀 협업 경험\n"
           errorMessage={`상세 소개는 ${MAX_EXPLANATION_LENGTH}자 이내로 작성해주세요.`}
           infoMessage="나를 소개하는 한 마디를 입력해주세요."
           minLine={7}
         />
-        <HashtagField
-          label="상세 기술 스택"
-          input={stacks}
-          rawInput={rawStack}
-          isPending={isPending}
-          isSubmit={isSubmit}
-          isSubmitError={formStates.stacks.isError}
-          placeholder="사용할 수 있는 상세 기술 스택을 입력해주세요.(최대 10개)"
-          infoMessage="기술 스택은 엔터로 구분되며 한 개당 최대 20자까지 입력할 수 있어요."
-          inputErrorMessage="기존 태그와 중복되지 않는 20자 이하의 태그를 작성해주세요."
-          errorMessage="하나의 태그는 20자 이하, 총 10개까지 작성 가능합니다."
-        />
+
         <ImageField
           label="프로필 사진"
           input={imagePreview}
@@ -209,7 +228,6 @@ export const CreateProfileForm = () => {
           isSubmitError={cvPreview.isError}
           errorMessage="5MB 이하의 PDF 파일을 올려주세요."
         />
-        {/* TODO: 디자이너 직군을 선택한 경우에면 포트폴리오 입력 필드가 나타나도록 설정 */}
         <PdfField
           label="포트폴리오 (디자이너용)"
           input={portfolioPreview}
@@ -219,7 +237,7 @@ export const CreateProfileForm = () => {
           errorMessage="5MB 이하의 PDF 파일을 올려주세요."
         />
         <ExternalLinkField
-          label="외부 소개 링크"
+          label="기타 소개 링크"
           input={links}
           rawInput={rawLink}
           isPending={isPending}

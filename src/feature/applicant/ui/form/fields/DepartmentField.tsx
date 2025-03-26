@@ -9,8 +9,9 @@ import type { Input as InputType, ListInput } from '@/entities/input';
 
 type DepartmentsFieldProps = {
   label: string;
-  input: ListInput<string>;
-  rawInput: InputType<string>;
+  majorInput: InputType<string>;
+  minorListInput: ListInput<string>;
+  minorRawInput: InputType<string>;
   isPending: boolean;
   isSubmit: boolean;
   isSubmitError: boolean;
@@ -18,13 +19,15 @@ type DepartmentsFieldProps = {
   inputErrorMessage: string;
   infoMessage?: string;
   required?: boolean;
-  placeholder?: string;
+  majorPlaceholder?: string;
+  minorPlaceholder?: string;
 };
 
 export const DepartmentsField = ({
   label,
-  input,
-  rawInput,
+  majorInput,
+  minorListInput,
+  minorRawInput,
   isPending,
   isSubmit,
   isSubmitError,
@@ -32,29 +35,38 @@ export const DepartmentsField = ({
   inputErrorMessage,
   infoMessage,
   required,
-  placeholder,
+  majorPlaceholder,
+  minorPlaceholder,
 }: DepartmentsFieldProps) => {
   return (
     <LabelContainer label={label} required={required}>
       <div className="flex flex-col gap-3">
-        {input.value.map((company, index) => (
+        <Input
+          value={majorInput.value}
+          placeholder={majorPlaceholder}
+          disabled={isPending}
+          onChange={(e) => {
+            majorInput.onChange(e.target.value);
+          }}
+        />
+        {minorListInput.value.map((item, index) => (
           <div key={`department-${index}`} className="flex gap-2">
             <Input
-              value={company}
-              placeholder={placeholder}
+              value={item}
+              placeholder={minorPlaceholder}
               disabled={isPending}
               onChange={(e) => {
-                input.onChange({
+                minorListInput.onChange({
                   input: e.target.value,
                   index,
                   mode: 'PATCH',
                 });
-                rawInput.onChange(e.target.value);
+                minorRawInput.onChange(e.target.value);
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault();
-                  input.onChange({ input: '', mode: 'ADD' });
+                  minorListInput.onChange({ input: '', mode: 'ADD' });
                 }
               }}
             />
@@ -63,7 +75,11 @@ export const DepartmentsField = ({
               disabled={isPending}
               onClick={(e) => {
                 e.preventDefault();
-                input.onChange({ input: company, index, mode: 'REMOVE' });
+                minorListInput.onChange({
+                  input: item,
+                  index,
+                  mode: 'REMOVE',
+                });
               }}
             >
               삭제
@@ -75,7 +91,7 @@ export const DepartmentsField = ({
           disabled={isPending}
           onClick={(e) => {
             e.preventDefault();
-            input.onChange({ input: '', mode: 'ADD' });
+            minorListInput.onChange({ input: '', mode: 'ADD' });
           }}
           className="w-[100px]"
         >
@@ -86,7 +102,7 @@ export const DepartmentsField = ({
         {infoMessage !== undefined && (
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
         )}
-        {rawInput.isError && (
+        {(majorInput.isError || minorRawInput.isError) && (
           <FormErrorResponse>{inputErrorMessage}</FormErrorResponse>
         )}
         {isSubmit && isSubmitError && (

@@ -36,8 +36,6 @@ export const MultiStringField = ({
   required,
   placeholder,
 }: MultiStringFieldProps) => {
-  console.log(input);
-  console.log(rawInput);
   return (
     <LabelContainer label={label} required={required}>
       <div className="flex flex-col gap-3">
