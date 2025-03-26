@@ -14,9 +14,9 @@ import { ICON_SRC } from '@/entities/asset';
 import { SkeletonPostDetailView } from '@/feature/post/ui/detail/SkeletonPostDetailView';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
-import { RoleContext } from '@/shared/context/RoleContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
+import { UserContext } from '@/shared/context/UserContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { getEmploymentStatus } from '@/util/postFormatFunctions';
 
@@ -24,7 +24,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
   const { API_BASE_URL } = useGuardContext(EnvContext);
   const { token } = useGuardContext(TokenContext);
-  const { role, id: userId } = useGuardContext(RoleContext);
+  const { role, id: userId } = useGuardContext(UserContext);
 
   const { toMain, toCreateCoffeeChat, toCreatePost } = useRouteNavigation();
 

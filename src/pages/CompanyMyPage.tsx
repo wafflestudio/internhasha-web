@@ -10,13 +10,13 @@ import {
 import { CompanyProfile } from '@/feature/company';
 import { MyPostList } from '@/feature/post/ui/mypage/company/MyPostList';
 import { useGuardContext } from '@/shared/context/hooks';
-import { RoleContext } from '@/shared/context/RoleContext';
+import { UserContext } from '@/shared/context/UserContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { useRouteQueryParams } from '@/shared/route/useRouteParams';
 
 export const CompanyMyPage = () => {
   const queryParams = useRouteQueryParams() as MyPageRouteQuery | null;
-  const { id } = useGuardContext(RoleContext);
+  const { id } = useGuardContext(UserContext);
   const { toCreatePost } = useRouteNavigation();
 
   return (
@@ -44,8 +44,10 @@ export const CompanyMyPage = () => {
               <TabsContent value="POST" className="ml-auto">
                 <Button
                   onClick={() => {
-                    if (id === null) return;
-                    toCreatePost({ companyId: id, body: null });
+                    if (id === null) {
+                      return;
+                    }
+                    toCreatePost({ companyId: id });
                   }}
                 >
                   <img src={ICON_SRC.PLUS} />

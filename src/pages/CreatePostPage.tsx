@@ -10,7 +10,7 @@ import {
 
 export const CreatePostPage = () => {
   const { companyId } = useRoutePathParams<{ companyId: string }>();
-  const body = useRouteLocation() as PostRouteQuery | null;
+  const body = useRouteLocation() as PostRouteQuery | undefined;
 
   if (companyId === undefined) {
     return <RouteNavigator link={PATH.INDEX} />;
@@ -20,7 +20,7 @@ export const CreatePostPage = () => {
     <div className="min-h-screen">
       <GlobalNavigationBar />
       <div className="mx-auto my-[30px] flex w-[280px] flex-col justify-center gap-[50px] sm:w-[700px]">
-        {body !== null && Object.keys(body).length !== 0 ? (
+        {body !== undefined ? (
           <>
             <h2 className="text-bold text-30 text-grey-900">인턴 공고 수정</h2>
             <PatchPostForm companyId={companyId} body={body} />

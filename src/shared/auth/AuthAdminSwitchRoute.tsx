@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { useGuardContext } from '@/shared/context/hooks';
-import { RoleContext } from '@/shared/context/RoleContext';
+import { UserContext } from '@/shared/context/UserContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 
 export const AuthCompanySwitchRoute = ({
@@ -12,7 +12,7 @@ export const AuthCompanySwitchRoute = ({
   nonCompanyPage: ReactNode;
 }) => {
   const { token } = useGuardContext(TokenContext);
-  const { role } = useGuardContext(RoleContext);
+  const { role } = useGuardContext(UserContext);
 
   if (token !== null && role === 'COMPANY') {
     return <>{companyPage}</>;
