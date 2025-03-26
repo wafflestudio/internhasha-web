@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ExternalLinkField } from '@/components/field/ExternalLinkField';
 import { HashtagField } from '@/components/field/HashtagField';
 import { ImageField } from '@/components/field/ImageField';
+import { MultiStringField } from '@/components/field/MultiStringField';
 import { PdfField } from '@/components/field/PdfField';
 import { StringField } from '@/components/field/StringField';
 import { StringFieldWithUnit } from '@/components/field/StringFieldWithLabel';
@@ -49,7 +50,11 @@ export const CreateProfileForm = () => {
 
   const {
     enrollYear,
-    department,
+    majorDepartment,
+    rawMinorDepartment,
+    minorDepartments,
+    rawPosition,
+    positions,
     slogan,
     explanation,
     rawStack,
@@ -80,7 +85,7 @@ export const CreateProfileForm = () => {
     setIsSubmit(true);
     if (
       formStates.enrollYear.isError ||
-      formStates.department.isError ||
+      formStates.departments.isError ||
       formStates.slogan.isError ||
       formStates.explanation.isError ||
       formStates.stacks.isError ||
@@ -92,7 +97,7 @@ export const CreateProfileForm = () => {
     handleCreateApplicantProfile({
       applicantInfo: {
         enrollYear: formStates.enrollYear.value,
-        department: formStates.department.value,
+        department: formStates.departments.value,
         slogan: formStates.slogan.value,
         explanation: formStates.explanation.value,
         stacks: formStates.stacks.value,
@@ -121,16 +126,7 @@ export const CreateProfileForm = () => {
             아래 항목은 필수로 작성해주세요.
           </p>
         </div>
-        <StringField
-          label="학과"
-          input={department}
-          isPending={isPending}
-          isSubmit={isSubmit}
-          isSubmitError={formStates.department.isError}
-          placeholder="학과명을 입력해주세요."
-          errorMessage="올바른 학과명을 입력해주세요."
-          required={true}
-        />
+
         <StringFieldWithUnit
           label="학번"
           input={enrollYear}
@@ -142,7 +138,19 @@ export const CreateProfileForm = () => {
           errorMessage="두 자리 수 숫자로 작성해주세요. (e.g. 25)"
           required={true}
         />
-        {/* TODO: 지망 포지션 필드 추가 */}
+        <MultiStringField
+          label="희망 직무"
+          keyPrefix="invest-company"
+          input={positions}
+          rawInput={rawPosition}
+          isPending={isPending}
+          isSubmit={isSubmit}
+          isSubmitError={formStates.positions.isError}
+          placeholder="희망 직무를 입력해주세요. (예시: 웹 프론트엔드 개발, 백엔드 개발 등)"
+          errorMessage="희망 직무는 10개 이하로 중복되지 않게 입력해주세요."
+          inputErrorMessage="중복되지 않는 100자 이내의 직무명을 작성해주세요."
+          required={true}
+        />
         <StringField
           label="한 줄 소개"
           input={slogan}

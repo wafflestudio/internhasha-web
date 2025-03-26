@@ -7,8 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import type { Input as InputType, ListInput } from '@/entities/input';
 
-type InvestCompanyFieldProps = {
+type MultiStringFieldProps = {
   label: string;
+  keyPrefix: string;
   input: ListInput<string>;
   rawInput: InputType<string>;
   isPending: boolean;
@@ -21,8 +22,9 @@ type InvestCompanyFieldProps = {
   placeholder?: string;
 };
 
-export const InvestCompanyField = ({
+export const MultiStringField = ({
   label,
+  keyPrefix,
   input,
   rawInput,
   isPending,
@@ -33,12 +35,12 @@ export const InvestCompanyField = ({
   infoMessage,
   required,
   placeholder,
-}: InvestCompanyFieldProps) => {
+}: MultiStringFieldProps) => {
   return (
     <LabelContainer label={label} required={required}>
       <div className="flex flex-col gap-3">
         {input.value.map((company, index) => (
-          <div key={`invest-company-${index}`} className="flex gap-2">
+          <div key={`${keyPrefix}-${index}`} className="flex gap-2">
             <Input
               value={company}
               placeholder={placeholder}

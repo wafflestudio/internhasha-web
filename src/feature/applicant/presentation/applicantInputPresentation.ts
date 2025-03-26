@@ -1,12 +1,13 @@
 import { useState } from 'react';
 
-import type { Input, ListInput, SelectInput } from '@/entities/input';
-import type { JobMinorCategory, Link } from '@/entities/post';
+import type { Input, ListInput } from '@/entities/input';
+import type { Link } from '@/entities/post';
 
 type InitialInputState = {
   enrollYear?: string;
-  department?: string;
-  positions?: JobMinorCategory[];
+  majorDepartment?: string;
+  minorDepartments?: string[];
+  positions?: string[];
   slogan?: string;
   explanation?: string;
   stacks?: string[];
@@ -19,9 +20,11 @@ type InitialInputState = {
 export type ApplicantInputPresentation = {
   useValidator({ initialState }: { initialState?: InitialInputState }): {
     enrollYear: Input<string>;
-    department: Input<string>;
-    rawPosition: SelectInput<JobMinorCategory | 'NONE'>;
-    positions: ListInput<JobMinorCategory>;
+    majorDepartment: Input<string>;
+    rawMinorDepartment: Input<string>;
+    minorDepartments: ListInput<string>;
+    rawPosition: Input<string>;
+    positions: ListInput<string>;
     slogan: Input<string>;
     explanation: Input<string>;
     rawStack: Input<string>;
@@ -40,6 +43,7 @@ const MAX_STACK_LENTH = 20;
 const MAX_DESCRIPTION_LENGTH = 30;
 const MAX_CONTENT_LENGTH = 100;
 
+const MAX_MINOR_DEPARTMENTS_SIZE = 6;
 const MAX_EXTERNAL_DESCRIPTION_LINK_SIZE = 5;
 const MAX_STACK_SIZE = 10;
 
@@ -69,12 +73,18 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
     const [enrollYear, setEnrollYear] = useState(
       initialState?.enrollYear !== undefined ? initialState.enrollYear : '',
     );
-    const [department, setDepartment] = useState(
-      initialState?.department !== undefined ? initialState.department : '',
+    const [majorDepartment, setMajorDepartment] = useState(
+      initialState?.majorDepartment !== undefined
+        ? initialState.majorDepartment
+        : '',
     );
-    const [rawPosition, setRawPosition] = useState<JobMinorCategory | 'NONE'>(
-      'NONE',
+    const [rawMinorDepartment, setRawMinorDepartment] = useState('');
+    const [minorDepartments, setMinorDepartments] = useState(
+      initialState?.minorDepartments !== undefined
+        ? initialState.minorDepartments
+        : [],
     );
+    const [rawPosition, setRawPosition] = useState('');
     const [positions, setPositions] = useState(
       initialState?.positions !== undefined ? initialState.positions : [],
     );
@@ -120,10 +130,24 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
         : [{ link: '', description: '' }],
     );
 
-    const isRawPositionValid = (
-      input: JobMinorCategory | 'NONE',
-    ): input is JobMinorCategory => {
-      if (input === 'NONE') {
+    const isRawMinorDepartmentValid = (input: string) => {
+      const trimmedInput = input.trim();
+      if (trimmedInput.length > MAX_CONTENT_LENGTH) {
+        return false;
+      }
+      if (minorDepartments.some((item) => item.trim() === trimmedInput)) {
+        return false;
+      }
+      return true;
+    };
+    const isMinorDepartmentsValid = (input: string[]) => {
+      if (input.length > MAX_MINOR_DEPARTMENTS_SIZE) {
+        return false;
+      }
+      return true;
+    };
+    const isRawPositionValid = (input: string) => {
+      if (input.trim().length === 0) {
         return false;
       }
       if (positions.some((item) => item === input)) {
@@ -249,18 +273,54 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
       return true;
     };
 
+    const handleMinorDepartmentsChange = ({
+      input,
+      index,
+      mode,
+    }:
+      | {
+          input: string;
+          mode: 'ADD';
+          index?: never;
+        }
+      | {
+          input: string;
+          mode: 'PATCH' | 'REMOVE';
+          index: number;
+        }) => {
+      setMinorDepartments((prevState) => {
+        switch (mode) {
+          case 'ADD':
+            return isRawMinorDepartmentValid(input)
+              ? [...prevState, input]
+              : prevState;
+          case 'REMOVE':
+            return [
+              ...prevState.slice(0, index),
+              ...prevState.slice(index + 1),
+            ];
+          case 'PATCH':
+            if (index < 0 || index >= prevState.length) {
+              return prevState;
+            }
+            return prevState.map((item, idx) => (idx === index ? input : item));
+          default:
+            return prevState;
+        }
+      });
+    };
     const handlePositionsChange = ({
       input,
       index,
       mode,
     }:
       | {
-          input: JobMinorCategory | 'NONE';
+          input: string;
           mode: 'ADD';
           index?: never;
         }
       | {
-          input: JobMinorCategory | 'NONE';
+          input: string;
           mode: 'PATCH' | 'REMOVE';
           index: number;
         }) => {
@@ -364,10 +424,20 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
         value: enrollYear,
         onChange: setEnrollYear,
       },
-      department: {
-        isError: department.length > MAX_CONTENT_LENGTH,
-        value: department,
-        onChange: setDepartment,
+      majorDepartment: {
+        isError: majorDepartment.length > MAX_CONTENT_LENGTH,
+        value: majorDepartment,
+        onChange: setMajorDepartment,
+      },
+      rawMinorDepartment: {
+        isError: rawMinorDepartment.length > MAX_CONTENT_LENGTH,
+        value: rawMinorDepartment,
+        onChange: setRawMinorDepartment,
+      },
+      minorDepartments: {
+        isError: !isMinorDepartmentsValid(minorDepartments),
+        value: minorDepartments,
+        onChange: handleMinorDepartmentsChange,
       },
       rawPosition: {
         isError: false,
