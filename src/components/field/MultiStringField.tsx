@@ -36,6 +36,8 @@ export const MultiStringField = ({
   required,
   placeholder,
 }: MultiStringFieldProps) => {
+  console.log(input);
+  console.log(rawInput);
   return (
     <LabelContainer label={label} required={required}>
       <div className="flex flex-col gap-3">
@@ -47,7 +49,7 @@ export const MultiStringField = ({
               disabled={isPending}
               onChange={(e) => {
                 input.onChange({
-                  input: e.target.value,
+                  input: e.target.value.trim(),
                   index,
                   mode: 'PATCH',
                 });

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import type { Input, ListInput, SelectInput } from '@/entities/input';
+import { createStringListInputHandler } from '@/entities/input';
 import type { Link, Series } from '@/entities/post';
 
 type InitialInputState = {
@@ -130,39 +131,31 @@ export const companyInputPresentation: CompanyInputPresentation = {
       initialState?.tags !== undefined ? initialState.tags : [],
     );
 
-    const isRawInvestCompanyValid = (input: string) => {
-      const trimmedInput = input.trim();
-      if (trimmedInput.length > MAX_RAW_INVEST_COMPANY_LENGTH) {
-        return false;
-      }
-      const filteredInvestCompanies = investCompany.filter(
-        (company) => company.trim() !== trimmedInput,
-      );
-      // 공백인 input이 여러개 발생할 수 있도록 설정
-      if (
-        trimmedInput.length !== 0 &&
-        filteredInvestCompanies.length !== investCompany.length - 1
-      ) {
-        return false;
-      }
-      return true;
-    };
-    const isInvestCompanyValid = (input: string[]) => {
-      const filteredInvestCompany = input.filter(
-        (item) => item.trim().length !== 0,
-      );
-      if (filteredInvestCompany.length > MAX_INVEST_COMPANY_SIZE) {
-        return false;
-      }
-      if (
-        filteredInvestCompany.some(
-          (item) => item.trim().length > MAX_RAW_INVEST_COMPANY_LENGTH,
-        )
-      ) {
-        return false;
-      }
-      return true;
-    };
+    const {
+      rawInputValidator: isRawInvestCompanyValid,
+      inputListValidator: isInvestCompanyValid,
+      onChange: handleInvestCompanyChange,
+    } = createStringListInputHandler({
+      rawInput: rawInvestCompany,
+      inputList: investCompany,
+      setInputList: setInvestCompany,
+      maxRawInputLength: MAX_RAW_INVEST_COMPANY_LENGTH,
+      maxListSize: MAX_INVEST_COMPANY_SIZE,
+    });
+
+    const {
+      rawInputValidator: isRawTagValid,
+      inputListValidator: isTagsValid,
+      onChange: handleTagsChange,
+    } = createStringListInputHandler({
+      rawInput: rawTag,
+      inputList: tags,
+      setInputList: setTags,
+      maxRawInputLength: MAX_TAG_LENGTH,
+      maxListSize: MAX_TAGS_SIZE,
+      isTag: true,
+    });
+
     const isRawlinksValid = (input: Link) => {
       const trimmedDescription = input.description.trim();
       const trimmedLink = input.link.trim();
@@ -207,22 +200,7 @@ export const companyInputPresentation: CompanyInputPresentation = {
       }
       return true;
     };
-    const isRawTagValid = (input: string) => {
-      const trimmedInput = input.trim();
-      if (trimmedInput.length > MAX_TAG_LENGTH) {
-        return false;
-      }
-      if (tags.includes(trimmedInput)) {
-        return false;
-      }
-      return true;
-    };
-    const isTagsValid = (input: string[]) => {
-      if (input.length > MAX_TAGS_SIZE) {
-        return false;
-      }
-      return true;
-    };
+
     const isIrDeckPreviewValid = (
       input: {
         file: File;
@@ -280,42 +258,6 @@ export const companyInputPresentation: CompanyInputPresentation = {
       return true;
     };
 
-    const handleInvestCompanyChange = ({
-      input,
-      index,
-      mode,
-    }:
-      | {
-          input: string;
-          mode: 'ADD';
-          index?: never;
-        }
-      | {
-          input: string;
-          mode: 'PATCH' | 'REMOVE';
-          index: number;
-        }) => {
-      setInvestCompany((prevState) => {
-        switch (mode) {
-          case 'ADD':
-            return isRawInvestCompanyValid(input)
-              ? [...prevState, input]
-              : prevState;
-          case 'REMOVE':
-            return [
-              ...prevState.slice(0, index),
-              ...prevState.slice(index + 1),
-            ];
-          case 'PATCH':
-            if (index < 0 || index >= prevState.length) {
-              return prevState;
-            }
-            return prevState.map((item, idx) => (idx === index ? input : item));
-          default:
-            return prevState;
-        }
-      });
-    };
     const handlelinksChange = ({
       input,
       index,
@@ -335,42 +277,6 @@ export const companyInputPresentation: CompanyInputPresentation = {
         switch (mode) {
           case 'ADD':
             return isRawlinksValid(input) ? [...prevState, input] : prevState;
-          case 'REMOVE':
-            return [
-              ...prevState.slice(0, index),
-              ...prevState.slice(index + 1),
-            ];
-          case 'PATCH':
-            if (index < 0 || index >= prevState.length) {
-              return prevState;
-            }
-            return prevState.map((item, idx) => (idx === index ? input : item));
-          default:
-            return prevState;
-        }
-      });
-    };
-    const handleTagsChange = ({
-      input,
-      index,
-      mode,
-    }:
-      | {
-          input: string;
-          index?: never;
-          mode: 'ADD';
-        }
-      | {
-          input: string;
-          index: number;
-          mode: 'PATCH' | 'REMOVE';
-        }) => {
-      setTags((prevState) => {
-        switch (mode) {
-          case 'ADD':
-            return input.trim().length !== 0
-              ? [...prevState, input]
-              : prevState;
           case 'REMOVE':
             return [
               ...prevState.slice(0, index),

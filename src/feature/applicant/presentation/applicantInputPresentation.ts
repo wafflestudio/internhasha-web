@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import type { Input, ListInput } from '@/entities/input';
+import { createStringListInputHandler } from '@/entities/input';
 import type { Link } from '@/entities/post';
 
 type InitialInputState = {
@@ -39,13 +40,15 @@ export type ApplicantInputPresentation = {
 
 export const MAX_EXPLANATION_LENGTH = 5000;
 export const MAX_SLOGAN_LENGTH = 100;
-const MAX_STACK_LENTH = 20;
+const MAX_POSITION_LENGTH = 100;
+const MAX_STACK_LENGTH = 20;
 const MAX_DESCRIPTION_LENGTH = 30;
 const MAX_CONTENT_LENGTH = 100;
 
 const MAX_MINOR_DEPARTMENTS_SIZE = 6;
 const MAX_EXTERNAL_DESCRIPTION_LINK_SIZE = 5;
-const MAX_STACK_SIZE = 10;
+const MAX_POSITIONS_SIZE = 10;
+const MAX_STACKS_SIZE = 10;
 
 const MAX_FILE_SIZE = 5 * 1024 * 2024;
 const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
@@ -130,48 +133,43 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
         : [{ link: '', description: '' }],
     );
 
-    const isRawMinorDepartmentValid = (input: string) => {
-      const trimmedInput = input.trim();
-      if (trimmedInput.length > MAX_CONTENT_LENGTH) {
-        return false;
-      }
-      if (minorDepartments.some((item) => item.trim() === trimmedInput)) {
-        return false;
-      }
-      return true;
-    };
-    const isMinorDepartmentsValid = (input: string[]) => {
-      if (input.length > MAX_MINOR_DEPARTMENTS_SIZE) {
-        return false;
-      }
-      return true;
-    };
-    const isRawPositionValid = (input: string) => {
-      if (input.trim().length === 0) {
-        return false;
-      }
-      if (positions.some((item) => item === input)) {
-        return false;
-      }
+    const {
+      rawInputValidator: isRawMinorDepartmentValid,
+      inputListValidator: isMinorDepartmentsValid,
+      onChange: handleMinorDepartmentsChange,
+    } = createStringListInputHandler({
+      rawInput: rawMinorDepartment,
+      inputList: minorDepartments,
+      setInputList: setMinorDepartments,
+      maxRawInputLength: MAX_CONTENT_LENGTH,
+      maxListSize: MAX_MINOR_DEPARTMENTS_SIZE,
+    });
 
-      return true;
-    };
-    const isRawStackValid = (input: string) => {
-      const trimmedInput = input.trim();
-      if (trimmedInput.length > MAX_STACK_LENTH) {
-        return false;
-      }
-      if (stacks.some((item) => item.trim() === trimmedInput)) {
-        return false;
-      }
-      return true;
-    };
-    const isStackValid = (input: string[]) => {
-      if (input.length > MAX_STACK_SIZE) {
-        return false;
-      }
-      return true;
-    };
+    const {
+      rawInputValidator: isRawPositionValid,
+      inputListValidator: isPositionsValid,
+      onChange: handlePositionsChange,
+    } = createStringListInputHandler({
+      rawInput: rawPosition,
+      inputList: positions,
+      setInputList: setPositions,
+      maxRawInputLength: MAX_POSITION_LENGTH,
+      maxListSize: MAX_POSITIONS_SIZE,
+    });
+
+    const {
+      rawInputValidator: isRawStackValid,
+      inputListValidator: isStacksValid,
+      onChange: handleStacksChange,
+    } = createStringListInputHandler({
+      rawInput: rawStack,
+      inputList: stacks,
+      setInputList: setStacks,
+      maxRawInputLength: MAX_STACK_LENGTH,
+      maxListSize: MAX_STACKS_SIZE,
+      isTag: true,
+    });
+
     const isImagePreviewValid = (
       input: {
         file: File;
@@ -273,116 +271,6 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
       return true;
     };
 
-    const handleMinorDepartmentsChange = ({
-      input,
-      index,
-      mode,
-    }:
-      | {
-          input: string;
-          mode: 'ADD';
-          index?: never;
-        }
-      | {
-          input: string;
-          mode: 'PATCH' | 'REMOVE';
-          index: number;
-        }) => {
-      setMinorDepartments((prevState) => {
-        switch (mode) {
-          case 'ADD':
-            return isRawMinorDepartmentValid(input)
-              ? [...prevState, input]
-              : prevState;
-          case 'REMOVE':
-            return [
-              ...prevState.slice(0, index),
-              ...prevState.slice(index + 1),
-            ];
-          case 'PATCH':
-            if (index < 0 || index >= prevState.length) {
-              return prevState;
-            }
-            return prevState.map((item, idx) => (idx === index ? input : item));
-          default:
-            return prevState;
-        }
-      });
-    };
-    const handlePositionsChange = ({
-      input,
-      index,
-      mode,
-    }:
-      | {
-          input: string;
-          mode: 'ADD';
-          index?: never;
-        }
-      | {
-          input: string;
-          mode: 'PATCH' | 'REMOVE';
-          index: number;
-        }) => {
-      if (!isRawPositionValid(input)) {
-        return;
-      }
-
-      setPositions((prevState) => {
-        switch (mode) {
-          case 'ADD':
-            return isRawPositionValid(input)
-              ? [...prevState, input]
-              : prevState;
-          case 'REMOVE':
-            return [
-              ...prevState.slice(0, index),
-              ...prevState.slice(index + 1),
-            ];
-          case 'PATCH':
-            if (index < 0 || index >= prevState.length) {
-              return prevState;
-            }
-            return prevState.map((item, idx) => (idx === index ? input : item));
-          default:
-            return prevState;
-        }
-      });
-    };
-    const handleStackChange = ({
-      input,
-      index,
-      mode,
-    }:
-      | {
-          input: string;
-          mode: 'ADD';
-          index?: never;
-        }
-      | {
-          input: string;
-          mode: 'PATCH' | 'REMOVE';
-          index: number;
-        }) => {
-      setStacks((prevState) => {
-        switch (mode) {
-          case 'ADD':
-            return isRawStackValid(input) ? [...prevState, input] : prevState;
-          case 'REMOVE':
-            return [
-              ...prevState.slice(0, index),
-              ...prevState.slice(index + 1),
-            ];
-          case 'PATCH':
-            if (index < 0 || index >= prevState.length) {
-              return prevState;
-            }
-            return prevState.map((item, idx) => (idx === index ? input : item));
-          default:
-            return prevState;
-        }
-      });
-    };
     const handlelinksChange = ({
       input,
       index,
@@ -430,7 +318,7 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
         onChange: setMajorDepartment,
       },
       rawMinorDepartment: {
-        isError: rawMinorDepartment.length > MAX_CONTENT_LENGTH,
+        isError: !isRawMinorDepartmentValid(rawMinorDepartment),
         value: rawMinorDepartment,
         onChange: setRawMinorDepartment,
       },
@@ -440,12 +328,12 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
         onChange: handleMinorDepartmentsChange,
       },
       rawPosition: {
-        isError: false,
+        isError: !isRawPositionValid(rawPosition),
         value: rawPosition,
         onChange: setRawPosition,
       },
       positions: {
-        isError: false,
+        isError: !isPositionsValid(positions),
         value: positions,
         onChange: handlePositionsChange,
       },
@@ -465,9 +353,9 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
         onChange: setRawStack,
       },
       stacks: {
-        isError: !isStackValid(stacks),
+        isError: !isStacksValid(stacks),
         value: stacks,
-        onChange: handleStackChange,
+        onChange: handleStacksChange,
       },
       imagePreview: {
         isError: !isImagePreviewValid(imagePreview),

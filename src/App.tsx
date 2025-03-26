@@ -80,13 +80,13 @@ const RouterProvider = () => {
             path={PATH.CREATE_COFFEE_CHAT}
             element={<CreateCoffeeChatPage />}
           />
-          <Route path={PATH.CREATE_PROFILE} element={<CreateProfilePage />} />
         </Route>
         <Route element={<ProtectedRoute role="COMPANY" />}>
           <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
           <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
         </Route>
       </Route>
+      <Route path={PATH.CREATE_PROFILE} element={<CreateProfilePage />} />
     </Routes>
   );
 };
