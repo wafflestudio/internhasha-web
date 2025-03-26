@@ -111,6 +111,20 @@ export const ExternalLinkField = ({
           </div>
         ))}
       </div>
+      <Button
+        variant="secondary"
+        disabled={isPending}
+        onClick={(e) => {
+          e.preventDefault();
+          input.onChange({
+            input: { link: '', description: '' },
+            mode: 'ADD',
+          });
+        }}
+        className="w-[100px]"
+      >
+        추가
+      </Button>
       <div className="flex flex-col gap-1">
         {infoMessage !== undefined && (
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
@@ -122,19 +136,6 @@ export const ExternalLinkField = ({
           <FormErrorResponse>{errorMessage}</FormErrorResponse>
         )}
       </div>
-      <Button
-        variant="secondary"
-        disabled={isPending}
-        onClick={(e) => {
-          e.preventDefault();
-          input.onChange({
-            input: { link: '', description: '' },
-            mode: 'ADD',
-          });
-        }}
-      >
-        추가
-      </Button>
     </LabelContainer>
   );
 };
