@@ -70,6 +70,10 @@ export const useRouteNavigation = () => {
       companyId: string;
       body?: PostRouteQuery;
     }) => {
+      if (body === undefined) {
+        void navigate(CREATE_POST({ companyId }));
+        return;
+      }
       void navigate(CREATE_POST({ companyId }), { state: { ...body } });
     },
     toMyPage: ({ query }: { query?: MyPageRouteQuery }) => {

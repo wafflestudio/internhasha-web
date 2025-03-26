@@ -36,9 +36,9 @@ import { ProtectedRoute } from '@/shared/auth/ProtectedRoute';
 import { ReissueRoute } from '@/shared/auth/ReissueRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
-import { RoleContext } from '@/shared/context/RoleContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
+import { UserContext } from '@/shared/context/UserContext';
 import { implFileService } from '@/shared/file/fileService';
 import { implRoleStateRepository } from '@/shared/role/state';
 import { PATH } from '@/shared/route/constants';
@@ -103,10 +103,11 @@ const queryClient = new QueryClient({
 export const App = () => {
   const [token, setToken] = useState<string | null>(null);
   const [role, setRole] = useState<'APPLICANT' | 'COMPANY' | null>(null);
+  const [id, setId] = useState<string | null>(null);
 
   const ENV = useGuardContext(EnvContext);
   const tokenStateRepository = implTokenStateRepository({ setToken });
-  const roleStateRepository = implRoleStateRepository({ setRole });
+  const roleStateRepository = implRoleStateRepository({ setRole, setId });
 
   const localServerCall = async (content: ExternalCallParams) => {
     const response = await fetch(
@@ -198,13 +199,13 @@ export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ServiceContext.Provider value={services}>
-        <RoleContext.Provider value={{ role }}>
+        <UserContext.Provider value={{ role, id }}>
           <TokenContext.Provider value={{ token }}>
             <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID}>
               <RouterProvider />
             </GoogleOAuthProvider>
           </TokenContext.Provider>
-        </RoleContext.Provider>
+        </UserContext.Provider>
       </ServiceContext.Provider>
     </QueryClientProvider>
   );

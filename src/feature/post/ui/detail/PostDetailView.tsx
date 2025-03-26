@@ -14,9 +14,9 @@ import { ICON_SRC } from '@/entities/asset';
 import { SkeletonPostDetailView } from '@/feature/post/ui/detail/SkeletonPostDetailView';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
-import { RoleContext } from '@/shared/context/RoleContext';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
+import { UserContext } from '@/shared/context/UserContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { getEmploymentStatus } from '@/util/postFormatFunctions';
 
@@ -24,9 +24,9 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
   const { API_BASE_URL } = useGuardContext(EnvContext);
   const { token } = useGuardContext(TokenContext);
-  const { role } = useGuardContext(RoleContext);
+  const { role, id: userId } = useGuardContext(UserContext);
 
-  const { toMain, toCreateCoffeeChat } = useRouteNavigation();
+  const { toMain, toCreateCoffeeChat, toCreatePost } = useRouteNavigation();
 
   const [showModal, setShowModal] = useState<
     'COFFEE_CHAT' | 'BOOKMARK' | 'NONE'
@@ -87,6 +87,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
     landingPageLink,
     links,
     title,
+    category,
     detail,
     headcount,
     employmentEndDate,
@@ -201,20 +202,45 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               </Button>
             </div>
           )}
-          {/* // TODO: 내가 작성한 글에서는 삭제, 수정, 목록으로가 나타나도록 수정 */}
-          {/* (
-          <div className="flex flex-row md:flex-col-reverse gap-3">
-            <Button variant="destructive" onClick={() => {}} className="flex-1">
-              공고 삭제하기
-            </Button>
-            <Button variant="outline" onClick={toMain} className="flex-1">
-              목록으로
-            </Button>
-            <Button onClick={() => {}} className="flex-1">
-              공고 수정하기
-            </Button>
-          </div>
-        ) */}
+          {author.id === userId && (
+            <div className="flex flex-row gap-3 md:flex-col">
+              <Button
+                onClick={() => {
+                  toCreatePost({
+                    companyId: userId,
+                    body: {
+                      id: postId,
+                      title: title,
+                      employmentEndDateTime: employmentEndDate ?? undefined,
+                      jobMinorCategory: category,
+                      detail: detail,
+                      headcount: headcount,
+                      salary: 999999,
+                    },
+                  });
+                }}
+                className="flex-1"
+              >
+                공고 수정하기
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={() => {}}
+                className="flex-1"
+              >
+                공고 마감하기
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  toMain({});
+                }}
+                className="flex-1"
+              >
+                목록으로
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* 회사 소개 */}

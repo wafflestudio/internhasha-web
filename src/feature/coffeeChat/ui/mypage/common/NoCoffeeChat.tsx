@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { useGuardContext } from '@/shared/context/hooks';
-import { RoleContext } from '@/shared/context/RoleContext';
+import { UserContext } from '@/shared/context/UserContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const NoCoffeeChat = () => {
   const { toMain } = useRouteNavigation();
-  const { role } = useGuardContext(RoleContext);
+  const { role } = useGuardContext(UserContext);
 
   const handleButtonClick = () => {
     toMain({});

@@ -67,8 +67,8 @@ export const postFormPresentation: PostFormPresentation = {
           ? String(initialState.headcount)
           : undefined,
       salary:
-        initialState?.headcount !== undefined
-          ? String(initialState.headcount)
+        initialState?.salary !== undefined
+          ? String(initialState.salary)
           : undefined,
       detail: initialState?.detail,
       employmentEndDate: initialState?.employmentEndDateTime,

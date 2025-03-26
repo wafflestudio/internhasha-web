@@ -44,10 +44,10 @@ export type PostRouteQuery = {
   id: string;
   title: string;
   employmentEndDateTime?: string;
-  jobMajorCategory: string;
   jobMinorCategory: string;
   detail: string;
   headcount: number;
+  salary: number;
 };
 
 export type ProfileRouteQuery = {
