@@ -4,9 +4,9 @@ import { CreateProfileForm } from '@/feature/applicant';
 import { useRouteLocation } from '@/shared/route/useRouteParams';
 
 export const CreateProfilePage = () => {
-  const body = useRouteLocation() as ProfileRouteQuery | null;
+  const body = useRouteLocation() as ProfileRouteQuery | undefined;
 
-  if (body === null) {
+  if (body === undefined) {
     return (
       <div className="min-h-screen">
         <GlobalNavigationBar />

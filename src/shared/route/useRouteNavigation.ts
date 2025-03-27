@@ -80,6 +80,10 @@ export const useRouteNavigation = () => {
       void navigate(MY_PAGE({ query }));
     },
     toCreateProfile: ({ body }: { body?: ProfileRouteQuery }) => {
+      if (body === undefined) {
+        void navigate(CREATE_PROFILE);
+        return;
+      }
       void navigate(CREATE_PROFILE, { state: { ...body } });
     },
     refreshPage: () => {
