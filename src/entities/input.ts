@@ -31,6 +31,11 @@ export type ListInput<TElement> = {
         input: TElement;
         index: number;
         mode: 'PATCH' | 'REMOVE';
+      }
+    | {
+        input?: never;
+        index: number;
+        mode: 'REMOVE';
       }) => void;
 };
 
@@ -57,15 +62,15 @@ export const createStringListInputHandler = ({
   isTag?: boolean;
 }) => {
   const isRawInputValid = (input: string) => {
-    const trimmedInput = input.trim();
     if (rawInputRegex !== undefined && !rawInputRegex.test(rawInput)) {
       return false;
     }
-    if (trimmedInput.length > maxRawInputLength) {
+    if (input.length > maxRawInputLength) {
       return false;
     }
+
     // 특정 동작 이후에 rawInput이 inputList에 반영되는 경우
-    if (isTag && inputList.some((item) => item.trim() === trimmedInput)) {
+    if (isTag && inputList.some((item) => item === input)) {
       return false;
     }
 
@@ -88,14 +93,26 @@ export const createStringListInputHandler = ({
     index,
     mode,
   }:
-    | { input: string; mode: 'ADD'; index?: never }
-    | { input: string; mode: 'PATCH' | 'REMOVE'; index: number }) => {
-    if (!isRawInputValid(input)) {
-      return;
-    }
-
+    | {
+        input: string;
+        index?: never;
+        mode: 'ADD';
+      }
+    | {
+        input: string;
+        index: number;
+        mode: 'PATCH' | 'REMOVE';
+      }
+    | {
+        input?: never;
+        index: number;
+        mode: 'REMOVE';
+      }) => {
     setInputList((prevState) => {
       if (mode === 'ADD') {
+        if (!isRawInputValid(input)) {
+          return prevState;
+        }
         return [...prevState, input];
       }
 
@@ -103,12 +120,15 @@ export const createStringListInputHandler = ({
         return prevState;
       }
 
-      if (mode === 'REMOVE') {
-        return prevState.filter((_, idx) => idx !== index);
+      if (mode === 'PATCH') {
+        if (!isRawInputValid(input)) {
+          return prevState;
+        }
+        return prevState.map((item, idx) => (idx === index ? input : item));
       }
 
-      // PATCH 상태
-      return prevState.map((item, idx) => (idx === index ? input : item));
+      // REMOVE 상태
+      return prevState.filter((_, idx) => idx !== index);
     });
   };
 

@@ -104,6 +104,14 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
         item.link.trim().length !== 0 && item.description.trim().length !== 0,
     );
 
+    const formatEnrollYear = (year: number) => {
+      if (year < 50) {
+        return 2000 + year;
+      } else {
+        return 1900 + year;
+      }
+    };
+
     return {
       inputStates: {
         enrollYear,
@@ -128,7 +136,7 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
             enrollYear.value.trim().length === 0 ||
             isNaN(Number(enrollYear.value)) ||
             Number(enrollYear.value) < 0,
-          value: Number(enrollYear.value),
+          value: formatEnrollYear(Number(enrollYear.value)),
         },
         departments: {
           isError:

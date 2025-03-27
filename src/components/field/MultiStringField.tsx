@@ -47,7 +47,7 @@ export const MultiStringField = ({
               disabled={isPending}
               onChange={(e) => {
                 input.onChange({
-                  input: e.target.value.trim(),
+                  input: e.target.value,
                   index,
                   mode: 'PATCH',
                 });

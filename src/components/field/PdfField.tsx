@@ -60,7 +60,7 @@ export const PdfField = ({
         </div>
       ) : (
         <label
-          htmlFor="pdfInput"
+          htmlFor={`pdfInput-${label}`}
           className="flex w-full items-center gap-2 rounded-md border border-grey-200 px-[12px] py-[11px]"
         >
           <img src={ICON_SRC.UPLOAD} />
@@ -71,7 +71,7 @@ export const PdfField = ({
       )}
       <input
         ref={fileInputRef}
-        id="pdfInput"
+        id={`pdfInput-${label}`}
         type="file"
         accept="application/pdf"
         className="hidden"

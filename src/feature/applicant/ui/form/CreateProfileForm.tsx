@@ -14,6 +14,7 @@ import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { SeperatorLine } from '@/components/ui/separator';
+import { createErrorMessage } from '@/entities/errors';
 import type { JobMinorCategory, Link } from '@/entities/post';
 import { applicantFormPresentation } from '@/feature/applicant/presentation/applicantFormPresentation';
 import {
@@ -174,7 +175,6 @@ export const CreateProfileForm = () => {
           placeholder="희망 직무를 입력해주세요. (예시: 웹 프론트엔드 개발, 백엔드 개발 등)"
           errorMessage="희망 직무는 10개 이하로 중복되지 않게 입력해주세요."
           inputErrorMessage="중복되지 않는 100자 이내의 직무명을 작성해주세요."
-          required={true}
         />
         <HashtagField
           label="기술 스택"
@@ -216,7 +216,7 @@ export const CreateProfileForm = () => {
           input={imagePreview}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={imagePreview.isError || imagePreview.value === null}
+          isSubmitError={imagePreview.isError}
           errorMessage="1MB 이하의 이미지 파일을 올려주세요."
           infoMessage="회사 썸네일 이미지는 정사각형 비율(1:1)로 보여져요."
         />
@@ -319,7 +319,9 @@ const useCreateApplicantProfileWithUploads = ({
       if (response.type === 'success') {
         await queryClient.invalidateQueries();
         toMyPage({ query: { tab: 'PROFILE' } });
+        return;
       }
+      setResponseMessage(createErrorMessage(response.code));
     },
     onError: () => {
       setResponseMessage(

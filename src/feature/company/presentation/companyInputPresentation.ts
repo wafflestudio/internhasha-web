@@ -272,6 +272,11 @@ export const companyInputPresentation: CompanyInputPresentation = {
           input: Link;
           index: number;
           mode: 'PATCH' | 'REMOVE';
+        }
+      | {
+          input?: never;
+          index: number;
+          mode: 'REMOVE';
         }) => {
       setLinks((prevState) => {
         switch (mode) {

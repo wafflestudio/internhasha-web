@@ -285,6 +285,11 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
           input: Link;
           index: number;
           mode: 'PATCH' | 'REMOVE';
+        }
+      | {
+          input?: never;
+          index: number;
+          mode: 'REMOVE';
         }) => {
       setLinks((prevState) => {
         switch (mode) {
