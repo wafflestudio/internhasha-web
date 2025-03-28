@@ -5,6 +5,7 @@ import { LinkButton } from '@/components/button/LinkButton';
 import { ThumbnailWithPresignedUrl } from '@/components/thumbnail/ThumbnailWithPresignedUrl';
 import { Badge } from '@/components/ui/badge';
 import { SeperatorLine } from '@/components/ui/separator';
+import { NoApplicantInfo } from '@/feature/applicant/ui/mypage/NoApplicantInfo';
 import { SkeletonApplicantInfo } from '@/feature/applicant/ui/mypage/SkeletonApplicantInfo';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -19,8 +20,11 @@ export const ApplicantInfo = () => {
   }
 
   if (applicantInfoData.type === 'error') {
+    if (applicantInfoData.code === 'APPLICANT_002') {
+      return <NoApplicantInfo />;
+    }
     return (
-      <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
+      <p>프로필 정보를 불러오는 데 실패했습니다. 잠시 후 새로고침해주세요.</p>
     );
   }
 

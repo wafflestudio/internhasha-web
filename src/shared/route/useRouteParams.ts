@@ -17,5 +17,7 @@ export const useRouteQueryParams = () => {
 
 export const useRouteLocation = () => {
   const location = useLocation();
-  return location.state as Record<string, unknown> | null;
+  return location.state !== null
+    ? (location.state as Record<string, unknown>)
+    : undefined;
 };
