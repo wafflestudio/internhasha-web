@@ -13,7 +13,7 @@ import type {
   CreateAndUpdatePostRequest,
   CreateCoffeeChatRequest,
   CreateCompanyRequest,
-  CreatePostRequest,
+  CreatePositionRequest,
   MailRequest,
   PositionRespone,
   PostBriefDTO,
@@ -149,12 +149,7 @@ export const getLocalServerApis = ({
       params: PostPathParams;
       token?: string;
     }) => {
-      const convertedParams = {
-        ...params,
-        status: params.employing,
-        employing: undefined,
-      };
-      const queryParameters = encodeQueryParams({ params: convertedParams });
+      const queryParameters = encodeQueryParams({ params });
 
       return callWithOptionalToken<SuccessResponse<PostsResponse>>({
         method: 'GET',
@@ -358,11 +353,27 @@ export const getLocalServerApis = ({
       body,
     }: {
       token: string;
-      body: CreatePostRequest;
+      body: CreatePositionRequest;
     }) => {
       return callWithToken<SuccessResponse<PositionRespone>>({
         method: 'POST',
         path: `post/position`,
+        token,
+        body,
+      });
+    },
+    'PATCH /post/position:positionId': ({
+      token,
+      body,
+      params,
+    }: {
+      token: string;
+      body: CreatePositionRequest;
+      params: PostIdParams;
+    }) => {
+      return callWithToken<SuccessResponse<PositionRespone>>({
+        method: 'POST',
+        path: `post/position/${params.postId}`,
         token,
         body,
       });
@@ -381,12 +392,7 @@ export const getLocalServerApis = ({
       token: string;
       params: PostPathParams;
     }) => {
-      const convertedParams = {
-        ...params,
-        status: params.employing,
-        employing: undefined,
-      };
-      const queryParameters = encodeQueryParams({ params: convertedParams });
+      const queryParameters = encodeQueryParams({ params });
 
       return callWithToken<SuccessResponse<PostsResponse>>({
         method: 'GET',

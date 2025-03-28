@@ -93,7 +93,7 @@ const useGetPosts = ({
   investmentMax,
   investmentMin,
   series,
-  employing,
+  employing: status,
   order,
 }: {
   page?: number;
@@ -101,7 +101,7 @@ const useGetPosts = ({
   investmentMax?: number;
   investmentMin?: number;
   series?: Series[];
-  employing?: 0 | 1;
+  employing?: 0 | 1 | 2;
   order?: 0 | 1;
 }) => {
   const { postService } = useGuardContext(ServiceContext);
@@ -116,17 +116,17 @@ const useGetPosts = ({
       investmentMax,
       investmentMin,
       series,
-      employing,
+      status,
       order,
     ],
     queryFn: async () => {
       return postService.getPosts({
         page,
         roles,
-        investmentMax,
-        investmentMin,
+        investmentUp: investmentMax,
+        investmentDown: investmentMin,
         series,
-        employing,
+        status,
         token,
         order,
       });

@@ -9,18 +9,18 @@ export type CompanyService = {
   getMyPosts({
     page,
     roles,
-    investmentMax,
-    investmentMin,
+    investmentUp,
+    investmentDown,
     series,
-    employing,
+    status,
     token,
   }: {
     page?: number;
     roles?: JobMinorCategory[];
-    investmentMax?: number;
-    investmentMin?: number;
+    investmentUp?: number;
+    investmentDown?: number;
     series?: Series[];
-    employing?: 0 | 1;
+    status?: 0 | 1 | 2;
     token: string;
   }): ServiceResponse<{
     posts: BriefPost[];
@@ -42,17 +42,17 @@ export const implCompanyService = ({
   getMyPosts: async ({
     page,
     roles,
-    investmentMax,
-    investmentMin,
+    investmentUp,
+    investmentDown,
     series,
-    employing,
+    status: employing,
     token,
   }) => {
     const params = {
       page,
       roles,
-      investmentMax,
-      investmentMin,
+      investmentUp,
+      investmentDown,
       series,
       employing,
     };

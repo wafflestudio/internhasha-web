@@ -1,11 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import type { JobMinorCategory, PostFilter } from '@/entities/post';
-import type { Series } from '@/entities/post';
 import { CompanyPostCard } from '@/feature/post/ui/common/CompanyPostCard';
 import { SkeletonPostCard } from '@/feature/post/ui/common/SkeletonPostCard';
-import { FilterSection } from '@/feature/post/ui/landing/FilterSection';
 import { PaginationBar } from '@/feature/post/ui/landing/PaginationBar';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -13,13 +10,6 @@ import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const MyPostList = () => {
-  const [postFilter, setPostFilter] = useState<PostFilter>({
-    roles: undefined,
-    investmentMax: undefined,
-    investmentMin: undefined,
-    series: undefined,
-    employing: undefined,
-  });
   const [currentPage, setCurrentPage] = useState(0);
   const [currentGroup, setCurrentGroup] = useState(0);
 
@@ -27,7 +17,6 @@ export const MyPostList = () => {
 
   const { postsData } = useGetPosts({
     page: currentPage,
-    ...postFilter,
   });
 
   if (postsData?.type === 'error') {
@@ -41,13 +30,6 @@ export const MyPostList = () => {
 
   return (
     <div className="order-2 flex flex-1 flex-col gap-6 lg:order-none">
-      {/* 상단 필터 섹션 */}
-      <div className="flex items-center justify-between">
-        <FilterSection
-          postFilter={postFilter}
-          onChangeFilters={setPostFilter}
-        />
-      </div>
       {/* 회사 소개 카드 */}
       <div className="m-autogap-2 flex w-full flex-col sm:w-screen-sm md:w-screen-md md:flex-row lg:w-screen-lg xl:max-w-screen-xl">
         <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -91,35 +73,12 @@ export const MyPostList = () => {
   );
 };
 
-const useGetPosts = ({
-  page = 0,
-  roles,
-  investmentMax,
-  investmentMin,
-  series,
-  employing,
-}: {
-  page?: number;
-  roles?: JobMinorCategory[];
-  investmentMax?: number;
-  investmentMin?: number;
-  series?: Series[];
-  employing?: 0 | 1;
-}) => {
+const useGetPosts = ({ page = 0 }: { page?: number }) => {
   const { companyService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
 
   const { data: postsData } = useQuery({
-    queryKey: [
-      'companyService',
-      'getMyPosts',
-      page,
-      roles,
-      investmentMax,
-      investmentMin,
-      series,
-      employing,
-    ],
+    queryKey: ['companyService', 'getMyPosts', page],
     queryFn: async () => {
       if (token === null) {
         throw new Error('토큰이 존재하자 않습니다.');
@@ -127,11 +86,6 @@ const useGetPosts = ({
       return companyService.getMyPosts({
         token,
         page,
-        roles,
-        investmentMax,
-        investmentMin,
-        series,
-        employing,
       });
     },
   });

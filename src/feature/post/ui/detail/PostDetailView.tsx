@@ -8,7 +8,6 @@ import { LinkButton } from '@/components/button/LinkButton';
 import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal';
 import { SignInForCoffeeChatModal } from '@/components/modal/SignInForCoffeChatModal';
 import { Badge } from '@/components/ui/badge';
-import { SeriesBadge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { SeperatorLine } from '@/components/ui/separator';
 import { ICON_SRC } from '@/entities/asset';
@@ -19,6 +18,7 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { UserContext } from '@/shared/context/UserContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+import { formatIsoToDate } from '@/util/format';
 import { getEmploymentStatus } from '@/util/postFormatFunctions';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
@@ -74,37 +74,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
     return <div>정보를 불러오는 중 문제가 발생했습니다. 새로고침해주세요.</div>;
   }
 
-  const {
-    companyName,
-    author,
-    explanation,
-    slogan,
-    imageLink,
-    tags,
-    investAmount,
-    series,
-    investCompany,
-    irDeckLink,
-    landingPageLink,
-    links,
-    title,
-    category,
-    detail,
-    headcount,
-    employmentEndDate,
-    isBookmarked,
-    isActive,
-  } = postDetailData.data;
-
-  const investCompanyList = investCompany.split(',');
-
-  const formatDate = (isoString: string) => {
-    const date = new Date(isoString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}.${month}.${day}`;
-  };
+  const { author, company, position, isBookmarked } = postDetailData.data;
 
   const formatEmploymentState = ({
     isActiveInput,
@@ -129,14 +99,14 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
         <div className="flex flex-col items-start justify-between gap-2">
           <div className="flex items-center gap-3">
             <img
-              src={`${API_BASE_URL}/${imageLink}`}
+              src={`${API_BASE_URL}/${company.profileImageKey}`}
               alt="회사 썸네일 이미지"
               className="h-[40px] w-[40px] rounded-lg object-cover"
             />
-            <span className="text-lg font-semibold">{companyName}</span>
+            <span className="text-lg font-semibold">{company.companyName}</span>
           </div>
           <div className="flex w-full justify-between">
-            <span className="text-4xl font-bold">{title}</span>
+            <span className="text-4xl font-bold">{position.positionTitle}</span>
             {role !== 'COMPANY' && (
               <div className="content-center">
                 {isBookmarked ? (
@@ -172,51 +142,44 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             <span>채용 마감일</span>
             <div className="flex items-center gap-4">
               <span>
-                {employmentEndDate !== null
-                  ? formatDate(employmentEndDate)
+                {position.employmentEndDate !== null
+                  ? formatIsoToDate(position.employmentEndDate)
                   : '상시 채용'}
               </span>
               <Badge variant="primary">
                 {formatEmploymentState({
-                  isActiveInput: isActive,
-                  employmentEndDateInput: employmentEndDate,
+                  isActiveInput: position.isActive,
+                  employmentEndDateInput: position.employmentEndDate,
                 })}
               </Badge>
             </div>
           </div>
-          {role !== 'COMPANY' && (
-            <div className="flex flex-col gap-3">
-              <Button
-                onClick={() => {
-                  handleClickApplyCoffeeChat({ id: postId });
-                }}
-              >
-                커피챗 신청하기
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  toMain({});
-                }}
-              >
-                목록으로
-              </Button>
-            </div>
-          )}
-          {author.id === userId && (
-            <div className="flex flex-row gap-3 md:flex-col">
+          <div className="flex flex-row gap-3 md:flex-col">
+            {role !== 'COMPANY' && (
+              <div className="flex flex-col gap-3">
+                <Button
+                  onClick={() => {
+                    handleClickApplyCoffeeChat({ id: postId });
+                  }}
+                >
+                  커피챗 신청하기
+                </Button>
+              </div>
+            )}
+            {author.id === userId && (
               <Button
                 onClick={() => {
                   toCreatePost({
                     companyId: userId,
                     body: {
                       id: postId,
-                      title: title,
-                      employmentEndDateTime: employmentEndDate ?? undefined,
-                      jobMinorCategory: category,
-                      detail: detail,
-                      headcount: headcount,
-                      salary: 999999,
+                      positionTitle: position.positionTitle,
+                      employmentEndDateTime:
+                        position.employmentEndDate ?? undefined,
+                      jobMinorCategory: position.positionType,
+                      detail: position.detail,
+                      headcount: position.headCount,
+                      salary: position.salary ?? undefined,
                     },
                   });
                 }}
@@ -224,6 +187,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               >
                 공고 수정하기
               </Button>
+            )}
+            {author.id === userId && (
               <Button
                 variant="destructive"
                 onClick={() => {}}
@@ -231,47 +196,44 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               >
                 공고 마감하기
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  toMain({});
-                }}
-                className="flex-1"
-              >
-                목록으로
-              </Button>
-            </div>
-          )}
+            )}
+            <Button
+              variant="outline"
+              onClick={() => {
+                toMain({});
+              }}
+            >
+              목록으로
+            </Button>
+          </div>
         </div>
 
         {/* 회사 소개 */}
         <div className="flex w-full flex-col gap-4 md:max-w-[580px]">
           <p className="text-xl font-semibold">회사 소개</p>
-          <p className="font-normal text-grey-800">{slogan}</p>
           {/* 회사 설명 카드 */}
           <section className="flex flex-col gap-4 rounded-lg bg-grey-50 px-[34px] py-[24px]">
             <div className="flex flex-col gap-4 md:flex-row md:gap-[68px]">
-              <div className="flex items-center">
-                <span className="w-[140px] text-grey-700">투자 유치 단계</span>
-                <SeriesBadge series={series} />
+              <div className="flex flex-1 items-center">
+                <span className="w-[80px] text-grey-700">업종</span>
+                <span>{company.domain}</span>
               </div>
-              <div className="flex items-center">
-                <span className="w-[140px] text-grey-700">누적 투자액</span>
-                <Badge>{investAmount}천만 원</Badge>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <span className="w-[140px] text-grey-700">추천 엑셀러레이터</span>
-              <div className="flex items-center gap-2">
-                <Badge>{author.name}</Badge>
+              <div className="flex flex-1 items-center">
+                <span className="w-[80px] text-grey-700">구성 인원수</span>
+                <span>{company.headcount}명</span>
               </div>
             </div>
             <div className="flex items-center">
-              <span className="w-[140px] text-grey-700">투자사</span>
+              <span className="w-[80px] text-grey-700">설립</span>
               <div className="flex items-center gap-2">
-                {investCompanyList.map((company, index) => {
-                  return <Badge key={index}>{company}</Badge>;
-                })}
+                <span>{company.companyEstablishedYear}년</span>
+              </div>
+            </div>
+            <div className="flex items-center">
+              <span className="w-[80px] text-grey-700">근무 위치</span>
+              <div className="flex items-center gap-2">
+                <img src={ICON_SRC.LOCATION} />
+                <span>{company.location}</span>
               </div>
             </div>
           </section>
@@ -279,27 +241,29 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           {/* 외부 링크 및 태그 모음 */}
           <div className="flex flex-col gap-[30px]">
             <section className="flex flex-col gap-5 md:flex-row md:gap-[50px]">
-              {landingPageLink !== undefined &&
-                landingPageLink !== null &&
-                landingPageLink.trim().length !== 0 && (
+              {company.landingPageLink !== undefined &&
+                company.landingPageLink !== null &&
+                company.landingPageLink.trim().length !== 0 && (
                   <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
                     <span className="text-lg font-semibold text-grey-800">
                       회사 홈페이지
                     </span>
-                    <LinkButton link={landingPageLink}>링크 접속</LinkButton>
+                    <LinkButton link={company.landingPageLink}>
+                      링크 접속
+                    </LinkButton>
                   </div>
                 )}
 
-              {irDeckLink !== undefined &&
-                irDeckLink !== null &&
-                irDeckLink.trim().length !== 0 && (
+              {company.companyInfoPDFLink !== undefined &&
+                company.companyInfoPDFLink !== null &&
+                company.companyInfoPDFLink.trim().length !== 0 && (
                   <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
                     <span className="text-lg font-semibold text-grey-800">
                       IR Deck 자료
                     </span>
 
                     <DownloadButtonWithPresignedUrl
-                      s3Key={irDeckLink}
+                      s3Key={company.companyInfoPDFLink}
                       type="IR_DECK"
                     >
                       <img src={ICON_SRC.DOWNLOAD} />
@@ -311,13 +275,13 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                 )}
             </section>
 
-            {links !== undefined && links.length !== 0 && (
+            {company.links !== undefined && company.links.length !== 0 && (
               <section className="flex flex-col gap-3">
                 <span className="text-lg font-semibold text-grey-800">
                   외부 링크
                 </span>
                 <div className="flex flex-col gap-1.5">
-                  {links.map((linkWithDescription, index) => {
+                  {company.links.map((linkWithDescription, index) => {
                     return (
                       <div key={index} className="flex items-center gap-[10px]">
                         <span className="text-grey-800">
@@ -334,14 +298,14 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             )}
 
             {/* 태그 */}
-            {tags !== undefined && tags.length !== 0 && (
+            {company.tags !== undefined && company.tags.length !== 0 && (
               <section className="flex flex-col gap-3">
                 <span className="text-lg font-semibold text-grey-800">
                   태그
                 </span>
 
                 <div className="flex flex-wrap gap-2">
-                  {tags.map((tag) => (
+                  {company.tags.map((tag) => (
                     <Badge key={`tag-${tag}`} variant="outline">
                       {tag}
                     </Badge>
@@ -349,6 +313,27 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                 </div>
               </section>
             )}
+
+            <section className="flex flex-col gap-3">
+              <span className="text-lg font-semibold text-grey-800">
+                상세 소개
+              </span>
+              <div
+                data-color-mode="light"
+                className="flex rounded-md border p-4"
+              >
+                <MDEditor.Markdown source={company.detail} />
+              </div>
+            </section>
+
+            <section className="flex flex-col gap-3">
+              <span className="text-lg font-semibold text-grey-800">
+                VC 추천 이유
+              </span>
+              <p data-color-mode="light" className="flex rounded-md border p-4">
+                {company.vcRec}
+              </p>
+            </section>
           </div>
         </div>
       </div>
@@ -361,21 +346,11 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
         <div className="flex items-center gap-2 rounded-lg bg-grey-50 px-[22px] py-4">
           <img src={ICON_SRC.PERSON} />
           <span>
-            {title} {headcount}명
+            {position.positionType} {position.headCount}명
           </span>
         </div>
-        <div className="flex flex-col gap-4">
-          <span className="text-lg font-semibold">회사 소개</span>
-          <div data-color-mode="light" className="flex rounded-md border p-4">
-            <MDEditor.Markdown source={explanation} />
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <span className="text-lg font-semibold">직군 소개</span>
-          <div data-color-mode="light" className="flex rounded-lg border p-4">
-            <MDEditor.Markdown source={detail} />
-          </div>
+        <div data-color-mode="light" className="flex rounded-md border p-4">
+          <MDEditor.Markdown source={position.detail} />
         </div>
       </section>
 

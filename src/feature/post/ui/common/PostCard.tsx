@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { Badge, SeriesBadge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/badge';
 import { ICON_SRC } from '@/entities/asset';
 import type { BriefPost } from '@/entities/post';
 import { EnvContext } from '@/shared/context/EnvContext';
@@ -46,14 +46,13 @@ export const PostCard = ({
   const isPending = isAddBookmarkPending || isDeleteBookmarkPending;
   const {
     id,
-    author,
     companyName,
-    slogan,
-    title,
-    series,
-    imageLink,
-    investAmount,
+    profileImageKey,
+    location,
     employmentEndDate,
+    positionTitle,
+    domain,
+    detail100,
     isBookmarked,
   } = post;
 
@@ -68,7 +67,7 @@ export const PostCard = ({
       <div className="relative flex h-[50px] items-center justify-between rounded-t-lg bg-grey-200 px-[22px]">
         <div className="flex items-center gap-2">
           <img src={ICON_SRC.PERSON} className="h-6 w-6" />
-          <span className="text-grey-900">{title}</span>
+          <span className="text-grey-900">{positionTitle}</span>
         </div>
 
         <span className="text-grey-400">
@@ -86,7 +85,7 @@ export const PostCard = ({
           {/* 회사 이미지 */}
           <div className="h-[40px] w-[40px] overflow-hidden rounded-lg bg-grey-200">
             <img
-              src={`${API_BASE_URL}/${imageLink}`}
+              src={`${API_BASE_URL}/${profileImageKey}`}
               alt={companyName}
               className="h-full w-full object-cover"
             />
@@ -95,19 +94,19 @@ export const PostCard = ({
             <h3 className="text-lg font-semibold text-grey-900">
               {companyName}
             </h3>
-            <span className="text-sm text-grey-300">{author.name} 추천</span>
+            <span className="text-sm text-grey-300">{domain}</span>
           </div>
         </div>
 
-        <div className="min-h-[62px] w-full text-grey-700">{slogan}</div>
+        <div className="min-h-[62px] w-full text-grey-700">{detail100}</div>
 
-        {/* 시리즈 및 투자 정보 */}
+        {/* 회사 위치 및 태그 */}
         <div className="flex w-full justify-between gap-3 py-1">
           <div className="flex items-center gap-2">
-            <SeriesBadge series={series} />
             <Badge variant="secondary">
-              투자 누적 {investAmount.toLocaleString()}천만원
+              <img src={ICON_SRC.LOCATION} /> {location}
             </Badge>
+            <Badge variant="secondary">{location}</Badge>
           </div>
           {role !== 'COMPANY' && (
             <div>

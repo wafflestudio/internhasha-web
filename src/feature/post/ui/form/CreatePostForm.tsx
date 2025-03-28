@@ -77,13 +77,19 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
     if (formStates.job.value === 'NONE') {
       return;
     }
+    const finalEmploymentEndDate = disableEmploymentEndDate
+      ? undefined
+      : formStates.employmentEndDateTime.value;
+    const finalSalary = disableSalary ? undefined : formStates.salary.value;
+
     createPost({
       companyId: companyId,
       post: {
-        title: formStates.title.value,
-        employmentEndDate: formStates.employmentEndDateTime.value,
-        category: formStates.job.value,
-        headcount: formStates.headcount.value,
+        positionTitle: formStates.title.value,
+        positionType: formStates.job.value,
+        employmentEndDate: finalEmploymentEndDate,
+        headCount: formStates.headcount.value,
+        salary: finalSalary,
         detail: formStates.detail.value,
         isActive: true,
       },
