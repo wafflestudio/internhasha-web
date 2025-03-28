@@ -5,9 +5,7 @@ import {
   COFFEE_CHAT_STATUS_MAP,
   type CoffeeChatStatus,
 } from '@/entities/coffeeChat';
-import type { Series } from '@/entities/post';
 import { cn } from '@/lib/utils';
-import { formatSeries } from '@/util/postFormatFunctions';
 
 const badgeClassName = cva(
   'inline-flex items-center rounded-md px-2 py-1.5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
@@ -36,53 +34,6 @@ function Badge({ className, variant, ...props }: BadgeProps) {
     <div className={cn(badgeClassName({ variant }), className)} {...props} />
   );
 }
-
-const seriesBadgeVariants = cva(
-  'inline-flex items-center rounded-md px-2 py-1.5 text-center text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
-  {
-    variants: {
-      variant: {
-        default: 'bg-grey-50 text-grey-800',
-        SEED: 'bg-grey-200 text-grey-900',
-        PRE_A: 'bg-blue-100 text-blue-900',
-        A: 'bg-blue-100 text-blue-900',
-        B: 'bg-red-100 text-red-900',
-        C: 'bg-green-100 text-green-900',
-        D: 'bg-yellow-100 text-yellow-900',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-    },
-  },
-);
-
-interface SeriesBadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof seriesBadgeVariants> {}
-
-function SeriesBadgeLayout({ className, variant, ...props }: SeriesBadgeProps) {
-  return (
-    <div
-      className={cn(seriesBadgeVariants({ variant }), className)}
-      {...props}
-    />
-  );
-}
-
-const SeriesBadge = ({
-  series,
-  className,
-}: {
-  series: Series;
-  className?: string;
-}) => {
-  return (
-    <SeriesBadgeLayout className={className}>
-      {formatSeries(series)}
-    </SeriesBadgeLayout>
-  );
-};
 
 const tagStatusClassName = cva(
   'text inline-flex items-center rounded-sm border-transparent px-2 py-1.5 text-13 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
@@ -116,4 +67,4 @@ const TagStatus = ({ className, coffeeChatStatus, ...props }: TagProps) => {
   );
 };
 
-export { Badge, SeriesBadge, TagStatus };
+export { Badge, TagStatus };
