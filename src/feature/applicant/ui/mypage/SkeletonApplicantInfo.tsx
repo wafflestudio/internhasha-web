@@ -1,3 +1,4 @@
+import { SeperatorLine } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export const SkeletonApplicantInfo = () => {
@@ -15,7 +16,7 @@ export const SkeletonApplicantInfo = () => {
         <Skeleton className="h-[21px] w-[200px]" />
       </section>
 
-      <div className="h-[1px] w-full bg-grey-200 md:max-w-[580px]"></div>
+      <SeperatorLine />
 
       <section className="flex flex-col gap-4">
         <h3 className="text-22 font-bold">기본 정보</h3>
@@ -30,7 +31,7 @@ export const SkeletonApplicantInfo = () => {
         </div>
       </section>
 
-      <div className="h-[1px] w-full bg-grey-200 md:max-w-[580px]"></div>
+      <SeperatorLine />
 
       <section className="flex flex-col gap-4">
         <h3 className="text-22 font-bold">기타 정보</h3>

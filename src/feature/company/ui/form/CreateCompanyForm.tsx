@@ -5,10 +5,12 @@ import { ExternalLinkField } from '@/components/field/ExternalLinkField';
 import { HashtagField } from '@/components/field/HashtagField';
 import { ImageField } from '@/components/field/ImageField';
 import { MarkdownEditorField } from '@/components/field/MarkdownEditorField';
+import { MultiStringField } from '@/components/field/MultiStringField';
 import { PdfField } from '@/components/field/PdfField';
 import { StringField } from '@/components/field/StringField';
 import { StringFieldWithUnit } from '@/components/field/StringFieldWithLabel';
 import { StringSelectField } from '@/components/field/StringSelectField';
+import { TextareaField } from '@/components/field/TextareaField';
 import { FormContainer } from '@/components/form/FormContainer';
 import { CancelCheckModal } from '@/components/modal/CancelCheckModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
@@ -22,8 +24,6 @@ import {
   MAX_EXPLANATION_LENGTH,
   MAX_SLOGAN_LENGTH,
 } from '@/feature/company/presentation/companyInputPresentation';
-import { InvestCompanyField } from '@/feature/company/ui/form/fields/InvestCompanyField';
-import { SloganField } from '@/feature/company/ui/form/fields/SloganField';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -147,15 +147,16 @@ export const CreateCompanyForm = () => {
           errorMessage="올바르지 않은 이메일 형식입니다."
           required={true}
         />
-        <SloganField
+        <TextareaField
           label="한 줄 소개"
           input={slogan}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={formStates.slogan.isError}
+          isSubmitError={slogan.isError}
           maxLength={MAX_SLOGAN_LENGTH}
-          errorMessage={`한 줄 소개는 ${MAX_SLOGAN_LENGTH}자 이내로 작성해주세요.`}
+          errorMessage={`내용은 ${MAX_SLOGAN_LENGTH}자 이내로 작성해주세요.`}
           infoMessage="한 줄 소개는 공고 카드에 보여져요."
+          minLine={1}
           required={true}
         />
         <MarkdownEditorField
@@ -201,8 +202,9 @@ export const CreateCompanyForm = () => {
           errorMessage="0 이상의 10만 이하의 양의 정수로 입력해주세요."
           required={true}
         />
-        <InvestCompanyField
+        <MultiStringField
           label="투자사 정보"
+          keyPrefix="invest-company"
           input={investCompany}
           rawInput={rawInvestCompany}
           isPending={isPending}

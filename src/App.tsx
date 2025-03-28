@@ -84,9 +84,9 @@ const RouterProvider = () => {
         </Route>
         <Route element={<ProtectedRoute role="COMPANY" />}>
           <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
-          <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
         </Route>
       </Route>
+      <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
     </Routes>
   );
 };

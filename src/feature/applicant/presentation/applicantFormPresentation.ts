@@ -1,17 +1,12 @@
-import type {
-  Input,
-  InputForForm,
-  ListInput,
-  SelectInput,
-} from '@/entities/input';
-import type { JobMinorCategory, Link } from '@/entities/post';
+import type { Input, InputForForm, ListInput } from '@/entities/input';
+import type { Link } from '@/entities/post';
 import type { ApplicantInputPresentation } from '@/feature/applicant/presentation/applicantInputPresentation';
 import { convertEmptyStringToUndefined } from '@/lib/responseConverter';
 
 type InitialFormState = {
   enrollYear?: number;
-  department?: string;
-  positions?: JobMinorCategory[];
+  departments?: string;
+  positions?: string[];
   slogan?: string;
   explanation?: string;
   stacks?: string[];
@@ -31,9 +26,11 @@ type ApplicantFormPresentation = {
   }): {
     inputStates: {
       enrollYear: Input<string>;
-      department: Input<string>;
-      rawPosition: SelectInput<JobMinorCategory | 'NONE'>;
-      positions: ListInput<JobMinorCategory>;
+      majorDepartment: Input<string>;
+      rawMinorDepartment: Input<string>;
+      minorDepartments: ListInput<string>;
+      rawPosition: Input<string>;
+      positions: ListInput<string>;
       slogan: Input<string>;
       explanation: Input<string>;
       rawStack: Input<string>;
@@ -46,8 +43,8 @@ type ApplicantFormPresentation = {
     };
     formStates: {
       enrollYear: InputForForm<number>;
-      department: InputForForm<string>;
-      positions: InputForForm<JobMinorCategory[] | undefined>;
+      departments: InputForForm<string>;
+      positions: InputForForm<string[] | undefined>;
       slogan: InputForForm<string | undefined>;
       explanation: InputForForm<string | undefined>;
       stacks: InputForForm<string[] | undefined>;
@@ -61,12 +58,17 @@ type ApplicantFormPresentation = {
 
 export const applicantFormPresentation: ApplicantFormPresentation = {
   useValidator: ({ initialState, applicantInputPresentation }) => {
+    const departmentList = initialState?.departments?.split(',');
+
     const initialStateForInput = {
       enrollYear:
         initialState !== undefined
           ? String(initialState.enrollYear)
           : undefined,
-      department: initialState?.department,
+      majorDepartment:
+        departmentList !== undefined ? departmentList[0] : undefined,
+      minorDepartment:
+        departmentList !== undefined ? departmentList.slice(1) : undefined,
       positions: initialState?.positions,
       slogan: initialState?.slogan,
       explanation: initialState?.explanation,
@@ -79,7 +81,9 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
 
     const {
       enrollYear,
-      department,
+      majorDepartment,
+      rawMinorDepartment,
+      minorDepartments,
       rawPosition,
       positions,
       slogan,
@@ -100,10 +104,20 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
         item.link.trim().length !== 0 && item.description.trim().length !== 0,
     );
 
+    const formatEnrollYear = (year: number) => {
+      if (year < 50) {
+        return 2000 + year;
+      } else {
+        return 1900 + year;
+      }
+    };
+
     return {
       inputStates: {
         enrollYear,
-        department,
+        majorDepartment,
+        rawMinorDepartment,
+        minorDepartments,
         rawPosition,
         positions,
         slogan,
@@ -122,11 +136,14 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
             enrollYear.value.trim().length === 0 ||
             isNaN(Number(enrollYear.value)) ||
             Number(enrollYear.value) < 0,
-          value: Number(enrollYear.value),
+          value: formatEnrollYear(Number(enrollYear.value)),
         },
-        department: {
-          isError: department.isError || department.value.trim().length === 0,
-          value: department.value,
+        departments: {
+          isError:
+            majorDepartment.isError ||
+            majorDepartment.value.trim().length === 0 ||
+            minorDepartments.isError,
+          value: [majorDepartment.value, ...minorDepartments.value].join(','),
         },
         positions: {
           isError: positions.isError,

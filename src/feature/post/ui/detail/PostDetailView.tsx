@@ -10,6 +10,7 @@ import { SignInForCoffeeChatModal } from '@/components/modal/SignInForCoffeChatM
 import { Badge } from '@/components/ui/badge';
 import { SeriesBadge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { SeperatorLine } from '@/components/ui/separator';
 import { ICON_SRC } from '@/entities/asset';
 import { SkeletonPostDetailView } from '@/feature/post/ui/detail/SkeletonPostDetailView';
 import { EnvContext } from '@/shared/context/EnvContext';
@@ -352,7 +353,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
         </div>
       </div>
 
-      <div className="h-[1px] w-full bg-grey-200 md:max-w-[580px]"></div>
+      <SeperatorLine />
 
       {/* 상세 공고 글 */}
       <section className="flex w-full flex-col gap-[30px] md:max-w-[580px]">
