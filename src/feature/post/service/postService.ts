@@ -90,13 +90,7 @@ export type PostService = {
 };
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
-  getPosts: async ({
-    roles,
-    status: employng,
-    page,
-    order,
-    token,
-  }) => {
+  getPosts: async ({ roles, status: employng, page, order, token }) => {
     const params = {
       roles,
       employng,
