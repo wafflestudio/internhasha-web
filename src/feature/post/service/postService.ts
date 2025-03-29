@@ -7,26 +7,19 @@ import type {
   JobMinorCategory,
   PositionDTO,
   PostResponse,
-  Series,
 } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 
 export type PostService = {
   getPosts({
     roles,
-    investmentDown,
-    investmentUp,
     status,
-    series,
     page,
     order,
     token,
   }: {
     roles?: JobMinorCategory[];
-    investmentDown?: number;
-    investmentUp?: number;
     status?: 0 | 1 | 2;
-    series?: Series[];
     page?: number;
     order?: 0 | 1;
     token: string | null;
@@ -99,20 +92,14 @@ export type PostService = {
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
   getPosts: async ({
     roles,
-    investmentDown,
-    investmentUp,
     status: employng,
-    series,
     page,
     order,
     token,
   }) => {
     const params = {
       roles,
-      investmentDown,
-      investmentUp,
       employng,
-      series,
       page,
       order,
     };

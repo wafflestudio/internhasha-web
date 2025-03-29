@@ -173,10 +173,7 @@ type CoffeeChatUserInfo = {
 // Params
 export type PostPathParams = {
   roles?: JobCategory[];
-  investmentDown?: number;
-  investmentUp?: number;
   status?: 0 | 1 | 2;
-  series?: Series[];
   page?: number;
   order?: 0 | 1;
 };

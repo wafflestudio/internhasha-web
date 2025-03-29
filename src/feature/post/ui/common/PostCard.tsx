@@ -106,7 +106,9 @@ export const PostCard = ({
             <Badge variant="secondary">
               <img src={ICON_SRC.LOCATION} /> {location}
             </Badge>
-            <Badge variant="secondary">{location}</Badge>
+            <Badge variant="secondary">
+              {location.split(' ').slice(0, 2).join(' ')}
+            </Badge>
           </div>
           {role !== 'COMPANY' && (
             <div>
