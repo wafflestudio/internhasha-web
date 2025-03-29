@@ -165,9 +165,28 @@ type CoffeeChatBriefDTO = {
   content: string;
   applicant: CoffeeChatUserInfo;
 };
+
 type CoffeeChatUserInfo = {
   name: string;
   imageKey?: string;
+};
+
+type CompanyDTO = {
+  id: string;
+  companyName: string;
+  companyEstablishedYear: number;
+  domain: string;
+  headcount: number;
+  location: string;
+  slogan: string;
+  detail: string;
+  profileImageKey: string;
+  companyInfoPDFLink?: string | null;
+  landingPageLink?: string | null;
+  links?: Link[];
+  tags?: string[];
+  vcName: string;
+  vcRec: string;
 };
 
 // Params
@@ -262,16 +281,15 @@ export type S3UploadReq = {
 };
 
 export type CreateCompanyRequest = {
-  companyName: string;
-  explanation: string;
-  email: string;
+  companyEstablishedYear: number;
+  domain: string;
+  headcount: number;
+  location: string;
   slogan: string;
-  investAmount: number;
-  investCompany: string;
-  series: Series;
-  irDeckLink?: string;
-  landingPageLink?: string;
-  imageLink: string;
+  detail: string;
+  profileImageKey: string;
+  companyInfoPDFKey?: string;
+  landingPageLink: string;
   links?: Link[];
   tags?: { tag: string }[];
 };
@@ -340,3 +358,5 @@ export type S3UploadResp = {
 export type S3DownloadResp = {
   url: string;
 };
+
+export type CompanyResponse = CompanyDTO;

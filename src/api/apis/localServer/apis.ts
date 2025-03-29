@@ -10,6 +10,7 @@ import type {
   CoffeeChatListResponse,
   CoffeeChatResponse,
   CoffeeChatStatusRequest,
+  CompanyResponse,
   CreateAndUpdatePostRequest,
   CreateCoffeeChatRequest,
   CreateCompanyRequest,
@@ -334,16 +335,16 @@ export const getLocalServerApis = ({
         token,
       });
     },
-    'POST /post/company': ({
+    'PUT /company/me': ({
       token,
       body,
     }: {
       token: string;
       body: CreateCompanyRequest;
     }) => {
-      return callWithToken<SuccessResponse<void>>({
-        method: 'POST',
-        path: 'post/company',
+      return callWithToken<SuccessResponse<CompanyResponse>>({
+        method: 'PUT',
+        path: 'company/me',
         token,
         body,
       });
