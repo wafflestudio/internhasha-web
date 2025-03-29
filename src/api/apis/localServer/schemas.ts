@@ -41,47 +41,61 @@ type Link = {
 
 type Series = 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
 
-type PostDTO = {
+type CompanyDTO = {
   id: string;
-  author: AuthorBriefDTO;
-
-  // 회사 정보
   companyName: string;
-  explanation: string;
-  email: string;
+  companyEstablishedYear: number;
+  domain: string;
+  headcount: number;
+  location: string;
   slogan: string;
-  investAmount: number;
-  investCompany: string;
-  series: Series;
-  irDeckLink?: string | null;
+  detail: string;
+  profileImageKey: string;
+  companyInfoPDFLink?: string | null;
   landingPageLink?: string | null;
-  imageLink: string;
   links?: Link[];
   tags?: string[];
+  vcName: string;
+  vcRec: string;
+};
 
-  // post 정보
-  title: string;
+type PositionDTO = {
+  id: string;
+  isActive: boolean;
+  positionTitle: string;
+  positionType: string;
+  headCount: number;
+  salary?: number | null;
+  detail: string;
   employmentEndDate: string | null;
   createdAt: string;
   updatedAt: string;
-  isActive: boolean;
-  category: JobCategory;
-  detail: string;
-  headcount: number;
+};
+
+type PostDTO = {
+  id: string;
+  author: AuthorBriefDTO;
+  company: CompanyDTO;
+  position: PositionDTO;
   isBookmarked: boolean;
 };
 
-export type PostBriefDTO = Omit<
-  PostDTO,
-  | 'explanation'
-  | 'irDeckLink'
-  | 'landingPageLink'
-  | 'links'
-  | 'tags'
-  | 'createdAt'
-  | 'updatedAt'
-  | 'detail'
->;
+export type PostBriefDTO = {
+  id: string;
+  author: AuthorBriefDTO;
+  companyName: string;
+  profileImageKey: string;
+  location: string;
+  employmentEndDate: string | null;
+  positionTitle: string;
+  isActive: boolean;
+  domain: string;
+  detail100: string;
+  positionType: string;
+  isBookmarked: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
 
 export type CoffeeChatStatus = 'WAITING' | 'ACCEPTED' | 'CANCELED' | 'REJECTED';
 
@@ -158,12 +172,9 @@ type CoffeeChatUserInfo = {
 
 // Params
 export type PostPathParams = {
-  page?: number;
   roles?: JobCategory[];
-  investmentMax?: number;
-  investmentMin?: number;
-  series?: Series[];
-  employing?: 0 | 1;
+  status?: 0 | 1 | 2;
+  page?: number;
   order?: 0 | 1;
 };
 
@@ -265,12 +276,13 @@ export type CreateCompanyRequest = {
   tags?: { tag: string }[];
 };
 
-export type CreatePostRequest = {
-  title: string;
-  employmentEndDate?: string;
-  category: JobCategory;
+export type CreatePositionRequest = {
+  positionTitle: string;
+  positionType: JobCategory;
   detail: string;
-  headcount: number;
+  headCount: number;
+  salary?: number;
+  employmentEndDate?: string;
   isActive: boolean;
   companyId: string;
 };
@@ -311,18 +323,8 @@ export type PostsResponse = {
 
 export type PostDetailResponse = PostDTO;
 
-export type PositionRespone = Pick<
-  PostDTO,
-  | 'id'
-  | 'title'
-  | 'category'
-  | 'detail'
-  | 'headcount'
-  | 'createdAt'
-  | 'updatedAt'
-  | 'employmentEndDate'
-  | 'isActive'
->;
+export type PositionRespone = PositionDTO;
+
 export type CoffeeChatCount = {
   num: number;
 };

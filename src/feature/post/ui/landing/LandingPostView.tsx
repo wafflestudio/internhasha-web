@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import type { JobMinorCategory, PostFilter, Series } from '@/entities/post';
+import type { JobMinorCategory, PostFilter } from '@/entities/post';
 import { PostCard } from '@/feature/post/ui/common/PostCard';
 import { SkeletonPostCard } from '@/feature/post/ui/common/SkeletonPostCard';
 import { PaginationBar } from '@/feature/post/ui/landing/PaginationBar';
@@ -90,43 +90,24 @@ export const LandingPostView = ({
 const useGetPosts = ({
   page = 0,
   roles,
-  investmentMax,
-  investmentMin,
-  series,
-  employing,
+  employing: status,
   order,
 }: {
   page?: number;
   roles?: JobMinorCategory[];
-  investmentMax?: number;
-  investmentMin?: number;
-  series?: Series[];
-  employing?: 0 | 1;
+  employing?: 0 | 1 | 2;
   order?: 0 | 1;
 }) => {
   const { postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
 
   const { data: postsData } = useQuery({
-    queryKey: [
-      'postService',
-      'getPosts',
-      page,
-      roles,
-      investmentMax,
-      investmentMin,
-      series,
-      employing,
-      order,
-    ],
+    queryKey: ['postService', 'getPosts', page, roles, status, order],
     queryFn: async () => {
       return postService.getPosts({
         page,
         roles,
-        investmentMax,
-        investmentMin,
-        series,
-        employing,
+        status,
         token,
         order,
       });

@@ -2,25 +2,18 @@ import type { Apis } from '@/api';
 import type { LocalServerDTO } from '@/api';
 import type { Paginator } from '@/entities/paginator';
 import type { BriefPost, JobMinorCategory } from '@/entities/post';
-import type { Series } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 
 export type CompanyService = {
   getMyPosts({
     page,
     roles,
-    investmentMax,
-    investmentMin,
-    series,
-    employing,
+    status,
     token,
   }: {
     page?: number;
     roles?: JobMinorCategory[];
-    investmentMax?: number;
-    investmentMin?: number;
-    series?: Series[];
-    employing?: 0 | 1;
+    status?: 0 | 1 | 2;
     token: string;
   }): ServiceResponse<{
     posts: BriefPost[];
@@ -39,21 +32,10 @@ export const implCompanyService = ({
 }: {
   apis: Apis;
 }): CompanyService => ({
-  getMyPosts: async ({
-    page,
-    roles,
-    investmentMax,
-    investmentMin,
-    series,
-    employing,
-    token,
-  }) => {
+  getMyPosts: async ({ page, roles, status: employing, token }) => {
     const params = {
       page,
       roles,
-      investmentMax,
-      investmentMin,
-      series,
       employing,
     };
     const { status, data } = await apis['GET /post/position/me']({

@@ -57,7 +57,7 @@ export const PatchPostForm = ({
 
   const { inputStates, formStates } = postFormPresentation.useValidator({
     initialState: {
-      title: body.title,
+      title: body.positionTitle,
       job: body.jobMinorCategory as JobMinorCategory,
       headcount: body.headcount,
       salary: body.salary,
@@ -92,16 +92,23 @@ export const PatchPostForm = ({
     if (formStates.job.value === 'NONE') {
       return;
     }
+    const finalEmploymentEndDate = disableEmploymentEndDate
+      ? undefined
+      : formStates.employmentEndDateTime.value;
+    const finalSalary = disableSalary ? undefined : formStates.salary.value;
+
     patchPost({
       companyId: companyId,
       post: {
-        title: formStates.title.value,
-        employmentEndDate: formStates.employmentEndDateTime.value,
-        category: formStates.job.value,
-        headcount: formStates.headcount.value,
+        positionTitle: formStates.title.value,
+        positionType: formStates.job.value,
+        employmentEndDate: finalEmploymentEndDate,
+        headCount: formStates.headcount.value,
+        salary: finalSalary,
         detail: formStates.detail.value,
         isActive: true,
       },
+      postId: body.id,
     });
   };
 
@@ -268,14 +275,21 @@ const usePatchPost = ({
     mutationFn: ({
       companyId,
       post,
+      postId,
     }: {
       companyId: string;
       post: CreatePostRequest;
+      postId: string;
     }) => {
       if (token === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return postService.createPost({ token, companyId, postContents: post });
+      return postService.patchPost({
+        token,
+        companyId,
+        postContents: post,
+        postId: postId,
+      });
     },
     onSuccess: async (response) => {
       if (response.type === 'success') {

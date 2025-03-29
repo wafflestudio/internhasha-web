@@ -7,27 +7,20 @@ import type {
   JobMinorCategory,
   PositionDTO,
   PostResponse,
-  Series,
 } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 
 export type PostService = {
   getPosts({
-    page,
     roles,
-    investmentMax,
-    investmentMin,
-    series,
-    employing,
-    token,
+    status,
+    page,
     order,
+    token,
   }: {
-    page?: number;
     roles?: JobMinorCategory[];
-    investmentMax?: number;
-    investmentMin?: number;
-    series?: Series[];
-    employing?: 0 | 1;
+    status?: 0 | 1 | 2;
+    page?: number;
     order?: 0 | 1;
     token: string | null;
   }): ServiceResponse<{
@@ -56,6 +49,17 @@ export type PostService = {
     token: string;
     companyId: string;
     postContents: CreatePostRequest;
+  }): ServiceResponse<PositionDTO>;
+  patchPost({
+    token,
+    companyId,
+    postContents,
+    postId,
+  }: {
+    token: string;
+    companyId: string;
+    postContents: CreatePostRequest;
+    postId: string;
   }): ServiceResponse<PositionDTO>;
   addBookmark({
     postId,
@@ -86,23 +90,11 @@ export type PostService = {
 };
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
-  getPosts: async ({
-    page,
-    roles,
-    investmentMax,
-    investmentMin,
-    series,
-    employing,
-    order,
-    token,
-  }) => {
+  getPosts: async ({ roles, status: employng, page, order, token }) => {
     const params = {
-      page,
       roles,
-      investmentMax,
-      investmentMin,
-      series,
-      employing,
+      employng,
+      page,
       order,
     };
     const { status, data } = await apis['GET /post']({
@@ -151,6 +143,23 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     const { status, data } = await apis['POST /post/position']({
       token: token,
       body: body,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', code: data.code, message: data.message };
+  },
+  patchPost: async ({ token, companyId, postContents, postId }) => {
+    const params = { postId };
+    const body = { ...postContents, companyId };
+    const { status, data } = await apis['PATCH /post/position:positionId']({
+      token: token,
+      body: body,
+      params: params,
     });
 
     if (status === 200) {
