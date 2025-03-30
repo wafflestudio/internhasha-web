@@ -74,7 +74,7 @@ export const companyFormPresentation: CompanyFormPresentation = {
           ? String(initialState.headcount)
           : undefined,
       mainLocation: initialState?.location?.split('|')[0],
-      detaledLocation: initialState?.location?.split('|')[1],
+      detailedLocation: initialState?.location?.split('|')[1],
       slogan: initialState?.slogan,
       detail: initialState?.detail,
       profileImagePreview: initialState?.profileImagePreview,

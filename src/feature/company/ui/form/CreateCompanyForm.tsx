@@ -165,7 +165,7 @@ export const CreateCompanyForm = () => {
           detailedLocationInput={detailedLocation}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={formStates.headcount.isError}
+          isSubmitError={formStates.location.isError}
           mainLocationPlaceholder="도로명 주소를 검색해주세요."
           detailedLocationPlaceholder="상세 주소를 입력해주세요."
           errorMessage="도로명 주소와 상세 주소를 모두 입력해주세요."
