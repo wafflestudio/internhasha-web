@@ -111,7 +111,7 @@ export type CoffeeChatApplicant = {
   content: string;
 };
 
-type Applicant = {
+export type Applicant = {
   id: string;
   name: string;
   createdAt: string;
@@ -130,7 +130,7 @@ type Applicant = {
   links?: Link[];
 };
 
-type CoffeeChatCompany = {
+export type CoffeeChatCompany = {
   id: string;
   postId: string;
   title: string;

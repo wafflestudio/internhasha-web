@@ -9,6 +9,7 @@ import {
   useGetCoffeeChatDetail,
   useUpdateCoffeeChatStatus,
 } from '@/feature/coffeeChat/ui/detail/useCoffeeChatDetailHooks';
+import type { CoffeeChatApplicant } from '@/mocks/coffeeChat/schemas';
 import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
@@ -44,7 +45,7 @@ export const CoffeeChatDetailView = ({
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
   }
-  const coffeeChatDetail = coffeeChatDetailData.data;
+  const coffeeChatDetail = coffeeChatDetailData.data as CoffeeChatApplicant;
   return (
     <>
       <div className="flex w-full bg-gray-50 py-10">

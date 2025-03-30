@@ -15,9 +15,9 @@ export type Applicant = {
   positions?: string[];
   slogan?: string;
   explanation?: string;
-  stack?: string[];
+  stacks?: string[];
   imageKey?: string;
   cvKey?: string;
   portfolioKey?: string;
-  linkes?: Link[];
+  links?: Link[];
 };
