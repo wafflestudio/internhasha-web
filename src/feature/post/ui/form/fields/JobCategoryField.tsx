@@ -66,10 +66,6 @@ export const JobCategoryField = ({
         >
           <div className="flex w-[162px] flex-col gap-2 border-r px-2">
             {JOB_MAJOR_CATEGORIES.map((category) => {
-              const formattedLabel = formatMajorJobToLabel(category);
-
-              if (formattedLabel === null) return null;
-
               return (
                 <Button
                   variant="ghost"

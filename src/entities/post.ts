@@ -26,7 +26,6 @@ export const JOB_CATEGORY_MAP: Record<JobMajorCategory, JobMinorCategory[]> = {
 export const JOB_MAJOR_CATEGORIES = Object.keys(JOB_CATEGORY_MAP);
 
 export type Series = 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
-export const seriesList = ['SEED', 'PRE_A', 'A', 'B', 'C', 'D'];
 
 export type PostFilter = {
   roles?: JobMinorCategory[];
