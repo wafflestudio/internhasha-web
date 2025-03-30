@@ -27,6 +27,29 @@ export const JOB_MAJOR_CATEGORIES = Object.keys(JOB_CATEGORY_MAP);
 export type Series = 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
 export const seriesList = ['SEED', 'PRE_A', 'A', 'B', 'C', 'D'];
 
+export type Domain =
+  | 'FINTECH'
+  | 'HEALTHTECH'
+  | 'EDUCATION'
+  | 'ECOMMERCE'
+  | 'FOODTECH'
+  | 'MOBILITY'
+  | 'CONTENTS'
+  | 'B2B'
+  | 'OTHERS';
+
+export const domainList = [
+  'FINTECH',
+  'HEALTHTECH',
+  'EDUCATION',
+  'ECOMMERCE',
+  'FOODTECH',
+  'MOBILITY',
+  'CONTENTS',
+  'B2B',
+  'OTHERS',
+];
+
 export type PostFilter = {
   roles?: JobMinorCategory[];
   investmentMax?: number;

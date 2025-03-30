@@ -4,22 +4,20 @@ import type {
   ListInput,
   SelectInput,
 } from '@/entities/input';
-import type { Link, Series } from '@/entities/post';
+import type { Domain, Link } from '@/entities/post';
 import type { CompanyInputPresentation } from '@/feature/company/presentation/companyInputPresentation';
+import { convertEmptyStringToUndefined } from '@/lib/responseConverter';
 
 type InitialState = {
-  companyName?: string;
-  explanation?: string;
-  email?: string;
+  companyEstablishedYear?: number;
+  domain?: Domain | 'NONE';
+  headcount?: number;
+  location?: string;
   slogan?: string;
-  investAmount?: number;
-  investCompany?: string[];
-  series?: Series | 'NONE';
-  irDeckPreview?: { file: File; url: string } | null;
-  irDeckLink?: string;
+  detail?: string;
+  profileImagePreview?: { file: File; url: string } | null;
+  companyInfoPDFPreview?: { file: File; url: string } | null;
   landingPageLink?: string;
-  imagePreview?: { file: File; url: string } | null;
-  imageLink?: string;
   links?: Link[];
   tags?: string[];
 };
@@ -33,30 +31,27 @@ type CompanyFormPresentation = {
     companyInputPresentation: CompanyInputPresentation;
   }): {
     inputStates: {
-      companyName: Input<string>;
-      explanation: Input<string>;
-      email: Input<string>;
+      companyEstablishedYear: Input<string>;
+      domain: SelectInput<Domain | 'NONE'>;
+      headcount: Input<string>;
+      location: Input<string>;
       slogan: Input<string>;
-      investAmount: Input<string>;
-      rawInvestCompany: Input<string>;
-      investCompany: ListInput<string>;
-      series: SelectInput<Series | 'NONE'>;
-      irDeckPreview: Input<{ file: File; url: string } | null>;
-      landingPageLink: Input<string>;
-      imagePreview: Input<{ file: File; url: string } | null>;
-      rawLink: Input<Link>;
-      links: ListInput<Link>;
-      rawTag: Input<string>;
-      tags: ListInput<string>;
+      detail: Input<string>;
+      profileImagePreview: Input<{ file: File; url: string } | null>;
+      companyInfoPDFPreview?: Input<{ file: File; url: string } | null>;
+      landingPageLink?: Input<string>;
+      rawLink?: Input<Link>;
+      links?: ListInput<Link>;
+      rawTag?: Input<string>;
+      tags?: ListInput<string>;
     };
     formStates: {
-      companyName: InputForForm<string>;
-      explanation: InputForForm<string>;
-      email: InputForForm<string>;
+      companyEstablishedYear: InputForForm<number>;
+      domain: InputForForm<Domain | 'NONE'>;
+      headcount: InputForForm<number>;
+      location: InputForForm<string>;
       slogan: InputForForm<string>;
-      investAmount: InputForForm<number>;
-      investCompany: InputForForm<string>;
-      series: InputForForm<Series | 'NONE'>;
+      detail: InputForForm<string>;
       landingPageLink: InputForForm<string | undefined>;
       links: InputForForm<Link[] | undefined>;
       tags: InputForForm<{ tag: string }[] | undefined>;
@@ -64,40 +59,38 @@ type CompanyFormPresentation = {
   };
 };
 
-const MAX_INVEST_AMOUNT = 100000;
-
 export const companyFormPresentation: CompanyFormPresentation = {
   useValidator: ({ initialState, companyInputPresentation }) => {
     const initialStateForInput = {
-      companyName: initialState?.companyName,
-      explanation: initialState?.explanation,
-      email: initialState?.email,
-      slogan: initialState?.slogan,
-      investAmount:
-        initialState !== undefined
-          ? String(initialState.investAmount)
+      companyEstablishedYear:
+        initialState?.companyEstablishedYear !== undefined
+          ? String(initialState.companyEstablishedYear)
           : undefined,
-      investCompany: initialState?.investCompany,
-      series: initialState?.series,
-      irDeckPreview: initialState?.irDeckPreview,
+      domain: initialState?.domain,
+      headcount:
+        initialState?.headcount !== undefined
+          ? String(initialState.headcount)
+          : undefined,
+      location: initialState?.location,
+      slogan: initialState?.slogan,
+      detail: initialState?.detail,
+      profileImagePreview: initialState?.profileImagePreview,
+      companyInfoPDFPreview: initialState?.companyInfoPDFPreview,
       landingPageLink: initialState?.landingPageLink,
-      imagePreview: initialState?.imagePreview,
       links: initialState?.links,
       tags: initialState?.tags,
     };
 
     const {
-      companyName,
-      explanation,
-      email,
+      companyEstablishedYear,
+      domain,
+      headcount,
+      location,
       slogan,
-      investAmount,
-      rawInvestCompany,
-      investCompany,
-      series,
-      irDeckPreview,
+      detail,
+      profileImagePreview,
+      companyInfoPDFPreview,
       landingPageLink,
-      imagePreview,
       rawLink,
       links,
       rawTag,
@@ -106,11 +99,6 @@ export const companyFormPresentation: CompanyFormPresentation = {
       initialState: initialStateForInput,
     });
 
-    const isEmptyElementsInFilteredStringList = (input: string[]) => {
-      const filteredInput = input.filter((item) => item.trim().length !== 0);
-      return filteredInput.length === 0;
-    };
-
     const filteredLinks = links.value.filter(
       (item) =>
         item.link.trim().length !== 0 && item.description.trim().length !== 0,
@@ -118,58 +106,58 @@ export const companyFormPresentation: CompanyFormPresentation = {
 
     return {
       inputStates: {
-        companyName,
-        explanation,
-        email,
+        companyEstablishedYear,
+        domain,
+        headcount,
+        location,
         slogan,
-        investAmount,
-        rawInvestCompany,
-        investCompany,
-        series,
-        irDeckPreview,
+        detail,
+        profileImagePreview,
+        companyInfoPDFPreview,
         landingPageLink,
-        imagePreview,
         rawLink,
         links,
         rawTag,
         tags,
       },
       formStates: {
-        companyName: {
-          isError: companyName.isError || companyName.value.trim().length === 0,
-          value: companyName.value,
+        companyEstablishedYear: {
+          isError:
+            companyEstablishedYear.value.trim().length === 0 ||
+            isNaN(Number(companyEstablishedYear.value)) ||
+            Number(companyEstablishedYear.value) < 0,
+          value: Number(companyEstablishedYear.value),
         },
-        explanation: {
-          isError: explanation.isError || explanation.value.trim().length === 0,
-          value: explanation.value,
+        domain: {
+          isError: domain.isError || domain.value === 'NONE',
+          value: domain.value,
         },
-        email: {
-          isError: email.isError || email.value.trim().length === 0,
-          value: email.value,
+        headcount: {
+          isError:
+            headcount.value.trim().length === 0 ||
+            isNaN(Number(headcount.value)) ||
+            Number(headcount.value) < 0,
+          value: Number(headcount.value),
+        },
+        location: {
+          isError: location.isError || location.value.trim().length === 0,
+          value: location.value,
         },
         slogan: {
           isError: slogan.isError || slogan.value.trim().length === 0,
           value: slogan.value,
         },
-        series: {
-          isError: series.isError || series.value === 'NONE',
-          value: series.value,
+        detail: {
+          isError: detail.isError || detail.value.trim().length === 0,
+          value: detail.value,
         },
-        investAmount: {
-          isError:
-            investAmount.value.trim().length === 0 ||
-            isNaN(Number(investAmount.value)) ||
-            Number(investAmount.value) < 0 ||
-            Number(investAmount.value) > MAX_INVEST_AMOUNT,
-          value: Number(investAmount.value),
+        landingPageLink: {
+          isError: landingPageLink.isError,
+          value: convertEmptyStringToUndefined(landingPageLink.value),
         },
-        investCompany: {
-          isError:
-            investCompany.isError ||
-            isEmptyElementsInFilteredStringList(investCompany.value),
-          value: investCompany.value
-            .filter((item) => item.trim().length !== 0)
-            .join(','),
+        links: {
+          isError: links.isError,
+          value: filteredLinks.length !== 0 ? filteredLinks : undefined,
         },
         tags: {
           isError: tags.isError,
@@ -177,17 +165,6 @@ export const companyFormPresentation: CompanyFormPresentation = {
             tags.value.length !== 0
               ? tags.value.map((item) => ({ tag: item }))
               : undefined,
-        },
-        landingPageLink: {
-          isError: landingPageLink.isError,
-          value:
-            landingPageLink.value.trim().length !== 0
-              ? landingPageLink.value
-              : undefined,
-        },
-        links: {
-          isError: links.isError,
-          value: filteredLinks.length !== 0 ? filteredLinks : undefined,
         },
       },
     };
