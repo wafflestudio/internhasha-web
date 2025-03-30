@@ -11,6 +11,13 @@ import type { CoffeeChatRequest } from '@/entities/coffeeChat';
 import type { ServiceResponse } from '@/entities/response';
 
 export type CoffeeChatService = {
+  getCoffeeChatStatus: ({
+    token,
+    postId,
+  }: {
+    token: string;
+    postId: string;
+  }) => ServiceResponse<{ isSubmitted: boolean }>;
   getCoffeeChatDetail: ({
     token,
     coffeeChatId,
@@ -58,6 +65,36 @@ export const implCoffeeChatService = ({
 }: {
   apis: Apis;
 }): CoffeeChatService => ({
+  getCoffeeChatStatus: async ({
+    token,
+    postId,
+  }: {
+    token: string;
+    postId: string;
+  }) => {
+    const params = { postId };
+
+    try {
+      const { status, data } = await apis['GET /coffeeChat/:postId/status']({
+        token,
+        params,
+      });
+
+      if (status === 200) {
+        return {
+          type: 'success',
+          data,
+        };
+      }
+      return { type: 'error', code: data.code, message: data.message };
+    } catch (_) {
+      return {
+        type: 'error',
+        code: 'UNKNOWN_ERROR',
+        message: 'Failed to fetch coffee chat status',
+      };
+    }
+  },
   getCoffeeChatDetail: async ({
     token,
     coffeeChatId,

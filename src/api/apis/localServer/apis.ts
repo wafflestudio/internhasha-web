@@ -197,6 +197,19 @@ export const getLocalServerApis = ({
         token,
         body,
       }),
+    'GET /coffeeChat/:postId/status': ({
+      token,
+      params,
+    }: {
+      token: string;
+      params: PostIdParams;
+    }) => {
+      return callWithToken<SuccessResponse<{ isSubmitted: boolean }>>({
+        method: 'GET',
+        path: `coffeeChat/${params.postId}/status`,
+        token,
+      });
+    },
     'GET /coffeeChat/:coffeeChatId': ({
       token,
       params,

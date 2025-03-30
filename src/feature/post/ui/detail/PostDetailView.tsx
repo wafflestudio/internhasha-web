@@ -26,6 +26,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   const { API_BASE_URL } = useGuardContext(EnvContext);
   const { token } = useGuardContext(TokenContext);
   const { role, id: userId } = useGuardContext(UserContext);
+  const { coffeeChatStatus } = useGetCoffeeChatStatus({ postId });
 
   const { toMain, toCreateCoffeeChat, toCreatePost } = useRouteNavigation();
 
@@ -161,8 +162,11 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                   onClick={() => {
                     handleClickApplyCoffeeChat({ id: postId });
                   }}
+                  disabled={coffeeChatStatus?.isSubmitted}
                 >
-                  커피챗 신청하기
+                  {(coffeeChatStatus?.isSubmitted ?? false)
+                    ? '커피챗 신청완료'
+                    : '커피챗 신청하기'}
                 </Button>
               </div>
             )}
@@ -447,4 +451,35 @@ const useDeleteBookmark = () => {
     deleteBookmark,
     isPending,
   };
+};
+
+const useGetCoffeeChatStatus = ({ postId }: { postId: string }) => {
+  const { token } = useGuardContext(TokenContext);
+  const { coffeeChatService } = useGuardContext(ServiceContext);
+
+  const { data: coffeeChatStatusResponse } = useQuery({
+    queryKey: [
+      'coffeeChatService',
+      'getCoffeeChatStatus',
+      postId,
+      token,
+    ] as const,
+    queryFn: async ({ queryKey: [, , pid, t] }) => {
+      if (t == null) return { isSubmitted: false };
+
+      const response = await coffeeChatService.getCoffeeChatStatus({
+        token: t,
+        postId: pid,
+      });
+
+      if (response.type === 'error') {
+        return { isSubmitted: false };
+      }
+
+      return response.data;
+    },
+    enabled: !(token == null),
+  });
+
+  return { coffeeChatStatus: coffeeChatStatusResponse };
 };
