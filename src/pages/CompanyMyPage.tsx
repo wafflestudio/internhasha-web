@@ -1,3 +1,5 @@
+import { useSearchParams } from 'react-router';
+
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -18,6 +20,11 @@ export const CompanyMyPage = () => {
   const queryParams = useRouteQueryParams() as MyPageRouteQuery | null;
   const { id } = useGuardContext(UserContext);
   const { toCreatePost } = useRouteNavigation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const handleTabChange = (tab: string) => {
+    searchParams.set('tab', tab);
+    setSearchParams(searchParams);
+  };
 
   return (
     <div className="min-h-screen bg-grey-50">
@@ -26,11 +33,12 @@ export const CompanyMyPage = () => {
       <div className="mx-auto flex w-full flex-col gap-10 px-6 py-[30px] sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl">
         <h1 className="text-2xl font-bold text-grey-900">마이페이지</h1>
         <Tabs
-          defaultValue={
+          value={
             queryParams !== null && queryParams.tab !== 'BOOKMARK'
               ? queryParams.tab
               : 'COFFEE_CHAT'
           }
+          onValueChange={handleTabChange}
           className="w-full"
         >
           <div className="flex flex-col gap-[30px]">

@@ -4,7 +4,13 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 
-export const CoffeeChatNumberBadge = () => {
+type CoffeeChatNumberBadgeProps = {
+  onClick?: (e: React.MouseEvent) => void;
+};
+
+export const CoffeeChatNumberBadge = ({
+  onClick,
+}: CoffeeChatNumberBadgeProps) => {
   const { coffeeChatCountData } = useGetCoffeeChatCount();
 
   if (coffeeChatCountData === undefined) return null;
@@ -16,7 +22,10 @@ export const CoffeeChatNumberBadge = () => {
   }
   if (coffeeChatCountData.data.num === 0) return null;
   return (
-    <span className="float-end ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-red text-11 font-medium text-white no-underline data-[state=active]:no-underline">
+    <span
+      className="float-end ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-red text-11 font-medium text-white no-underline data-[state=active]:no-underline"
+      onClick={onClick}
+    >
       {coffeeChatCountData.data.num >= 10 ? '9+' : coffeeChatCountData.data.num}
     </span>
   );

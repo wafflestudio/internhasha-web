@@ -61,7 +61,12 @@ export const GlobalNavigationBar = () => {
                 variant="ghost"
               >
                 마이페이지
-                <CoffeeChatNumberBadge />
+                <CoffeeChatNumberBadge
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toMyPage({ query: { tab: 'COFFEE_CHAT' } });
+                  }}
+                />
               </Button>
               <Button
                 onClick={handleClickLogoutButton}
