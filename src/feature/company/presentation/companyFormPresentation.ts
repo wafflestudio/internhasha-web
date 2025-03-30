@@ -35,7 +35,8 @@ type CompanyFormPresentation = {
       companyEstablishedYear: Input<string>;
       domain: SelectInput<Domain | 'NONE'>;
       headcount: Input<string>;
-      location: Input<string>;
+      mainLocation: Input<string>;
+      detailedLocation: Input<string>;
       slogan: Input<string>;
       detail: Input<string>;
       profileImagePreview: Input<{ file: File; url: string } | null>;
@@ -72,7 +73,8 @@ export const companyFormPresentation: CompanyFormPresentation = {
         initialState?.headcount !== undefined
           ? String(initialState.headcount)
           : undefined,
-      location: initialState?.location,
+      mainLocation: initialState?.location?.split('|')[0],
+      detaledLocation: initialState?.location?.split('|')[1],
       slogan: initialState?.slogan,
       detail: initialState?.detail,
       profileImagePreview: initialState?.profileImagePreview,
@@ -86,7 +88,8 @@ export const companyFormPresentation: CompanyFormPresentation = {
       companyEstablishedYear,
       domain,
       headcount,
-      location,
+      mainLocation,
+      detailedLocation,
       slogan,
       detail,
       profileImagePreview,
@@ -110,7 +113,8 @@ export const companyFormPresentation: CompanyFormPresentation = {
         companyEstablishedYear,
         domain,
         headcount,
-        location,
+        mainLocation,
+        detailedLocation,
         slogan,
         detail,
         profileImagePreview,
@@ -141,8 +145,12 @@ export const companyFormPresentation: CompanyFormPresentation = {
           value: Number(headcount.value),
         },
         location: {
-          isError: location.isError || location.value.trim().length === 0,
-          value: location.value,
+          isError:
+            mainLocation.isError ||
+            detailedLocation.isError ||
+            mainLocation.value.trim().length === 0 ||
+            detailedLocation.value.trim().length === 0,
+          value: `${mainLocation.value}|${detailedLocation.value}`,
         },
         slogan: {
           isError: slogan.isError || slogan.value.trim().length === 0,

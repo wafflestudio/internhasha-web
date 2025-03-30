@@ -9,7 +9,8 @@ type InitialInputState = {
   companyEstablishedYear?: string;
   domain?: Domain | 'NONE';
   headcount?: string;
-  location?: string;
+  mainLocation?: string;
+  detailedLocation?: string;
   slogan?: string;
   detail?: string;
   profileImagePreview?: { file: File; url: string } | null;
@@ -24,7 +25,8 @@ export type CompanyInputPresentation = {
     companyEstablishedYear: Input<string>;
     domain: SelectInput<Domain | 'NONE'>;
     headcount: Input<string>;
-    location: Input<string>;
+    mainLocation: Input<string>;
+    detailedLocation: Input<string>;
     slogan: Input<string>;
     detail: Input<string>;
     profileImagePreview: Input<{ file: File; url: string } | null>;
@@ -39,7 +41,7 @@ export type CompanyInputPresentation = {
 
 export const MAX_DETAIL_LENGTH = 5000;
 export const MAX_SLOGAN_LENGTH = 100;
-const MAX_LOCATION_LENGTH = 1000;
+const MAX_LOCATION_LENGTH = 500;
 const MAX_DESCRIPTION_LENGTH = 30;
 const MAX_TAG_LENGTH = 8;
 const MAX_EXTERNAL_DESCRIPTION_LINK_SIZE = 5;
@@ -79,8 +81,13 @@ export const companyInputPresentation: CompanyInputPresentation = {
     const [headcount, setHeadcount] = useState(
       initialState?.headcount !== undefined ? initialState.headcount : '',
     );
-    const [location, setLocation] = useState(
-      initialState?.location !== undefined ? initialState.location : '',
+    const [mainLocation, setMainLocation] = useState(
+      initialState?.mainLocation !== undefined ? initialState.mainLocation : '',
+    );
+    const [detailedLocation, setDetailedLocation] = useState(
+      initialState?.detailedLocation !== undefined
+        ? initialState.detailedLocation
+        : '',
     );
     const [slogan, setSlogan] = useState(
       initialState?.slogan !== undefined ? initialState.slogan : '',
@@ -294,10 +301,15 @@ export const companyInputPresentation: CompanyInputPresentation = {
         value: headcount,
         onChange: setHeadcount,
       },
-      location: {
-        isError: location.length > MAX_LOCATION_LENGTH,
-        value: location,
-        onChange: setLocation,
+      mainLocation: {
+        isError: mainLocation.length > MAX_LOCATION_LENGTH,
+        value: mainLocation,
+        onChange: setMainLocation,
+      },
+      detailedLocation: {
+        isError: detailedLocation.length > MAX_LOCATION_LENGTH,
+        value: detailedLocation,
+        onChange: setDetailedLocation,
       },
       slogan: {
         isError: slogan.length > MAX_SLOGAN_LENGTH,

@@ -23,6 +23,7 @@ import {
   MAX_DETAIL_LENGTH,
   MAX_SLOGAN_LENGTH,
 } from '@/feature/company/presentation/companyInputPresentation';
+import { LocationField } from '@/feature/company/ui/form/fields/LocationField';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -43,7 +44,8 @@ export const CreateCompanyForm = () => {
     companyEstablishedYear,
     domain,
     headcount,
-    // location,
+    mainLocation,
+    detailedLocation,
     slogan,
     detail,
     profileImagePreview,
@@ -157,7 +159,18 @@ export const CreateCompanyForm = () => {
           errorMessage="유효한 인원수를 입력해주세요. (e.g. 20)"
           required={true}
         />
-        {/* TODO: 근무 위치 */}
+        <LocationField
+          label="근무 위치"
+          mainLocationInput={mainLocation}
+          detailedLocationInput={detailedLocation}
+          isPending={isPending}
+          isSubmit={isSubmit}
+          isSubmitError={formStates.headcount.isError}
+          mainLocationPlaceholder="도로명 주소를 검색해주세요."
+          detailedLocationPlaceholder="상세 주소를 입력해주세요."
+          errorMessage="도로명 주소와 상세 주소를 모두 입력해주세요."
+          required={true}
+        />
         <TextareaField
           label="회사 한 줄 소개"
           input={slogan}
