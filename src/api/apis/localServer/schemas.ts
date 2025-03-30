@@ -39,7 +39,16 @@ type Link = {
   description: string;
 };
 
-type Series = 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
+type Domain =
+  | 'FINTECH'
+  | 'HEALTHTECH'
+  | 'EDUCATION'
+  | 'ECOMMERCE'
+  | 'FOODTECH'
+  | 'MOBILITY'
+  | 'CONTENTS'
+  | 'B2B'
+  | 'OTHERS';
 
 type CompanyDTO = {
   id: string;
@@ -171,24 +180,6 @@ type CoffeeChatUserInfo = {
   imageKey?: string;
 };
 
-type CompanyDTO = {
-  id: string;
-  companyName: string;
-  companyEstablishedYear: number;
-  domain: string;
-  headcount: number;
-  location: string;
-  slogan: string;
-  detail: string;
-  profileImageKey: string;
-  companyInfoPDFLink?: string | null;
-  landingPageLink?: string | null;
-  links?: Link[];
-  tags?: string[];
-  vcName: string;
-  vcRec: string;
-};
-
 // Params
 export type PostPathParams = {
   roles?: JobCategory[];
@@ -282,14 +273,14 @@ export type S3UploadReq = {
 
 export type CreateCompanyRequest = {
   companyEstablishedYear: number;
-  domain: string;
+  domain: Domain;
   headcount: number;
   location: string;
   slogan: string;
   detail: string;
   profileImageKey: string;
   companyInfoPDFKey?: string;
-  landingPageLink: string;
+  landingPageLink?: string;
   links?: Link[];
   tags?: { tag: string }[];
 };

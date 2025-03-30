@@ -1,7 +1,9 @@
 import type { Apis } from '@/api';
 import type { LocalServerDTO } from '@/api';
+import type { Domain } from '@/entities/company';
+import type { Link } from '@/entities/link';
 import type { Paginator } from '@/entities/paginator';
-import type { BriefPost, JobMinorCategory, Link } from '@/entities/post';
+import type { BriefPost, JobMinorCategory } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 
 export type CompanyService = {
@@ -41,14 +43,14 @@ export type CompanyService = {
   }: {
     token: string;
     companyEstablishedYear: number;
-    domain: string;
+    domain: Domain;
     headcount: number;
     location: string;
     slogan: string;
     detail: string;
     profileImageKey: string;
     companyInfoPDFKey?: string;
-    landingPageLink: string;
+    landingPageLink?: string;
     links?: Link[];
     tags?: {
       tag: string;
@@ -117,7 +119,7 @@ export const implCompanyService = ({
     tags,
   }) => {
     const { status, data } = await apis['PUT /company/me']({
-      token: token,
+      token,
       body: {
         companyEstablishedYear,
         domain,

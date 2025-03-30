@@ -1,4 +1,5 @@
-import type { JobMinorCategory, Link, Series } from '@/entities/post';
+import type { Link } from '@/entities/link';
+import type { JobMinorCategory, Series } from '@/entities/post';
 
 export type MyPageRouteQuery = {
   tab: 'POST' | 'COFFEE_CHAT' | 'BOOKMARK' | 'PROFILE';

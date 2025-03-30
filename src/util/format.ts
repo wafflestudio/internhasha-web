@@ -26,9 +26,10 @@ export const formatMajorJobToLabel = (input: string) => {
     case 'MARKETING':
       return '마케팅';
     default:
-      return null;
+      return '';
   }
 };
+
 export const formatMinorJobToLabel = (input: string) => {
   switch (input) {
     case 'FRONT':
@@ -48,6 +49,31 @@ export const formatMinorJobToLabel = (input: string) => {
     case 'MARKETING':
       return '마케팅';
     default:
-      return null;
+      return '';
+  }
+};
+
+export const formatDomainToLabel = (input: string) => {
+  switch (input) {
+    case 'FINTECH':
+      return '핀테크';
+    case 'HEALTHTECH':
+      return '헬스테크';
+    case 'EDUCATION':
+      return '교육';
+    case 'ECOMMERCE':
+      return '이커머스';
+    case 'FOODTECH':
+      return '식품';
+    case 'MOBILITY':
+      return '모빌리티';
+    case 'CONTENTS':
+      return '컨텐츠';
+    case 'B2B':
+      return 'B2B';
+    case 'OTHERS':
+      return '기타';
+    default:
+      return '';
   }
 };

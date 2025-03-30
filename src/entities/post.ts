@@ -1,4 +1,5 @@
 import type { AuthorBriefDTO } from '@/entities/author';
+import type { Link } from '@/entities/link';
 
 export type JobMajorCategory =
   | 'DEVELOPMENT'
@@ -27,29 +28,6 @@ export const JOB_MAJOR_CATEGORIES = Object.keys(JOB_CATEGORY_MAP);
 export type Series = 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
 export const seriesList = ['SEED', 'PRE_A', 'A', 'B', 'C', 'D'];
 
-export type Domain =
-  | 'FINTECH'
-  | 'HEALTHTECH'
-  | 'EDUCATION'
-  | 'ECOMMERCE'
-  | 'FOODTECH'
-  | 'MOBILITY'
-  | 'CONTENTS'
-  | 'B2B'
-  | 'OTHERS';
-
-export const domainList = [
-  'FINTECH',
-  'HEALTHTECH',
-  'EDUCATION',
-  'ECOMMERCE',
-  'FOODTECH',
-  'MOBILITY',
-  'CONTENTS',
-  'B2B',
-  'OTHERS',
-];
-
 export type PostFilter = {
   roles?: JobMinorCategory[];
   investmentMax?: number;
@@ -57,11 +35,6 @@ export type PostFilter = {
   employing?: 0 | 1;
   series?: Series[];
   order?: 0 | 1;
-};
-
-export type Link = {
-  link: string;
-  description: string;
 };
 
 type PostRequest = {

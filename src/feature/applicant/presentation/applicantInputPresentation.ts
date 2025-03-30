@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import type { Input, ListInput } from '@/entities/input';
 import { createStringListInputHandler } from '@/entities/input';
-import type { Link } from '@/entities/post';
+import type { Link } from '@/entities/link';
 
 type InitialInputState = {
   enrollYear?: string;

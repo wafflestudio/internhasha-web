@@ -5,9 +5,9 @@ import { PatchCompanyForm } from '@/feature/company';
 import { useRouteLocation } from '@/shared/route/useRouteParams';
 
 export const CreateCompanyPage = () => {
-  const body = useRouteLocation() as CompanyRouteQuery | null;
+  const body = useRouteLocation() as CompanyRouteQuery | undefined;
 
-  if (body === null) {
+  if (body === undefined) {
     return (
       <div className="min-h-screen">
         <GlobalNavigationBar />

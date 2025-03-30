@@ -1,10 +1,11 @@
+import type { Domain } from '@/entities/company';
 import type {
   Input,
   InputForForm,
   ListInput,
   SelectInput,
 } from '@/entities/input';
-import type { Domain, Link } from '@/entities/post';
+import type { Link } from '@/entities/link';
 import type { CompanyInputPresentation } from '@/feature/company/presentation/companyInputPresentation';
 import { convertEmptyStringToUndefined } from '@/lib/responseConverter';
 
@@ -38,12 +39,12 @@ type CompanyFormPresentation = {
       slogan: Input<string>;
       detail: Input<string>;
       profileImagePreview: Input<{ file: File; url: string } | null>;
-      companyInfoPDFPreview?: Input<{ file: File; url: string } | null>;
-      landingPageLink?: Input<string>;
-      rawLink?: Input<Link>;
-      links?: ListInput<Link>;
-      rawTag?: Input<string>;
-      tags?: ListInput<string>;
+      companyInfoPDFPreview: Input<{ file: File; url: string } | null>;
+      landingPageLink: Input<string>;
+      rawLink: Input<Link>;
+      links: ListInput<Link>;
+      rawTag: Input<string>;
+      tags: ListInput<string>;
     };
     formStates: {
       companyEstablishedYear: InputForForm<number>;

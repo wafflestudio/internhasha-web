@@ -1,5 +1,5 @@
 import type { Input, InputForForm, ListInput } from '@/entities/input';
-import type { Link } from '@/entities/post';
+import type { Link } from '@/entities/link';
 import type { ApplicantInputPresentation } from '@/feature/applicant/presentation/applicantInputPresentation';
 import { convertEmptyStringToUndefined } from '@/lib/responseConverter';
 

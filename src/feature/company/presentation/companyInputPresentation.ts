@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
+import type { Domain } from '@/entities/company';
 import type { Input, ListInput, SelectInput } from '@/entities/input';
 import { createStringListInputHandler } from '@/entities/input';
-import type { Domain, Link } from '@/entities/post';
+import type { Link } from '@/entities/link';
 
 type InitialInputState = {
   companyEstablishedYear?: string;

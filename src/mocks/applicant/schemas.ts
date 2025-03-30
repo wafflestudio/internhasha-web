@@ -1,7 +1,4 @@
-type Link = {
-  link: string;
-  description: string;
-};
+import type { Link } from '@/entities/link';
 
 export type Applicant = {
   id: string;
