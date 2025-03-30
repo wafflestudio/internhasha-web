@@ -1,12 +1,13 @@
 import type { Apis } from '@/api';
 import type {
   CoffeeChatApplicant,
+  CoffeeChatCompany,
   CoffeeChatCount,
   CoffeeChatDetailList,
   CoffeeChatListResponse,
   CoffeeChatStatus,
 } from '@/api/apis/localServer/schemas';
-import type { CoffeeChat, CoffeeChatRequest } from '@/entities/coffeeChat';
+import type { CoffeeChatRequest } from '@/entities/coffeeChat';
 import type { ServiceResponse } from '@/entities/response';
 
 export type CoffeeChatService = {
@@ -16,7 +17,7 @@ export type CoffeeChatService = {
   }: {
     token: string;
     coffeeChatId: string;
-  }) => ServiceResponse<CoffeeChat>;
+  }) => ServiceResponse<CoffeeChatApplicant | CoffeeChatCompany>;
   getCoffeeChatList: ({
     token,
   }: {

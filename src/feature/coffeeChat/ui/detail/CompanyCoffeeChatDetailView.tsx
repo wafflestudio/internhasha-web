@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import type { CoffeeChatCompany } from '@/api/apis/localServer/schemas';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { ApplicantInfo } from '@/feature/applicant';
@@ -38,14 +39,19 @@ export const CoffeeChatDetailView = ({
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
   }
-  const coffeeChatDetail = coffeeChatDetailData.data;
+  const coffeeChatDetail = coffeeChatDetailData.data as CoffeeChatCompany;
   const isWaiting = coffeeChatDetail.coffeeChatStatus === 'WAITING';
 
   return (
-    <>
+    <div>
       <div className="mx-auto flex w-full gap-[90px] px-6 py-[30px] sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl">
         <div className="flex w-[700px] flex-col gap-6 rounded-lg bg-white px-[40px] py-[46px] text-grey-900">
-          <ApplicantInfo />
+          <ApplicantInfo
+            fetchOwnInfo={false}
+            applicantData={coffeeChatDetail.applicant}
+            coffeeChatStatus={coffeeChatDetail.coffeeChatStatus}
+            createdAt={coffeeChatDetail.createdAt}
+          />
           <div className="flex flex-col gap-[16px]">
             <h3 className="text-22 font-bold">커피챗 신청 내용</h3>
             <p className="text-sm text-gray-700">{coffeeChatDetail.content}</p>
@@ -87,6 +93,6 @@ export const CoffeeChatDetailView = ({
       {responseMessage !== '' && (
         <FormErrorResponse>{responseMessage}</FormErrorResponse>
       )}
-    </>
+    </div>
   );
 };
