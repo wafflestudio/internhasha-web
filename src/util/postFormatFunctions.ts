@@ -1,5 +1,3 @@
-import type { Series } from '@/entities/post';
-
 export const getFormatDate = (dateString: string): string => {
   const date = new Date(dateString);
   const year = date.getFullYear();
@@ -21,14 +19,4 @@ export const getEmploymentStatus = (employmentEndDate: string): string => {
   );
 
   return daysLeft >= 0 ? (daysLeft === 0 ? 'D-day' : `D-${daysLeft}`) : '마감';
-};
-
-export const formatSeries = (input: Series) => {
-  if (input === 'SEED') {
-    return 'Seed';
-  }
-  if (input === 'PRE_A') {
-    return 'Pre-Series A';
-  }
-  return `Series ${input}`;
 };

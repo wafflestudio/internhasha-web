@@ -36,36 +36,6 @@ export type PostFilter = {
   order?: 0 | 1;
 };
 
-type PostRequest = {
-  id: string;
-  author: AuthorBriefDTO;
-
-  // 회사 정보
-  companyName: string;
-  explanation: string;
-  email: string;
-  slogan: string;
-  investAmount: number;
-  investCompany: string;
-  series: Series;
-  irDeckLink?: string;
-  landingPageLink?: string;
-  imageLink: string;
-  links?: Link[];
-  tags?: { tag: string }[];
-
-  // post 정보
-  title: string;
-  employmentEndDate: string;
-  createdAt: string;
-  updatedAt: string;
-  isActive: boolean;
-  category: JobMinorCategory;
-  detail: string;
-  headcount: number;
-  isBookmarked: boolean;
-};
-
 export type PostResponse = {
   id: string;
   author: AuthorBriefDTO;
@@ -73,22 +43,6 @@ export type PostResponse = {
   position: PositionDTO;
   isBookmarked: boolean;
 };
-
-export type CreateCompanyRequest = Pick<
-  PostRequest,
-  | 'companyName'
-  | 'explanation'
-  | 'email'
-  | 'slogan'
-  | 'investAmount'
-  | 'investCompany'
-  | 'series'
-  | 'irDeckLink'
-  | 'landingPageLink'
-  | 'imageLink'
-  | 'links'
-  | 'tags'
->;
 
 export type CreatePostRequest = {
   positionTitle: string;
