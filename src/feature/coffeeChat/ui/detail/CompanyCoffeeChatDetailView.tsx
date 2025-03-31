@@ -3,7 +3,7 @@ import { useState } from 'react';
 import type { CoffeeChatCompany } from '@/api/apis/localServer/schemas';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
-import { ApplicantInfo } from '@/feature/applicant';
+import { ApplicantInfoForCoffeeChat } from '@/feature/coffeeChat/ui/detail/ApplicantInfoForCoffeeChat';
 import { SkeletonCoffeeChatDetailView } from '@/feature/coffeeChat/ui/detail/SkeletonCoffeeChatDetailView';
 import {
   useGetCoffeeChatDetail,
@@ -46,12 +46,7 @@ export const CoffeeChatDetailView = ({
     <div>
       <div className="mx-auto flex w-full gap-[90px] px-6 py-[30px] sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl">
         <div className="flex w-[700px] flex-col gap-6 rounded-lg bg-white px-[40px] py-[46px] text-grey-900">
-          <ApplicantInfo
-            fetchOwnInfo={false}
-            applicantData={coffeeChatDetail.applicant}
-            coffeeChatStatus={coffeeChatDetail.coffeeChatStatus}
-            createdAt={coffeeChatDetail.createdAt}
-          />
+          <ApplicantInfoForCoffeeChat applicant={coffeeChatDetail.applicant} />
           <div className="flex flex-col gap-[16px]">
             <h3 className="text-22 font-bold">커피챗 신청 내용</h3>
             <p className="text-sm text-gray-700">{coffeeChatDetail.content}</p>
