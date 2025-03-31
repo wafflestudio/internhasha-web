@@ -24,6 +24,7 @@ import {
   MAX_SLOGAN_LENGTH,
 } from '@/feature/applicant/presentation/applicantInputPresentation';
 import { DepartmentsField } from '@/feature/applicant/ui/form/fields/DepartmentField';
+import { SkeletonProfileForm } from '@/feature/applicant/ui/form/SkeletonProfileForm';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -129,7 +130,7 @@ export const CreateProfileForm = ({
     isInitialCvPreviewPending ||
     isInitialPortfolioPreviewPending
   ) {
-    return <div>로딩중...</div>;
+    return <SkeletonProfileForm />;
   }
 
   const handleSubmit = () => {
