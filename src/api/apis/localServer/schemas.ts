@@ -54,18 +54,18 @@ type CompanyDTO = {
   id: string;
   companyName: string;
   companyEstablishedYear: number;
-  domain: string;
+  domain: Domain;
   headcount: number;
   location: string;
   slogan: string;
   detail: string;
   profileImageKey: string;
-  companyInfoPDFLink?: string | null;
+  companyInfoPDFKey?: string | null;
   landingPageLink?: string | null;
   links?: Link[];
-  tags?: string[];
+  tags?: { tag: string }[];
   vcName: string;
-  vcRec: string;
+  vcRecommendation: string;
 };
 
 type PositionDTO = {
@@ -271,19 +271,10 @@ export type S3UploadReq = {
   fileType: string;
 };
 
-export type CreateCompanyRequest = {
-  companyEstablishedYear: number;
-  domain: Domain;
-  headcount: number;
-  location: string;
-  slogan: string;
-  detail: string;
-  profileImageKey: string;
-  companyInfoPDFKey?: string;
-  landingPageLink?: string;
-  links?: Link[];
-  tags?: { tag: string }[];
-};
+export type CreateCompanyRequest = Omit<
+  CompanyDTO,
+  'id' | 'companyName' | 'vcName' | 'vcRecommendation'
+>;
 
 export type CreatePositionRequest = {
   positionTitle: string;

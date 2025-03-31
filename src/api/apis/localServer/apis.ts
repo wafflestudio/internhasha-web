@@ -348,6 +348,13 @@ export const getLocalServerApis = ({
         token,
       });
     },
+    'GET /company/me': ({ token }: { token: string }) => {
+      return callWithToken<SuccessResponse<CompanyResponse>>({
+        method: 'GET',
+        path: 'company/me',
+        token,
+      });
+    },
     'PUT /company/me': ({
       token,
       body,
