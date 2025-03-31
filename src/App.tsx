@@ -27,6 +27,7 @@ import { CreatePostPage } from '@/pages/CreatePostPage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { PatchApplicantProfilePage } from '@/pages/PatchApplicantProfilePage';
+import { PatchCompanyProfilePage } from '@/pages/PatchCompanyProfilePage';
 import { PostDetailPage } from '@/pages/PostDetailPage';
 import { ResetPasswordPage } from '@/pages/ResetPasswordPage';
 import { SignInPage } from '@/pages/SignInPage';
@@ -93,6 +94,10 @@ const RouterProvider = () => {
         <Route element={<ProtectedRoute role="COMPANY" />}>
           <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
           <Route path={PATH.CREATE_COMPANY} element={<CreateCompanyPage />} />
+          <Route
+            path={PATH.PATCH_COMPANY}
+            element={<PatchCompanyProfilePage />}
+          />
         </Route>
       </Route>
     </Routes>

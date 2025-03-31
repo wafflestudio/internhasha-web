@@ -24,14 +24,35 @@ import {
   MAX_SLOGAN_LENGTH,
 } from '@/feature/company/presentation/companyInputPresentation';
 import { LocationField } from '@/feature/company/ui/form/fields/LocationField';
+import { SkeletonCompanyProfileForm } from '@/feature/company/ui/form/SkeletonCompanyProfileForm';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
-import { useGetPresignedUrl, useUploadFile } from '@/shared/file/hooks';
+import {
+  useDownloadFile,
+  useGetPresignedUrl,
+  useUploadFile,
+} from '@/shared/file/hooks';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { formatDomainToLabel } from '@/util/format';
 
-export const CreateCompanyForm = () => {
+export const CreateCompanyProfileForm = ({
+  initialState,
+}: {
+  initialState?: {
+    companyEstablishedYear?: number;
+    domain?: Domain | 'NONE';
+    headcount?: number;
+    location?: string;
+    slogan?: string;
+    detail?: string;
+    profileImageKey?: string;
+    companyInfoPDFKey?: string;
+    landingPageLink?: string;
+    links?: Link[];
+    tags?: { tag: string }[];
+  };
+}) => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [isCancel, setIsCancel] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
@@ -70,6 +91,22 @@ export const CreateCompanyForm = () => {
   const { handleCreateCompany, isPending } = useCreateCompanyWithUploads({
     setResponseMessage: setResponseMessage,
   });
+  const { isPending: isInitialImagePreviewPending } = useDownloadFile({
+    s3Key: initialState?.profileImageKey,
+    fileType: 'COMPANY_THUMBNAIL',
+    fileName: '인턴하샤_썸네일_이미지',
+    setData: profileImagePreview.onChange,
+  });
+  const { isPending: isInitialCompanyInfoPreviewPending } = useDownloadFile({
+    s3Key: initialState?.companyInfoPDFKey,
+    fileType: 'IR_DECK',
+    fileName: '인턴하샤_회사소개',
+    setData: companyInfoPDFPreview.onChange,
+  });
+
+  if (isInitialImagePreviewPending || isInitialCompanyInfoPreviewPending) {
+    return <SkeletonCompanyProfileForm />;
+  }
 
   const handleSubmit = () => {
     setIsSubmit(true);
