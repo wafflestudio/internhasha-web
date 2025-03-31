@@ -20,12 +20,13 @@ import { ApplicantCoffeeChatDetailPage } from '@/pages/ApplicantCoffeeChatDetail
 import { ApplicantMyPage } from '@/pages/ApplicantMyPage';
 import { CompanyCoffeeChatDetailPage } from '@/pages/CompanyCoffeeChatDetailPage';
 import { CompanyMyPage } from '@/pages/CompanyMyPage';
+import { CreateApplicantProfilePage } from '@/pages/CreateApplicantProfilePage';
 import { CreateCoffeeChatPage } from '@/pages/CreateCoffeeChatPage';
 import { CreateCompanyPage } from '@/pages/CreateCompanyPage';
 import { CreatePostPage } from '@/pages/CreatePostPage';
-import { CreateProfilePage } from '@/pages/CreateProfilePage';
 import { EmailVerifyPage } from '@/pages/EmailVerifyPage';
 import { LandingPage } from '@/pages/LandingPage';
+import { PatchApplicantProfilePage } from '@/pages/PatchApplicantProfilePage';
 import { PostDetailPage } from '@/pages/PostDetailPage';
 import { ResetPasswordPage } from '@/pages/ResetPasswordPage';
 import { SignInPage } from '@/pages/SignInPage';
@@ -80,7 +81,14 @@ const RouterProvider = () => {
             path={PATH.CREATE_COFFEE_CHAT}
             element={<CreateCoffeeChatPage />}
           />
-          <Route path={PATH.CREATE_PROFILE} element={<CreateProfilePage />} />
+          <Route
+            path={PATH.CREATE_PROFILE}
+            element={<CreateApplicantProfilePage />}
+          />
+          <Route
+            path={PATH.PATCH_PROFILE}
+            element={<PatchApplicantProfilePage />}
+          />
         </Route>
         <Route element={<ProtectedRoute role="COMPANY" />}>
           <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
@@ -148,7 +156,10 @@ export const App = () => {
     };
   };
 
-  const externalServerCall = async (content: ExternalFileCallParams) => {
+  const externalServerCall = async (
+    content: ExternalFileCallParams,
+    returnFile: boolean = false,
+  ) => {
     const getBody = (body: Record<string, unknown> | File | undefined) => {
       if (body === undefined) {
         return undefined;
@@ -167,8 +178,15 @@ export const App = () => {
         : {}),
     });
 
+    if (returnFile) {
+      const responseBlob = (await response.blob().catch(() => null)) as Blob;
+      const contentType = response.headers.get('Content-Type');
+      return {
+        status: response.status,
+        data: { blob: responseBlob, type: contentType },
+      };
+    }
     const responseBody = (await response.json().catch(() => null)) as unknown;
-
     return {
       status: response.status,
       data: responseBody,

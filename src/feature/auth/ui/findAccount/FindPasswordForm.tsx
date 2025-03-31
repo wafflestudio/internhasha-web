@@ -28,7 +28,7 @@ export const FindPasswordForm = () => {
   const sendPasswordDisable = mail.isError || sendSuccess;
 
   const onSubmit = () => {
-    sendPassword({ mail: formStates.mail.value });
+    sendPassword({ email: formStates.mail.value });
   };
 
   return (
@@ -72,8 +72,8 @@ const useSendPassword = () => {
   const [sendSuccess, setSendSuccess] = useState(false);
 
   const { mutate: sendPassword, isPending } = useMutation({
-    mutationFn: ({ mail }: { mail: string }) => {
-      return authService.sendEmailPassword({ mail });
+    mutationFn: ({ email }: { email: string }) => {
+      return authService.sendEmailPassword({ email });
     },
     onSuccess: (response) => {
       if (response.type === 'success') {

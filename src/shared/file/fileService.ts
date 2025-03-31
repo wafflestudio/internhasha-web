@@ -28,6 +28,13 @@ export type FileService = {
     presignedUrl: string;
     file: File;
   }): ServiceResponse<void>;
+  downloadFileByPresignedUrl({
+    presignedUrl,
+    fileName,
+  }: {
+    presignedUrl: string;
+    fileName: string;
+  }): ServiceResponse<{ file: File; url: string }>;
 };
 
 export const implFileService = ({
@@ -84,6 +91,40 @@ export const implFileService = ({
       return {
         type: 'success',
         data,
+      };
+    }
+    return { type: 'error', code: data.code, message: data.message };
+  },
+  downloadFileByPresignedUrl: async ({ presignedUrl, fileName }) => {
+    const { status, data } = await externalApis['GET download-file']({
+      path: presignedUrl,
+    });
+
+    const getExtension = (input: string) => {
+      if (input.includes('image/jpeg')) {
+        return 'jpg';
+      }
+      if (input.includes('image/png')) {
+        return 'png';
+      }
+      if (input.includes('application/pdf')) {
+        return 'pdf';
+      }
+      if (input.includes('image/gif')) {
+        return 'gif';
+      }
+      return 'jpg';
+    };
+
+    if (status === 200) {
+      // 기타 필요한 타입 추가
+      const extension = getExtension(data.type);
+      const file = new File([data.blob], `${fileName}.${extension}`, {
+        type: data.type,
+      });
+      return {
+        type: 'success',
+        data: { url: URL.createObjectURL(file), file },
       };
     }
     return { type: 'error', code: data.code, message: data.message };

@@ -12,4 +12,5 @@ export const PATH = {
   CREATE_COMPANY: '/company/create',
   CREATE_POST: '/post/create/:companyId',
   CREATE_PROFILE: '/profile/create',
+  PATCH_PROFILE: '/profile/patch',
 };

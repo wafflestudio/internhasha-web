@@ -213,7 +213,7 @@ export type SignUpRequest =
       info: {
         type: 'APPLICANT';
         name: string;
-        mail: string;
+        email: string;
         password: string;
       };
     }
@@ -224,7 +224,7 @@ export type SignUpRequest =
         name: string;
         secretPassword: string;
         password: string;
-        mail: string;
+        email: string;
       };
     };
 
@@ -234,15 +234,15 @@ export type SignInRequest = {
 };
 
 export type MailRequest = {
-  mail: string;
+  email: string;
 };
 
 export type SnuMailRequest = {
-  snuMail: string;
+  email: string;
 };
 
 export type CheckSnuMailVerificationRequest = {
-  snuMail: string;
+  email: string;
   code: string;
 };
 

@@ -24,10 +24,15 @@ import {
   MAX_SLOGAN_LENGTH,
 } from '@/feature/applicant/presentation/applicantInputPresentation';
 import { DepartmentsField } from '@/feature/applicant/ui/form/fields/DepartmentField';
+import { SkeletonProfileForm } from '@/feature/applicant/ui/form/SkeletonProfileForm';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
-import { useGetPresignedUrl, useUploadFile } from '@/shared/file/hooks';
+import {
+  useDownloadFile,
+  useGetPresignedUrl,
+  useUploadFile,
+} from '@/shared/file/hooks';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 type CreateApplicantProfileRequest = {
@@ -43,20 +48,36 @@ type CreateApplicantProfileRequest = {
   links?: Link[];
 };
 
-export const CreateProfileForm = () => {
+export const CreateProfileForm = ({
+  initialState,
+}: {
+  initialState?: {
+    enrollYear?: number;
+    department: string;
+    positions?: string[];
+    slogan?: string;
+    explanation?: string;
+    stacks?: string[];
+    imageKey?: string;
+    cvKey?: string;
+    portfolioKey?: string;
+    links?: Link[];
+  };
+}) => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [isCancel, setIsCancel] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
 
   const { inputStates, formStates } = applicantFormPresentation.useValidator({
     applicantInputPresentation,
+    initialState,
   });
 
   const {
     enrollYear,
     majorDepartment,
     rawMinorDepartment,
-    minorDepartments,
+    minorDepartment,
     rawPosition,
     positions,
     slogan,
@@ -85,11 +106,38 @@ export const CreateProfileForm = () => {
       setResponseMessage: setResponseMessage,
     });
 
+  const { isPending: isInitialImagePreviewPending } = useDownloadFile({
+    s3Key: initialState?.imageKey,
+    fileType: 'USER_THUMBNAIL',
+    fileName: '인턴하샤_썸네일_이미지',
+    setData: imagePreview.onChange,
+  });
+  const { isPending: isInitialCvPreviewPending } = useDownloadFile({
+    s3Key: initialState?.cvKey,
+    fileType: 'CV',
+    fileName: '인턴하샤_이력서',
+    setData: cvPreview.onChange,
+  });
+  const { isPending: isInitialPortfolioPreviewPending } = useDownloadFile({
+    s3Key: 'static/private/PORTFOLIO/c685842238_20250327/Week - 4.pdf',
+    fileType: 'PORTFOLIO',
+    fileName: '인턴하샤_포트폴리오',
+    setData: portfolioPreview.onChange,
+  });
+
+  if (
+    isInitialImagePreviewPending ||
+    isInitialCvPreviewPending ||
+    isInitialPortfolioPreviewPending
+  ) {
+    return <SkeletonProfileForm />;
+  }
+
   const handleSubmit = () => {
     setIsSubmit(true);
     if (
       formStates.enrollYear.isError ||
-      formStates.departments.isError ||
+      formStates.department.isError ||
       formStates.slogan.isError ||
       formStates.explanation.isError ||
       formStates.stacks.isError ||
@@ -101,7 +149,7 @@ export const CreateProfileForm = () => {
     handleCreateApplicantProfile({
       applicantInfo: {
         enrollYear: formStates.enrollYear.value,
-        department: formStates.departments.value,
+        department: formStates.department.value,
         slogan: formStates.slogan.value,
         explanation: formStates.explanation.value,
         stacks: formStates.stacks.value,
@@ -144,11 +192,11 @@ export const CreateProfileForm = () => {
         <DepartmentsField
           label="학과"
           majorInput={majorDepartment}
-          minorListInput={minorDepartments}
+          minorListInput={minorDepartment}
           minorRawInput={rawMinorDepartment}
           isPending={isPending}
           isSubmit={isSubmit}
-          isSubmitError={formStates.departments.isError}
+          isSubmitError={formStates.department.isError}
           majorPlaceholder="주전공 학과명을 입력해주세요. (예시: 컴퓨터공학부, 경제학부 등)"
           minorPlaceholder="다전공 학과명을 입력해주세요. (예시: 컴퓨터공학부, 경제학부 등)"
           errorMessage="희망 직무는 10개 이하로 중복되지 않게 입력해주세요."
@@ -211,7 +259,6 @@ export const CreateProfileForm = () => {
           infoMessage="나를 소개하는 한 마디를 입력해주세요."
           minLine={7}
         />
-
         <ImageField
           label="프로필 사진"
           input={imagePreview}
