@@ -8,8 +8,7 @@ export type MockResponse<T> = T | MockErrorResponse;
 // DTO
 type UserBriefDTO = {
   id: string;
-  username: string;
-  isAdmin: boolean;
+  userRole: 'APPLICANT' | 'COMPANY';
 };
 
 // Request
@@ -27,7 +26,7 @@ export type GoogleSignUpRequest = {
   googleAccesToken: string;
 };
 
-export type LocalSignUpRequest = {
+export type SignInRequest = {
   mail: string;
   password: string;
 };

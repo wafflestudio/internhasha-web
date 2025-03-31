@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import MDEditor from '@uiw/react-md-editor';
 
 import { DownloadButtonWithPresignedUrl } from '@/components/button/DownloadButtonWithPresignedUrl';
-import { LinkButton } from '@/components/button/LinkButton';
+import { LinkButton, SmallLinkButton } from '@/components/button/LinkButton';
 import { ThumbnailWithPresignedUrl } from '@/components/thumbnail/ThumbnailWithPresignedUrl';
 import { Badge } from '@/components/ui/badge';
 import { ICON_SRC } from '@/entities/asset';
@@ -46,7 +46,7 @@ export const CompanyProfile = () => {
   } = myInfoData.data;
 
   return (
-    <div className="flex flex-col gap-[30px] text-grey-900">
+    <div className="flex flex-col gap-[30px] rounded-[8px] bg-white px-[30px] py-[36px] text-grey-900">
       <section>
         <div className="flex gap-[18px]">
           <ThumbnailWithPresignedUrl
@@ -55,29 +55,28 @@ export const CompanyProfile = () => {
           />
           <div className="flex flex-col gap-1">
             <p className="text-26 font-bold">{companyName}</p>
-            <span className="text-18">{formatDomainToLabel(domain)}</span>
           </div>
         </div>
       </section>
 
       <section className="flex flex-col gap-3 rounded-md bg-grey-50 px-[34px] py-[20px]">
-        <div className="flex gap-5">
+        <div className="flex h-[30px] items-center gap-5">
           <div className="flex flex-1 gap-[10px]">
-            <p className="w-[60px] font-semibold">업종</p>
+            <p className="w-[70px] font-semibold text-grey-400">업종</p>
             <p>{formatDomainToLabel(domain)}</p>
           </div>
           <div className="flex flex-1 gap-[10px]">
-            <p className="w-[60px] font-semibold">구성 인원수</p>
+            <p className="w-[70px] font-semibold text-grey-400">구성 인원수</p>
             <p>{headcount}명</p>
           </div>
         </div>
-        <div className="flex flex-1 gap-[10px]">
-          <p className="w-[60px] font-semibold">설립</p>
+        <div className="flex h-[30px] items-center gap-[10px]">
+          <p className="w-[70px] font-semibold text-grey-400">설립</p>
           <p>{companyEstablishedYear}년</p>
         </div>
-        <div className="flex flex-1 gap-[10px]">
-          <p className="w-[60px] font-semibold">근무 위치</p>
-          <div>
+        <div className="flex h-[30px] items-center gap-[10px]">
+          <p className="w-[70px] font-semibold text-grey-400">근무 위치</p>
+          <div className="flex gap-1">
             <img src={ICON_SRC.LOCATION} className="h-5 w-5" />
             {location.replace('|', ' ')}
           </div>
@@ -88,14 +87,14 @@ export const CompanyProfile = () => {
         {(landingPageLink !== undefined || companyInfoPDFKey !== undefined) && (
           <div className="flex gap-[50px]">
             {landingPageLink !== undefined && (
-              <div className="flex gap-4">
+              <div className="flex items-center gap-4">
                 <span className="text-16 font-bold">회사 홈페이지</span>
 
                 <LinkButton link={landingPageLink}></LinkButton>
               </div>
             )}
             {companyInfoPDFKey !== undefined && (
-              <div className="flex gap-4">
+              <div className="flex items-center gap-4">
                 <span className="text-16 font-bold">회사 소개 자료</span>
                 <DownloadButtonWithPresignedUrl
                   s3Key={companyInfoPDFKey}
@@ -115,12 +114,10 @@ export const CompanyProfile = () => {
               {links.map((item) => (
                 <div
                   key={`external-link-${item.description}`}
-                  className="flex gap-[10px]"
+                  className="flex items-center gap-[10px]"
                 >
-                  <span>{item.description}</span>
-                  <LinkButton link={item.link}>
-                    <img src={ICON_SRC.LINK} className="h-5 w-5" />
-                  </LinkButton>
+                  <span className="font-regular">{item.description}</span>
+                  <SmallLinkButton link={item.link}></SmallLinkButton>
                 </div>
               ))}
             </div>
@@ -140,13 +137,13 @@ export const CompanyProfile = () => {
         )}
         <div className="flex flex-col gap-3">
           <p className="text-16 font-bold text-grey-800">상세 소개</p>
-          <div data-color-mode="light">
-            <MDEditor.Markdown source={detail} />
+          <div data-color-mode="light" className="font-regular text-grey-800">
+            <MDEditor.Markdown source={detail} style={{ fontSize: '14px' }} />
           </div>
         </div>
         <div className="flex flex-col gap-3">
           <p className="text-16 font-bold text-grey-800">{vcName} 추천 이유</p>
-          <p>{vcRecommendation}</p>
+          <p className="font-regular text-grey-800">{vcRecommendation}</p>
         </div>
       </section>
     </div>
