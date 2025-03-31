@@ -26,7 +26,7 @@ export type CompanyService = {
     token,
   }: {
     token: string;
-  }): ServiceResponse<LocalServerDTO.UserResponse>;
+  }): ServiceResponse<LocalServerDTO.CompanyResponse>;
   createCompany({
     token,
     companyEstablishedYear,
@@ -94,7 +94,7 @@ export const implCompanyService = ({
     return { type: 'error', code: data.code, message: data.message };
   },
   getMyInfo: async ({ token }) => {
-    const { status, data } = await apis['GET /user/me']({ token });
+    const { status, data } = await apis['GET /company/me']({ token });
 
     if (status === 200) {
       return {
