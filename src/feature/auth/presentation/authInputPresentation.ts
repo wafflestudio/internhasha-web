@@ -23,13 +23,14 @@ export type AuthInputPresentation = {
 
 const EMAIL_PREFIX_REGEX = /^[a-zA-Z0-9._%+-]+$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const PASSWORD_REGEX =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!*()]).{8,20}$/;
+const PASSWORD_REGEX = /^.{8,64}$/;
 const PASSWORD_DETAIL_REGEX = {
   ENGLISH_REGEX: /(?=.*[A-Z])(?=.*[a-z])/,
   NUMBER_REGEX: /\d/,
   SPECIAL_CHAR_REGEX: /[@#$!^*]/,
-  LENGTH_REGEX: /^.{8,20}$/,
+  LENGTH_REGEX: /^.{8,64}$/,
+  PATTERN_REGEX:
+    /(012|123|234|345|456|567|678|789|890|abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz)/i,
 };
 const CODE_REGEX = /^\d{6}$/;
 const USERNAME_REGEX = /^([가-힣]{2,6}|[A-Za-z]{2,20})$/;
@@ -80,6 +81,7 @@ export const authInputPresentation: AuthInputPresentation = {
           specialCharError:
             !PASSWORD_DETAIL_REGEX.SPECIAL_CHAR_REGEX.test(password),
           lengthError: !PASSWORD_DETAIL_REGEX.LENGTH_REGEX.test(password),
+          patternError: PASSWORD_DETAIL_REGEX.PATTERN_REGEX.test(password),
         },
         onChange: setPassword,
       },

@@ -32,6 +32,13 @@ export const LocalSignUpForm = () => {
   const signUpDisable =
     username.isError || password.isError || passwordConfirm.isError;
 
+  const detailedError =
+    password.detailedError.lengthError === true ||
+    password.detailedError.numberError === true ||
+    password.detailedError.englishError === true ||
+    password.detailedError.specialCharError === true ||
+    password.detailedError.patternError === true;
+
   const onSubmit = () => {
     if (username.isError) {
       setResponseMessage(
@@ -93,76 +100,101 @@ export const LocalSignUpForm = () => {
               onFocus={() => {
                 setIsPasswordFocused(true);
               }}
-              onBlur={() => {
-                setIsPasswordFocused(false);
-              }}
               placeholder="비밀번호를 입력해주세요."
             />
-            {isPasswordFocused && password.isError && (
+            {isPasswordFocused && detailedError && (
               <div className="flex flex-col gap-1">
-                <div className="flex gap-1">
-                  {password.detailedError.englishError === false ? (
-                    <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
-                  ) : (
-                    <img src={ICON_SRC.CLOSE.GREY} alt="재작성 아이콘" />
-                  )}{' '}
-                  <span
-                    className={
-                      password.detailedError.englishError === false
-                        ? 'text-sm text-grey-900'
-                        : 'text-sm text-grey-300'
-                    }
-                  >
-                    영문 대소문자 각각 1개 이상
+                <div className="flex gap-[6px]">
+                  <img src={ICON_SRC.INFO} className="h-5 w-5" />
+                  <span className="text-13">
+                    아래와 같이 비밀번호를 설정하면 보안등급을 올릴 수 있어요
                   </span>
                 </div>
-                <div className="flex gap-1">
-                  {password.detailedError.numberError === false ? (
-                    <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
-                  ) : (
-                    <img src={ICON_SRC.CLOSE.GREY} alt="재작성 아이콘" />
-                  )}{' '}
-                  <span
-                    className={
-                      password.detailedError.numberError === false
-                        ? 'text-sm text-grey-900'
-                        : 'text-sm text-grey-300'
-                    }
-                  >
-                    숫자 1개 이상
-                  </span>
-                </div>
-                <div className="flex gap-1">
-                  {password.detailedError.specialCharError === false ? (
-                    <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
-                  ) : (
-                    <img src={ICON_SRC.CLOSE.GREY} alt="재작성 아이콘" />
-                  )}{' '}
-                  <span
-                    className={
-                      password.detailedError.specialCharError === false
-                        ? 'text-sm text-grey-900'
-                        : 'text-sm text-grey-300'
-                    }
-                  >
-                    특수문자(@, #, $, !, ^, *) 1개 이상
-                  </span>
-                </div>
-                <div className="flex gap-1">
-                  {password.detailedError.lengthError === false ? (
-                    <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
-                  ) : (
-                    <img src={ICON_SRC.CLOSE.GREY} alt="재작성 아이콘" />
-                  )}{' '}
-                  <span
-                    className={
-                      password.detailedError.lengthError === false
-                        ? 'text-sm text-grey-900'
-                        : 'text-sm text-grey-300'
-                    }
-                  >
-                    길이는 8~20자리
-                  </span>
+                <div className="flex flex-col gap-1 pl-6">
+                  <div className="flex gap-1">
+                    {password.detailedError.lengthError === false ? (
+                      <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
+                    ) : (
+                      <img src={ICON_SRC.CLOSE.GREY} alt="재작성 아이콘" />
+                    )}{' '}
+                    <span
+                      className={
+                        password.detailedError.lengthError === false
+                          ? 'text-sm text-grey-900'
+                          : 'text-sm text-grey-300'
+                      }
+                    >
+                      비밀번호 8자리 이상(필수)
+                    </span>
+                  </div>
+
+                  <div className="flex gap-1">
+                    {password.detailedError.numberError === false ? (
+                      <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
+                    ) : (
+                      <img src={ICON_SRC.CLOSE.GREY} alt="재작성 아이콘" />
+                    )}{' '}
+                    <span
+                      className={
+                        password.detailedError.numberError === false
+                          ? 'text-sm text-grey-900'
+                          : 'text-sm text-grey-300'
+                      }
+                    >
+                      숫자 포함
+                    </span>
+                  </div>
+
+                  <div className="flex gap-1">
+                    {password.detailedError.englishError === false ? (
+                      <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
+                    ) : (
+                      <img src={ICON_SRC.CLOSE.GREY} alt="재작성 아이콘" />
+                    )}{' '}
+                    <span
+                      className={
+                        password.detailedError.englishError === false
+                          ? 'text-sm text-grey-900'
+                          : 'text-sm text-grey-300'
+                      }
+                    >
+                      영문 대소문자 포함
+                    </span>
+                  </div>
+
+                  <div className="flex gap-1">
+                    {password.detailedError.specialCharError === false ? (
+                      <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
+                    ) : (
+                      <img src={ICON_SRC.CLOSE.GREY} alt="재작성 아이콘" />
+                    )}{' '}
+                    <span
+                      className={
+                        password.detailedError.specialCharError === false
+                          ? 'text-sm text-grey-900'
+                          : 'text-sm text-grey-300'
+                      }
+                    >
+                      특수문자 포함
+                    </span>
+                  </div>
+
+                  <div className="flex gap-1">
+                    {password.detailedError.patternError === false ? (
+                      <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
+                    ) : (
+                      <img src={ICON_SRC.CLOSE.GREY} alt="재작성 아이콘" />
+                    )}{' '}
+                    <span
+                      className={
+                        password.detailedError.patternError === false
+                          ? 'text-sm text-grey-900'
+                          : 'text-sm text-grey-300'
+                      }
+                    >
+                      연속된 문자열이나 숫자가 없어야 함
+                    </span>
+                  </div>
                 </div>
               </div>
             )}

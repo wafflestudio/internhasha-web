@@ -28,4 +28,5 @@ export const ICON_SRC = {
   BADGES: '/svg/badges.svg',
   SKELETON: '/img/skeleton.png',
   LOCATION: '/svg/location.svg',
+  INFO: '/svg/info.svg',
 };
