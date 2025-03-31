@@ -1,5 +1,3 @@
-import { useSearchParams } from 'react-router';
-
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -15,15 +13,14 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { UserContext } from '@/shared/context/UserContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { useRouteQueryParams } from '@/shared/route/useRouteParams';
+type MyPageTab = MyPageRouteQuery['tab'];
 
 export const CompanyMyPage = () => {
   const queryParams = useRouteQueryParams() as MyPageRouteQuery | null;
   const { id } = useGuardContext(UserContext);
-  const { toCreatePost } = useRouteNavigation();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { toCreatePost, toMyPage } = useRouteNavigation();
   const handleTabChange = (tab: string) => {
-    searchParams.set('tab', tab);
-    setSearchParams(searchParams);
+    toMyPage({ query: { tab: tab as MyPageTab } });
   };
 
   return (

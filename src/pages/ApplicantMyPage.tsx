@@ -1,5 +1,3 @@
-import { useSearchParams } from 'react-router';
-
 import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { MyPageRouteQuery } from '@/entities/route';
@@ -7,15 +5,17 @@ import { ApplicantInfo } from '@/feature/applicant';
 import { ApplicantCoffeeChatListView } from '@/feature/coffeeChat';
 import { CoffeeChatNumberBadge } from '@/feature/coffeeChat';
 import { BookmarkListView } from '@/feature/post/ui/mypage/applicant/BookmarkListView';
+import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { useRouteQueryParams } from '@/shared/route/useRouteParams';
+
+type MyPageTab = MyPageRouteQuery['tab'];
 
 export const ApplicantMyPage = () => {
   const queryParams = useRouteQueryParams() as MyPageRouteQuery | null;
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { toMyPage } = useRouteNavigation();
 
   const handleTabChange = (tab: string) => {
-    searchParams.set('tab', tab);
-    setSearchParams(searchParams);
+    toMyPage({ query: { tab: tab as MyPageTab } });
   };
 
   return (
