@@ -11,6 +11,11 @@ export const ICON_SRC = {
     SELECTED: '/svg/bookmark_selected.svg',
     UNSELECTED: '/svg/bookmark_unselected.svg',
   },
+  GNB: {
+    LETTER: '/svg/logo_letter.svg',
+    ICON: '/svg/logo_icon.svg',
+    SEARCH: '/svg/search.svg',
+  },
   CALENDAR: '/svg/calendar_today.svg',
   CAMERA: '/svg/photo_camera.svg',
   UPLOAD: '/svg/drive_folder_upload.svg',

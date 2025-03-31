@@ -13,11 +13,15 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { UserContext } from '@/shared/context/UserContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { useRouteQueryParams } from '@/shared/route/useRouteParams';
+type MyPageTab = MyPageRouteQuery['tab'];
 
 export const CompanyMyPage = () => {
   const queryParams = useRouteQueryParams() as MyPageRouteQuery | null;
   const { id } = useGuardContext(UserContext);
-  const { toCreatePost } = useRouteNavigation();
+  const { toCreatePost, toMyPage } = useRouteNavigation();
+  const handleTabChange = (tab: string) => {
+    toMyPage({ query: { tab: tab as MyPageTab } });
+  };
 
   return (
     <div className="min-h-screen bg-grey-50">
@@ -26,11 +30,12 @@ export const CompanyMyPage = () => {
       <div className="mx-auto flex w-full flex-col gap-10 px-6 py-[30px] sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl">
         <h1 className="text-2xl font-bold text-grey-900">마이페이지</h1>
         <Tabs
-          defaultValue={
+          value={
             queryParams !== null && queryParams.tab !== 'BOOKMARK'
               ? queryParams.tab
               : 'COFFEE_CHAT'
           }
+          onValueChange={handleTabChange}
           className="w-full"
         >
           <div className="flex flex-col gap-[30px]">

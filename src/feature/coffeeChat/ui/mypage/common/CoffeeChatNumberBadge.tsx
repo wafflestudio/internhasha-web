@@ -1,24 +1,30 @@
 import { useQuery } from '@tanstack/react-query';
+import type React from 'react';
 
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 
-export const CoffeeChatNumberBadge = () => {
+export const CoffeeChatNumberBadge = ({
+  onClick,
+}: React.HTMLAttributes<HTMLButtonElement>) => {
   const { coffeeChatCountData } = useGetCoffeeChatCount();
 
   if (coffeeChatCountData === undefined) return null;
 
   if (coffeeChatCountData.type === 'error') {
-    return (
-      <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
-    );
+    return null;
   }
-
+  if (coffeeChatCountData.data.num === 0) {
+    return null;
+  }
   return (
-    <span className="float-end ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-red text-11 font-medium text-white no-underline data-[state=active]:no-underline">
-      {coffeeChatCountData.data.num}
-    </span>
+    <button
+      className="float-end ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-red text-11 font-medium text-white no-underline data-[state=active]:no-underline"
+      onClick={onClick}
+    >
+      {coffeeChatCountData.data.num >= 10 ? '9+' : coffeeChatCountData.data.num}
+    </button>
   );
 };
 const useGetCoffeeChatCount = () => {
