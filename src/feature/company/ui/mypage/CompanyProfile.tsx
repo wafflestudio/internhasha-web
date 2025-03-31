@@ -48,7 +48,7 @@ export const CompanyProfile = () => {
   return (
     <div className="flex flex-col gap-[30px] rounded-[8px] bg-white px-[30px] py-[36px] text-grey-900">
       <section>
-        <div className="flex gap-[18px]">
+        <div className="flex items-center gap-[18px]">
           <ThumbnailWithPresignedUrl
             s3Key={profileImageKey}
             type="COMPANY_THUMBNAIL"
