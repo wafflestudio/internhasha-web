@@ -36,6 +36,37 @@ export type PostFilter = {
   order?: 0 | 1;
 };
 
+type CompanyDTO = {
+  id: string;
+  companyName: string;
+  companyEstablishedYear: number;
+  domain: string;
+  headcount: number;
+  location: string;
+  slogan: string;
+  detail: string;
+  profileImageKey: string;
+  companyInfoPDFLink?: string | null;
+  landingPageLink?: string | null;
+  links?: Link[];
+  tags?: { tag: string }[];
+  vcName: string;
+  vcRecommendation: string;
+};
+
+export type PositionDTO = {
+  id: string;
+  isActive: boolean;
+  positionTitle: string;
+  positionType: string;
+  headCount: number;
+  salary?: number | null;
+  detail: string;
+  employmentEndDate: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type PostResponse = {
   id: string;
   author: AuthorBriefDTO;
@@ -67,37 +98,6 @@ export type BriefPost = {
   detail100: string;
   positionType: string;
   isBookmarked: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
-
-type CompanyDTO = {
-  id: string;
-  companyName: string;
-  companyEstablishedYear: number;
-  domain: string;
-  headcount: number;
-  location: string;
-  slogan: string;
-  detail: string;
-  profileImageKey: string;
-  companyInfoPDFLink?: string | null;
-  landingPageLink?: string | null;
-  links?: Link[];
-  tags?: string[];
-  vcName: string;
-  vcRec: string;
-};
-
-export type PositionDTO = {
-  id: string;
-  isActive: boolean;
-  positionTitle: string;
-  positionType: string;
-  headCount: number;
-  salary?: number | null;
-  detail: string;
-  employmentEndDate: string | null;
   createdAt: string;
   updatedAt: string;
 };
