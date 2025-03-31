@@ -15,7 +15,8 @@ import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { SeperatorLine } from '@/components/ui/separator';
 import { createErrorMessage } from '@/entities/errors';
-import type { JobMinorCategory, Link } from '@/entities/post';
+import type { Link } from '@/entities/link';
+import type { JobMinorCategory } from '@/entities/post';
 import { applicantFormPresentation } from '@/feature/applicant/presentation/applicantFormPresentation';
 import {
   applicantInputPresentation,

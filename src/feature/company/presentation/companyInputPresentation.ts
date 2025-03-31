@@ -1,39 +1,37 @@
 import { useState } from 'react';
 
+import type { Domain } from '@/entities/company';
 import type { Input, ListInput, SelectInput } from '@/entities/input';
 import { createStringListInputHandler } from '@/entities/input';
-import type { Link, Series } from '@/entities/post';
+import type { Link } from '@/entities/link';
 
 type InitialInputState = {
-  companyName?: string;
-  explanation?: string;
-  email?: string;
+  companyEstablishedYear?: string;
+  domain?: Domain | 'NONE';
+  headcount?: string;
+  mainLocation?: string;
+  detailedLocation?: string;
   slogan?: string;
-  investAmount?: string;
-  investCompany?: string[];
-  series?: Series | 'NONE';
-  irDeckPreview?: { file: File; url: string } | null;
-  irDeckLink?: string;
+  detail?: string;
+  profileImagePreview?: { file: File; url: string } | null;
+  companyInfoPDFPreview?: { file: File; url: string } | null;
   landingPageLink?: string;
-  imagePreview?: { file: File; url: string } | null;
-  imageLink?: string;
   links?: Link[];
   tags?: string[];
 };
 
 export type CompanyInputPresentation = {
   useValidator({ initialState }: { initialState?: InitialInputState }): {
-    companyName: Input<string>;
-    explanation: Input<string>;
-    email: Input<string>;
+    companyEstablishedYear: Input<string>;
+    domain: SelectInput<Domain | 'NONE'>;
+    headcount: Input<string>;
+    mainLocation: Input<string>;
+    detailedLocation: Input<string>;
     slogan: Input<string>;
-    investAmount: Input<string>;
-    rawInvestCompany: Input<string>;
-    investCompany: ListInput<string>;
-    series: SelectInput<Series | 'NONE'>;
-    irDeckPreview: Input<{ file: File; url: string } | null>;
+    detail: Input<string>;
+    profileImagePreview: Input<{ file: File; url: string } | null>;
+    companyInfoPDFPreview: Input<{ file: File; url: string } | null>;
     landingPageLink: Input<string>;
-    imagePreview: Input<{ file: File; url: string } | null>;
     rawLink: Input<Link>;
     links: ListInput<Link>;
     rawTag: Input<string>;
@@ -41,13 +39,11 @@ export type CompanyInputPresentation = {
   };
 };
 
-const MAX_COMPANY_NAME_LENGTH = 30;
-export const MAX_EXPLANATION_LENGTH = 5000;
+export const MAX_DETAIL_LENGTH = 5000;
 export const MAX_SLOGAN_LENGTH = 100;
-const MAX_RAW_INVEST_COMPANY_LENGTH = 100;
+const MAX_LOCATION_LENGTH = 500;
 const MAX_DESCRIPTION_LENGTH = 30;
 const MAX_TAG_LENGTH = 8;
-const MAX_INVEST_COMPANY_SIZE = 10;
 const MAX_EXTERNAL_DESCRIPTION_LINK_SIZE = 5;
 const MAX_TAGS_SIZE = 10;
 
@@ -69,53 +65,56 @@ const IMAGE_EXTENSIONS = [
   'heic',
 ];
 
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const INVEST_AMOUNT_REGEX = /^\s*$|^[0-9]+$/;
+const NUMBER_REGEX = /^\s*$|^[0-9]+$/;
 const URL_REGEX = /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;
 
 export const companyInputPresentation: CompanyInputPresentation = {
   useValidator: ({ initialState }) => {
-    const [companyName, setCompanyName] = useState(
-      initialState?.companyName !== undefined ? initialState.companyName : '',
+    const [companyEstablishedYear, setCompanyEstablishedYear] = useState(
+      initialState?.companyEstablishedYear !== undefined
+        ? initialState.companyEstablishedYear
+        : '',
     );
-    const [explanation, setExplanation] = useState(
-      initialState?.explanation !== undefined ? initialState.explanation : '',
+    const [domain, setDomain] = useState<Domain | 'NONE'>(
+      initialState?.domain !== undefined ? initialState.domain : 'NONE',
     );
-    const [email, setEmail] = useState(
-      initialState?.email !== undefined ? initialState.email : '',
+    const [headcount, setHeadcount] = useState(
+      initialState?.headcount !== undefined ? initialState.headcount : '',
+    );
+    const [mainLocation, setMainLocation] = useState(
+      initialState?.mainLocation !== undefined ? initialState.mainLocation : '',
+    );
+    const [detailedLocation, setDetailedLocation] = useState(
+      initialState?.detailedLocation !== undefined
+        ? initialState.detailedLocation
+        : '',
     );
     const [slogan, setSlogan] = useState(
       initialState?.slogan !== undefined ? initialState.slogan : '',
     );
-    const [investAmount, setInvestAmount] = useState(
-      initialState?.investAmount !== undefined ? initialState.investAmount : '',
+    const [detail, setDetail] = useState(
+      initialState?.detail !== undefined ? initialState.detail : '',
     );
-    const [rawInvestCompany, setRawInvestCompany] = useState('');
-    const [investCompany, setInvestCompany] = useState<string[]>(
-      initialState?.investCompany !== undefined
-        ? initialState.investCompany
-        : [''],
+    const [profileImagePreview, setProfileImagePreview] = useState<{
+      file: File;
+      url: string;
+    } | null>(
+      initialState?.profileImagePreview !== undefined
+        ? initialState.profileImagePreview
+        : null,
     );
-    const [series, setSeries] = useState<Series | 'NONE'>(
-      initialState?.series !== undefined ? initialState.series : 'NONE',
-    );
-    const [irDeckPreview, setIrDeckPreview] = useState(
-      initialState?.irDeckPreview !== undefined
-        ? initialState.irDeckPreview
+    const [companyInfoPDFPreview, setCompanyInfoPDFPreview] = useState<{
+      file: File;
+      url: string;
+    } | null>(
+      initialState?.companyInfoPDFPreview !== undefined
+        ? initialState.companyInfoPDFPreview
         : null,
     );
     const [landingPageLink, setLandingPageLink] = useState(
       initialState?.landingPageLink !== undefined
         ? initialState.landingPageLink
         : '',
-    );
-    const [imagePreview, setImagePreview] = useState<{
-      file: File;
-      url: string;
-    } | null>(
-      initialState?.imagePreview !== undefined
-        ? initialState.imagePreview
-        : null,
     );
     const [rawLink, setRawLink] = useState<Link>({
       link: '',
@@ -130,18 +129,6 @@ export const companyInputPresentation: CompanyInputPresentation = {
     const [tags, setTags] = useState<string[]>(
       initialState?.tags !== undefined ? initialState.tags : [],
     );
-
-    const {
-      rawInputValidator: isRawInvestCompanyValid,
-      inputListValidator: isInvestCompanyValid,
-      onChange: handleInvestCompanyChange,
-    } = createStringListInputHandler({
-      rawInput: rawInvestCompany,
-      inputList: investCompany,
-      setInputList: setInvestCompany,
-      maxRawInputLength: MAX_RAW_INVEST_COMPANY_LENGTH,
-      maxListSize: MAX_INVEST_COMPANY_SIZE,
-    });
 
     const {
       rawInputValidator: isRawTagValid,
@@ -201,7 +188,7 @@ export const companyInputPresentation: CompanyInputPresentation = {
       return true;
     };
 
-    const isIrDeckPreviewValid = (
+    const isPdfValid = (
       input: {
         file: File;
         url: string;
@@ -299,52 +286,50 @@ export const companyInputPresentation: CompanyInputPresentation = {
     };
 
     return {
-      companyName: {
-        isError: companyName.length > MAX_COMPANY_NAME_LENGTH,
-        value: companyName,
-        onChange: setCompanyName,
+      companyEstablishedYear: {
+        isError: !NUMBER_REGEX.test(companyEstablishedYear),
+        value: companyEstablishedYear,
+        onChange: setCompanyEstablishedYear,
       },
-      explanation: {
-        isError: explanation.length > MAX_EXPLANATION_LENGTH,
-        value: explanation,
-        onChange: setExplanation,
+      domain: {
+        isError: false,
+        value: domain,
+        onChange: setDomain,
       },
-      email: {
-        isError: email.trim().length !== 0 && !EMAIL_REGEX.test(email),
-        value: email,
-        onChange: setEmail,
+      headcount: {
+        isError: !NUMBER_REGEX.test(headcount),
+        value: headcount,
+        onChange: setHeadcount,
+      },
+      mainLocation: {
+        isError: mainLocation.length > MAX_LOCATION_LENGTH,
+        value: mainLocation,
+        onChange: setMainLocation,
+      },
+      detailedLocation: {
+        isError: detailedLocation.length > MAX_LOCATION_LENGTH,
+        value: detailedLocation,
+        onChange: setDetailedLocation,
       },
       slogan: {
         isError: slogan.length > MAX_SLOGAN_LENGTH,
         value: slogan,
         onChange: setSlogan,
       },
-      investAmount: {
-        isError:
-          investAmount.trim().length !== 0 &&
-          !INVEST_AMOUNT_REGEX.test(investAmount),
-        value: investAmount,
-        onChange: setInvestAmount,
+      detail: {
+        isError: detail.length > MAX_DETAIL_LENGTH,
+        value: detail,
+        onChange: setDetail,
       },
-      rawInvestCompany: {
-        isError: !isRawInvestCompanyValid(rawInvestCompany),
-        value: rawInvestCompany,
-        onChange: setRawInvestCompany,
+      profileImagePreview: {
+        isError: !isImagePreviewValid(profileImagePreview),
+        value: profileImagePreview,
+        onChange: setProfileImagePreview,
       },
-      investCompany: {
-        isError: !isInvestCompanyValid(investCompany),
-        value: investCompany,
-        onChange: handleInvestCompanyChange,
-      },
-      series: {
-        isError: false,
-        value: series,
-        onChange: setSeries,
-      },
-      irDeckPreview: {
-        isError: !isIrDeckPreviewValid(irDeckPreview),
-        value: irDeckPreview,
-        onChange: setIrDeckPreview,
+      companyInfoPDFPreview: {
+        isError: !isPdfValid(companyInfoPDFPreview),
+        value: companyInfoPDFPreview,
+        onChange: setCompanyInfoPDFPreview,
       },
       landingPageLink: {
         isError:
@@ -352,11 +337,6 @@ export const companyInputPresentation: CompanyInputPresentation = {
           !URL_REGEX.test(landingPageLink),
         value: landingPageLink,
         onChange: setLandingPageLink,
-      },
-      imagePreview: {
-        isError: !isImagePreviewValid(imagePreview),
-        value: imagePreview,
-        onChange: setImagePreview,
       },
       rawLink: {
         isError: !isRawlinksValid(rawLink),

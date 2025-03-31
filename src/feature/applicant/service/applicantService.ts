@@ -1,5 +1,6 @@
 import type { Apis, LocalServerDTO } from '@/api';
-import type { JobMinorCategory, Link } from '@/entities/post';
+import type { Link } from '@/entities/link';
+import type { JobMinorCategory } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 
 export type ApplicantService = {

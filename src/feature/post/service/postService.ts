@@ -2,7 +2,6 @@ import type { Apis } from '@/api';
 import type { Paginator } from '@/entities/paginator';
 import type {
   BriefPost,
-  CreateCompanyRequest,
   CreatePostRequest,
   JobMinorCategory,
   PositionDTO,
@@ -34,13 +33,6 @@ export type PostService = {
     postId: string;
     token?: string;
   }): ServiceResponse<PostResponse>;
-  createCompany({
-    token,
-    companyContents,
-  }: {
-    token: string;
-    companyContents: CreateCompanyRequest;
-  }): ServiceResponse<void>;
   createPost({
     token,
     companyId,
@@ -123,21 +115,6 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-  createCompany: async ({ token, companyContents }) => {
-    const { status, data } = await apis['POST /post/company']({
-      token: token,
-      body: companyContents,
-    });
-
-    if (status === 200) {
-      return {
-        type: 'success',
-        data,
-      };
-    }
-    return { type: 'error', code: data.code, message: data.message };
-  },
-
   createPost: async ({ token, companyId, postContents }) => {
     const body = { ...postContents, companyId };
     const { status, data } = await apis['POST /post/position']({

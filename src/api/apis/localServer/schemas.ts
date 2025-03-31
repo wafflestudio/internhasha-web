@@ -39,7 +39,16 @@ type Link = {
   description: string;
 };
 
-type Series = 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
+type Domain =
+  | 'FINTECH'
+  | 'HEALTHTECH'
+  | 'EDUCATION'
+  | 'ECOMMERCE'
+  | 'FOODTECH'
+  | 'MOBILITY'
+  | 'CONTENTS'
+  | 'B2B'
+  | 'OTHERS';
 
 type CompanyDTO = {
   id: string;
@@ -165,6 +174,7 @@ type CoffeeChatBriefDTO = {
   content: string;
   applicant: CoffeeChatUserInfo;
 };
+
 type CoffeeChatUserInfo = {
   name: string;
   imageKey?: string;
@@ -262,16 +272,15 @@ export type S3UploadReq = {
 };
 
 export type CreateCompanyRequest = {
-  companyName: string;
-  explanation: string;
-  email: string;
+  companyEstablishedYear: number;
+  domain: Domain;
+  headcount: number;
+  location: string;
   slogan: string;
-  investAmount: number;
-  investCompany: string;
-  series: Series;
-  irDeckLink?: string;
+  detail: string;
+  profileImageKey: string;
+  companyInfoPDFKey?: string;
   landingPageLink?: string;
-  imageLink: string;
   links?: Link[];
   tags?: { tag: string }[];
 };
@@ -340,3 +349,5 @@ export type S3UploadResp = {
 export type S3DownloadResp = {
   url: string;
 };
+
+export type CompanyResponse = CompanyDTO;
