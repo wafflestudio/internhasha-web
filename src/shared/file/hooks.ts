@@ -113,46 +113,6 @@ export const useGetDownloadPresignedUrl = ({
   return { downloadPresignedUrl };
 };
 
-export const useGetDownloadPresignedUrlByKey = ({
-  setResponseMessage,
-}: {
-  setResponseMessage(input: string): void;
-}) => {
-  const { fileService } = useGuardContext(ServiceContext);
-  const { token } = useGuardContext(TokenContext);
-
-  const { mutateAsync: getDownloadPresignedUrl } = useMutation({
-    mutationFn: async ({
-      s3Key,
-      fileType,
-    }: {
-      s3Key: string;
-      fileType: FileType;
-    }) => {
-      if (token === null) {
-        throw new Error('토큰이 존재하지 않습니다.');
-      }
-      return fileService.getDownloadPresignedUrl({ s3Key, fileType, token });
-    },
-    onSuccess: (response) => {
-      if (response.type === 'success') {
-        setResponseMessage('');
-      } else {
-        setResponseMessage(
-          '파일 다운로드 과정에서 오류가 발생했습니다. 잠시 후에 다시 실행해주세요.',
-        );
-      }
-    },
-    onError: () => {
-      setResponseMessage(
-        '파일 다운로드 과정에서 오류가 발생했습니다. 잠시 후에 다시 실행해주세요.',
-      );
-    },
-  });
-
-  return { getDownloadPresignedUrl };
-};
-
 export const useDownloadFile = ({
   s3Key,
   fileType,

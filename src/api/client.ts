@@ -71,7 +71,6 @@ export const implExternalApi = ({ externalFileCall }: ImplExternalApiProps) => {
     },
     returnFile: boolean = false,
   ) => {
-    console.log(content);
     const response = await externalFileCall(
       {
         method: content.method,
