@@ -13,7 +13,10 @@ type ImplApiProps = {
 };
 
 type ImplExternalApiProps = {
-  externalFileCall(_: ExternalFileCallParams): Promise<ResponseNecessary>;
+  externalFileCall(
+    _: ExternalFileCallParams,
+    returnFile: boolean,
+  ): Promise<ResponseNecessary>;
 };
 
 export const implApi = ({ externalCall }: ImplApiProps) => {
@@ -59,28 +62,36 @@ export const implApi = ({ externalCall }: ImplApiProps) => {
 };
 
 export const implExternalApi = ({ externalFileCall }: ImplExternalApiProps) => {
-  const internalFileCall = async <R extends ResponseNecessary>(content: {
-    method: string;
-    path: string;
-    contentType?: string;
-    body?: Record<string, unknown> | File;
-  }) => {
-    const response = await externalFileCall({
-      method: content.method,
-      path: content.path,
-      body: content.body,
-      headers: {
-        ...(content.contentType !== undefined
-          ? { 'content-type': content.contentType }
-          : {}),
+  const internalFileCall = async <R extends ResponseNecessary>(
+    content: {
+      method: string;
+      path: string;
+      contentType?: string;
+      body?: Record<string, unknown> | File;
+    },
+    returnFile: boolean = false,
+  ) => {
+    console.log(content);
+    const response = await externalFileCall(
+      {
+        method: content.method,
+        path: content.path,
+        body: content.body,
+        headers: {
+          ...(content.contentType !== undefined
+            ? { 'content-type': content.contentType }
+            : {}),
+        },
       },
-    });
+      returnFile,
+    );
 
     return response as R;
   };
   const callWithFile = <R extends ResponseNecessary>(
     p: InternalFileCallParams,
-  ) => internalFileCall<R | ErrorResponse>(p);
+    returnFile: boolean = false,
+  ) => internalFileCall<R | ErrorResponse>(p, returnFile);
 
   return getExternalServerApis({ callWithFile });
 };

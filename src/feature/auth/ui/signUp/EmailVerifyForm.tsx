@@ -71,13 +71,13 @@ export const EmailVerifyForm = () => {
       setShowSendCodeError(true);
       return;
     }
-    sendCode({ snuMail: formStates.snuMail.value });
+    sendCode({ email: formStates.snuMail.value });
   };
 
   const handleClickVerifyEmailButton = () => {
     if (verifyEmailDisable) return;
     emailVerify({
-      snuMail: formStates.snuMail.value,
+      email: formStates.snuMail.value,
       code: formStates.code.value,
     });
   };
@@ -85,7 +85,7 @@ export const EmailVerifyForm = () => {
   const onSubmit = () => {
     if (signUpDisable) return;
     localSignUp({
-      snuMail: formStates.snuMail.value,
+      email: formStates.snuMail.value,
       password: body.password,
       username: body.username,
     });
@@ -254,9 +254,9 @@ const useSendCode = () => {
   };
 
   const { mutate: sendCode, isPending } = useMutation({
-    mutationFn: ({ snuMail }: { snuMail: string }) => {
+    mutationFn: ({ email }: { email: string }) => {
       return authService.sendEmailCode({
-        snuMail,
+        email,
       });
     },
     onSuccess: (response) => {
@@ -293,9 +293,9 @@ const useEmailVerify = () => {
   const [verifySuccess, setVerifySuccess] = useState(false);
 
   const { mutate: emailVerify, isPending } = useMutation({
-    mutationFn: ({ snuMail, code }: { snuMail: string; code: string }) => {
+    mutationFn: ({ email, code }: { email: string; code: string }) => {
       return authService.verifyCode({
-        snuMail,
+        email,
         code,
       });
     },
@@ -329,17 +329,17 @@ const useLocalSignUp = ({
 
   const { mutate: localSignUp, isPending } = useMutation({
     mutationFn: ({
-      snuMail,
+      email,
       username,
       password,
     }: {
-      snuMail: string;
+      email: string;
       username: string;
       password: string;
     }) => {
       return authService.signUp({
         name: username,
-        mail: snuMail,
+        email,
         password,
       });
     },

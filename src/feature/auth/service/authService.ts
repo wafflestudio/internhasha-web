@@ -6,31 +6,31 @@ import type { TokenStateRepository } from '@/shared/token/state';
 export type AuthService = {
   signUp({
     name,
-    mail,
+    email,
     password,
   }: {
     name: string;
-    mail: string;
+    email: string;
     password: string;
   }): ServiceResponse<LocalServerDTO.UserWithTokenResponse>;
   signIn({
-    mail,
+    email,
     password,
   }: {
-    mail: string;
+    email: string;
     password: string;
   }): ServiceResponse<LocalServerDTO.UserWithTokenResponse>;
   logout({ token }: { token: string }): ServiceResponse<void>;
   reissueAccessToken(): ServiceResponse<LocalServerDTO.TokenResponse>;
-  sendEmailCode({ snuMail }: { snuMail: string }): ServiceResponse<void>;
+  sendEmailCode({ email }: { email: string }): ServiceResponse<void>;
   verifyCode({
-    snuMail,
+    email,
     code,
   }: {
-    snuMail: string;
+    email: string;
     code: string;
   }): ServiceResponse<void>;
-  sendEmailPassword({ mail }: { mail: string }): ServiceResponse<void>;
+  sendEmailPassword({ email }: { email: string }): ServiceResponse<void>;
 };
 
 export const implAuthService = ({
@@ -42,13 +42,13 @@ export const implAuthService = ({
   tokenStateRepository: TokenStateRepository;
   roleStateRepository: RoleStateRepository;
 }): AuthService => ({
-  signUp: async ({ name, mail, password }) => {
+  signUp: async ({ name, email, password }) => {
     const body: LocalServerDTO.SignUpRequest = {
       authType: 'APPLICANT',
       info: {
         type: 'APPLICANT',
         name,
-        mail,
+        email,
         password,
       },
     };
@@ -67,8 +67,8 @@ export const implAuthService = ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-  signIn: async ({ mail, password }) => {
-    const body = { mail, password };
+  signIn: async ({ email, password }) => {
+    const body = { mail: email, password };
     const { status, data } = await apis['POST /auth/user/session']({ body });
 
     if (status === 200) {
@@ -85,8 +85,8 @@ export const implAuthService = ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-  sendEmailCode: async ({ snuMail }) => {
-    const body = { snuMail };
+  sendEmailCode: async ({ email }) => {
+    const body = { email };
     const { status, data } = await apis['POST /auth/mail/verify']({
       body,
     });
@@ -99,8 +99,8 @@ export const implAuthService = ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-  verifyCode: async ({ code, snuMail }) => {
-    const body = { snuMail, code };
+  verifyCode: async ({ code, email }) => {
+    const body = { email, code };
     const { status, data } = await apis['POST /auth/mail/validate']({
       body,
     });
@@ -143,8 +143,8 @@ export const implAuthService = ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-  sendEmailPassword: async ({ mail }) => {
-    const body = { mail };
+  sendEmailPassword: async ({ email }) => {
+    const body = { email };
     const { status, data } = await apis['POST /auth/password']({
       body,
     });

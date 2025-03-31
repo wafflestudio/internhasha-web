@@ -5,7 +5,7 @@ import { convertEmptyStringToUndefined } from '@/lib/responseConverter';
 
 type InitialFormState = {
   enrollYear?: number;
-  departments?: string;
+  department?: string;
   positions?: string[];
   slogan?: string;
   explanation?: string;
@@ -28,7 +28,7 @@ type ApplicantFormPresentation = {
       enrollYear: Input<string>;
       majorDepartment: Input<string>;
       rawMinorDepartment: Input<string>;
-      minorDepartments: ListInput<string>;
+      minorDepartment: ListInput<string>;
       rawPosition: Input<string>;
       positions: ListInput<string>;
       slogan: Input<string>;
@@ -43,7 +43,7 @@ type ApplicantFormPresentation = {
     };
     formStates: {
       enrollYear: InputForForm<number>;
-      departments: InputForForm<string>;
+      department: InputForForm<string>;
       positions: InputForForm<string[] | undefined>;
       slogan: InputForForm<string | undefined>;
       explanation: InputForForm<string | undefined>;
@@ -58,7 +58,7 @@ type ApplicantFormPresentation = {
 
 export const applicantFormPresentation: ApplicantFormPresentation = {
   useValidator: ({ initialState, applicantInputPresentation }) => {
-    const departmentList = initialState?.departments?.split(',');
+    const departmentList = initialState?.department?.split(',');
 
     const initialStateForInput = {
       enrollYear:
@@ -83,7 +83,7 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
       enrollYear,
       majorDepartment,
       rawMinorDepartment,
-      minorDepartments,
+      minorDepartment,
       rawPosition,
       positions,
       slogan,
@@ -117,7 +117,7 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
         enrollYear,
         majorDepartment,
         rawMinorDepartment,
-        minorDepartments,
+        minorDepartment,
         rawPosition,
         positions,
         slogan,
@@ -138,12 +138,12 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
             Number(enrollYear.value) < 0,
           value: formatEnrollYear(Number(enrollYear.value)),
         },
-        departments: {
+        department: {
           isError:
             majorDepartment.isError ||
             majorDepartment.value.trim().length === 0 ||
-            minorDepartments.isError,
-          value: [majorDepartment.value, ...minorDepartments.value].join(','),
+            minorDepartment.isError,
+          value: [majorDepartment.value, ...minorDepartment.value].join(','),
         },
         positions: {
           isError: positions.isError,

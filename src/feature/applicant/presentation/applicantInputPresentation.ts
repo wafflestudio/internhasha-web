@@ -7,7 +7,7 @@ import type { Link } from '@/entities/link';
 type InitialInputState = {
   enrollYear?: string;
   majorDepartment?: string;
-  minorDepartments?: string[];
+  minorDepartment?: string[];
   positions?: string[];
   slogan?: string;
   explanation?: string;
@@ -23,7 +23,7 @@ export type ApplicantInputPresentation = {
     enrollYear: Input<string>;
     majorDepartment: Input<string>;
     rawMinorDepartment: Input<string>;
-    minorDepartments: ListInput<string>;
+    minorDepartment: ListInput<string>;
     rawPosition: Input<string>;
     positions: ListInput<string>;
     slogan: Input<string>;
@@ -54,19 +54,7 @@ const MAX_FILE_SIZE = 5 * 1024 * 2024;
 const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
 
 const FILE_EXTENSIONS = ['pdf'];
-const IMAGE_EXTENSIONS = [
-  'png',
-  'jpg',
-  'jpeg',
-  'gif',
-  'bmp',
-  'webp',
-  'svg',
-  'tiff',
-  'ico',
-  'heif',
-  'heic',
-];
+const IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif'];
 
 const URL_REGEX = /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;
 const ENROLL_YEAR_REGEX = /^\d{2}$/;
@@ -82,9 +70,9 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
         : '',
     );
     const [rawMinorDepartment, setRawMinorDepartment] = useState('');
-    const [minorDepartments, setMinorDepartments] = useState(
-      initialState?.minorDepartments !== undefined
-        ? initialState.minorDepartments
+    const [minorDepartment, setMinorDepartments] = useState(
+      initialState?.minorDepartment !== undefined
+        ? initialState.minorDepartment
         : [''],
     );
     const [rawPosition, setRawPosition] = useState('');
@@ -139,7 +127,7 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
       onChange: handleMinorDepartmentsChange,
     } = createStringListInputHandler({
       rawInput: rawMinorDepartment,
-      inputList: minorDepartments,
+      inputList: minorDepartment,
       setInputList: setMinorDepartments,
       maxRawInputLength: MAX_CONTENT_LENGTH,
       maxListSize: MAX_MINOR_DEPARTMENTS_SIZE,
@@ -327,9 +315,9 @@ export const applicantInputPresentation: ApplicantInputPresentation = {
         value: rawMinorDepartment,
         onChange: setRawMinorDepartment,
       },
-      minorDepartments: {
-        isError: !isMinorDepartmentsValid(minorDepartments),
-        value: minorDepartments,
+      minorDepartment: {
+        isError: !isMinorDepartmentsValid(minorDepartment),
+        value: minorDepartment,
         onChange: handleMinorDepartmentsChange,
       },
       rawPosition: {

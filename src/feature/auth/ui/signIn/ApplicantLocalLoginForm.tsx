@@ -41,7 +41,7 @@ export const ApplicantLocalLogInForm = ({
       return;
     }
     localSignIn({
-      mail: formStates.snuMail.value,
+      email: formStates.snuMail.value,
       password: formStates.password.value,
     });
   };
@@ -105,9 +105,9 @@ const useLocalSignIn = ({
   const { toMain } = useRouteNavigation();
 
   const { mutate: localSignIn, isPending } = useMutation({
-    mutationFn: ({ mail, password }: { mail: string; password: string }) => {
+    mutationFn: ({ email, password }: { email: string; password: string }) => {
       return authService.signIn({
-        mail,
+        email,
         password,
       });
     },

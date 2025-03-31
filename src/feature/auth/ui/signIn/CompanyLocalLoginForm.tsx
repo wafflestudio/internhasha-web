@@ -40,7 +40,7 @@ export const CompanyLocalLogInForm = ({
       return;
     }
     localSignIn({
-      mail: formStates.mail.value,
+      email: formStates.mail.value,
       password: formStates.password.value,
     });
   };
@@ -99,9 +99,9 @@ const useLocalSignIn = ({
   const { toMain } = useRouteNavigation();
 
   const { mutate: localSignIn, isPending } = useMutation({
-    mutationFn: ({ mail, password }: { mail: string; password: string }) => {
+    mutationFn: ({ email, password }: { email: string; password: string }) => {
       return authService.signIn({
-        mail,
+        email,
         password,
       });
     },

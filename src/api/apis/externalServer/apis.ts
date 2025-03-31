@@ -1,4 +1,5 @@
 import type { UploadFileRequest } from '@/api/apis/externalServer/schemas';
+import type { BlobResponse } from '@/api/apis/externalServer/schemas';
 import type {
   ErrorResponse,
   InternalFileCallParams,
@@ -9,6 +10,7 @@ import type {
 type GetApisProps = {
   callWithFile: <R extends ResponseNecessary>(
     p: InternalFileCallParams,
+    returnFile?: boolean,
   ) => Promise<R | ErrorResponse>;
 };
 
@@ -38,4 +40,14 @@ export const getExternalServerApis = ({ callWithFile }: GetApisProps) =>
         path,
         body,
       }),
+    'GET download-file': ({ path }: { path: string }) => {
+      const returnFile = true;
+      return callWithFile<SuccessResponse<BlobResponse>>(
+        {
+          method: 'GET',
+          path,
+        },
+        returnFile,
+      );
+    },
   }) satisfies Record<string, Api>;
