@@ -246,7 +246,6 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           <div className="flex flex-col gap-[30px]">
             <section className="flex flex-col gap-5 md:flex-row md:gap-[50px]">
               {company.landingPageLink !== undefined &&
-                company.landingPageLink !== null &&
                 company.landingPageLink.trim().length !== 0 && (
                   <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
                     <span className="text-lg font-semibold text-grey-800">
@@ -259,7 +258,6 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                 )}
 
               {company.companyInfoPDFLink !== undefined &&
-                company.companyInfoPDFLink !== null &&
                 company.companyInfoPDFLink.trim().length !== 0 && (
                   <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
                     <span className="text-lg font-semibold text-grey-800">
@@ -309,9 +307,9 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                 </span>
 
                 <div className="flex flex-wrap gap-2">
-                  {company.tags.map((tag) => (
-                    <Badge key={`tag-${tag}`} variant="outline">
-                      {tag}
+                  {company.tags.map((item) => (
+                    <Badge key={`tag-${item.tag}`} variant="outline">
+                      {item.tag}
                     </Badge>
                   ))}
                 </div>
@@ -335,7 +333,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                 VC 추천 이유
               </span>
               <p data-color-mode="light" className="flex rounded-md border p-4">
-                {company.vcRec}
+                {company.vcRecommendation}
               </p>
             </section>
           </div>

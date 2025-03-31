@@ -20,7 +20,7 @@ export const ThumbnailWithPresignedUrl = ({
   }
 
   if (downloadPresignedUrl.type === 'error') {
-    return <div className="h-[80px] w-[80x] bg-grey-200"></div>;
+    return <div className="rounded-xs h-[80px] w-[80px] bg-grey-200"></div>;
   }
 
   return (

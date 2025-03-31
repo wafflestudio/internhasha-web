@@ -1,15 +1,7 @@
-// Skeleton of Mock Response
-type MockErrorResponse = {
-  error: string;
-};
-
-export type MockResponse<T> = T | MockErrorResponse;
-
 // DTO
 type UserBriefDTO = {
   id: string;
-  username: string;
-  isAdmin: boolean;
+  userRole: 'APPLICANT' | 'COMPANY';
 };
 
 // Request
@@ -20,16 +12,6 @@ export type SendEmailCodeRequest = {
 export type EmailVerifyRequest = {
   snuMail: string;
   code: string;
-};
-
-export type GoogleSignUpRequest = {
-  snuMail: string;
-  googleAccesToken: string;
-};
-
-export type LocalSignUpRequest = {
-  mail: string;
-  password: string;
 };
 
 export type LocalIdRequest = {
