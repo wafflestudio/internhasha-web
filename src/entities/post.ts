@@ -46,8 +46,8 @@ type CompanyDTO = {
   slogan: string;
   detail: string;
   profileImageKey: string;
-  companyInfoPDFLink?: string | null;
-  landingPageLink?: string | null;
+  companyInfoPDFLink?: string;
+  landingPageLink?: string;
   links?: Link[];
   tags?: { tag: string }[];
   vcName: string;

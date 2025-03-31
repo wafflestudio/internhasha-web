@@ -246,7 +246,6 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           <div className="flex flex-col gap-[30px]">
             <section className="flex flex-col gap-5 md:flex-row md:gap-[50px]">
               {company.landingPageLink !== undefined &&
-                company.landingPageLink !== null &&
                 company.landingPageLink.trim().length !== 0 && (
                   <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
                     <span className="text-lg font-semibold text-grey-800">
@@ -259,7 +258,6 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                 )}
 
               {company.companyInfoPDFLink !== undefined &&
-                company.companyInfoPDFLink !== null &&
                 company.companyInfoPDFLink.trim().length !== 0 && (
                   <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
                     <span className="text-lg font-semibold text-grey-800">
