@@ -29,4 +29,8 @@ export const ICON_SRC = {
   SKELETON: '/img/skeleton.png',
   LOCATION: '/svg/location.svg',
   INFO: '/svg/info.svg',
+  EYE: {
+    OPEN: '/svg/eye_open.svg',
+    CLOSE: '/svg/eye_close.svg',
+  },
 };

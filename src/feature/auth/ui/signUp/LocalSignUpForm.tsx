@@ -27,6 +27,7 @@ export const LocalSignUpForm = () => {
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordConfirmFocused, setIsPasswordConfirmFocused] =
     useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
 
   const signUpDisable =
@@ -90,18 +91,36 @@ export const LocalSignUpForm = () => {
             )}
           </LabelContainer>
           <LabelContainer label="비밀번호" id="password">
-            <Input
-              id="password"
-              type="password"
-              value={password.value}
-              onChange={(e) => {
-                password.onChange(e.target.value);
-              }}
-              onFocus={() => {
-                setIsPasswordFocused(true);
-              }}
-              placeholder="비밀번호를 입력해주세요."
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                type={isPasswordVisible ? 'text' : 'password'}
+                value={password.value}
+                onChange={(e) => {
+                  password.onChange(e.target.value);
+                }}
+                onFocus={() => {
+                  setIsPasswordFocused(true);
+                }}
+                placeholder="비밀번호를 입력해주세요."
+                className="relative"
+              />
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsPasswordVisible(!isPasswordVisible);
+                }}
+                className="absolute right-3 top-3 flex items-center"
+              >
+                <img
+                  src={
+                    isPasswordVisible ? ICON_SRC.EYE.OPEN : ICON_SRC.EYE.CLOSE
+                  }
+                  alt="비밀번호 보기"
+                  className="h-5 w-5 cursor-pointer"
+                />
+              </button>
+            </div>
             {isPasswordFocused && detailedError && (
               <div className="flex flex-col gap-1">
                 <div className="flex gap-[6px]">
