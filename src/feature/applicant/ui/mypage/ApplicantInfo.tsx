@@ -21,7 +21,7 @@ export type ApplicantInfoProps = {
   fetchOwnInfo?: boolean;
   // 생성 날짜 추가
   createdAt?: string;
-  setIsExistProfile(input: boolean): void;
+  setIsExistProfile?: (input: boolean) => void;
 };
 
 export const ApplicantInfo = ({
@@ -187,7 +187,7 @@ const useApplicantInfo = ({
   setIsExistProfile,
 }: {
   fetchOwnInfo: boolean;
-  setIsExistProfile(input: boolean): void;
+  setIsExistProfile?: (input: boolean) => void;
 }) => {
   const { token } = useGuardContext(TokenContext);
   const { applicantService } = useGuardContext(ServiceContext);
@@ -198,7 +198,7 @@ const useApplicantInfo = ({
         throw new Error('토큰이 존재하지 않습니다.');
       }
       const response = await applicantService.getProfile({ token: t });
-      if (response.type === 'success') {
+      if (setIsExistProfile !== undefined && response.type === 'success') {
         setIsExistProfile(true);
       }
       return response;
