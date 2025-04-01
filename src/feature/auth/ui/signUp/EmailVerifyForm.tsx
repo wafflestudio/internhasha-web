@@ -71,13 +71,13 @@ export const EmailVerifyForm = () => {
       setShowSendCodeError(true);
       return;
     }
-    sendCode({ email: formStates.snuMail.value });
+    sendCode({ snuMail: formStates.snuMail.value });
   };
 
   const handleClickVerifyEmailButton = () => {
     if (verifyEmailDisable) return;
     emailVerify({
-      email: formStates.snuMail.value,
+      snuMail: formStates.snuMail.value,
       code: formStates.code.value,
     });
   };
@@ -254,9 +254,9 @@ const useSendCode = () => {
   };
 
   const { mutate: sendCode, isPending } = useMutation({
-    mutationFn: ({ email }: { email: string }) => {
+    mutationFn: ({ snuMail }: { snuMail: string }) => {
       return authService.sendEmailCode({
-        email,
+        snuMail,
       });
     },
     onSuccess: (response) => {
@@ -293,9 +293,9 @@ const useEmailVerify = () => {
   const [verifySuccess, setVerifySuccess] = useState(false);
 
   const { mutate: emailVerify, isPending } = useMutation({
-    mutationFn: ({ email, code }: { email: string; code: string }) => {
+    mutationFn: ({ snuMail, code }: { snuMail: string; code: string }) => {
       return authService.verifyCode({
-        email,
+        snuMail,
         code,
       });
     },
