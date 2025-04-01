@@ -2,7 +2,7 @@ import type { VariantProps } from 'class-variance-authority';
 import { cva } from 'class-variance-authority';
 import type { ReactNode } from 'react';
 
-import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
+import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
 import { cn } from '@/lib/utils';
 
 const backgroundClassName = cva(

@@ -1,4 +1,4 @@
-import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
+import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ICON_SRC } from '@/entities/asset';

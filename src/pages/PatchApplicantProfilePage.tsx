@@ -1,4 +1,4 @@
-import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
+import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
 import { PatchProfileForm } from '@/feature/applicant/ui/form/PatchProfileForm';
 
 export const PatchApplicantProfilePage = () => {

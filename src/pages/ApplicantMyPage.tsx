@@ -1,4 +1,4 @@
-import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
+import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { MyPageRouteQuery } from '@/entities/route';
 import { ApplicantInfo } from '@/feature/applicant';
