@@ -340,7 +340,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
         </div>
       </div>
 
-      <SeperatorLine />
+      <SeperatorLine className="md:max-w-[580px]" />
 
       {/* 상세 공고 글 */}
       <section className="flex w-full flex-col gap-[30px] md:max-w-[580px]">

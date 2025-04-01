@@ -82,100 +82,107 @@ export const ApplicantInfoForCoffeeChat = ({
 
       {slogan != null && (
         <section>
-          <p>{slogan}</p>
+          <p className="font-regular">{slogan}</p>
         </section>
       )}
-
-      <SeperatorLine />
 
       {(positions !== undefined ||
         stacks !== undefined ||
         explanation !== undefined ||
         cvKey !== undefined ||
         portfolioKey !== undefined) && (
-        <section className="flex flex-col gap-[26px]">
-          <h3 className="text-22 font-bold">기본 정보</h3>
-          <div className="flex flex-col gap-[36px]">
-            {positions !== undefined && (
-              <div className="flex flex-col gap-2">
-                <span className="text-16 font-bold text-grey-800">
-                  희망 직무
-                </span>
-                {formattedPositions !== undefined && (
-                  <p className="font-regular">
-                    {formattedPositions.join(' ∙ ')}
-                  </p>
-                )}
-              </div>
-            )}
-
-            {stacks !== undefined && (
-              <div className="flex flex-col gap-2">
-                <span className="text-16 font-bold text-grey-800">
-                  기술 스택
-                </span>
-                <div className="flex gap-[6px]">
-                  {stacks.map((stack) => (
-                    <Badge variant="outline" key={`stack-${stack}`}>
-                      {stack}
-                    </Badge>
-                  ))}
+        <>
+          <SeperatorLine />
+          <section className="flex flex-col gap-[26px]">
+            <h3 className="text-22 font-bold">기본 정보</h3>
+            <div className="flex flex-col gap-[36px]">
+              {positions !== undefined && (
+                <div className="flex flex-col gap-2">
+                  <span className="text-16 font-bold text-grey-800">
+                    희망 직무
+                  </span>
+                  {formattedPositions !== undefined && (
+                    <p className="font-regular">
+                      {formattedPositions.join(' ∙ ')}
+                    </p>
+                  )}
                 </div>
-              </div>
-            )}
+              )}
 
-            {explanation !== undefined && (
-              <div className="flex flex-col gap-2">
-                <span className="text-16 font-bold text-grey-800">
-                  기술 스택
-                </span>
-                <p className="font-regular">{explanation}</p>
-              </div>
-            )}
+              {stacks !== undefined && (
+                <div className="flex flex-col gap-2">
+                  <span className="text-16 font-bold text-grey-800">
+                    기술 스택
+                  </span>
+                  <div className="flex gap-[6px]">
+                    {stacks.map((stack) => (
+                      <Badge variant="outline" key={`stack-${stack}`}>
+                        {stack}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-            {cvKey !== undefined && (
-              <div className="flex flex-col gap-2">
-                <span className="text-16 font-bold text-grey-800">이력서</span>
-                <DownloadButtonWithPresignedUrl s3Key={cvKey} type="CV">
-                  <img src={ICON_SRC.DOWNLOAD} className="h-5 w-5" />
-                  PDF 다운로드
-                </DownloadButtonWithPresignedUrl>
-              </div>
-            )}
-            {portfolioKey !== undefined && (
-              <div className="flex flex-col gap-2">
-                <span className="text-16 font-bold text-grey-800">
-                  포트폴리오
-                </span>
-                <DownloadButtonWithPresignedUrl
-                  s3Key={portfolioKey}
-                  type="PORTFOLIO"
-                >
-                  <img src={ICON_SRC.DOWNLOAD} className="h-5 w-5" />
-                  PDF 다운로드
-                </DownloadButtonWithPresignedUrl>
-              </div>
-            )}
-          </div>
-        </section>
+              {explanation !== undefined && (
+                <div className="flex flex-col gap-2">
+                  <span className="text-16 font-bold text-grey-800">
+                    기술 스택
+                  </span>
+                  <p className="font-regular">{explanation}</p>
+                </div>
+              )}
+
+              {cvKey !== undefined && (
+                <div className="flex flex-col gap-2">
+                  <span className="text-16 font-bold text-grey-800">
+                    이력서
+                  </span>
+                  <DownloadButtonWithPresignedUrl s3Key={cvKey} type="CV">
+                    <img src={ICON_SRC.DOWNLOAD} className="h-5 w-5" />
+                    PDF 다운로드
+                  </DownloadButtonWithPresignedUrl>
+                </div>
+              )}
+              {portfolioKey !== undefined && (
+                <div className="flex flex-col gap-2">
+                  <span className="text-16 font-bold text-grey-800">
+                    포트폴리오
+                  </span>
+                  <DownloadButtonWithPresignedUrl
+                    s3Key={portfolioKey}
+                    type="PORTFOLIO"
+                  >
+                    <img src={ICON_SRC.DOWNLOAD} className="h-5 w-5" />
+                    PDF 다운로드
+                  </DownloadButtonWithPresignedUrl>
+                </div>
+              )}
+            </div>
+          </section>
+        </>
       )}
 
       {links !== undefined && (
-        <section className="flex flex-col gap-[26px]">
-          <h3 className="text-22 font-bold">기타 정보</h3>
-          <div className="flex flex-col gap-2">
-            {links.map((linkWithDescription) => (
-              <div
-                key={`external-link-${linkWithDescription.description}`}
-                className="flex items-center gap-[10px]"
-              >
-                <span>{linkWithDescription.description}</span>
-                <SmallLinkButton link={linkWithDescription.link} />
-              </div>
-            ))}
-          </div>
-        </section>
+        <>
+          <SeperatorLine />
+          <section className="flex flex-col gap-[26px]">
+            <h3 className="text-22 font-bold">기타 정보</h3>
+            <div className="flex flex-col gap-2">
+              {links.map((linkWithDescription) => (
+                <div
+                  key={`external-link-${linkWithDescription.description}`}
+                  className="flex items-center gap-[10px]"
+                >
+                  <span>{linkWithDescription.description}</span>
+                  <SmallLinkButton link={linkWithDescription.link} />
+                </div>
+              ))}
+            </div>
+          </section>
+        </>
       )}
+      <SeperatorLine />
     </div>
   );
 };
