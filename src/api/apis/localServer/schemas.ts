@@ -238,11 +238,11 @@ export type MailRequest = {
 };
 
 export type SnuMailRequest = {
-  email: string;
+  snuMail: string;
 };
 
 export type CheckSnuMailVerificationRequest = {
-  email: string;
+  snuMail: string;
   code: string;
 };
 
