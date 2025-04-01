@@ -29,7 +29,7 @@ const PASSWORD_DETAIL_REGEX = {
   NUMBER_REGEX: /\d/,
   SPECIAL_CHAR_REGEX: /[@#$!^*]/,
   LENGTH_REGEX: /^.{8,64}$/,
-  PATTERN_REGEX:
+  INVALID_PATTERN_REGEX:
     /(012|123|234|345|456|567|678|789|890|abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz)/i,
 };
 const CODE_REGEX = /^\d{6}$/;
@@ -81,7 +81,8 @@ export const authInputPresentation: AuthInputPresentation = {
           specialCharError:
             !PASSWORD_DETAIL_REGEX.SPECIAL_CHAR_REGEX.test(password),
           lengthError: !PASSWORD_DETAIL_REGEX.LENGTH_REGEX.test(password),
-          patternError: PASSWORD_DETAIL_REGEX.PATTERN_REGEX.test(password),
+          patternError:
+            PASSWORD_DETAIL_REGEX.INVALID_PATTERN_REGEX.test(password),
         },
         onChange: setPassword,
       },
