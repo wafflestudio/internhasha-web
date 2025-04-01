@@ -126,7 +126,7 @@ export type Applicant = {
   createdAt: string;
   updatedAt: string;
   userRole: UserRole;
-  snuMail?: string;
+  email?: string;
   enrollYear: number;
   department: string;
   positions?: JobCategory[];
@@ -238,11 +238,11 @@ export type MailRequest = {
 };
 
 export type SnuMailRequest = {
-  email: string;
+  snuMail: string;
 };
 
 export type CheckSnuMailVerificationRequest = {
-  email: string;
+  snuMail: string;
   code: string;
 };
 

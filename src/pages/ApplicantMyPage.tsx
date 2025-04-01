@@ -65,11 +65,10 @@ export const ApplicantMyPage = () => {
               <BookmarkListView />
             </TabsContent>
             <TabsContent value="PROFILE">
-              <div className="w-[700px] gap-6 rounded-lg bg-white px-[24px] py-[48px] text-grey-900">
-                <ApplicantInfo
-                  fetchOwnInfo={true}
-                  setIsExistProfile={setIsExistProfile}
-                />
+              <div className="flex w-full justify-center">
+                <div className="w-[700px] gap-6 rounded-lg bg-white px-[24px] py-[48px] text-grey-900">
+                  <ApplicantInfo setIsExistProfile={setIsExistProfile} />
+                </div>
               </div>
             </TabsContent>
           </div>

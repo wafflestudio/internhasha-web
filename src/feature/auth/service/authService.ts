@@ -22,12 +22,12 @@ export type AuthService = {
   }): ServiceResponse<LocalServerDTO.UserWithTokenResponse>;
   logout({ token }: { token: string }): ServiceResponse<void>;
   reissueAccessToken(): ServiceResponse<LocalServerDTO.TokenResponse>;
-  sendEmailCode({ email }: { email: string }): ServiceResponse<void>;
+  sendEmailCode({ snuMail }: { snuMail: string }): ServiceResponse<void>;
   verifyCode({
-    email,
+    snuMail,
     code,
   }: {
-    email: string;
+    snuMail: string;
     code: string;
   }): ServiceResponse<void>;
   sendEmailPassword({ email }: { email: string }): ServiceResponse<void>;
@@ -85,8 +85,8 @@ export const implAuthService = ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-  sendEmailCode: async ({ email }) => {
-    const body = { email };
+  sendEmailCode: async ({ snuMail }) => {
+    const body = { snuMail };
     const { status, data } = await apis['POST /auth/mail/verify']({
       body,
     });
@@ -99,8 +99,8 @@ export const implAuthService = ({
     }
     return { type: 'error', code: data.code, message: data.message };
   },
-  verifyCode: async ({ code, email }) => {
-    const body = { email, code };
+  verifyCode: async ({ code, snuMail }) => {
+    const body = { snuMail, code };
     const { status, data } = await apis['POST /auth/mail/validate']({
       body,
     });
