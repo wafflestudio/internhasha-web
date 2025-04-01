@@ -126,7 +126,7 @@ export type Applicant = {
   createdAt: string;
   updatedAt: string;
   userRole: UserRole;
-  snuMail?: string;
+  email?: string;
   enrollYear: number;
   department: string;
   positions?: JobCategory[];

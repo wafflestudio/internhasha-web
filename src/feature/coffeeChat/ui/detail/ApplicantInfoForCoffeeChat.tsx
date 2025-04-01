@@ -1,34 +1,36 @@
-import { useQuery } from '@tanstack/react-query';
-
 import { DownloadButtonWithPresignedUrl } from '@/components/button/DownloadButtonWithPresignedUrl';
 import { SmallLinkButton } from '@/components/button/LinkButton';
 import { ThumbnailWithPresignedUrl } from '@/components/thumbnail/ThumbnailWithPresignedUrl';
 import { Badge } from '@/components/ui/badge';
 import { SeperatorLine } from '@/components/ui/separator';
 import { ICON_SRC } from '@/entities/asset';
-import { NoApplicantInfo } from '@/feature/applicant/ui/mypage/NoApplicantInfo';
-import { SkeletonApplicantInfo } from '@/feature/applicant/ui/mypage/SkeletonApplicantInfo';
-import { useGuardContext } from '@/shared/context/hooks';
-import { ServiceContext } from '@/shared/context/ServiceContext';
-import { TokenContext } from '@/shared/context/TokenContext';
+import type { Link } from '@/entities/link';
+import type { JobMinorCategory } from '@/entities/post';
+import type { UserRole } from '@/entities/user';
 import { formatMinorJobToLabel } from '@/util/format';
 
-export const ApplicantInfo = () => {
-  const { applicantInfoData } = useApplicantInfo();
-
-  if (applicantInfoData === undefined) {
-    return <SkeletonApplicantInfo />;
-  }
-
-  if (applicantInfoData.type === 'error') {
-    if (applicantInfoData.code === 'APPLICANT_002') {
-      return <NoApplicantInfo />;
-    }
-    return (
-      <p>프로필 정보를 불러오는 데 실패했습니다. 잠시 후 새로고침해주세요.</p>
-    );
-  }
-
+export const ApplicantInfoForCoffeeChat = ({
+  applicant,
+}: {
+  applicant: {
+    id: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+    userRole: UserRole;
+    email?: string;
+    enrollYear: number;
+    department: string;
+    positions?: JobMinorCategory[];
+    slogan?: string;
+    explanation?: string;
+    stacks?: string[];
+    imageKey?: string;
+    cvKey?: string;
+    portfolioKey?: string;
+    links?: Link[];
+  };
+}) => {
   const {
     name,
     email,
@@ -42,7 +44,7 @@ export const ApplicantInfo = () => {
     cvKey,
     portfolioKey,
     links,
-  } = applicantInfoData.data;
+  } = applicant;
 
   const departmentList = department.split(',');
   const formattedDepartment = departmentList
@@ -80,7 +82,7 @@ export const ApplicantInfo = () => {
 
       {slogan != null && (
         <section>
-          <p>{slogan}</p>
+          <p className="font-regular">{slogan}</p>
         </section>
       )}
 
@@ -162,38 +164,25 @@ export const ApplicantInfo = () => {
       )}
 
       {links !== undefined && (
-        <section className="flex flex-col gap-[26px]">
-          <h3 className="text-22 font-bold">기타 정보</h3>
-          <div className="flex flex-col gap-2">
-            {links.map((linkWithDescription) => (
-              <div
-                key={`external-link-${linkWithDescription.description}`}
-                className="flex items-center gap-[10px]"
-              >
-                <span>{linkWithDescription.description}</span>
-                <SmallLinkButton link={linkWithDescription.link} />
-              </div>
-            ))}
-          </div>
-        </section>
+        <>
+          <SeperatorLine />
+          <section className="flex flex-col gap-[26px]">
+            <h3 className="text-22 font-bold">기타 정보</h3>
+            <div className="flex flex-col gap-2">
+              {links.map((linkWithDescription) => (
+                <div
+                  key={`external-link-${linkWithDescription.description}`}
+                  className="flex items-center gap-[10px]"
+                >
+                  <span>{linkWithDescription.description}</span>
+                  <SmallLinkButton link={linkWithDescription.link} />
+                </div>
+              ))}
+            </div>
+          </section>
+        </>
       )}
+      <SeperatorLine />
     </div>
   );
-};
-
-const useApplicantInfo = () => {
-  const { token } = useGuardContext(TokenContext);
-  const { applicantService } = useGuardContext(ServiceContext);
-  const { data: applicantInfoData } = useQuery({
-    queryKey: ['applicantService', 'getProfile', token] as const,
-    queryFn: ({ queryKey: [, , t] }) => {
-      if (t === null) {
-        throw new Error('토큰이 존재하지 않습니다.');
-      }
-      return applicantService.getProfile({ token: t });
-    },
-    enabled: token !== null,
-  });
-
-  return { applicantInfoData };
 };
