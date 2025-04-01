@@ -21,6 +21,7 @@ export type ApplicantInfoProps = {
   fetchOwnInfo?: boolean;
   // 생성 날짜 추가
   createdAt?: string;
+  setIsExistProfile(input: boolean): void;
 };
 
 export const ApplicantInfo = ({
@@ -28,8 +29,12 @@ export const ApplicantInfo = ({
   coffeeChatStatus,
   fetchOwnInfo = true,
   createdAt,
+  setIsExistProfile,
 }: ApplicantInfoProps) => {
-  const { applicantInfoData } = useApplicantInfo(fetchOwnInfo);
+  const { applicantInfoData } = useApplicantInfo({
+    fetchOwnInfo,
+    setIsExistProfile,
+  });
 
   if (fetchOwnInfo && applicantInfoData === undefined) {
     return <SkeletonApplicantInfo />;
@@ -177,18 +182,28 @@ export const ApplicantInfo = ({
   );
 };
 
-const useApplicantInfo = (enabled = true) => {
+const useApplicantInfo = ({
+  fetchOwnInfo = true,
+  setIsExistProfile,
+}: {
+  fetchOwnInfo: boolean;
+  setIsExistProfile(input: boolean): void;
+}) => {
   const { token } = useGuardContext(TokenContext);
   const { applicantService } = useGuardContext(ServiceContext);
   const { data: applicantInfoData } = useQuery({
     queryKey: ['applicantService', 'getProfile', token] as const,
-    queryFn: ({ queryKey: [, , t] }) => {
+    queryFn: async ({ queryKey: [, , t] }) => {
       if (t === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return applicantService.getProfile({ token: t });
+      const response = await applicantService.getProfile({ token: t });
+      if (response.type === 'success') {
+        setIsExistProfile(true);
+      }
+      return response;
     },
-    enabled: enabled && token !== null,
+    enabled: fetchOwnInfo && token !== null,
   });
 
   return { applicantInfoData };

@@ -21,7 +21,9 @@ export const useRouteNavigation = () => {
     SIGN_UP,
     SIGN_UP_COMPLETE,
     CREATE_COMPANY,
+    PATCH_COMPANY,
     CREATE_PROFILE,
+    PATCH_PROFILE,
   } = PATH;
   const {
     INDEX,
@@ -63,6 +65,9 @@ export const useRouteNavigation = () => {
     toCreateCompany: ({ body }: { body?: CompanyRouteQuery }) => {
       void navigate(CREATE_COMPANY, { state: { ...body } });
     },
+    toPatchCompany: () => {
+      void navigate(PATCH_COMPANY);
+    },
     toCreatePost: ({
       companyId,
       body,
@@ -85,6 +90,9 @@ export const useRouteNavigation = () => {
         return;
       }
       void navigate(CREATE_PROFILE, { state: { ...body } });
+    },
+    toPatchProfile: () => {
+      void navigate(PATCH_PROFILE);
     },
     refreshPage: () => {
       void navigate(0);

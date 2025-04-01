@@ -68,7 +68,7 @@ export const implAuthService = ({
     return { type: 'error', code: data.code, message: data.message };
   },
   signIn: async ({ email, password }) => {
-    const body = { mail: email, password };
+    const body = { email, password };
     const { status, data } = await apis['POST /auth/user/session']({ body });
 
     if (status === 200) {

@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -13,12 +15,15 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { UserContext } from '@/shared/context/UserContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { useRouteQueryParams } from '@/shared/route/useRouteParams';
+
 type MyPageTab = MyPageRouteQuery['tab'];
 
 export const CompanyMyPage = () => {
   const queryParams = useRouteQueryParams() as MyPageRouteQuery | null;
   const { id } = useGuardContext(UserContext);
-  const { toCreatePost, toMyPage } = useRouteNavigation();
+  const { toCreatePost, toMyPage, toPatchCompany } = useRouteNavigation();
+  const [isExistProfile, setIsExistProfile] = useState(false);
+
   const handleTabChange = (tab: string) => {
     toMyPage({ query: { tab: tab as MyPageTab } });
   };
@@ -54,10 +59,24 @@ export const CompanyMyPage = () => {
                     }
                     toCreatePost({ companyId: id });
                   }}
+                  className="font-medium"
+                  size="sm"
                 >
                   <img src={ICON_SRC.PLUS} />
                   공고 추가
                 </Button>
+              </TabsContent>
+              <TabsContent value="PROFILE" className="ml-auto">
+                {isExistProfile && (
+                  <Button
+                    onClick={toPatchCompany}
+                    className="font-medium"
+                    size="sm"
+                  >
+                    <img src={ICON_SRC.EDIT.WHITE} />
+                    회사 정보 수정
+                  </Button>
+                )}
               </TabsContent>
             </TabsList>
 
@@ -68,7 +87,7 @@ export const CompanyMyPage = () => {
               <MyPostList />
             </TabsContent>
             <TabsContent value="PROFILE">
-              <CompanyProfile />
+              <CompanyProfile setIsExistProfile={setIsExistProfile} />
             </TabsContent>
           </div>
         </Tabs>

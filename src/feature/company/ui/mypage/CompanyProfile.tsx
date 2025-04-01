@@ -13,8 +13,12 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { formatDomainToLabel } from '@/util/format';
 
-export const CompanyProfile = () => {
-  const { myInfoData } = useMyInfo();
+export const CompanyProfile = ({
+  setIsExistProfile,
+}: {
+  setIsExistProfile(input: boolean): void;
+}) => {
+  const { myInfoData } = useMyInfo({ setIsExistProfile });
 
   if (myInfoData === undefined) {
     return <SkeletonCompanyProfile />;
@@ -150,16 +154,24 @@ export const CompanyProfile = () => {
   );
 };
 
-const useMyInfo = () => {
+const useMyInfo = ({
+  setIsExistProfile,
+}: {
+  setIsExistProfile(input: boolean): void;
+}) => {
   const { token } = useGuardContext(TokenContext);
   const { companyService } = useGuardContext(ServiceContext);
   const { data: myInfoData } = useQuery({
     queryKey: ['companyService', 'getMyInfo', token] as const,
-    queryFn: ({ queryKey: [, , t] }) => {
+    queryFn: async ({ queryKey: [, , t] }) => {
       if (t === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return companyService.getMyInfo({ token: t });
+      const response = await companyService.getMyInfo({ token: t });
+      if (response.type === 'success') {
+        setIsExistProfile(true);
+      }
+      return response;
     },
     enabled: token !== null,
   });

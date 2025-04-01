@@ -229,7 +229,7 @@ export type SignUpRequest =
     };
 
 export type SignInRequest = {
-  mail: string;
+  email: string;
   password: string;
 };
 

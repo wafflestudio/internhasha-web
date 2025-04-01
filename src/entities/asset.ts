@@ -19,7 +19,7 @@ export const ICON_SRC = {
   CALENDAR: '/svg/calendar_today.svg',
   CAMERA: '/svg/photo_camera.svg',
   UPLOAD: '/svg/drive_folder_upload.svg',
-  EDIT: '/svg/edit.svg',
+  EDIT: { WHITE: '/svg/edit_white.svg', DARK_GREY: '/svg/edit.svg' },
   PLUS: '/svg/add_2.svg',
   LINK: '/svg/link.svg',
   DOWNLOAD: '/svg/arrow_download.svg',
