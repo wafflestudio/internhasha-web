@@ -127,7 +127,7 @@ export const ApplicantInfoForCoffeeChat = ({
               {explanation !== undefined && (
                 <div className="flex flex-col gap-2">
                   <span className="text-16 font-bold text-grey-800">
-                    기술 스택
+                    자기소개
                   </span>
                   <p className="font-regular">{explanation}</p>
                 </div>
