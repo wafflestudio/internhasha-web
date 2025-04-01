@@ -1,4 +1,4 @@
-import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
+import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
 import type { PostRouteQuery } from '@/entities/route';
 import { CreatePostForm, PatchPostForm } from '@/feature/post';
 import { PATH } from '@/shared/route/constants';

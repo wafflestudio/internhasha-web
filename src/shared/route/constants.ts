@@ -10,6 +10,7 @@ export const PATH = {
   CREATE_COFFEE_CHAT: '/post/:postId/coffeeChat/create',
   COFFEE_CHAT_DETAIL: '/coffeeChat/:coffeeChatId',
   CREATE_COMPANY: '/company/create',
+  PATCH_COMPANY: '/company/patch',
   CREATE_POST: '/post/create/:companyId',
   CREATE_PROFILE: '/profile/create',
   PATCH_PROFILE: '/profile/patch',

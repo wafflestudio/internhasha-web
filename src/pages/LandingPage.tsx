@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal';
-import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
+import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
 import { LandingPageView } from '@/feature/post';
 
 export const LandingPage = () => {

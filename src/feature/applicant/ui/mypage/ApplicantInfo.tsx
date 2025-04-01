@@ -13,8 +13,12 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { formatMinorJobToLabel } from '@/util/format';
 
-export const ApplicantInfo = () => {
-  const { applicantInfoData } = useApplicantInfo();
+export const ApplicantInfo = ({
+  setIsExistProfile,
+}: {
+  setIsExistProfile(input: boolean): void;
+}) => {
+  const { applicantInfoData } = useApplicantInfo({ setIsExistProfile });
 
   if (applicantInfoData === undefined) {
     return <SkeletonApplicantInfo />;
@@ -181,16 +185,24 @@ export const ApplicantInfo = () => {
   );
 };
 
-const useApplicantInfo = () => {
+const useApplicantInfo = ({
+  setIsExistProfile,
+}: {
+  setIsExistProfile?: (input: boolean) => void;
+}) => {
   const { token } = useGuardContext(TokenContext);
   const { applicantService } = useGuardContext(ServiceContext);
   const { data: applicantInfoData } = useQuery({
     queryKey: ['applicantService', 'getProfile', token] as const,
-    queryFn: ({ queryKey: [, , t] }) => {
+    queryFn: async ({ queryKey: [, , t] }) => {
       if (t === null) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-      return applicantService.getProfile({ token: t });
+      const response = await applicantService.getProfile({ token: t });
+      if (setIsExistProfile !== undefined && response.type === 'success') {
+        setIsExistProfile(true);
+      }
+      return response;
     },
     enabled: token !== null,
   });

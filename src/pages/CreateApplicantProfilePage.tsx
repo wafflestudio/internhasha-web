@@ -1,4 +1,4 @@
-import { GlobalNavigationBar } from '@/components/nav/GlobarNavigationBar';
+import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
 import { CreateProfileForm } from '@/feature/applicant';
 
 export const CreateApplicantProfilePage = () => {
