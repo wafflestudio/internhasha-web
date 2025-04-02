@@ -6,7 +6,7 @@ import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
 import { cn } from '@/lib/utils';
 
 const backgroundClassName = cva(
-  'fixed inset-0 flex items-center justify-center',
+  'fixed inset-0 z-50 flex items-center justify-center',
   {
     variants: {
       variant: {
