@@ -32,11 +32,8 @@ export const CompanyMyPage = () => {
   const { toCreatePost, toMyPage, toPatchCompany } = useRouteNavigation();
   const [isExistProfile, setIsExistProfile] = useState(false);
   const [selectedChats, setSelectedChats] = useState<string[]>([]);
-  const [, setResponseMessage] = useState('');
   const { coffeeChatListData } = useGetCoffeeChatList();
-  const { updateCoffeeChatStatus, isPending } = useUpdateCoffeeChatStatus({
-    setResponseMessage,
-  });
+  const { updateCoffeeChatStatus, isPending } = useUpdateCoffeeChatStatus();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalStatus, setModalStatus] = useState<'ACCEPTED' | 'REJECTED'>(
@@ -221,11 +218,7 @@ const useGetCoffeeChatList = () => {
   return { coffeeChatListData };
 };
 
-const useUpdateCoffeeChatStatus = ({
-  setResponseMessage,
-}: {
-  setResponseMessage(input: string): void;
-}) => {
+const useUpdateCoffeeChatStatus = () => {
   const { coffeeChatService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
   const queryClient = useQueryClient();
@@ -252,14 +245,7 @@ const useUpdateCoffeeChatStatus = ({
     onSuccess: async (response) => {
       if (response.type === 'success') {
         await queryClient.invalidateQueries();
-      } else {
-        setResponseMessage(response.code);
       }
-    },
-    onError: () => {
-      setResponseMessage(
-        '업데이트에 실패했습니다. 잠시 후에 다시 실행해주세요.',
-      );
     },
   });
 
