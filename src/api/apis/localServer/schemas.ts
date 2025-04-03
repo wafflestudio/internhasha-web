@@ -165,7 +165,7 @@ export type CoffeeChatDetailList =
 type CoffeeChatBriefDTO = {
   id: string;
   postId: string;
-  title: string;
+  positionType: string;
   company: CoffeeChatUserInfo;
   createdAt: string;
   updatedAt: string;

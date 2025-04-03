@@ -76,7 +76,7 @@ export const mockCoffeeChatBriefLists: CoffeeChatListResponse = {
     {
       id: '1',
       postId: '371c8818-9538-4baa-b9f2-908d2fd5b5c8',
-      title: 'React 프론트엔드 개발자',
+      positionType: 'React 프론트엔드 개발자',
       company: {
         name: 'A 기업',
       },
@@ -92,7 +92,7 @@ export const mockCoffeeChatBriefLists: CoffeeChatListResponse = {
     {
       id: '2',
       postId: 'post2',
-      title: '백엔드 개발자',
+      positionType: '백엔드 개발자',
       company: {
         name: 'B 기업',
       },
@@ -108,7 +108,7 @@ export const mockCoffeeChatBriefLists: CoffeeChatListResponse = {
     {
       id: '3',
       postId: 'post3',
-      title: '디자이너',
+      positionType: '디자이너',
       company: {
         name: 'C 기업',
       },
@@ -124,7 +124,7 @@ export const mockCoffeeChatBriefLists: CoffeeChatListResponse = {
     {
       id: '4',
       postId: 'post4',
-      title: '데이터 엔지니어',
+      positionType: '데이터 엔지니어',
       company: {
         name: 'D 기업',
       },
@@ -140,7 +140,7 @@ export const mockCoffeeChatBriefLists: CoffeeChatListResponse = {
     {
       id: '5',
       postId: 'post5',
-      title: '마케터',
+      positionType: '마케터',
       company: {
         name: 'E 기업',
       },
