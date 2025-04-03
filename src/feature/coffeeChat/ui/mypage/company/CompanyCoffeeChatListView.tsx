@@ -73,7 +73,7 @@ export const CompanyCoffeeChatListView = ({
                   {coffeeChat.applicant.name}
                 </span>
                 <span className="truncate text-12 font-regular text-grey-700">
-                  {coffeeChat.title}
+                  {coffeeChat.positionType}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-13 font-regular">
