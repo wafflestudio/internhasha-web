@@ -48,13 +48,16 @@ export const CompanyCoffeeChatListView = ({
         coffeeChatListData.data.coffeeChatList.map((coffeeChat) => (
           <div key={coffeeChat.id} className="flex items-center gap-4">
             {isSelectMode && (
-              <Checkbox
-                checked={selectedChats.includes(coffeeChat.id)}
-                onClick={() => {
-                  handleSelectChat(coffeeChat.id);
-                }}
-                disabled={coffeeChat.coffeeChatStatus !== 'WAITING'}
-              />
+              <div className="flex w-[20px] items-center justify-center">
+                {coffeeChat.coffeeChatStatus === 'WAITING' && (
+                  <Checkbox
+                    checked={selectedChats.includes(coffeeChat.id)}
+                    onClick={() => {
+                      handleSelectChat(coffeeChat.id);
+                    }}
+                  />
+                )}
+              </div>
             )}
             <div
               key={coffeeChat.id}
