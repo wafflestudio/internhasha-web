@@ -78,7 +78,7 @@ export const implExternalApi = ({ externalFileCall }: ImplExternalApiProps) => {
         body: content.body,
         headers: {
           ...(content.contentType !== undefined
-            ? { 'content-type': content.contentType }
+            ? { 'Content-Type': content.contentType }
             : {}),
         },
       },

@@ -58,6 +58,10 @@ export const CreateCompanyProfileForm = ({
   const [responseMessage, setResponseMessage] = useState('');
 
   const { inputStates, formStates } = companyFormPresentation.useValidator({
+    initialState: {
+      ...initialState,
+      tags: initialState?.tags?.map((items) => items.tag),
+    },
     companyInputPresentation,
   });
 
@@ -103,8 +107,14 @@ export const CreateCompanyProfileForm = ({
     fileName: '인턴하샤_회사소개',
     setData: companyInfoPDFPreview.onChange,
   });
+  console.log(inputStates);
 
-  if (isInitialImagePreviewPending || isInitialCompanyInfoPreviewPending) {
+  if (
+    (initialState?.companyInfoPDFKey !== undefined &&
+      isInitialImagePreviewPending) ||
+    (initialState?.companyInfoPDFKey !== undefined &&
+      isInitialCompanyInfoPreviewPending)
+  ) {
     return <SkeletonCompanyProfileForm />;
   }
 

@@ -51,19 +51,7 @@ const MAX_FILE_SIZE = 5 * 1024 * 2024;
 const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
 
 const FILE_EXTENSIONS = ['pdf'];
-const IMAGE_EXTENSIONS = [
-  'png',
-  'jpg',
-  'jpeg',
-  'gif',
-  'bmp',
-  'webp',
-  'svg',
-  'tiff',
-  'ico',
-  'heif',
-  'heic',
-];
+const IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif'];
 
 const NUMBER_REGEX = /^\s*$|^[0-9]+$/;
 const URL_REGEX = /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;

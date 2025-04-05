@@ -193,7 +193,8 @@ export type PostIdParams = {
 };
 
 export type S3DownloadParams = {
-  filePath: string;
+  s3Key: string;
+  fileType: string;
 };
 
 export type CoffeeChatIdParams = {

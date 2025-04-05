@@ -125,9 +125,10 @@ export const CreateProfileForm = ({
   });
 
   if (
-    isInitialImagePreviewPending ||
-    isInitialCvPreviewPending ||
-    isInitialPortfolioPreviewPending
+    (initialState?.imageKey !== undefined && isInitialImagePreviewPending) ||
+    (initialState?.cvKey !== undefined && isInitialCvPreviewPending) ||
+    (initialState?.portfolioKey !== undefined &&
+      isInitialPortfolioPreviewPending)
   ) {
     return <SkeletonProfileForm />;
   }

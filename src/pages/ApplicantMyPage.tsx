@@ -23,8 +23,6 @@ export const ApplicantMyPage = () => {
     toMyPage({ query: { tab: tab as MyPageTab } });
   };
 
-  console.log(isExistProfile);
-
   return (
     <div className="min-h-screen bg-grey-50">
       <GlobalNavigationBar />

@@ -126,7 +126,7 @@ export const useDownloadFile = ({
 }) => {
   const { fileService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
-  const { getDownloadPresignedUrl } = useGetInitialFiles({ setData });
+  const { getDownloadByPresignedUrl } = useGetInitialFiles({ setData });
 
   const { data: dataPreview, isPending } = useQuery({
     queryKey: [
@@ -150,7 +150,7 @@ export const useDownloadFile = ({
       });
 
       if (response.type === 'success') {
-        return getDownloadPresignedUrl({
+        return getDownloadByPresignedUrl({
           presignedUrl: response.data.url,
           fileName,
         });
@@ -173,7 +173,7 @@ const useGetInitialFiles = ({
   const { fileService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
 
-  const { mutateAsync: getDownloadPresignedUrl, isPending } = useMutation({
+  const { mutateAsync: getDownloadByPresignedUrl, isPending } = useMutation({
     mutationFn: async ({
       presignedUrl,
       fileName,
@@ -193,5 +193,5 @@ const useGetInitialFiles = ({
     },
   });
 
-  return { getDownloadPresignedUrl, isPending };
+  return { getDownloadByPresignedUrl, isPending };
 };
