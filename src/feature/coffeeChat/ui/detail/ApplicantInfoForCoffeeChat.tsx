@@ -6,7 +6,6 @@ import { SeperatorLine } from '@/components/ui/separator';
 import { ICON_SRC } from '@/entities/asset';
 import type { Link } from '@/entities/link';
 import type { UserRole } from '@/entities/user';
-import { formatMinorJobToLabel } from '@/util/format';
 
 export const ApplicantInfoForCoffeeChat = ({
   applicant,
@@ -55,9 +54,6 @@ export const ApplicantInfoForCoffeeChat = ({
     })
     .join(' ∙ ');
   const formattedEnrollYear = String(enrollYear).slice(2);
-  const formattedPositions = positions?.map((position) =>
-    formatMinorJobToLabel(position),
-  );
 
   return (
     <div className="flex flex-col gap-[28px]">
@@ -85,8 +81,8 @@ export const ApplicantInfoForCoffeeChat = ({
         </section>
       )}
 
-      {(positions !== undefined ||
-        stacks !== undefined ||
+      {((positions !== undefined && positions.length !== 0) ||
+        (stacks !== undefined && stacks.length !== 0) ||
         explanation !== undefined ||
         cvKey !== undefined ||
         portfolioKey !== undefined) && (
@@ -95,20 +91,16 @@ export const ApplicantInfoForCoffeeChat = ({
           <section className="flex flex-col gap-[26px]">
             <h3 className="text-22 font-bold">기본 정보</h3>
             <div className="flex flex-col gap-[36px]">
-              {positions !== undefined && (
+              {positions !== undefined && positions.length !== 0 && (
                 <div className="flex flex-col gap-2">
                   <span className="text-16 font-bold text-grey-800">
                     희망 직무
                   </span>
-                  {formattedPositions !== undefined && (
-                    <p className="font-regular">
-                      {formattedPositions.join(' ∙ ')}
-                    </p>
-                  )}
+                  <p className="font-regular">{positions.join(' ∙ ')}</p>
                 </div>
               )}
 
-              {stacks !== undefined && (
+              {stacks !== undefined && stacks.length !== 0 && (
                 <div className="flex flex-col gap-2">
                   <span className="text-16 font-bold text-grey-800">
                     기술 스택
@@ -162,7 +154,7 @@ export const ApplicantInfoForCoffeeChat = ({
         </>
       )}
 
-      {links !== undefined && (
+      {links !== undefined && links.length !== 0 && (
         <>
           <SeperatorLine />
           <section className="flex flex-col gap-[26px]">
