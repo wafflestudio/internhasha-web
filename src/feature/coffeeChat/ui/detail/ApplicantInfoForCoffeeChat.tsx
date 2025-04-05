@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge';
 import { SeperatorLine } from '@/components/ui/separator';
 import { ICON_SRC } from '@/entities/asset';
 import type { Link } from '@/entities/link';
-import type { JobMinorCategory } from '@/entities/post';
 import type { UserRole } from '@/entities/user';
 import { formatMinorJobToLabel } from '@/util/format';
 
@@ -21,7 +20,7 @@ export const ApplicantInfoForCoffeeChat = ({
     email?: string;
     enrollYear: number;
     department: string;
-    positions?: JobMinorCategory[];
+    positions?: string[];
     slogan?: string;
     explanation?: string;
     stacks?: string[];
