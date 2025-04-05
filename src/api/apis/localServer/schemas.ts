@@ -129,7 +129,7 @@ export type Applicant = {
   email?: string;
   enrollYear: number;
   department: string;
-  positions?: JobCategory[];
+  positions?: string[];
   slogan?: string;
   explanation?: string;
   stacks?: string[];
@@ -290,7 +290,7 @@ export type CreatePositionRequest = {
 export type PutApplicantRequest = {
   enrollYear: number;
   department: string;
-  positions?: JobCategory[];
+  positions?: string[];
   slogan?: string;
   explanation?: string;
   stacks?: string[];

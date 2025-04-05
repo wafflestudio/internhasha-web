@@ -11,7 +11,6 @@ import { SkeletonApplicantInfo } from '@/feature/applicant/ui/mypage/SkeletonApp
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
-import { formatMinorJobToLabel } from '@/util/format';
 
 export const ApplicantInfo = ({
   setIsExistProfile,
@@ -58,9 +57,6 @@ export const ApplicantInfo = ({
     })
     .join(' ∙ ');
   const formattedEnrollYear = String(enrollYear).slice(2);
-  const formattedPositions = positions?.map((position) =>
-    formatMinorJobToLabel(position),
-  );
 
   return (
     <div className="flex flex-col gap-[28px]">
@@ -103,11 +99,7 @@ export const ApplicantInfo = ({
                   <span className="text-16 font-bold text-grey-800">
                     희망 직무
                   </span>
-                  {formattedPositions !== undefined && (
-                    <p className="font-regular">
-                      {formattedPositions.join(' ∙ ')}
-                    </p>
-                  )}
+                  <p className="font-regular">{positions.join(' ∙ ')}</p>
                 </div>
               )}
 
