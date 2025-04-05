@@ -42,7 +42,6 @@ export const getExternalServerApis = ({ callWithFile }: GetApisProps) =>
       }),
     'GET download-file': ({ path }: { path: string }) => {
       const returnFile = true;
-      console.log('최종: ', path);
       return callWithFile<SuccessResponse<BlobResponse>>(
         {
           method: 'GET',

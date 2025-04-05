@@ -107,7 +107,6 @@ export const CreateCompanyProfileForm = ({
     fileName: '인턴하샤_회사소개',
     setData: companyInfoPDFPreview.onChange,
   });
-  console.log(inputStates);
 
   if (
     (initialState?.companyInfoPDFKey !== undefined &&

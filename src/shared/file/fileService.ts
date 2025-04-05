@@ -94,7 +94,6 @@ export const implFileService = ({
     return { type: 'error', code: data.code, message: data.message };
   },
   downloadFileByPresignedUrl: async ({ presignedUrl, fileName }) => {
-    console.log(presignedUrl);
     const { status, data } = await externalApis['GET download-file']({
       path: presignedUrl,
     });
