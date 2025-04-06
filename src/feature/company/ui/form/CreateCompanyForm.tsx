@@ -58,6 +58,10 @@ export const CreateCompanyProfileForm = ({
   const [responseMessage, setResponseMessage] = useState('');
 
   const { inputStates, formStates } = companyFormPresentation.useValidator({
+    initialState: {
+      ...initialState,
+      tags: initialState?.tags?.map((items) => items.tag),
+    },
     companyInputPresentation,
   });
 
@@ -104,7 +108,12 @@ export const CreateCompanyProfileForm = ({
     setData: companyInfoPDFPreview.onChange,
   });
 
-  if (isInitialImagePreviewPending || isInitialCompanyInfoPreviewPending) {
+  if (
+    (initialState?.companyInfoPDFKey !== undefined &&
+      isInitialImagePreviewPending) ||
+    (initialState?.companyInfoPDFKey !== undefined &&
+      isInitialCompanyInfoPreviewPending)
+  ) {
     return <SkeletonCompanyProfileForm />;
   }
 

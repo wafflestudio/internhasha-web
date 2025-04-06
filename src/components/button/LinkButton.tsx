@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { ICON_SRC } from '@/entities/asset';
+import { cn } from '@/lib/utils';
 
 export const LinkButton = ({
   link,
@@ -14,7 +15,10 @@ export const LinkButton = ({
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex w-fit items-center gap-1 rounded-sm bg-grey-50 px-[10px] py-[6px]"
+      className={cn(
+        'flex w-fit items-center rounded-sm bg-grey-50 px-[10px] py-[6px]',
+        children !== undefined ? 'gap-1' : '',
+      )}
     >
       <img src={ICON_SRC.LINK} />
       <span className="font-semibold text-grey-600">{children}</span>
@@ -34,7 +38,10 @@ export const SmallLinkButton = ({
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex h-[28px] w-[28px] w-fit items-center justify-center gap-1 rounded-sm bg-grey-50"
+      className={cn(
+        'flex h-[28px] w-fit items-center justify-center rounded-sm bg-grey-50',
+        children !== undefined ? 'gap-1' : '',
+      )}
     >
       <img src={ICON_SRC.LINK} />
       <span className="font-semibold text-grey-600">{children}</span>

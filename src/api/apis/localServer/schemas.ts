@@ -129,7 +129,7 @@ export type Applicant = {
   email?: string;
   enrollYear: number;
   department: string;
-  positions?: JobCategory[];
+  positions?: string[];
   slogan?: string;
   explanation?: string;
   stacks?: string[];
@@ -193,7 +193,8 @@ export type PostIdParams = {
 };
 
 export type S3DownloadParams = {
-  filePath: string;
+  s3Key: string;
+  fileType: string;
 };
 
 export type CoffeeChatIdParams = {
@@ -290,7 +291,7 @@ export type CreatePositionRequest = {
 export type PutApplicantRequest = {
   enrollYear: number;
   department: string;
-  positions?: JobCategory[];
+  positions?: string[];
   slogan?: string;
   explanation?: string;
   stacks?: string[];

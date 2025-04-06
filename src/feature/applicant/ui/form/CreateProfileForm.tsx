@@ -16,7 +16,6 @@ import { Button } from '@/components/ui/button';
 import { SeperatorLine } from '@/components/ui/separator';
 import { createErrorMessage } from '@/entities/errors';
 import type { Link } from '@/entities/link';
-import type { JobMinorCategory } from '@/entities/post';
 import { applicantFormPresentation } from '@/feature/applicant/presentation/applicantFormPresentation';
 import {
   applicantInputPresentation,
@@ -38,7 +37,7 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 type CreateApplicantProfileRequest = {
   enrollYear: number;
   department: string;
-  positions?: JobMinorCategory[];
+  positions?: string[];
   slogan?: string;
   explanation?: string;
   stacks?: string[];
@@ -126,9 +125,10 @@ export const CreateProfileForm = ({
   });
 
   if (
-    isInitialImagePreviewPending ||
-    isInitialCvPreviewPending ||
-    isInitialPortfolioPreviewPending
+    (initialState?.imageKey !== undefined && isInitialImagePreviewPending) ||
+    (initialState?.cvKey !== undefined && isInitialCvPreviewPending) ||
+    (initialState?.portfolioKey !== undefined &&
+      isInitialPortfolioPreviewPending)
   ) {
     return <SkeletonProfileForm />;
   }
@@ -149,6 +149,7 @@ export const CreateProfileForm = ({
     handleCreateApplicantProfile({
       applicantInfo: {
         enrollYear: formStates.enrollYear.value,
+        positions: formStates.positions.value,
         department: formStates.department.value,
         slogan: formStates.slogan.value,
         explanation: formStates.explanation.value,

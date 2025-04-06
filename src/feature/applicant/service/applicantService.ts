@@ -1,6 +1,5 @@
 import type { Apis, LocalServerDTO } from '@/api';
 import type { Link } from '@/entities/link';
-import type { JobMinorCategory } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 
 export type ApplicantService = {
@@ -17,7 +16,7 @@ export type ApplicantService = {
     body: {
       enrollYear: number;
       department: string;
-      positions?: JobMinorCategory[];
+      positions?: string[];
       slogan?: string;
       explanation?: string;
       stacks?: string[];

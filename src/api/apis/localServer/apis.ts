@@ -296,9 +296,10 @@ export const getLocalServerApis = ({
       token: string;
       params: S3DownloadParams;
     }) => {
+      const queryParameters = encodeQueryParams({ params });
       return callWithToken<SuccessResponse<S3DownloadResp>>({
         method: 'GET',
-        path: `s3?${params.filePath}`,
+        path: `s3?${queryParameters}`,
         token,
       });
     },

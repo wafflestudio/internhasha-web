@@ -44,14 +44,19 @@ export const ApplicantCoffeeChatListView = () => {
               </div>
             )}
             <div className="flex items-center gap-[10px]">
-              {coffeeChat.company.imageKey !== undefined ? (
-                <img
-                  src={`${API_BASE_URL}/${coffeeChat.company.imageKey}`}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <div className="h-[30px] w-[30px] rounded-md bg-[#E1E4E9]"></div>
-              )}
+              <div className="h-[30px] w-[30px] rounded-md">
+                {coffeeChat.company.imageKey !== undefined ? (
+                  <img
+                    src={`${API_BASE_URL}/${coffeeChat.company.imageKey}`}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src={ICON_SRC.FAVICON.BLUE}
+                    className="h-full w-full object-cover"
+                  />
+                )}
+              </div>
               <span className="text-14 font-regular">
                 {coffeeChat.company.name}
               </span>
