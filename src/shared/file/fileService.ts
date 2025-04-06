@@ -99,17 +99,38 @@ export const implFileService = ({
     });
 
     const getExtension = (input: string) => {
+      if (input.includes('application/pdf')) {
+        return 'pdf';
+      }
       if (input.includes('image/jpeg')) {
         return 'jpg';
       }
       if (input.includes('image/png')) {
         return 'png';
       }
-      if (input.includes('application/pdf')) {
-        return 'pdf';
-      }
       if (input.includes('image/gif')) {
         return 'gif';
+      }
+      if (input.includes('image/bmp')) {
+        return 'bmp';
+      }
+      if (input.includes('image/webp')) {
+        return 'webp';
+      }
+      if (input.includes('image/svg+xml')) {
+        return 'svg';
+      }
+      if (input.includes('image/tiff')) {
+        return 'tiff';
+      }
+      if (input.includes('image/x-icon')) {
+        return 'ico';
+      }
+      if (input.includes('image/heif')) {
+        return 'heif';
+      }
+      if (input.includes('image/heic')) {
+        return 'heic';
       }
       return 'jpg';
     };
