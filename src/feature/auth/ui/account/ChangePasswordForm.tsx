@@ -26,9 +26,6 @@ export const ChangePasswordForm = () => {
 
   const { sendPassword, isPending } = useChangePassword({ setResponseMessage });
 
-  console.log(inputStates);
-  console.log(formStates);
-
   const sendPasswordDisable =
     password.isError || newPassword.isError || newPasswordConfirm.isError;
 
