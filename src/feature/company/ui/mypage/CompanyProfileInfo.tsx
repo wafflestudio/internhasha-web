@@ -13,7 +13,7 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { formatDomainToLabel } from '@/util/format';
 
-export const CompanyProfile = ({
+export const CompanyProfileInfo = ({
   setIsExistProfile,
 }: {
   setIsExistProfile(input: boolean): void;
@@ -50,7 +50,7 @@ export const CompanyProfile = ({
   } = myInfoData.data;
 
   return (
-    <div className="flex flex-col gap-[30px] rounded-[8px] bg-white px-[30px] py-[36px] text-grey-900">
+    <>
       <section>
         <div className="flex items-center gap-[18px]">
           <ThumbnailWithPresignedUrl
@@ -150,7 +150,7 @@ export const CompanyProfile = ({
           <p className="font-regular text-grey-800">{vcRecommendation}</p>
         </div>
       </section>
-    </div>
+    </>
   );
 };
 

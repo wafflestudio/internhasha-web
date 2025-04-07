@@ -24,6 +24,7 @@ export const useRouteNavigation = () => {
     PATCH_COMPANY,
     CREATE_PROFILE,
     PATCH_PROFILE,
+    CHANGE_PASSWORD,
   } = PATH;
   const {
     INDEX,
@@ -46,6 +47,9 @@ export const useRouteNavigation = () => {
     },
     toFindAccount: () => {
       void navigate(RESET_PASSWORD);
+    },
+    toChangePassword: () => {
+      void navigate(CHANGE_PASSWORD);
     },
     toVerifyEmail: ({ body }: { body: VerifyMailRouteQuery }) => {
       void navigate(VERIFY_EMAIL, { state: { ...body } });

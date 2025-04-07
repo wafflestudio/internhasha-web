@@ -15,7 +15,7 @@ import {
   CompanyCoffeeChatListView,
 } from '@/feature/coffeeChat';
 import { CompanyCoffeeChatBtnGroup } from '@/feature/coffeeChat/ui/mypage/company/CompanyCoffeeChatBtn';
-import { CompanyProfile } from '@/feature/company';
+import { CompanyProfileView } from '@/feature/company';
 import { MyPostList } from '@/feature/post/ui/mypage/company/MyPostList';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -174,7 +174,7 @@ export const CompanyMyPage = () => {
               <MyPostList />
             </TabsContent>
             <TabsContent value="PROFILE">
-              <CompanyProfile setIsExistProfile={setIsExistProfile} />
+              <CompanyProfileView setIsExistProfile={setIsExistProfile} />
             </TabsContent>
           </div>
         </Tabs>

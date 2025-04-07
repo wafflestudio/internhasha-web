@@ -18,6 +18,7 @@ import { implCompanyService } from '@/feature/company';
 import { implPostService } from '@/feature/post';
 import { ApplicantCoffeeChatDetailPage } from '@/pages/ApplicantCoffeeChatDetailPage';
 import { ApplicantMyPage } from '@/pages/ApplicantMyPage';
+import { ChangePasswordPage } from '@/pages/ChangePasswordPage';
 import { CompanyCoffeeChatDetailPage } from '@/pages/CompanyCoffeeChatDetailPage';
 import { CompanyMyPage } from '@/pages/CompanyMyPage';
 import { CreateApplicantProfilePage } from '@/pages/CreateApplicantProfilePage';
@@ -76,6 +77,7 @@ const RouterProvider = () => {
               />
             }
           />
+          <Route path={PATH.CHANGE_PASSWORD} element={<ChangePasswordPage />} />
         </Route>
         <Route element={<ProtectedRoute role="APPLICANT" />}>
           <Route

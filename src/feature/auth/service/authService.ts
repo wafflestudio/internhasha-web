@@ -31,6 +31,15 @@ export type AuthService = {
     code: string;
   }): ServiceResponse<void>;
   sendEmailPassword({ email }: { email: string }): ServiceResponse<void>;
+  changePassword({
+    token,
+    oldPassword,
+    newPassword,
+  }: {
+    token: string;
+    oldPassword: string;
+    newPassword: string;
+  }): ServiceResponse<void>;
 };
 
 export const implAuthService = ({
@@ -147,6 +156,21 @@ export const implAuthService = ({
     const body = { email };
     const { status, data } = await apis['POST /auth/password']({
       body,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', code: data.code, message: data.message };
+  },
+  changePassword: async ({ token, oldPassword, newPassword }) => {
+    const body = { oldPassword, newPassword };
+    const { status, data } = await apis['PATCH /auth/password']({
+      body,
+      token,
     });
 
     if (status === 200) {

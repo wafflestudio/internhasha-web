@@ -4,8 +4,11 @@ export type Input<TInput> = {
   onChange: (input: TInput) => void;
 };
 
-export type InputWithDetailedError<TInput> = Input<TInput> & {
-  detailedError: Record<string, boolean>;
+export type InputWithDetailedError<
+  TInput,
+  TError extends Record<string, boolean>,
+> = Input<TInput> & {
+  detailedError: TError;
 };
 
 export type SelectInput<TSelect> = {
