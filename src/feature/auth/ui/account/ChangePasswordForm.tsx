@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { createErrorMessage } from '@/entities/errors';
 import { authFormPresentation } from '@/feature/auth/presentation/authFormPresentation';
 import { authInputPresentation } from '@/feature/auth/presentation/authInputPresentation';
-import { PasswordConfirmField } from '@/feature/auth/ui/fields/PassowordConfirmField';
+import { PasswordConfirmField } from '@/feature/auth/ui/fields/PasswordConfirmField';
 import { PasswordField } from '@/feature/auth/ui/fields/PasswordField';
 import { PasswordFieldWithDetailedError } from '@/feature/auth/ui/fields/PasswordFieldWithDetailedError';
 import { useGuardContext } from '@/shared/context/hooks';
@@ -41,7 +41,7 @@ export const ChangePasswordForm = () => {
       newPassword: formStates.newPassword.value,
     });
   };
-  const hanldeClickPreviousButton = () => {
+  const handleClickPreviousButton = () => {
     toMyPage({ query: { tab: 'PROFILE' } });
   };
 
@@ -75,7 +75,7 @@ export const ChangePasswordForm = () => {
             variant="outline"
             onClick={(e) => {
               e.preventDefault();
-              hanldeClickPreviousButton();
+              handleClickPreviousButton();
             }}
             className="flex-1"
           >

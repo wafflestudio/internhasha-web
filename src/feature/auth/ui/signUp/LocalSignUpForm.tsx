@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import type { PreviousSignUpFormRouteQuery } from '@/entities/route';
 import { authFormPresentation } from '@/feature/auth/presentation/authFormPresentation';
 import { authInputPresentation } from '@/feature/auth/presentation/authInputPresentation';
-import { PasswordConfirmField } from '@/feature/auth/ui/fields/PassowordConfirmField';
+import { PasswordConfirmField } from '@/feature/auth/ui/fields/PasswordConfirmField';
 import { PasswordFieldWithDetailedError } from '@/feature/auth/ui/fields/PasswordFieldWithDetailedError';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { useRouteLocation } from '@/shared/route/useRouteParams';
