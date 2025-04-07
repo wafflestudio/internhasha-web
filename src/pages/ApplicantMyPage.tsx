@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ICON_SRC } from '@/entities/asset';
 import type { MyPageRouteQuery } from '@/entities/route';
-import { ApplicantInfo } from '@/feature/applicant';
+import { ApplicantProfileView } from '@/feature/applicant/ui/mypage/ApplicantProfileView';
 import { ApplicantCoffeeChatListView } from '@/feature/coffeeChat';
 import { CoffeeChatNumberBadge } from '@/feature/coffeeChat';
 import { BookmarkListView } from '@/feature/post/ui/mypage/applicant/BookmarkListView';
@@ -63,11 +63,7 @@ export const ApplicantMyPage = () => {
               <BookmarkListView />
             </TabsContent>
             <TabsContent value="PROFILE">
-              <div className="flex w-full justify-center">
-                <div className="w-[700px] gap-6 rounded-lg bg-white px-[24px] py-[48px] text-grey-900">
-                  <ApplicantInfo setIsExistProfile={setIsExistProfile} />
-                </div>
-              </div>
+              <ApplicantProfileView setIsExistProfile={setIsExistProfile} />
             </TabsContent>
           </div>
         </Tabs>

@@ -12,7 +12,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 
-export const ApplicantInfo = ({
+export const ApplicantProfileInfo = ({
   setIsExistProfile,
 }: {
   setIsExistProfile(input: boolean): void;

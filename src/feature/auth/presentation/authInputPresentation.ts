@@ -114,7 +114,7 @@ export const authInputPresentation: AuthInputPresentation = {
         onChange: setPasswordConfirm,
       },
       newPassword: {
-        isError: !PASSWORD_REGEX.test(newPassword) || newPassword === password,
+        isError: !PASSWORD_REGEX.test(newPassword),
         value: newPassword,
         detailedError: {
           englishError: !PASSWORD_DETAIL_REGEX.ENGLISH_REGEX.test(newPassword),

@@ -105,7 +105,10 @@ export const authFormPresentation: AuthFormPresentation = {
         mail,
         username,
         password,
-        newPassword,
+        newPassword: {
+          ...newPassword,
+          isError: newPassword.isError || newPassword.value === password.value,
+        },
         code,
       },
     };

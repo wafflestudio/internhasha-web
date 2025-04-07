@@ -20,6 +20,7 @@ export const ChangePasswordForm = () => {
   const [isNewPasswordFocused, setIsNewPasswordFocused] = useState(false);
   const [isNewPasswordConfirmFocused, setIsNewPasswordConfirmFocused] =
     useState(false);
+  const [responseMessage, setResponseMessage] = useState('');
   const { inputStates, formStates } = authFormPresentation.useValidator({
     authInputPresentation,
   });
@@ -27,9 +28,13 @@ export const ChangePasswordForm = () => {
 
   const { password, newPassword, newPasswordConfirm } = inputStates;
 
-  const { sendPassword, responseMessage, isPending } = useChangePassword();
+  const { sendPassword, isPending } = useChangePassword({ setResponseMessage });
 
-  const sendPasswordDisable = password.isError || newPassword.isError;
+  console.log(inputStates);
+  console.log(formStates);
+
+  const sendPasswordDisable =
+    password.isError || newPassword.isError || newPasswordConfirm.isError;
   const isNewPasswordValid =
     !newPassword.detailedError.lengthError &&
     !newPassword.detailedError.numberError &&
@@ -38,6 +43,12 @@ export const ChangePasswordForm = () => {
     !newPassword.detailedError.patternError;
 
   const onSubmit = () => {
+    if (formStates.newPassword.isError) {
+      setResponseMessage(
+        '기존 비밀번호와 변경하려는 비밀번호의 값이 동일합니다.',
+      );
+      return;
+    }
     sendPassword({
       oldPassword: formStates.password.value,
       newPassword: formStates.newPassword.value,
@@ -86,9 +97,9 @@ export const ChangePasswordForm = () => {
             <Input
               id="password"
               type={isPasswordVisible ? 'text' : 'password'}
-              value={password.value}
+              value={newPassword.value}
               onChange={(e) => {
-                password.onChange(e.target.value);
+                newPassword.onChange(e.target.value);
               }}
               onFocus={() => {
                 setIsNewPasswordFocused(true);
@@ -121,7 +132,7 @@ export const ChangePasswordForm = () => {
               <div className="flex flex-col gap-1 pl-6">
                 {detailedPasswordError.map((detailedError, index) => (
                   <div key={`detailed-error-${index}`} className="flex gap-1">
-                    {!password.detailedError.lengthError ? (
+                    {!detailedError.value ? (
                       <img src={ICON_SRC.CHECK} alt="통과 아이콘" />
                     ) : (
                       <img src={ICON_SRC.CLOSE.GREY} alt="재작성 아이콘" />
@@ -145,7 +156,7 @@ export const ChangePasswordForm = () => {
           <Input
             id="newPassword"
             type="password"
-            value={newPassword.value}
+            value={newPasswordConfirm.value}
             onChange={(e) => {
               if (e.target.value === '') {
                 setIsNewPasswordConfirmFocused(false);
@@ -168,14 +179,20 @@ export const ChangePasswordForm = () => {
         <div className="flex gap-2">
           <Button
             variant="outline"
-            onClick={hanldeClickPreviousButton}
+            onClick={(e) => {
+              e.preventDefault();
+              hanldeClickPreviousButton();
+            }}
             className="flex-1"
           >
             뒤로가기
           </Button>
           <Button
             className="flex-1"
-            onClick={onSubmit}
+            onClick={(e) => {
+              e.preventDefault();
+              onSubmit();
+            }}
             disabled={sendPasswordDisable || isPending}
           >
             비밀번호 변경하기
@@ -186,11 +203,14 @@ export const ChangePasswordForm = () => {
   );
 };
 
-const useChangePassword = () => {
+const useChangePassword = ({
+  setResponseMessage,
+}: {
+  setResponseMessage(input: string): void;
+}) => {
   const { token } = useGuardContext(TokenContext);
   const { authService } = useGuardContext(ServiceContext);
   const { toMyPage } = useRouteNavigation();
-  const [responseMessage, setResponseMessage] = useState('');
 
   const { mutate: sendPassword, isPending } = useMutation({
     mutationFn: ({
@@ -221,7 +241,6 @@ const useChangePassword = () => {
 
   return {
     sendPassword,
-    responseMessage,
     isPending,
   };
 };
