@@ -15,8 +15,28 @@ export type AuthInputPresentation = {
     snuMailPrefix: Input<string>;
     mail: Input<string>;
     username: Input<string>;
-    password: InputWithDetailedError<string>;
+    password: InputWithDetailedError<
+      string,
+      {
+        englishError: boolean;
+        numberError: boolean;
+        specialCharError: boolean;
+        lengthError: boolean;
+        patternError: boolean;
+      }
+    >;
     passwordConfirm: Input<string>;
+    newPassword: InputWithDetailedError<
+      string,
+      {
+        englishError: boolean;
+        numberError: boolean;
+        specialCharError: boolean;
+        lengthError: boolean;
+        patternError: boolean;
+      }
+    >;
+    newPasswordConfirm: Input<string>;
     code: Input<string>;
   };
 };
@@ -52,6 +72,8 @@ export const authInputPresentation: AuthInputPresentation = {
       initialState.password !== undefined ? initialState.password : '',
     );
     const [passwordConfirm, setPasswordConfirm] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
     const [code, setCode] = useState(
       initialState.code !== undefined ? initialState.code : '',
     );
@@ -90,6 +112,25 @@ export const authInputPresentation: AuthInputPresentation = {
         isError: password !== passwordConfirm,
         value: passwordConfirm,
         onChange: setPasswordConfirm,
+      },
+      newPassword: {
+        isError: !PASSWORD_REGEX.test(newPassword) || newPassword === password,
+        value: newPassword,
+        detailedError: {
+          englishError: !PASSWORD_DETAIL_REGEX.ENGLISH_REGEX.test(newPassword),
+          numberError: !PASSWORD_DETAIL_REGEX.NUMBER_REGEX.test(newPassword),
+          specialCharError:
+            !PASSWORD_DETAIL_REGEX.SPECIAL_CHAR_REGEX.test(newPassword),
+          lengthError: !PASSWORD_DETAIL_REGEX.LENGTH_REGEX.test(newPassword),
+          patternError:
+            PASSWORD_DETAIL_REGEX.INVALID_PATTERN_REGEX.test(newPassword),
+        },
+        onChange: setNewPassword,
+      },
+      newPasswordConfirm: {
+        isError: newPassword !== newPasswordConfirm,
+        value: newPasswordConfirm,
+        onChange: setNewPasswordConfirm,
       },
       code: {
         isError: !CODE_REGEX.test(code),

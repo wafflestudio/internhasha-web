@@ -25,8 +25,28 @@ type AuthFormPresentation = {
       snuMailPrefix: Input<string>;
       mail: Input<string>;
       username: Input<string>;
-      password: InputWithDetailedError<string>;
+      password: InputWithDetailedError<
+        string,
+        {
+          englishError: boolean;
+          numberError: boolean;
+          specialCharError: boolean;
+          lengthError: boolean;
+          patternError: boolean;
+        }
+      >;
       passwordConfirm: Input<string>;
+      newPassword: InputWithDetailedError<
+        string,
+        {
+          englishError: boolean;
+          numberError: boolean;
+          specialCharError: boolean;
+          lengthError: boolean;
+          patternError: boolean;
+        }
+      >;
+      newPasswordConfirm: Input<string>;
       code: Input<string>;
     };
     formStates: {
@@ -34,6 +54,7 @@ type AuthFormPresentation = {
       mail: InputForForm<string>;
       username: InputForForm<string>;
       password: InputForForm<string>;
+      newPassword: Input<string>;
       code: InputForForm<string>;
     };
   };
@@ -52,10 +73,18 @@ export const authFormPresentation: AuthFormPresentation = {
       code: initialState?.code,
     };
 
-    const { snuMailPrefix, mail, username, password, passwordConfirm, code } =
-      authInputPresentation.useValidator({
-        initialState: initialStateForInput,
-      });
+    const {
+      snuMailPrefix,
+      mail,
+      username,
+      password,
+      passwordConfirm,
+      newPassword,
+      newPasswordConfirm,
+      code,
+    } = authInputPresentation.useValidator({
+      initialState: initialStateForInput,
+    });
 
     return {
       inputStates: {
@@ -64,6 +93,8 @@ export const authFormPresentation: AuthFormPresentation = {
         username,
         password,
         passwordConfirm,
+        newPassword,
+        newPasswordConfirm,
         code,
       },
       formStates: {
@@ -74,6 +105,7 @@ export const authFormPresentation: AuthFormPresentation = {
         mail,
         username,
         password,
+        newPassword,
         code,
       },
     };
