@@ -280,7 +280,7 @@ export const FilterSection = ({
                         handleChangeDomainFilter('ALL');
                       }}
                     />
-                    <Label htmlFor="seires-all">전체</Label>
+                    <Label htmlFor="domain-all">전체</Label>
                   </div>
                   {DOMAIN_FILTER_VALUE.map((option, idx) => (
                     <div
