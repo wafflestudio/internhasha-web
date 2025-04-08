@@ -50,8 +50,8 @@ type CompanyDTO = {
   landingPageLink?: string;
   links?: Link[];
   tags?: { tag: string }[];
-  vcName: string;
-  vcRecommendation: string;
+  vcName?: string;
+  vcRecommendation?: string;
 };
 
 export type PositionDTO = {

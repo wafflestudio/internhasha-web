@@ -145,10 +145,14 @@ export const CompanyProfileInfo = ({
             <MDEditor.Markdown source={detail} style={{ fontSize: '14px' }} />
           </div>
         </div>
-        <div className="flex flex-col gap-3">
-          <p className="text-16 font-bold text-grey-800">{vcName} 추천 이유</p>
-          <p className="font-regular text-grey-800">{vcRecommendation}</p>
-        </div>
+        {vcName !== undefined && vcRecommendation !== undefined && (
+          <div className="flex flex-col gap-3">
+            <p className="text-16 font-bold text-grey-800">
+              {vcName} 추천 이유
+            </p>
+            <p className="font-regular text-grey-800">{vcRecommendation}</p>
+          </div>
+        )}
       </section>
     </>
   );

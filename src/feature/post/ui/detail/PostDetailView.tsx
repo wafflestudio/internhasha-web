@@ -328,14 +328,20 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               </div>
             </section>
 
-            <section className="flex flex-col gap-3">
-              <span className="text-lg font-semibold text-grey-800">
-                VC 추천 이유
-              </span>
-              <p data-color-mode="light" className="flex rounded-md border p-4">
-                {company.vcRecommendation}
-              </p>
-            </section>
+            {company.vcName !== undefined &&
+              company.vcRecommendation !== undefined && (
+                <section className="flex flex-col gap-3">
+                  <span className="text-lg font-semibold text-grey-800">
+                    VC 추천 이유
+                  </span>
+                  <p
+                    data-color-mode="light"
+                    className="flex rounded-md border p-4"
+                  >
+                    {company.vcRecommendation}
+                  </p>
+                </section>
+              )}
           </div>
         </div>
       </div>

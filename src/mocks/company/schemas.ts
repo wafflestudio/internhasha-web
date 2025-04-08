@@ -28,6 +28,6 @@ export type CompanyResponse = {
   landingPageLink?: string;
   links?: Link[];
   tags?: { tag: string }[];
-  vcName: string;
-  vcRecommendation: string;
+  vcName?: string;
+  vcRecommendation?: string;
 };
