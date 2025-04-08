@@ -16,6 +16,7 @@ import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import type { CreateCompanyRequest, Domain } from '@/entities/company';
 import { domainList } from '@/entities/company';
+import { createErrorMessage } from '@/entities/errors';
 import type { Link } from '@/entities/link';
 import { companyFormPresentation } from '@/feature/company/presentation/companyFormPresentation';
 import {
@@ -400,7 +401,9 @@ const useCreateCompanyWithUploads = ({
       if (response.type === 'success') {
         await queryClient.invalidateQueries();
         toMyPage({ query: { tab: 'PROFILE' } });
+        return;
       }
+      setResponseMessage(createErrorMessage(response.code));
     },
 
     onError: () => {

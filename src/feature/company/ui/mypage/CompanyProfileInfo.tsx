@@ -25,7 +25,7 @@ export const CompanyProfileInfo = ({
   }
 
   if (myInfoData.type === 'error') {
-    if (myInfoData.code === 'POST_008') {
+    if (myInfoData.code === 'COMPANY_001') {
       return <NoCompanyProfile />;
     }
     return (
