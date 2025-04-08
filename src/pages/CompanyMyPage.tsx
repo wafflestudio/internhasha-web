@@ -131,24 +131,27 @@ export const CompanyMyPage = () => {
                 )}
               </TabsContent>
               <TabsContent value="COFFEE_CHAT" className="ml-auto">
-                {isSelectMode ? (
-                  <CompanyCoffeeChatBtnGroup
-                    isPending={isPending}
-                    handleOpenModal={handleOpenModal}
-                    handleCancelSelect={handleCancelSelect}
-                    handleSelectAll={handleSelectAll}
-                    disabled={isPending || selectedChats.length === 0}
-                  />
-                ) : (
-                  <CoffeeChatButton
-                    onClick={() => {
-                      setIsSelectMode((prev) => !prev);
-                    }}
-                    disabled={isPending}
-                  >
-                    선택 하기
-                  </CoffeeChatButton>
-                )}
+                {coffeeChatListData?.type === 'success' &&
+                  coffeeChatListData.data.coffeeChatList.length > 0 &&
+                  (isSelectMode ? (
+                    <CompanyCoffeeChatBtnGroup
+                      isPending={isPending}
+                      handleOpenModal={handleOpenModal}
+                      handleCancelSelect={handleCancelSelect}
+                      handleSelectAll={handleSelectAll}
+                      disabled={isPending || selectedChats.length === 0}
+                    />
+                  ) : (
+                    <CoffeeChatButton
+                      onClick={() => {
+                        setIsSelectMode((prev) => !prev);
+                      }}
+                      disabled={isPending}
+                    >
+                      선택 하기
+                    </CoffeeChatButton>
+                  ))}
+
                 {isModalOpen && (
                   <UpdateCoffeeChatStatusModal
                     onClose={() => {
