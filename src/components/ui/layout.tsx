@@ -39,7 +39,7 @@ export const ModalFloatBackground = ({
       onClick={onOutSlideClick}
     >
       <div
-        className={`flex w-full max-w-sm flex-col gap-[60px] rounded-2xl bg-white p-6 text-center shadow-lg ${isVisible === undefined || isVisible ? 'animate-popup' : 'animate-popout'}`}
+        className={`flex w-full max-w-sm flex-col gap-[60px] rounded-2xl bg-white p-6 pt-[40px] text-center shadow-lg ${isVisible === undefined || isVisible ? 'animate-popup' : 'animate-popout'}`}
         onClick={(e) => {
           e.stopPropagation();
         }}

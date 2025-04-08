@@ -40,6 +40,7 @@ export type AuthService = {
     oldPassword: string;
     newPassword: string;
   }): ServiceResponse<void>;
+  withdrawUser({ token }: { token: string }): ServiceResponse<void>;
 };
 
 export const implAuthService = ({
@@ -170,6 +171,19 @@ export const implAuthService = ({
     const body = { oldPassword, newPassword };
     const { status, data } = await apis['PATCH /auth/password']({
       body,
+      token,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', code: data.code, message: data.message };
+  },
+  withdrawUser: async ({ token }) => {
+    const { status, data } = await apis['DELETE /auth/user']({
       token,
     });
 
