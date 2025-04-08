@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import { DownloadButtonWithPresignedUrl } from '@/components/button/DownloadButtonWithPresignedUrl';
 import { LinkButton } from '@/components/button/LinkButton';
+import { ClosePostModal } from '@/components/modal/ClosePostModal';
 import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal';
 import { SignInForCoffeeChatModal } from '@/components/modal/SignInForCoffeChatModal';
 import { Badge } from '@/components/ui/badge';
@@ -18,7 +19,7 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { UserContext } from '@/shared/context/UserContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { formatIsoToDate } from '@/util/format';
+import { formatDomainToLabel, formatIsoToDate } from '@/util/format';
 import { getEmploymentStatus } from '@/util/postFormatFunctions';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
@@ -31,7 +32,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   const { toMain, toCreateCoffeeChat, toCreatePost } = useRouteNavigation();
 
   const [showModal, setShowModal] = useState<
-    'COFFEE_CHAT' | 'BOOKMARK' | 'NONE'
+    'COFFEE_CHAT' | 'BOOKMARK' | 'NONE' | 'CLOSE_POST'
   >('NONE');
   const closeModal = () => {
     setShowModal('NONE');
@@ -40,8 +41,10 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   const { addBookmark, isPending: isAddBookmarkPending } = useAddBookmark();
   const { deleteBookmark, isPending: isDeleteBookmarkPending } =
     useDeleteBookmark();
+  const { closePost, isPending: isClosePostPending } = useClosePost();
 
-  const isPending = isAddBookmarkPending || isDeleteBookmarkPending;
+  const isPending =
+    isAddBookmarkPending || isDeleteBookmarkPending || isClosePostPending;
 
   const handleClickAddBookmark = ({ id }: { id: string }) => {
     if (token === null) {
@@ -65,6 +68,10 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
       return;
     }
     toCreateCoffeeChat({ postId: id });
+  };
+
+  const handleClickClosePost = () => {
+    setShowModal('CLOSE_POST');
   };
 
   if (postDetailData === undefined) {
@@ -174,7 +181,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               <Button
                 onClick={() => {
                   toCreatePost({
-                    companyId: userId,
+                    companyId: company.id,
                     body: {
                       id: postId,
                       positionTitle: position.positionTitle,
@@ -195,10 +202,12 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             {author.id === userId && (
               <Button
                 variant="destructive"
-                onClick={() => {}}
-                className="flex-1"
+                onClick={() => {
+                  handleClickClosePost();
+                }}
+                disabled={!position.isActive}
               >
-                공고 마감하기
+                {position.isActive ? '공고 마감하기' : '마감됨'}
               </Button>
             )}
             <Button
@@ -220,7 +229,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             <div className="flex flex-col gap-4 md:flex-row md:gap-[68px]">
               <div className="flex flex-1 items-center">
                 <span className="w-[80px] text-grey-700">업종</span>
-                <span>{company.domain}</span>
+                <span>{formatDomainToLabel(company.domain)}</span>
               </div>
               <div className="flex flex-1 items-center">
                 <span className="w-[80px] text-grey-700">구성 인원수</span>
@@ -257,15 +266,15 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                   </div>
                 )}
 
-              {company.companyInfoPDFLink !== undefined &&
-                company.companyInfoPDFLink.trim().length !== 0 && (
+              {company.companyInfoPDFKey !== undefined &&
+                company.companyInfoPDFKey.trim().length !== 0 && (
                   <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
                     <span className="text-lg font-semibold text-grey-800">
                       IR Deck 자료
                     </span>
 
                     <DownloadButtonWithPresignedUrl
-                      s3Key={company.companyInfoPDFLink}
+                      s3Key={company.companyInfoPDFKey}
                       type="IR_DECK"
                     >
                       <img src={ICON_SRC.DOWNLOAD} />
@@ -307,8 +316,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                 </span>
 
                 <div className="flex flex-wrap gap-2">
-                  {company.tags.map((item) => (
-                    <Badge key={`tag-${item.tag}`} variant="outline">
+                  {company.tags.map((item, index) => (
+                    <Badge key={index} variant="outline">
                       {item.tag}
                     </Badge>
                   ))}
@@ -361,6 +370,14 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
       )}
       {showModal === 'COFFEE_CHAT' && (
         <SignInForCoffeeChatModal onClose={closeModal} />
+      )}
+      {showModal === 'CLOSE_POST' && (
+        <ClosePostModal
+          onClose={closeModal}
+          onConfirm={() => {
+            closePost({ postId });
+          }}
+        />
       )}
     </div>
   );
@@ -480,4 +497,38 @@ const useGetCoffeeChatStatus = ({ postId }: { postId: string }) => {
   });
 
   return { coffeeChatStatus: coffeeChatStatusResponse };
+};
+
+const useClosePost = () => {
+  const { token } = useGuardContext(TokenContext);
+  const { postService } = useGuardContext(ServiceContext);
+
+  const queryClient = useQueryClient();
+
+  const { mutate: closePost, isPending } = useMutation({
+    mutationFn: ({ postId }: { postId: string }) => {
+      if (token === null) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+      return postService.closePost({ token, postId });
+    },
+    onSuccess: async (response) => {
+      if (response.type === 'success') {
+        await queryClient.invalidateQueries({ queryKey: ['postService'] });
+        return;
+      } else {
+        // TODO: 공고 마감 실패 시 하단에 토스트 띄우기
+        return;
+      }
+    },
+    onError: () => {
+      // TODO: 공고 마감 실패 시 하단에 토스트 띄우기
+      return;
+    },
+  });
+
+  return {
+    closePost,
+    isPending,
+  };
 };

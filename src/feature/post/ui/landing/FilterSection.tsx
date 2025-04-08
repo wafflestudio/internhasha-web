@@ -10,7 +10,8 @@ import {
 } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ICON_SRC } from '@/entities/asset';
-import { type PostFilter, type Series } from '@/entities/post';
+import { type Domain } from '@/entities/company';
+import { type PostFilter } from '@/entities/post';
 
 type FilterSectionProps = {
   postFilter: PostFilter;
@@ -18,90 +19,31 @@ type FilterSectionProps = {
 };
 
 const RECRUITING_FILTER_VALUE = [
-  { value: 0, label: '모집 중' },
-  { value: 1, label: '모집 완료' },
+  { value: true, label: '모집 중' },
+  { value: false, label: '모집 완료' },
 ];
-
-const VALID_RECRUITING_FILTER_VALUE = RECRUITING_FILTER_VALUE.map(
-  (item) => item.value,
-);
 
 const VALID_RECRUITING_OPTION_VALUE = RECRUITING_FILTER_VALUE.map(
   (item) => item.label,
 );
 
-type VALID_RECRUITING_FILTER_TYPE = 0 | 1 | undefined;
+type VALID_RECRUITING_FILTER_TYPE = boolean | undefined;
 
-const SERIES_FILTER_VALUE = [
-  { value: 'SEED', label: 'Seed' },
-  { value: 'PRE_A', label: 'Pre-Series A' },
-  { value: 'A', label: 'Series A' },
-  { value: 'B', label: 'Series B' },
-  { value: 'C', label: 'Series C' },
-  { value: 'D', label: 'Series D' },
+const DOMAIN_FILTER_VALUE = [
+  { value: 'FINTECH', label: '핀테크' },
+  { value: 'HEALTHTECH', label: '헬스테크' },
+  { value: 'EDUCATION', label: '교육' },
+  { value: 'ECOMMERCE', label: '이커머스' },
+  { value: 'FOODTECH', label: '푸드테크' },
+  { value: 'MOBILITY', label: '모빌리티' },
+  { value: 'CONTENTS', label: '컨텐츠' },
+  { value: 'B2B', label: 'B2B' },
+  { value: 'OTHERS', label: '기타' },
 ];
 
-const VALID_SERIES_FILTER_VALUE = SERIES_FILTER_VALUE.map((item) => item.value);
+const VALID_DOMAIN_FILTER_VALUE = DOMAIN_FILTER_VALUE.map((item) => item.value);
 
-type VALID_SERIES_FILTER_TYPE = Series[] | undefined;
-
-const INVEST_AMOUNT_VALUE = [
-  { label: '1억 미만', value: 'UNDER_1', min: 0, max: 10 },
-  { label: '1억 ~ 10억', value: '1_TO_10', min: 10, max: 100 },
-  { label: '10억~ 100억', value: '10_TO_100', min: 100, max: 1000 },
-  { label: '100억 이상', value: 'OVER_100', min: 1000, max: undefined },
-];
-
-const VALID_INVEST_AMOUNT_VALUE = INVEST_AMOUNT_VALUE.map((item) => item.value);
-
-type VALID_INVEST_AMOUNT_TYPE =
-  | 'UNDER_1'
-  | '1_TO_10'
-  | '10_TO_100'
-  | 'OVER_100'
-  | 'ALL';
-
-const formatLowerAndUpperToInvestAmount = ({
-  lower,
-  upper,
-}: {
-  lower: number | undefined;
-  upper: number | undefined;
-}) => {
-  if ((lower === 0 || lower === undefined) && upper === 10) {
-    return 'UNDER_1';
-  }
-  if (lower === 10 && upper === 100) {
-    return '1_TO_10';
-  }
-  if (lower === 100 && upper === 1000) {
-    return '10_TO_100';
-  }
-  if (lower === 1000 && upper === undefined) {
-    return 'OVER_100';
-  }
-  return 'ALL';
-};
-
-const formatInvestAmountToLowerAndUpper = ({
-  investAmount,
-}: {
-  investAmount: VALID_INVEST_AMOUNT_TYPE;
-}) => {
-  if (investAmount === 'UNDER_1') {
-    return { lower: 0, upper: 10 };
-  }
-  if (investAmount === '1_TO_10') {
-    return { lower: 10, upper: 100 };
-  }
-  if (investAmount === '10_TO_100') {
-    return { lower: 100, upper: 1000 };
-  }
-  if (investAmount === 'OVER_100') {
-    return { lower: 1000, upper: undefined };
-  }
-  return { lower: undefined, upper: undefined };
-};
+type VALID_DOMAIN_FILTER_TYPE = Domain[] | undefined;
 
 const ORDER_FILTER_VALUE = [
   { value: 0, label: '최신순' },
@@ -117,19 +59,12 @@ export const FilterSection = ({
   onChangeFilters,
 }: FilterSectionProps) => {
   const [recruitingSelect, setRecruitingSelect] =
-    useState<VALID_RECRUITING_FILTER_TYPE>(postFilter.employing);
-  const [seriesSelect, setSeriesSelect] = useState<VALID_SERIES_FILTER_TYPE>(
-    postFilter.series,
+    useState<VALID_RECRUITING_FILTER_TYPE>(postFilter.isActive);
+  const [domainSelect, setDomainSelect] = useState<VALID_DOMAIN_FILTER_TYPE>(
+    postFilter.domains,
   );
-  const [investAmountSelect, setInvestAmountSelect] =
-    useState<VALID_INVEST_AMOUNT_TYPE>(
-      formatLowerAndUpperToInvestAmount({
-        lower: postFilter.investmentMin,
-        upper: postFilter.investmentMax,
-      }),
-    );
   const [selectedFilter, setSelectedFilter] = useState<
-    'RECRUITING' | 'SERIES' | 'INVEST_AMOUNT' | 'ORDER' | 'NONE'
+    'RECRUITING' | 'DOMAIN' | 'ORDER' | 'NONE'
   >('NONE');
 
   const handleChangeRecruitingFilter = (input: string) => {
@@ -138,65 +73,46 @@ export const FilterSection = ({
       return;
     }
 
-    const inputToNumber = Number(input);
+    const inputToBoolean = input === 'true' ? true : false;
 
-    const isValidRecruitingValue = (value: number): value is 0 | 1 => {
-      return (
-        !isNaN(inputToNumber) && VALID_RECRUITING_FILTER_VALUE.includes(value)
-      );
+    const isValidRecruitingValue = (value: string) => {
+      return !(value !== 'true' && value !== 'false');
     };
 
-    if (isValidRecruitingValue(inputToNumber)) {
-      setRecruitingSelect(inputToNumber);
+    if (isValidRecruitingValue(input)) {
+      setRecruitingSelect(inputToBoolean);
     }
   };
 
-  const isAllSeriesSelected =
-    seriesSelect?.length === SERIES_FILTER_VALUE.length;
+  const isAllDomainSelected =
+    domainSelect?.length === DOMAIN_FILTER_VALUE.length;
 
-  const handleChangeSeriesFilter = (input: string) => {
-    const isValidSeriesValue = (value: string): value is Series => {
-      return VALID_SERIES_FILTER_VALUE.includes(value);
+  const handleChangeDomainFilter = (input: string) => {
+    const isValidDomainValue = (value: string): value is Domain => {
+      return VALID_DOMAIN_FILTER_VALUE.includes(value);
     };
 
     if (input === 'ALL') {
-      if (isAllSeriesSelected) {
-        setSeriesSelect(undefined);
+      if (isAllDomainSelected) {
+        setDomainSelect(undefined);
       } else {
-        setSeriesSelect(VALID_SERIES_FILTER_VALUE as Series[]);
+        setDomainSelect(VALID_DOMAIN_FILTER_VALUE as Domain[]);
       }
       return;
     }
 
-    if (isValidSeriesValue(input)) {
-      if (seriesSelect === undefined) {
-        setSeriesSelect([input]);
+    if (isValidDomainValue(input)) {
+      if (domainSelect === undefined) {
+        setDomainSelect([input]);
         return;
       }
 
-      if (seriesSelect.includes(input)) {
-        setSeriesSelect(seriesSelect.filter((item) => item !== input));
+      if (domainSelect.includes(input)) {
+        setDomainSelect(domainSelect.filter((item) => item !== input));
         return;
       }
 
-      setSeriesSelect([...seriesSelect, input]);
-    }
-  };
-
-  const handleChangeInvestAmountFilter = (input: string) => {
-    const isValidInvestAmountValue = (
-      value: string,
-    ): value is VALID_INVEST_AMOUNT_TYPE => {
-      return VALID_INVEST_AMOUNT_VALUE.includes(value);
-    };
-
-    if (input === 'ALL') {
-      setInvestAmountSelect('ALL');
-      return;
-    }
-
-    if (isValidInvestAmountValue(input)) {
-      setInvestAmountSelect(input);
+      setDomainSelect([...domainSelect, input]);
     }
   };
 
@@ -218,25 +134,14 @@ export const FilterSection = ({
   const handleClickApplyRecruitingFilter = () => {
     onChangeFilters({
       ...postFilter,
-      employing: recruitingSelect,
+      isActive: recruitingSelect,
     });
   };
 
-  const handleClickApplySeriesFilter = () => {
+  const handleClickApplyDomainFilter = () => {
     onChangeFilters({
       ...postFilter,
-      series: seriesSelect,
-    });
-  };
-
-  const handleClickApplyInvestAmountingFilter = () => {
-    const { lower, upper } = formatInvestAmountToLowerAndUpper({
-      investAmount: investAmountSelect,
-    });
-    onChangeFilters({
-      ...postFilter,
-      investmentMin: lower,
-      investmentMax: upper,
+      domains: domainSelect,
     });
   };
 
@@ -244,31 +149,21 @@ export const FilterSection = ({
     setRecruitingSelect(undefined);
     onChangeFilters({
       ...postFilter,
-      employing: undefined,
+      isActive: undefined,
     });
   };
 
-  const handleClickResetSeriesButton = () => {
-    setSeriesSelect(undefined);
+  const handleClickResetDomainButton = () => {
+    setDomainSelect(undefined);
     onChangeFilters({
       ...postFilter,
-      series: undefined,
+      domains: undefined,
     });
-  };
-
-  const handleClickResetInvestAmountButton = () => {
-    onChangeFilters({
-      ...postFilter,
-      investmentMin: undefined,
-      investmentMax: undefined,
-    });
-    setInvestAmountSelect('ALL');
   };
 
   const handleClickAllResetButton = () => {
     setRecruitingSelect(undefined);
-    setSeriesSelect(undefined);
-    setInvestAmountSelect('ALL');
+    setDomainSelect(undefined);
     onChangeFilters({});
   };
 
@@ -288,12 +183,12 @@ export const FilterSection = ({
             <PopoverTrigger asChild>
               <Button
                 variant={
-                  postFilter.employing !== undefined ? 'selected' : 'secondary'
+                  postFilter.isActive !== undefined ? 'selected' : 'secondary'
                 }
                 className="bg-white px-3 py-2"
               >
-                {postFilter.employing !== undefined
-                  ? VALID_RECRUITING_OPTION_VALUE[postFilter.employing]
+                {postFilter.isActive !== undefined
+                  ? VALID_RECRUITING_OPTION_VALUE[Number(!postFilter.isActive)]
                   : '모집 상태'}{' '}
                 <img
                   src={ICON_SRC.ARROW}
@@ -323,9 +218,9 @@ export const FilterSection = ({
                     >
                       <RadioGroupItem
                         value={String(option.value)}
-                        id={`recruiting-${option.value}`}
+                        id={`recruiting-${idx}`}
                       />
-                      <Label htmlFor={`recruiting-${option.value}`}>
+                      <Label htmlFor={`recruiting-${idx}`}>
                         {option.label}
                       </Label>
                     </div>
@@ -350,7 +245,7 @@ export const FilterSection = ({
           <Popover
             onOpenChange={(open) => {
               if (open) {
-                setSelectedFilter('SERIES');
+                setSelectedFilter('DOMAIN');
                 return;
               }
               setSelectedFilter('NONE');
@@ -359,17 +254,17 @@ export const FilterSection = ({
             <PopoverTrigger asChild>
               <Button
                 variant={
-                  postFilter.series !== undefined &&
-                  postFilter.series.length !== 0
+                  postFilter.domains !== undefined &&
+                  postFilter.domains.length !== 0
                     ? 'selected'
                     : 'secondary'
                 }
                 className="bg-white px-3 py-2"
               >
-                시리즈
+                업종
                 <img
                   src={ICON_SRC.ARROW}
-                  className={`${selectedFilter === 'SERIES' ? 'rotate-0' : 'rotate-180'} h-4 w-4 duration-300`}
+                  className={`${selectedFilter === 'DOMAIN' ? 'rotate-0' : 'rotate-180'} h-4 w-4 duration-300`}
                 />
               </Button>
             </PopoverTrigger>
@@ -379,31 +274,31 @@ export const FilterSection = ({
                   <div className="flex gap-[10px] text-grey-900">
                     <Checkbox
                       value="ALL"
-                      id="series-all"
-                      checked={isAllSeriesSelected}
+                      id="domain-all"
+                      checked={isAllDomainSelected}
                       onCheckedChange={() => {
-                        handleChangeSeriesFilter('ALL');
+                        handleChangeDomainFilter('ALL');
                       }}
                     />
-                    <Label htmlFor="seires-all">전체</Label>
+                    <Label htmlFor="domain-all">전체</Label>
                   </div>
-                  {SERIES_FILTER_VALUE.map((option, idx) => (
+                  {DOMAIN_FILTER_VALUE.map((option, idx) => (
                     <div
-                      key={`series-filter-${idx}`}
+                      key={`domain-filter-${idx}`}
                       className="flex gap-[10px] text-grey-900"
                     >
                       <Checkbox
                         value={option.value}
-                        id={`series-${option.value}`}
+                        id={`domain-${option.value}`}
                         checked={
-                          seriesSelect !== undefined &&
-                          seriesSelect.includes(option.value as Series)
+                          domainSelect !== undefined &&
+                          domainSelect.includes(option.value as Domain)
                         }
                         onCheckedChange={() => {
-                          handleChangeSeriesFilter(option.value);
+                          handleChangeDomainFilter(option.value);
                         }}
                       />
-                      <Label htmlFor={`series-${option.value}`}>
+                      <Label htmlFor={`domain-${option.value}`}>
                         {option.label}
                       </Label>
                     </div>
@@ -413,82 +308,11 @@ export const FilterSection = ({
                   <Button
                     variant="secondary"
                     size="sm"
-                    onClick={handleClickResetSeriesButton}
+                    onClick={handleClickResetDomainButton}
                   >
                     초기화
                   </Button>
-                  <Button size="sm" onClick={handleClickApplySeriesFilter}>
-                    적용
-                  </Button>
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
-
-          <Popover
-            onOpenChange={(open) => {
-              if (open) {
-                setSelectedFilter('INVEST_AMOUNT');
-                return;
-              }
-              setSelectedFilter('NONE');
-            }}
-          >
-            <PopoverTrigger asChild>
-              <Button
-                variant={
-                  postFilter.investmentMax !== undefined ||
-                  postFilter.investmentMin !== undefined
-                    ? 'selected'
-                    : 'secondary'
-                }
-                className="bg-white px-3 py-2"
-              >
-                투자 금액{' '}
-                <img
-                  src={ICON_SRC.ARROW}
-                  className={`${selectedFilter === 'INVEST_AMOUNT' ? 'rotate-0' : 'rotate-180'} h-4 w-4 duration-300`}
-                />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent>
-              <div className="flex flex-col gap-[30px] p-5">
-                <RadioGroup
-                  onValueChange={handleChangeInvestAmountFilter}
-                  value={investAmountSelect}
-                  className="flex flex-col gap-[10px]"
-                >
-                  <div className="flex gap-[10px] text-grey-900">
-                    <RadioGroupItem value="ALL" id="invest-amount-all" />
-                    <Label htmlFor="invest-amount-all">전체</Label>
-                  </div>
-                  {INVEST_AMOUNT_VALUE.map((option, idx) => (
-                    <div
-                      key={`invest-amount-filter-${idx}`}
-                      className="flex gap-[10px] text-grey-900"
-                    >
-                      <RadioGroupItem
-                        value={option.value}
-                        id={`invest-amount-${option.value}`}
-                      />
-                      <Label htmlFor={`invest-amount-${option.value}`}>
-                        {option.label}
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-                <div className="flex justify-end gap-[6px]">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={handleClickResetInvestAmountButton}
-                  >
-                    초기화
-                  </Button>
-                  <Button
-                    size="sm"
-                    onClick={handleClickApplyInvestAmountingFilter}
-                  >
+                  <Button size="sm" onClick={handleClickApplyDomainFilter}>
                     적용
                   </Button>
                 </div>

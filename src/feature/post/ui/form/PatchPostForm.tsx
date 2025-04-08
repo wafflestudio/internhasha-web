@@ -233,7 +233,7 @@ export const PatchPostForm = ({
             disabled={isPending}
             className="flex-1"
           >
-            이전으로
+            취소
           </Button>
           <Button
             onClick={(e) => {
@@ -243,7 +243,7 @@ export const PatchPostForm = ({
             disabled={isPending}
             className="flex-1"
           >
-            제출하기
+            등록
           </Button>
         </div>
       </FormContainer>

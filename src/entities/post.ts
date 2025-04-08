@@ -1,4 +1,5 @@
 import type { AuthorBriefDTO } from '@/entities/author';
+import type { Domain } from '@/entities/company';
 import type { Link } from '@/entities/link';
 
 export type JobMajorCategory =
@@ -28,11 +29,9 @@ export const JOB_MAJOR_CATEGORIES = Object.keys(JOB_CATEGORY_MAP);
 export type Series = 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
 
 export type PostFilter = {
-  roles?: JobMinorCategory[];
-  investmentMax?: number;
-  investmentMin?: number;
-  employing?: 0 | 1;
-  series?: Series[];
+  positions?: JobMinorCategory[];
+  isActive?: boolean;
+  domains?: Domain[];
   order?: 0 | 1;
 };
 
@@ -40,13 +39,13 @@ type CompanyDTO = {
   id: string;
   companyName: string;
   companyEstablishedYear: number;
-  domain: string;
+  domain: Domain;
   headcount: number;
   location: string;
   slogan: string;
   detail: string;
   profileImageKey: string;
-  companyInfoPDFLink?: string;
+  companyInfoPDFKey?: string;
   landingPageLink?: string;
   links?: Link[];
   tags?: { tag: string }[];
@@ -100,4 +99,6 @@ export type BriefPost = {
   isBookmarked: boolean;
   createdAt: string;
   updatedAt: string;
+  tags: { tag: string }[];
+  coffeeChatCount: number;
 };

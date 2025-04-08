@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import type { Domain } from '@/entities/company';
 import type { JobMinorCategory, PostFilter } from '@/entities/post';
 import { PostCard } from '@/feature/post/ui/common/PostCard';
 import { SkeletonPostCard } from '@/feature/post/ui/common/SkeletonPostCard';
@@ -89,27 +90,38 @@ export const LandingPostView = ({
 
 const useGetPosts = ({
   page = 0,
-  roles,
-  employing: status,
+  positions,
+  domains,
+  isActive,
   order,
 }: {
   page?: number;
-  roles?: JobMinorCategory[];
-  employing?: 0 | 1 | 2;
+  positions?: JobMinorCategory[];
+  domains?: Domain[];
+  isActive?: boolean;
   order?: 0 | 1;
 }) => {
   const { postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
 
   const { data: postsData } = useQuery({
-    queryKey: ['postService', 'getPosts', page, roles, status, order],
+    queryKey: [
+      'postService',
+      'getPosts',
+      page,
+      positions,
+      isActive,
+      order,
+      domains,
+    ],
     queryFn: async () => {
       return postService.getPosts({
         page,
-        roles,
-        status,
+        positions,
+        isActive,
         token,
         order,
+        domains,
       });
     },
   });

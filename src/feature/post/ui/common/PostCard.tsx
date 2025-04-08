@@ -8,6 +8,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { UserContext } from '@/shared/context/UserContext';
+import { formatDomainToLabel } from '@/util/format';
 import { getEmploymentStatus } from '@/util/postFormatFunctions';
 
 type PostCardProps = {
@@ -54,6 +55,7 @@ export const PostCard = ({
     domain,
     detail100,
     isBookmarked,
+    tags,
   } = post;
 
   return (
@@ -67,7 +69,9 @@ export const PostCard = ({
       <div className="relative flex h-[50px] items-center justify-between rounded-t-lg bg-grey-200 px-[22px]">
         <div className="flex items-center gap-2">
           <img src={ICON_SRC.PERSON} className="h-6 w-6" />
-          <span className="text-grey-900">{positionTitle}</span>
+          <span className="text-15 font-semibold text-grey-900">
+            {positionTitle}
+          </span>
         </div>
 
         <span className="text-grey-400">
@@ -91,10 +95,12 @@ export const PostCard = ({
             />
           </div>
           <div className="flex flex-col gap-1">
-            <h3 className="text-lg font-semibold text-grey-900">
+            <h3 className="text-18 font-semibold text-grey-900">
               {companyName}
             </h3>
-            <span className="text-sm text-grey-300">{domain}</span>
+            <span className="text-12 text-grey-800">
+              {formatDomainToLabel(domain)}
+            </span>
           </div>
         </div>
 
@@ -104,11 +110,16 @@ export const PostCard = ({
         <div className="flex w-full justify-between gap-3 py-1">
           <div className="flex items-center gap-2">
             <Badge variant="secondary">
-              <img src={ICON_SRC.LOCATION} /> {location}
-            </Badge>
-            <Badge variant="secondary">
+              <img src={ICON_SRC.LOCATION} />{' '}
               {location.split(' ').slice(0, 2).join(' ')}
             </Badge>
+            {tags.slice(0, 2).map((tag, idx) => {
+              return (
+                <Badge key={idx} variant="secondary">
+                  {tag.tag}
+                </Badge>
+              );
+            })}
           </div>
           {role !== 'COMPANY' && (
             <div>

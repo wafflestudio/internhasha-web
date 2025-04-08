@@ -384,7 +384,7 @@ export const getLocalServerApis = ({
         body,
       });
     },
-    'PATCH /post/position:positionId': ({
+    'PUT /post/position/:positionId': ({
       token,
       body,
       params,
@@ -394,10 +394,23 @@ export const getLocalServerApis = ({
       params: PostIdParams;
     }) => {
       return callWithToken<SuccessResponse<PositionRespone>>({
-        method: 'POST',
+        method: 'PUT',
         path: `post/position/${params.postId}`,
         token,
         body,
+      });
+    },
+    'PATCH /post/position/:positionId/close': ({
+      token,
+      params,
+    }: {
+      token: string;
+      params: PostIdParams;
+    }) => {
+      return callWithToken<SuccessResponse<void>>({
+        method: 'PATCH',
+        path: `post/position/${params.postId}/close`,
+        token,
       });
     },
     'GET /post/company/me': ({ token }: { token: string }) => {

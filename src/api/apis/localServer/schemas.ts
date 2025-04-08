@@ -104,6 +104,8 @@ export type PostBriefDTO = {
   isBookmarked: boolean;
   createdAt: string;
   updatedAt: string;
+  tags: { tag: string }[];
+  coffeeChatCount: number;
 };
 
 export type CoffeeChatStatus = 'WAITING' | 'ACCEPTED' | 'CANCELED' | 'REJECTED';
