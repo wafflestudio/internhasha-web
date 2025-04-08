@@ -20,7 +20,6 @@ import { MyPostList } from '@/feature/post/ui/mypage/company/MyPostList';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
-import { UserContext } from '@/shared/context/UserContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { useRouteQueryParams } from '@/shared/route/useRouteParams';
 
@@ -28,9 +27,9 @@ type MyPageTab = MyPageRouteQuery['tab'];
 
 export const CompanyMyPage = () => {
   const queryParams = useRouteQueryParams() as MyPageRouteQuery | null;
-  const { id } = useGuardContext(UserContext);
   const { toCreatePost, toMyPage, toPatchCompany } = useRouteNavigation();
   const [isExistProfile, setIsExistProfile] = useState(false);
+  const [companyId, setCompanyId] = useState<string | null>(null);
   const [selectedChats, setSelectedChats] = useState<string[]>([]);
   const { coffeeChatListData } = useGetCoffeeChatList();
   const { updateCoffeeChatStatus, isPending } = useUpdateCoffeeChatStatus();
@@ -103,19 +102,21 @@ export const CompanyMyPage = () => {
               <TabsTrigger value="POST">작성한 공고</TabsTrigger>
               <TabsTrigger value="PROFILE">내 정보</TabsTrigger>
               <TabsContent value="POST" className="ml-auto">
-                <Button
-                  onClick={() => {
-                    if (id === null) {
-                      return;
-                    }
-                    toCreatePost({ companyId: id });
-                  }}
-                  className="font-medium"
-                  size="sm"
-                >
-                  <img src={ICON_SRC.PLUS} />
-                  공고 추가
-                </Button>
+                {isExistProfile && (
+                  <Button
+                    onClick={() => {
+                      if (companyId === null) {
+                        return;
+                      }
+                      toCreatePost({ companyId: companyId });
+                    }}
+                    className="font-medium"
+                    size="sm"
+                  >
+                    <img src={ICON_SRC.PLUS} />
+                    공고 추가
+                  </Button>
+                )}
               </TabsContent>
               <TabsContent value="PROFILE" className="ml-auto">
                 {isExistProfile && (
@@ -171,7 +172,10 @@ export const CompanyMyPage = () => {
               />
             </TabsContent>
             <TabsContent value="POST">
-              <MyPostList />
+              <MyPostList
+                setIsExistProfile={setIsExistProfile}
+                setCompanyId={setCompanyId}
+              />
             </TabsContent>
             <TabsContent value="PROFILE">
               <CompanyProfileView setIsExistProfile={setIsExistProfile} />

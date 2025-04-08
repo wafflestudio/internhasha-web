@@ -1,4 +1,3 @@
-import { Badge } from '@/components/ui/badge';
 import { ICON_SRC } from '@/entities/asset';
 import type { BriefPost } from '@/entities/post';
 import { formatIsoToDate } from '@/util/format';
@@ -13,7 +12,14 @@ export const CompanyPostCard = ({
   post,
   onDetailClick,
 }: CompanyPostCardProps) => {
-  const { id, positionTitle, employmentEndDate, detail100, createdAt } = post;
+  const {
+    id,
+    positionTitle,
+    employmentEndDate,
+    detail100,
+    createdAt,
+    coffeeChatCount,
+  } = post;
 
   return (
     <div
@@ -42,12 +48,15 @@ export const CompanyPostCard = ({
         <div className="min-h-[62px] w-full text-grey-700">{detail100}</div>
 
         {/* 신청된 커피챗 개수 및 작성 날짜 */}
-        <div className="flex w-full justify-between gap-3 py-1">
-          <div className="flex items-center gap-2">
-            <Badge variant="secondary">커피챗 몇개 신청</Badge>
-          </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="secondary">{formatIsoToDate(createdAt)}</Badge>
+        <div className="flex w-full py-1">
+          <div className="flex items-center gap-[8px]">
+            <span className="text-13 font-semibold text-grey-800">
+              커피챗 {coffeeChatCount}개 신청
+            </span>
+            <div className="h-[18px] w-[1px] bg-grey-200" />
+            <span className="text-13 font-regular text-grey-800">
+              {formatIsoToDate(createdAt)}
+            </span>
           </div>
         </div>
       </section>

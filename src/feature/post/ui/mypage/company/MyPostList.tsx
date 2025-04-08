@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { NoCompanyProfile } from '@/feature/company/ui/mypage/NoCompanyProfile';
 import { CompanyPostCard } from '@/feature/post/ui/common/CompanyPostCard';
 import { SkeletonPostCard } from '@/feature/post/ui/common/SkeletonPostCard';
 import { PaginationBar } from '@/feature/post/ui/landing/PaginationBar';
@@ -9,15 +10,31 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
-export const MyPostList = () => {
+export const MyPostList = ({
+  setIsExistProfile,
+  setCompanyId,
+}: {
+  setIsExistProfile(input: boolean): void;
+  setCompanyId(input: string): void;
+}) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [currentGroup, setCurrentGroup] = useState(0);
+  const { myInfoData } = useMyInfo({ setIsExistProfile, setCompanyId });
 
   const { toPost } = useRouteNavigation();
 
   const { postsData } = useGetPosts({
     page: currentPage,
   });
+
+  if (myInfoData?.type === 'error') {
+    if (myInfoData.code === 'POST_008') {
+      return <NoCompanyProfile />;
+    }
+    return (
+      <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
+    );
+  }
 
   if (postsData?.type === 'error') {
     return (
@@ -33,7 +50,7 @@ export const MyPostList = () => {
       {/* 회사 소개 카드 */}
       <div className="m-autogap-2 flex w-full flex-col sm:w-screen-sm md:w-screen-md md:flex-row lg:w-screen-lg xl:max-w-screen-xl">
         <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {postsData !== undefined ? (
+          {myInfoData !== undefined && postsData !== undefined ? (
             postsData.data.posts.map((item, idx) => (
               <CompanyPostCard
                 key={`post-${idx}`}
@@ -91,4 +108,32 @@ const useGetPosts = ({ page = 0 }: { page?: number }) => {
   });
 
   return { postsData };
+};
+
+const useMyInfo = ({
+  setIsExistProfile,
+  setCompanyId,
+}: {
+  setIsExistProfile(input: boolean): void;
+  setCompanyId(input: string): void;
+}) => {
+  const { token } = useGuardContext(TokenContext);
+  const { companyService } = useGuardContext(ServiceContext);
+  const { data: myInfoData } = useQuery({
+    queryKey: ['companyService', 'getMyInfo', token] as const,
+    queryFn: async ({ queryKey: [, , t] }) => {
+      if (t === null) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+      const response = await companyService.getMyInfo({ token: t });
+      if (response.type === 'success') {
+        setIsExistProfile(true);
+        setCompanyId(response.data.id);
+      }
+      return response;
+    },
+    enabled: token !== null,
+  });
+
+  return { myInfoData };
 };

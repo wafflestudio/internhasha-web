@@ -1,4 +1,5 @@
 import type { Apis } from '@/api';
+import type { Domain } from '@/entities/company';
 import type { Paginator } from '@/entities/paginator';
 import type {
   BriefPost,
@@ -11,16 +12,18 @@ import type { ServiceResponse } from '@/entities/response';
 
 export type PostService = {
   getPosts({
-    roles,
-    status,
+    positions,
+    isActive,
     page,
     order,
+    domains,
     token,
   }: {
-    roles?: JobMinorCategory[];
-    status?: 0 | 1 | 2;
+    positions?: JobMinorCategory[];
+    isActive?: boolean;
     page?: number;
     order?: 0 | 1;
+    domains?: Domain[];
     token: string | null;
   }): ServiceResponse<{
     posts: BriefPost[];
@@ -53,6 +56,13 @@ export type PostService = {
     postContents: CreatePostRequest;
     postId: string;
   }): ServiceResponse<PositionDTO>;
+  closePost({
+    token,
+    postId,
+  }: {
+    token: string;
+    postId: string;
+  }): ServiceResponse<void>;
   addBookmark({
     postId,
     token,
@@ -82,12 +92,13 @@ export type PostService = {
 };
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
-  getPosts: async ({ roles, status: employng, page, order, token }) => {
+  getPosts: async ({ positions, isActive, page, order, domains, token }) => {
     const params = {
-      roles,
-      employng,
+      positions,
+      isActive,
       page,
       order,
+      domains,
     };
     const { status, data } = await apis['GET /post']({
       params,
@@ -133,9 +144,26 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
   patchPost: async ({ token, companyId, postContents, postId }) => {
     const params = { postId };
     const body = { ...postContents, companyId };
-    const { status, data } = await apis['PATCH /post/position:positionId']({
+    const { status, data } = await apis['PUT /post/position/:positionId']({
       token: token,
       body: body,
+      params: params,
+    });
+
+    if (status === 200) {
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', code: data.code, message: data.message };
+  },
+  closePost: async ({ token, postId }) => {
+    const params = { postId };
+    const { status, data } = await apis[
+      'PATCH /post/position/:positionId/close'
+    ]({
+      token: token,
       params: params,
     });
 
