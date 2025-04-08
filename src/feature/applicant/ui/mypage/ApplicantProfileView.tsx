@@ -61,6 +61,7 @@ const useWithdrawUser = () => {
     onSuccess: async (response) => {
       if (response.type === 'success') {
         await queryClient.invalidateQueries();
+        
         toMain({});
       }
     },

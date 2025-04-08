@@ -188,6 +188,9 @@ export const implAuthService = ({
     });
 
     if (status === 200) {
+      tokenStateRepository.removeToken();
+      roleStateRepository.removeRole();
+
       return {
         type: 'success',
         data,
