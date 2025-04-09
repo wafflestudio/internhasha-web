@@ -10,8 +10,6 @@ import {
   useUpdateCoffeeChatStatus,
 } from '@/feature/coffeeChat/ui/detail/useCoffeeChatDetailHooks';
 import type { CoffeeChatApplicant } from '@/mocks/coffeeChat/schemas';
-import { EnvContext } from '@/shared/context/EnvContext';
-import { useGuardContext } from '@/shared/context/hooks';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { getFormatDate } from '@/util/postFormatFunctions';
 
@@ -21,7 +19,6 @@ export const CoffeeChatDetailView = ({
   coffeeChatId: string;
 }) => {
   const { coffeeChatDetailData } = useGetCoffeeChatDetail({ coffeeChatId });
-  const { API_BASE_URL } = useGuardContext(EnvContext);
   const [responseMessage, setResponseMessage] = useState('');
   const { toMyPage } = useRouteNavigation();
   const [isCancel, setIsCancel] = useState(false);
@@ -62,7 +59,7 @@ export const CoffeeChatDetailView = ({
               <div className="h-[40px] w-[40px] overflow-hidden">
                 {coffeeChatDetail.company.imageKey !== '' ? (
                   <img
-                    src={`${API_BASE_URL}/${coffeeChatDetail.company.imageKey as string}`}
+                    src={`/${coffeeChatDetail.company.imageKey as string}`}
                     alt="프로필 이미지"
                     className="h-[40px] w-[40px] border border-gray-200 object-cover"
                   />

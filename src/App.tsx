@@ -125,16 +125,13 @@ export const App = () => {
   const roleStateRepository = implRoleStateRepository({ setRole, setId });
 
   const localServerCall = async (content: ExternalCallParams) => {
-    const response = await fetch(
-      `${ENV.APP_ENV === 'prod' ? ENV.API_BASE_URL : ''}/api/${content.path}`,
-      {
-        method: content.method,
-        headers: content.headers,
-        ...(content.body !== undefined
-          ? { body: JSON.stringify(content.body) }
-          : {}),
-      },
-    );
+    const response = await fetch(`/api/${content.path}`, {
+      method: content.method,
+      headers: content.headers,
+      ...(content.body !== undefined
+        ? { body: JSON.stringify(content.body) }
+        : {}),
+    });
 
     const echoRegex = /^echo\/.*$/;
 

@@ -3,7 +3,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
 import { ICON_SRC } from '@/entities/asset';
 import type { BriefPost } from '@/entities/post';
-import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -24,7 +23,6 @@ export const PostCard = ({
 }: PostCardProps) => {
   const { token } = useGuardContext(TokenContext);
   const { role } = useGuardContext(UserContext);
-  const { API_BASE_URL } = useGuardContext(EnvContext);
   const { addBookmark, isPending: isAddBookmarkPending } = useAddBookmark();
   const { deleteBookmark, isPending: isDeleteBookmarkPending } =
     useDeleteBookmark();
@@ -89,7 +87,7 @@ export const PostCard = ({
           {/* 회사 이미지 */}
           <div className="h-[40px] w-[40px] overflow-hidden rounded-lg bg-grey-200">
             <img
-              src={`${API_BASE_URL}/${profileImageKey}`}
+              src={`/${profileImageKey}`}
               alt={companyName}
               className="h-full w-full object-cover"
             />
