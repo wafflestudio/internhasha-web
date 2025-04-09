@@ -4,7 +4,6 @@ import { TagStatus } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ICON_SRC } from '@/entities/asset';
 import { NoCoffeeChat } from '@/feature/coffeeChat/ui/mypage/common/NoCoffeeChat';
-import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -14,7 +13,6 @@ import { getShortenedDate } from '@/util/postFormatFunctions';
 export const ApplicantCoffeeChatListView = () => {
   const { coffeeChatListData } = useGetCoffeeChatList();
   const { toCoffeeChatDetail } = useRouteNavigation();
-  const { API_BASE_URL } = useGuardContext(EnvContext);
   if (coffeeChatListData?.type === 'error') {
     return (
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
@@ -47,7 +45,7 @@ export const ApplicantCoffeeChatListView = () => {
               <div className="h-[30px] w-[30px] rounded-md">
                 {coffeeChat.company.imageKey !== undefined ? (
                   <img
-                    src={`${API_BASE_URL}/${coffeeChat.company.imageKey}`}
+                    src={`/${coffeeChat.company.imageKey}`}
                     className="h-full w-full object-cover"
                   />
                 ) : (

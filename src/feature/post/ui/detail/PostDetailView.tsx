@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button';
 import { SeperatorLine } from '@/components/ui/separator';
 import { ICON_SRC } from '@/entities/asset';
 import { SkeletonPostDetailView } from '@/feature/post/ui/detail/SkeletonPostDetailView';
-import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -24,7 +23,6 @@ import { getEmploymentStatus } from '@/util/postFormatFunctions';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
-  const { API_BASE_URL } = useGuardContext(EnvContext);
   const { token } = useGuardContext(TokenContext);
   const { role, id: userId } = useGuardContext(UserContext);
   const { coffeeChatStatus } = useGetCoffeeChatStatus({ postId });
@@ -107,7 +105,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
         <div className="flex flex-col items-start justify-between gap-2">
           <div className="flex items-center gap-3">
             <img
-              src={`${API_BASE_URL}/${company.profileImageKey}`}
+              src={`/${company.profileImageKey}`}
               alt="회사 썸네일 이미지"
               className="h-[40px] w-[40px] rounded-lg object-cover"
             />
