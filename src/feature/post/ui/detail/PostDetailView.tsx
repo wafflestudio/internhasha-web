@@ -23,7 +23,7 @@ import {
   formatIsoToDate,
   formatMinorJobToLabel,
 } from '@/util/format';
-import { getEmploymentStatus } from '@/util/postFormatFunctions';
+import { formatEmploymentState } from '@/util/postFormatFunctions';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
@@ -86,22 +86,6 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
 
   const { author, company, position, isBookmarked } = postDetailData.data;
 
-  const formatEmploymentState = ({
-    isActiveInput,
-    employmentEndDateInput,
-  }: {
-    isActiveInput: boolean;
-    employmentEndDateInput: string | null;
-  }) => {
-    if (!isActiveInput) {
-      return '모집 완료';
-    }
-    if (employmentEndDateInput === null) {
-      return '상시 채용';
-    }
-    return getEmploymentStatus(employmentEndDateInput);
-  };
-
   return (
     <div className="mx-auto mb-[30px] flex max-w-screen-md flex-col gap-[56px] p-6 text-grey-900">
       {/* 헤더 */}
@@ -158,8 +142,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               </span>
               <Badge variant="primary">
                 {formatEmploymentState({
-                  isActiveInput: position.isActive,
-                  employmentEndDateInput: position.employmentEndDate,
+                  isActive: position.isActive,
+                  employmentEndDate: position.employmentEndDate,
                 })}
               </Badge>
             </div>

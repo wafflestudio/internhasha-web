@@ -7,7 +7,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { getEmploymentStatus } from '@/util/postFormatFunctions';
+import { formatEmploymentState } from '@/util/postFormatFunctions';
 
 export const BookmarkListView = () => {
   const { bookmarkListData } = useGetBookmarkList();
@@ -20,22 +20,6 @@ export const BookmarkListView = () => {
   }
 
   // const { posts: bookmarkList } = bookmarkListData.data;
-
-  const formatEmploymentState = ({
-    isActive,
-    employmentEndDate,
-  }: {
-    isActive: boolean;
-    employmentEndDate: string | null;
-  }) => {
-    if (!isActive) {
-      return '모집 완료';
-    }
-    if (employmentEndDate === null) {
-      return '상시 채용';
-    }
-    return getEmploymentStatus(employmentEndDate);
-  };
 
   return (
     <div className="flex w-full flex-col gap-3 text-grey-900">
