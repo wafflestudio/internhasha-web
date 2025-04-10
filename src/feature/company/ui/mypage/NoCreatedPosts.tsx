@@ -19,12 +19,12 @@ export const NoCreatedPosts = ({ companyId }: { companyId: string | null }) => {
           <img src={ICON_SRC.SKELETON} className="object-fit" />
         </div>
         <div className="flex w-[289px] flex-col gap-[10px] text-center">
-          <h2 className="text-22 font-bold">아직 작성된 회사 정보가 없어요!</h2>
-          <p>공고를 작성하기 위해서는 회사 정보를 작성해야 해요.</p>
+          <h2 className="text-22 font-bold">아직 작성된 공고가 없어요!</h2>
+          <p>공고를 작성하면 커피챗 신청을 받을 수 있어요.</p>
         </div>
       </div>
       <Button onClick={handleButtonClick} className="w-[310px]">
-        회사 정보 작성하기
+        인턴 공고 작성하기
       </Button>
     </div>
   );
