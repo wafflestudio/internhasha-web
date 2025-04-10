@@ -22,12 +22,12 @@ export const CreatePostPage = () => {
       <div className="mx-auto my-[30px] flex w-[280px] flex-col justify-center gap-[50px] sm:w-[700px]">
         {body !== undefined ? (
           <>
-            <h2 className="text-bold text-30 text-grey-900">인턴 공고 수정</h2>
+            <h2 className="text-30 font-bold text-grey-900">인턴 공고 수정</h2>
             <PatchPostForm companyId={companyId} body={body} />
           </>
         ) : (
           <>
-            <h2 className="text-bold text-30 text-grey-900">인턴 공고 작성</h2>
+            <h2 className="text-30 font-bold text-grey-900">인턴 공고 작성</h2>
             <CreatePostForm companyId={companyId} />
           </>
         )}

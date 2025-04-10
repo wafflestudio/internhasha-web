@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { NoCompanyProfile } from '@/feature/company/ui/mypage/NoCompanyProfile';
+import { NoCreatedPosts } from '@/feature/company/ui/mypage/NoCreatedPosts';
 import { CompanyPostCard } from '@/feature/post/ui/common/CompanyPostCard';
 import { SkeletonPostCard } from '@/feature/post/ui/common/SkeletonPostCard';
 import { PaginationBar } from '@/feature/post/ui/landing/PaginationBar';
@@ -12,9 +13,11 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const MyPostList = ({
   setIsExistProfile,
+  companyId,
   setCompanyId,
 }: {
   setIsExistProfile(input: boolean): void;
+  companyId: string | null;
   setCompanyId(input: string): void;
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -28,7 +31,7 @@ export const MyPostList = ({
   });
 
   if (myInfoData?.type === 'error') {
-    if (myInfoData.code === 'POST_008') {
+    if (myInfoData.code === 'COMPANY_001') {
       return <NoCompanyProfile />;
     }
     return (
@@ -40,6 +43,10 @@ export const MyPostList = ({
     return (
       <div>데이터를 불러오는 데 실패하였습니다. 잠시 후 다시 시도해주세요.</div>
     );
+  }
+
+  if (postsData?.data.posts.length === 0) {
+    return <NoCreatedPosts companyId={companyId} />;
   }
 
   const TOTAL_PAGES = postsData?.data.paginator.lastPage;
