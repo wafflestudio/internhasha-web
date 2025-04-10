@@ -2,13 +2,10 @@ import { Button } from '@/components/ui/button';
 import { ICON_SRC } from '@/entities/asset';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
-export const NoCreatedPosts = ({ companyId }: { companyId: string | null }) => {
+export const NoCreatedPosts = ({ companyId }: { companyId: string }) => {
   const { toCreatePost } = useRouteNavigation();
 
   const handleButtonClick = () => {
-    if (companyId === null) {
-      return;
-    }
     toCreatePost({ companyId });
   };
 

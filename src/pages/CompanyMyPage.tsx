@@ -174,7 +174,6 @@ export const CompanyMyPage = () => {
             <TabsContent value="POST">
               <MyPostList
                 setIsExistProfile={setIsExistProfile}
-                companyId={companyId}
                 setCompanyId={setCompanyId}
               />
             </TabsContent>

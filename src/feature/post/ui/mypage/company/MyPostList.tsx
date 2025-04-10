@@ -13,19 +13,16 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const MyPostList = ({
   setIsExistProfile,
-  companyId,
   setCompanyId,
 }: {
   setIsExistProfile(input: boolean): void;
-  companyId: string | null;
   setCompanyId(input: string): void;
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [currentGroup, setCurrentGroup] = useState(0);
-  const { myInfoData } = useMyInfo({ setIsExistProfile, setCompanyId });
-
   const { toPost } = useRouteNavigation();
 
+  const { myInfoData } = useMyInfo({ setIsExistProfile, setCompanyId });
   const { postsData } = useGetPosts({
     page: currentPage,
   });
@@ -45,8 +42,8 @@ export const MyPostList = ({
     );
   }
 
-  if (postsData?.data.posts.length === 0) {
-    return <NoCreatedPosts companyId={companyId} />;
+  if (postsData?.data.posts.length === 0 && myInfoData?.type === 'success') {
+    return <NoCreatedPosts companyId={myInfoData.data.id} />;
   }
 
   const TOTAL_PAGES = postsData?.data.paginator.lastPage;
