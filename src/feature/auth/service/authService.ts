@@ -29,7 +29,7 @@ export type AuthService = {
   }: {
     snuMail: string;
     code: string;
-  }): ServiceResponse<void>;
+  }): ServiceResponse<LocalServerDTO.SuccessCode>;
   sendEmailPassword({ email }: { email: string }): ServiceResponse<void>;
   changePassword({
     token,

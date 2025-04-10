@@ -313,6 +313,10 @@ export type TokenResponse = {
   accessToken: string;
 };
 
+export type SuccessCode = {
+  successCode: string;
+};
+
 export type UserResponse = Omit<UserDTO, 'isMerged'>;
 
 export type ApplicantResponse = Applicant;
