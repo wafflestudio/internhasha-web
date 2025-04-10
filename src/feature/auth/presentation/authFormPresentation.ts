@@ -114,7 +114,10 @@ export const authFormPresentation: AuthFormPresentation = {
           isError: newPassword.isError || newPassword.value === password.value,
         },
         code,
-        emailVerifySuccessCode,
+        emailVerifySuccessCode: {
+          ...emailVerifySuccessCode,
+          isError: emailVerifySuccessCode.value.length === 0,
+        },
       },
     };
   },

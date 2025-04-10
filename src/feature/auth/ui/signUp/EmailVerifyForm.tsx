@@ -60,7 +60,11 @@ export const EmailVerifyForm = () => {
   const verifyEmailDisable =
     snuMailPrefix.isError || !sendSuccess || code.isError || verifySuccess;
   const signUpDisable =
-    snuMailPrefix.isError || code.isError || !verifySuccess || isCodeExpired;
+    snuMailPrefix.isError ||
+    code.isError ||
+    emailVerifySuccessCode.isError ||
+    !verifySuccess ||
+    isCodeExpired;
 
   const isPending = isPendingSend || isPendingVerify || isPendingLocalSignUp;
 
