@@ -8,10 +8,12 @@ export type AuthService = {
     name,
     email,
     password,
+    successCode,
   }: {
     name: string;
     email: string;
     password: string;
+    successCode: string;
   }): ServiceResponse<LocalServerDTO.UserWithTokenResponse>;
   signIn({
     email,
@@ -52,7 +54,7 @@ export const implAuthService = ({
   tokenStateRepository: TokenStateRepository;
   roleStateRepository: RoleStateRepository;
 }): AuthService => ({
-  signUp: async ({ name, email, password }) => {
+  signUp: async ({ name, email, password, successCode }) => {
     const body: LocalServerDTO.SignUpRequest = {
       authType: 'APPLICANT',
       info: {
@@ -60,6 +62,7 @@ export const implAuthService = ({
         name,
         email,
         password,
+        successCode,
       },
     };
     const { status, data } = await apis['POST /auth/user']({ body });

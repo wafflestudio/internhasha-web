@@ -38,6 +38,7 @@ export type AuthInputPresentation = {
     >;
     newPasswordConfirm: Input<string>;
     code: Input<string>;
+    emailVerifySuccessCode: Input<string>;
   };
 };
 
@@ -77,6 +78,7 @@ export const authInputPresentation: AuthInputPresentation = {
     const [code, setCode] = useState(
       initialState.code !== undefined ? initialState.code : '',
     );
+    const [emailVerifySuccessCode, setEmailVerifySuccessCode] = useState('');
 
     const handleSnuMailPrefixChange = (input: string) => {
       const sanitizedInput = input.replace(/@snu\.ac\.kr$/, '');
@@ -141,6 +143,11 @@ export const authInputPresentation: AuthInputPresentation = {
         isError: !USERNAME_REGEX.test(username),
         value: username,
         onChange: setUsername,
+      },
+      emailVerifySuccessCode: {
+        isError: false,
+        value: emailVerifySuccessCode,
+        onChange: setEmailVerifySuccessCode,
       },
     };
   },

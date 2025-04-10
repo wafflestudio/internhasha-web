@@ -32,7 +32,7 @@ export const EmailVerifyForm = () => {
   const { inputStates, formStates } = authFormPresentation.useValidator({
     authInputPresentation,
   });
-  const { snuMailPrefix, code } = inputStates;
+  const { snuMailPrefix, code, emailVerifySuccessCode } = inputStates;
 
   const {
     sendCode,
@@ -47,7 +47,9 @@ export const EmailVerifyForm = () => {
     verifySuccess,
     responseMessage: emailResponseMessage,
     isPending: isPendingVerify,
-  } = useEmailVerify();
+  } = useEmailVerify({
+    setEmailVerifySuccessCode: emailVerifySuccessCode.onChange,
+  });
   const {
     localSignUp,
     responseMessage: localSignUpResponseMessage,
@@ -88,6 +90,7 @@ export const EmailVerifyForm = () => {
       email: formStates.snuMail.value,
       password: body.password,
       username: body.username,
+      successCode: emailVerifySuccessCode.value,
     });
   };
 
@@ -287,7 +290,11 @@ const useSendCode = () => {
   };
 };
 
-const useEmailVerify = () => {
+const useEmailVerify = ({
+  setEmailVerifySuccessCode,
+}: {
+  setEmailVerifySuccessCode(input: string): void;
+}) => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
   const [verifySuccess, setVerifySuccess] = useState(false);
@@ -302,6 +309,7 @@ const useEmailVerify = () => {
     onSuccess: (response) => {
       if (response.type === 'success') {
         setVerifySuccess(true);
+        setEmailVerifySuccessCode(response.data.successCode);
       } else {
         setResponseMessage(createErrorMessage(response.code));
         setVerifySuccess(false);
@@ -332,15 +340,18 @@ const useLocalSignUp = ({
       email,
       username,
       password,
+      successCode,
     }: {
       email: string;
       username: string;
       password: string;
+      successCode: string;
     }) => {
       return authService.signUp({
         name: username,
         email,
         password,
+        successCode,
       });
     },
     onSuccess: (response) => {
