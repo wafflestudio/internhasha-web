@@ -10,7 +10,7 @@ export const getShortenedDate = (dateString: string): string => {
   return getFormatDate(dateString).slice(2);
 };
 
-export const getEmploymentStatus = (employmentEndDate: string): string => {
+const getEmploymentStatus = (employmentEndDate: string): string => {
   if (employmentEndDate === '') return '상시';
 
   const daysLeft = Math.ceil(
@@ -19,4 +19,20 @@ export const getEmploymentStatus = (employmentEndDate: string): string => {
   );
 
   return daysLeft >= 0 ? (daysLeft === 0 ? 'D-day' : `D-${daysLeft}`) : '마감';
+};
+
+export const formatEmploymentState = ({
+  isActive,
+  employmentEndDate,
+}: {
+  isActive: boolean;
+  employmentEndDate: string | null;
+}) => {
+  if (!isActive) {
+    return '모집 완료';
+  }
+  if (employmentEndDate === null) {
+    return '상시 채용';
+  }
+  return getEmploymentStatus(employmentEndDate);
 };

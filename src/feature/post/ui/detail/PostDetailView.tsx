@@ -18,8 +18,12 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { UserContext } from '@/shared/context/UserContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { formatDomainToLabel, formatIsoToDate } from '@/util/format';
-import { getEmploymentStatus } from '@/util/postFormatFunctions';
+import {
+  formatDomainToLabel,
+  formatIsoToDate,
+  formatMinorJobToLabel,
+} from '@/util/format';
+import { formatEmploymentState } from '@/util/postFormatFunctions';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
@@ -82,22 +86,6 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
 
   const { author, company, position, isBookmarked } = postDetailData.data;
 
-  const formatEmploymentState = ({
-    isActiveInput,
-    employmentEndDateInput,
-  }: {
-    isActiveInput: boolean;
-    employmentEndDateInput: string | null;
-  }) => {
-    if (!isActiveInput) {
-      return '모집 완료';
-    }
-    if (employmentEndDateInput === null) {
-      return '상시 채용';
-    }
-    return getEmploymentStatus(employmentEndDateInput);
-  };
-
   return (
     <div className="mx-auto mb-[30px] flex max-w-screen-md flex-col gap-[56px] p-6 text-grey-900">
       {/* 헤더 */}
@@ -154,8 +142,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               </span>
               <Badge variant="primary">
                 {formatEmploymentState({
-                  isActiveInput: position.isActive,
-                  employmentEndDateInput: position.employmentEndDate,
+                  isActive: position.isActive,
+                  employmentEndDate: position.employmentEndDate,
                 })}
               </Badge>
             </div>
@@ -192,6 +180,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                     },
                   });
                 }}
+                disabled={!position.isActive}
                 className="flex-1"
               >
                 공고 수정하기
@@ -264,7 +253,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                   </div>
                 )}
 
-              {company.companyInfoPDFKey !== undefined &&
+              {token !== null &&
+                company.companyInfoPDFKey !== undefined &&
                 company.companyInfoPDFKey.trim().length !== 0 && (
                   <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
                     <span className="text-lg font-semibold text-grey-800">
@@ -361,7 +351,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
         <div className="flex items-center gap-2 rounded-lg bg-grey-50 px-[22px] py-4">
           <img src={ICON_SRC.PERSON} />
           <span>
-            {position.positionType} {position.headCount}명
+            {formatMinorJobToLabel(position.positionType)} {position.headCount}
+            명
           </span>
         </div>
         <div data-color-mode="light" className="flex rounded-md border p-4">

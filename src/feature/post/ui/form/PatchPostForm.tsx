@@ -55,6 +55,8 @@ export const PatchPostForm = ({
     onSuccess: onSuccessSubmit,
   });
 
+  const initialEmploymentEndDate = body.employmentEndDateTime ?? undefined;
+
   const { inputStates, formStates } = postFormPresentation.useValidator({
     initialState: {
       title: body.positionTitle,
@@ -62,7 +64,10 @@ export const PatchPostForm = ({
       headcount: body.headcount,
       salary: body.salary,
       detail: body.detail,
-      employmentEndDateTime: body.employmentEndDateTime ?? undefined,
+      employmentEndDateTime:
+        initialEmploymentEndDate !== undefined
+          ? initialEmploymentEndDate.split('T')[0]
+          : undefined,
     },
     postInputPresentation,
   });
