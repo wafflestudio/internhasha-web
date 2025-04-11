@@ -30,6 +30,7 @@ import type {
   SignInRequest,
   SignUpRequest,
   SnuMailRequest,
+  SuccessCode,
   TokenResponse,
   UserResponse,
   UserWithTokenResponse,
@@ -113,7 +114,7 @@ export const getLocalServerApis = ({
     }: {
       body: CheckSnuMailVerificationRequest;
     }) =>
-      callWithoutToken<SuccessResponse<void>>({
+      callWithoutToken<SuccessResponse<SuccessCode>>({
         method: 'POST',
         path: 'auth/mail/validate',
         body,

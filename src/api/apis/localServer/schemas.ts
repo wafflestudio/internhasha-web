@@ -219,6 +219,7 @@ export type SignUpRequest =
         name: string;
         email: string;
         password: string;
+        successCode: string;
       };
     }
   | {
@@ -312,6 +313,10 @@ export type UserWithTokenResponse = {
 
 export type TokenResponse = {
   accessToken: string;
+};
+
+export type SuccessCode = {
+  successCode: string;
 };
 
 export type UserResponse = Omit<UserDTO, 'isMerged'>;

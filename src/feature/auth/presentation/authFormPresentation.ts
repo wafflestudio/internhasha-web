@@ -48,6 +48,7 @@ type AuthFormPresentation = {
       >;
       newPasswordConfirm: Input<string>;
       code: Input<string>;
+      emailVerifySuccessCode: Input<string>;
     };
     formStates: {
       snuMail: InputForForm<string>;
@@ -56,6 +57,7 @@ type AuthFormPresentation = {
       password: InputForForm<string>;
       newPassword: Input<string>;
       code: InputForForm<string>;
+      emailVerifySuccessCode: InputForForm<string>;
     };
   };
 };
@@ -82,6 +84,7 @@ export const authFormPresentation: AuthFormPresentation = {
       newPassword,
       newPasswordConfirm,
       code,
+      emailVerifySuccessCode,
     } = authInputPresentation.useValidator({
       initialState: initialStateForInput,
     });
@@ -96,6 +99,7 @@ export const authFormPresentation: AuthFormPresentation = {
         newPassword,
         newPasswordConfirm,
         code,
+        emailVerifySuccessCode,
       },
       formStates: {
         snuMail: {
@@ -110,6 +114,10 @@ export const authFormPresentation: AuthFormPresentation = {
           isError: newPassword.isError || newPassword.value === password.value,
         },
         code,
+        emailVerifySuccessCode: {
+          ...emailVerifySuccessCode,
+          isError: emailVerifySuccessCode.value.length === 0,
+        },
       },
     };
   },
