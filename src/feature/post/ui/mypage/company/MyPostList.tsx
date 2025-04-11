@@ -11,6 +11,8 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
+const PAGES_PER_GROUP = 5;
+
 export const MyPostList = ({
   setIsExistProfile,
   setCompanyId,
@@ -27,8 +29,18 @@ export const MyPostList = ({
     page: currentPage,
   });
 
-  if (myInfoData?.type === 'error') {
-    if (myInfoData.code === 'COMPANY_001') {
+  if (myInfoData === undefined || postsData === undefined) {
+    return (
+      <>
+        {Array.from({ length: 12 }).map((_, index) => (
+          <SkeletonPostCard key={`loading-${index}`} />
+        ))}
+      </>
+    );
+  }
+
+  if (myInfoData.type === 'error' || postsData.type === 'error') {
+    if (myInfoData.type === 'error' && myInfoData.code === 'COMPANY_001') {
       return <NoCompanyProfile />;
     }
     return (
@@ -36,59 +48,42 @@ export const MyPostList = ({
     );
   }
 
-  if (postsData?.type === 'error') {
-    return (
-      <div>데이터를 불러오는 데 실패하였습니다. 잠시 후 다시 시도해주세요.</div>
-    );
-  }
-
-  if (postsData?.data.posts.length === 0 && myInfoData?.type === 'success') {
+  if (postsData.data.posts.length === 0) {
     return <NoCreatedPosts companyId={myInfoData.data.id} />;
   }
 
-  const TOTAL_PAGES = postsData?.data.paginator.lastPage;
-  const PAGES_PER_GROUP = 5;
+  const TOTAL_PAGES = postsData.data.paginator.lastPage;
 
   return (
-    <div className="order-2 flex flex-1 flex-col gap-6 lg:order-none">
+    <div className="order-2 flex w-full flex-1 flex-col gap-6 lg:order-none">
       {/* 회사 소개 카드 */}
-      <div className="m-autogap-2 flex w-full flex-col sm:w-screen-sm md:w-screen-md md:flex-row lg:w-screen-lg xl:max-w-screen-xl">
+      <div className="m-autogap-2 flex w-full flex-col md:flex-row">
         <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {myInfoData !== undefined && postsData !== undefined ? (
-            postsData.data.posts.map((item, idx) => (
-              <CompanyPostCard
-                key={`post-${idx}`}
-                post={item}
-                onDetailClick={() => {
-                  toPost({ postId: item.id });
-                }}
-              />
-            ))
-          ) : (
-            <>
-              {Array.from({ length: 12 }).map((_, index) => (
-                <SkeletonPostCard key={`loading-${index}`} />
-              ))}
-            </>
-          )}
+          {postsData.data.posts.map((item, idx) => (
+            <CompanyPostCard
+              key={`post-${idx}`}
+              post={item}
+              onDetailClick={() => {
+                toPost({ postId: item.id });
+              }}
+            />
+          ))}
         </div>
       </div>
       {/* 페이지네이션 */}
       <footer className="mt-6 flex justify-center">
-        {TOTAL_PAGES !== undefined && (
-          <PaginationBar
-            totalPages={TOTAL_PAGES}
-            pagesPerGroup={PAGES_PER_GROUP}
-            currentPage={currentPage}
-            currentGroup={currentGroup}
-            onChangePage={(page) => {
-              setCurrentPage(page);
-            }}
-            onChangeGroup={(group) => {
-              setCurrentGroup(group);
-            }}
-          />
-        )}
+        <PaginationBar
+          totalPages={TOTAL_PAGES}
+          pagesPerGroup={PAGES_PER_GROUP}
+          currentPage={currentPage}
+          currentGroup={currentGroup}
+          onChangePage={(page) => {
+            setCurrentPage(page);
+          }}
+          onChangeGroup={(group) => {
+            setCurrentGroup(group);
+          }}
+        />
       </footer>
     </div>
   );
