@@ -56,10 +56,21 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-}
-@layer base {
   body {
     @apply text-14 font-medium leading-[1.5];
     @apply font-pretendard;
   }
+}
+
+.wmde-markdown {
+  font-family:
+    'Pretendard',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif !important;
+}
+
+.w-md-editor {
+  --md-editor-font-family:
+    'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
