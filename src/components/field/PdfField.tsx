@@ -54,7 +54,7 @@ export const PdfField = ({
           <div className="jusify-between flex w-full items-center gap-2 rounded-md border border-grey-200 px-[12px] py-[11px]">
             <p className="text-sm text-grey-300">{input.value.file.name}</p>
           </div>
-          <Button disabled={isPending} onClick={removePdf}>
+          <Button type="button" disabled={isPending} onClick={removePdf}>
             삭제
           </Button>
         </div>

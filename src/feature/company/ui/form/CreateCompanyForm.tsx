@@ -83,7 +83,7 @@ export const CreateCompanyProfileForm = ({
     tags,
   } = inputStates;
 
-  const { toMain } = useRouteNavigation();
+  const { toBack } = useRouteNavigation();
 
   const handleClickCancelButton = () => {
     setIsCancel(true);
@@ -303,6 +303,7 @@ export const CreateCompanyProfileForm = ({
         )}
         <div className="flex gap-2">
           <Button
+            type="button"
             variant="secondary"
             onClick={(e) => {
               e.preventDefault();
@@ -328,7 +329,7 @@ export const CreateCompanyProfileForm = ({
       {isCancel && (
         <CancelCheckModal
           onClose={() => {
-            toMain({});
+            toBack();
           }}
           onCancel={closeCancelModal}
         />

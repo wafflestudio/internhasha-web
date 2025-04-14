@@ -124,6 +124,7 @@ export const EmailVerifyForm = () => {
             </div>
             {!verifySuccess && (
               <Button
+                type="button"
                 onClick={(e) => {
                   e.preventDefault();
                   handleClickSendEmailCodeButton();
@@ -161,6 +162,7 @@ export const EmailVerifyForm = () => {
                 )}
                 {!verifySuccess && !isCodeExpired && (
                   <Button
+                    type="button"
                     onClick={(e) => {
                       e.preventDefault();
                       handleClickVerifyEmailButton();
@@ -201,6 +203,7 @@ export const EmailVerifyForm = () => {
         )}
         <div className="flex gap-2">
           <Button
+            type="button"
             variant="outline"
             onClick={hanldeClickPreviousButton}
             className="flex-1"

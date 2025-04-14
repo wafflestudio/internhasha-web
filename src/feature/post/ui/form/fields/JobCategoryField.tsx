@@ -41,6 +41,7 @@ export const JobCategoryField = ({
   return (
     <LabelContainer label={label} required={required}>
       <Button
+        type="button"
         onClick={(e) => {
           e.preventDefault();
           onClick();
@@ -68,6 +69,7 @@ export const JobCategoryField = ({
             {JOB_MAJOR_CATEGORIES.map((category) => {
               return (
                 <Button
+                  type="button"
                   variant="ghost"
                   key={`major-category-${category}`}
                   onClick={(e) => {
@@ -84,6 +86,7 @@ export const JobCategoryField = ({
           <div className="flex w-[202px] flex-col gap-2">
             {JOB_CATEGORY_MAP[input.major.value].map((subCategory) => (
               <Button
+                type="button"
                 variant="ghost"
                 key={`sub-category-${subCategory}`}
                 value={subCategory}

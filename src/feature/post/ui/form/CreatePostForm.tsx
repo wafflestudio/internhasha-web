@@ -209,6 +209,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
         )}
         <div className="mt-[46px] flex gap-2">
           <Button
+            type="button"
             variant="secondary"
             onClick={(e) => {
               e.preventDefault();

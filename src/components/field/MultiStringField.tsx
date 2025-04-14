@@ -61,6 +61,7 @@ export const MultiStringField = ({
               }}
             />
             <Button
+              type="button"
               variant="outline"
               disabled={isPending}
               onClick={(e) => {
@@ -73,6 +74,7 @@ export const MultiStringField = ({
           </div>
         ))}
         <Button
+          type="button"
           variant="secondary"
           disabled={isPending}
           onClick={(e) => {
