@@ -6,7 +6,7 @@ type CompanyCoffeeChatBtnGroupProps = {
   handleSelectAll: () => void;
   disabled: boolean;
 };
-export const CompanyCoffeeChatBtnGroup = ({
+export const CompanyCoffeeChatButtonGroup = ({
   isPending,
   handleOpenModal,
   handleCancelSelect,

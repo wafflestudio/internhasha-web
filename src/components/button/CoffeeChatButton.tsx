@@ -8,8 +8,8 @@ const coffeeChatBtnClassName = cva(
   {
     variants: {
       variant: {
-        accept: 'bg-grey-800 text-white hover:bg-grey-400',
-        reject: 'bg-red-300 text-white hover:bg-red-200',
+        accept: 'bg-grey-800 text-white hover:bg-grey-400 disabled:bg-grey-400',
+        reject: 'bg-red-300 text-white hover:bg-red-200 disabled:bg-red-200',
         all: 'bg-grey-200 text-black hover:border-grey-300 hover:bg-grey-100',
         cancel:
           'bg-grey-200 text-grey-600 hover:border-grey-300 hover:bg-grey-100',
