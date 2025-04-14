@@ -28,6 +28,19 @@ export const CompanyCoffeeChatButton = ({
   const [modalStatus, setModalStatus] = useState<'ACCEPTED' | 'REJECTED'>(
     'ACCEPTED',
   );
+
+  if (coffeeChatListData === undefined) {
+    return null;
+  }
+  if (coffeeChatListData.type === 'error') {
+    alert('정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.');
+    return null;
+  }
+  if (coffeeChatListData.data.coffeeChatList.length === 0) {
+    return null;
+  }
+  const coffeeChatList = coffeeChatListData.data.coffeeChatList;
+
   const handleConfirm = (status: CoffeeChatStatus) => {
     updateCoffeeChatStatus({
       coffeeChatList: selectedChats,
@@ -45,32 +58,22 @@ export const CompanyCoffeeChatButton = ({
     setIsModalOpen(true);
   };
   const handleSelectAll = () => {
-    if (
-      coffeeChatListData === undefined ||
-      coffeeChatListData.type === 'error'
-    ) {
-      return;
-    }
-    const allSelected = coffeeChatListData.data.coffeeChatList
+    const waitingChats = coffeeChatList
       .filter((coffeeChat) => coffeeChat.coffeeChatStatus === 'WAITING')
       .map((coffeeChat) => coffeeChat.id);
-    setSelectedChats(allSelected);
+    const isAllSelected = waitingChats.every((id) =>
+      selectedChats.includes(id),
+    );
+    if (isAllSelected) {
+      setSelectedChats([]);
+      return;
+    }
+    setSelectedChats(waitingChats);
   };
 
   const handleCancelSelect = () => {
     setIsSelectMode(false);
   };
-  if (coffeeChatListData === undefined) {
-    return null;
-  }
-  if (coffeeChatListData.type === 'error') {
-    return (
-      <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
-    );
-  }
-  if (coffeeChatListData.data.coffeeChatList.length === 0) {
-    return null;
-  }
 
   return (
     <>
@@ -87,7 +90,12 @@ export const CompanyCoffeeChatButton = ({
           onClick={() => {
             setIsSelectMode((prev) => !prev);
           }}
-          disabled={isPending}
+          disabled={
+            isPending ||
+            coffeeChatList.filter(
+              (coffeeChat) => coffeeChat.coffeeChatStatus === 'WAITING',
+            ).length === 0
+          }
         >
           선택 하기
         </CoffeeChatButton>
