@@ -18,11 +18,6 @@ export const FormContainer = ({
         event.preventDefault();
         handleSubmit();
       }}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault(); // 엔터키 기본 동작 방지
-        }
-      }}
       className={cn('flex flex-col gap-[30px]', className)}
     >
       {children}

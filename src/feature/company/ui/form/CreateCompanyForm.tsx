@@ -172,7 +172,15 @@ export const CreateCompanyProfileForm = ({
 
   return (
     <>
-      <FormContainer handleSubmit={handleSubmit} className="gap-10">
+      <FormContainer
+        handleSubmit={handleSubmit}
+        className="gap-10"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault(); // 엔터키 기본 동작 방지
+          }
+        }}
+      >
         <StringSelectField<Domain>
           label="회사 업종"
           input={domain}

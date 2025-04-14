@@ -172,7 +172,15 @@ export const CreateProfileForm = ({
 
   return (
     <>
-      <FormContainer handleSubmit={handleSubmit} className="gap-10">
+      <FormContainer
+        handleSubmit={handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault(); // 엔터키 기본 동작 방지
+          }
+        }}
+        className="gap-10"
+      >
         <div className="flex flex-col gap-[10px]">
           <h3 className="text-22 font-semibold">필수 작성 항목</h3>
           <p className="text-12 font-regular text-grey-600">
