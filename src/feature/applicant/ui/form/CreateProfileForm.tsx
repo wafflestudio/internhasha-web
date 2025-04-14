@@ -90,7 +90,7 @@ export const CreateProfileForm = ({
     links,
   } = inputStates;
 
-  const { toMain } = useRouteNavigation();
+  const { toBack } = useRouteNavigation();
 
   const handleClickCancelButton = () => {
     setIsCancel(true);
@@ -118,7 +118,7 @@ export const CreateProfileForm = ({
     setData: cvPreview.onChange,
   });
   const { isPending: isInitialPortfolioPreviewPending } = useDownloadFile({
-    s3Key: 'static/private/PORTFOLIO/c685842238_20250327/Week - 4.pdf',
+    s3Key: initialState?.portfolioKey,
     fileType: 'PORTFOLIO',
     fileName: '인턴하샤_포트폴리오',
     setData: portfolioPreview.onChange,
@@ -330,7 +330,7 @@ export const CreateProfileForm = ({
       {isCancel && (
         <CancelCheckModal
           onClose={() => {
-            toMain({});
+            toBack();
           }}
           onCancel={closeCancelModal}
         />

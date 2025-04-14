@@ -98,6 +98,9 @@ export const useRouteNavigation = () => {
     toPatchProfile: () => {
       void navigate(PATCH_PROFILE);
     },
+    toBack: () => {
+      void navigate(-1);
+    },
     refreshPage: () => {
       void navigate(0);
     },
