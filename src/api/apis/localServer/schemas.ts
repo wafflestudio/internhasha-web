@@ -99,7 +99,8 @@ export type PostBriefDTO = {
   positionTitle: string;
   isActive: boolean;
   domain: string;
-  detail100: string;
+  detailSummary: string;
+  slogan: string;
   positionType: string;
   isBookmarked: boolean;
   createdAt: string;

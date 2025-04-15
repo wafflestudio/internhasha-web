@@ -8,7 +8,6 @@ import type {
 import type { Link } from '@/entities/link';
 import type { CompanyInputPresentation } from '@/feature/company/presentation/companyInputPresentation';
 import { convertEmptyStringToUndefined } from '@/lib/responseConverter';
-import { escapeToNormalText, normalTextToEscape } from '@/util/escapeEncoder';
 
 type InitialState = {
   companyEstablishedYear?: number;
@@ -77,10 +76,7 @@ export const companyFormPresentation: CompanyFormPresentation = {
       mainLocation: initialState?.location?.split('|')[0],
       detailedLocation: initialState?.location?.split('|')[1],
       slogan: initialState?.slogan,
-      detail:
-        initialState?.detail !== undefined
-          ? normalTextToEscape(initialState.detail)
-          : undefined,
+      detail: initialState?.detail,
       profileImagePreview: initialState?.profileImagePreview,
       companyInfoPDFPreview: initialState?.companyInfoPDFPreview,
       landingPageLink: initialState?.landingPageLink,
@@ -162,7 +158,7 @@ export const companyFormPresentation: CompanyFormPresentation = {
         },
         detail: {
           isError: detail.isError || detail.value.trim().length === 0,
-          value: escapeToNormalText(detail.value),
+          value: detail.value,
         },
         landingPageLink: {
           isError: landingPageLink.isError,

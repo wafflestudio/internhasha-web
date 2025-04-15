@@ -4,14 +4,13 @@ import { DownloadButtonWithPresignedUrl } from '@/components/button/DownloadButt
 import { LinkButton, SmallLinkButton } from '@/components/button/LinkButton';
 import { ThumbnailWithPresignedUrl } from '@/components/thumbnail/ThumbnailWithPresignedUrl';
 import { Badge } from '@/components/ui/badge';
-import { MarkdownPreview } from '@/components/ui/MarkdownPreview';
+import { MarkdownPreview } from '@/components/ui/markdown-preview';
 import { ICON_SRC } from '@/entities/asset';
 import { NoCompanyProfile } from '@/feature/company/ui/mypage/NoCompanyProfile';
 import { SkeletonCompanyProfile } from '@/feature/company/ui/mypage/SkeletonCompanyProfile';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
-import { normalTextToEscape } from '@/util/escapeEncoder';
 import { formatDomainToLabel } from '@/util/format';
 
 export const CompanyProfileInfo = ({
@@ -142,7 +141,7 @@ export const CompanyProfileInfo = ({
         )}
         <div className="flex flex-col gap-3">
           <p className="text-16 font-bold text-grey-800">상세 소개</p>
-          <MarkdownPreview content={normalTextToEscape(detail)} />
+          <MarkdownPreview content={detail} />
         </div>
         {vcName !== undefined && vcRecommendation !== undefined && (
           <div className="flex flex-col gap-3">

@@ -1,6 +1,5 @@
 import type { Input, InputForForm } from '@/entities/input';
 import type { CoffeeChatInputPresentation } from '@/feature/coffeeChat/presentation/coffeeChatInputPresentation';
-import { escapeToNormalText, normalTextToEscape } from '@/util/escapeEncoder';
 
 type InitialFormState = {
   content?: string;
@@ -26,10 +25,7 @@ type CoffeeChatFormPresentation = {
 export const coffeeChatFormPresentation: CoffeeChatFormPresentation = {
   useValidator: ({ initialState, coffeeChatInputPresentation }) => {
     const initialStateForInput = {
-      content:
-        initialState?.content !== undefined
-          ? normalTextToEscape(initialState.content)
-          : undefined,
+      content: initialState?.content,
     };
 
     const { content } = coffeeChatInputPresentation.useValidator({
@@ -41,10 +37,7 @@ export const coffeeChatFormPresentation: CoffeeChatFormPresentation = {
         content,
       },
       formStates: {
-        content: {
-          ...content,
-          value: escapeToNormalText(content.value),
-        },
+        content,
       },
     };
   },

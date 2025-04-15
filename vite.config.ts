@@ -13,6 +13,11 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      '/static': {
+        target: 'https://www.survey-josha.site',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 });

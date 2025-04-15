@@ -4,7 +4,6 @@ import { CancelCoffeeChatCancelModal } from '@/components/modal/CancelCoffeeChat
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { TagStatus } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { TextareaPreview } from '@/components/ui/TextareaPreview';
 import { SkeletonCoffeeChatDetailView } from '@/feature/coffeeChat/ui/detail/SkeletonCoffeeChatDetailView';
 import {
   useGetCoffeeChatDetail,
@@ -85,10 +84,9 @@ export const CoffeeChatDetailView = ({
           {/* Content Section */}
           <div className="flex flex-col gap-[80px]">
             <div className="space-y-5 py-6">
-              <TextareaPreview
-                content={coffeeChatDetail.content}
-                className="text-sm text-gray-700"
-              />
+              <p className="whitespace-pre-wrap text-sm text-gray-700">
+                {coffeeChatDetail.content}
+              </p>
             </div>
             <div className="flex gap-[8px]">
               <Button

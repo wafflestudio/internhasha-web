@@ -4,7 +4,6 @@ import type { CoffeeChatCompany } from '@/api/apis/localServer/schemas';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { TagStatus } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { TextareaPreview } from '@/components/ui/TextareaPreview';
 import { ApplicantInfoForCoffeeChat } from '@/feature/coffeeChat/ui/detail/ApplicantInfoForCoffeeChat';
 import { SkeletonCoffeeChatDetailView } from '@/feature/coffeeChat/ui/detail/SkeletonCoffeeChatDetailView';
 import {
@@ -61,10 +60,9 @@ export const CoffeeChatDetailView = ({
           <ApplicantInfoForCoffeeChat applicant={coffeeChatDetail.applicant} />
           <div className="flex flex-col gap-[20px]">
             <h3 className="text-22 font-bold">커피챗 신청 내용</h3>
-            <TextareaPreview
-              content={coffeeChatDetail.content}
-              className="font-regular text-gray-700"
-            />
+            <p className="whitespace-pre-wrap font-regular text-gray-700">
+              {coffeeChatDetail.content}
+            </p>
           </div>
           <div className="flex gap-[10px] pt-[52px]">
             <Button

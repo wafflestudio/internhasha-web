@@ -1,13 +1,6 @@
-import type { Apis } from '@/api';
+import type { Apis, LocalServerDTO } from '@/api';
 import type { Domain } from '@/entities/company';
-import type { Paginator } from '@/entities/paginator';
-import type {
-  BriefPost,
-  CreatePostRequest,
-  JobMinorCategory,
-  PositionDTO,
-  PostResponse,
-} from '@/entities/post';
+import type { CreatePostRequest, JobMinorCategory } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 
 export type PostService = {
@@ -25,17 +18,14 @@ export type PostService = {
     order?: 0 | 1;
     domains?: Domain[];
     token: string | null;
-  }): ServiceResponse<{
-    posts: BriefPost[];
-    paginator: Paginator;
-  }>;
+  }): ServiceResponse<LocalServerDTO.PostsResponse>;
   getPostDetail({
     postId,
     token,
   }: {
     postId: string;
     token?: string;
-  }): ServiceResponse<PostResponse>;
+  }): ServiceResponse<LocalServerDTO.PostDetailResponse>;
   createPost({
     token,
     companyId,
@@ -44,7 +34,7 @@ export type PostService = {
     token: string;
     companyId: string;
     postContents: CreatePostRequest;
-  }): ServiceResponse<PositionDTO>;
+  }): ServiceResponse<LocalServerDTO.PositionRespone>;
   patchPost({
     token,
     companyId,
@@ -55,7 +45,7 @@ export type PostService = {
     companyId: string;
     postContents: CreatePostRequest;
     postId: string;
-  }): ServiceResponse<PositionDTO>;
+  }): ServiceResponse<LocalServerDTO.PositionRespone>;
   closePost({
     token,
     postId,
@@ -83,12 +73,7 @@ export type PostService = {
   }: {
     token: string;
     bookmarkPage?: string;
-  }) => ServiceResponse<{
-    posts: BriefPost[];
-    paginator: {
-      lastPage: number;
-    };
-  }>;
+  }) => ServiceResponse<LocalServerDTO.PostsResponse>;
 };
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({

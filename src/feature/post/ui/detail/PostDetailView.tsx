@@ -9,7 +9,7 @@ import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModa
 import { SignInForCoffeeChatModal } from '@/components/modal/SignInForCoffeChatModal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { MarkdownPreview } from '@/components/ui/MarkdownPreview';
+import { MarkdownPreview } from '@/components/ui/markdown-preview';
 import { SeperatorLine } from '@/components/ui/separator';
 import { ICON_SRC } from '@/entities/asset';
 import { SkeletonPostDetailView } from '@/feature/post/ui/detail/SkeletonPostDetailView';
