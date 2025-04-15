@@ -43,9 +43,6 @@ export const CreateCoffeeChatForm = ({ postId }: { postId: string }) => {
     });
   };
 
-  console.log(content);
-  console.log(formStates.content);
-
   const handleClickCancelButton = () => {
     setIsCancel(true);
   };

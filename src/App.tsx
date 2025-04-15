@@ -125,7 +125,6 @@ export const App = () => {
   const roleStateRepository = implRoleStateRepository({ setRole, setId });
 
   const localServerCall = async (content: ExternalCallParams) => {
-    console.debug(JSON.stringify(content.body));
     const response = await fetch(`/api/${content.path}`, {
       method: content.method,
       headers: content.headers,

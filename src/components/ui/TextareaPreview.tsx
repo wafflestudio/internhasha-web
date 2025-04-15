@@ -7,7 +7,6 @@ export const TextareaPreview = ({
   content: string;
   className?: string;
 }) => {
-  console.log(normalTextToEscape(content));
   return (
     <p className={cn('whitespace-pre-wrap', className)}>
       {normalTextToEscape(content)}
