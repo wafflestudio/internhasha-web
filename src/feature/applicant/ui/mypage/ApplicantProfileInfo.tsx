@@ -5,6 +5,7 @@ import { SmallLinkButton } from '@/components/button/LinkButton';
 import { ThumbnailWithPresignedUrl } from '@/components/thumbnail/ThumbnailWithPresignedUrl';
 import { Badge } from '@/components/ui/badge';
 import { SeperatorLine } from '@/components/ui/separator';
+import { TextareaPreview } from '@/components/ui/TextareaPreview';
 import { ICON_SRC } from '@/entities/asset';
 import { NoApplicantInfo } from '@/feature/applicant/ui/mypage/NoApplicantInfo';
 import { SkeletonApplicantInfo } from '@/feature/applicant/ui/mypage/SkeletonApplicantInfo';
@@ -123,7 +124,10 @@ export const ApplicantProfileInfo = ({
                   <span className="text-16 font-bold text-grey-800">
                     자기소개
                   </span>
-                  <p className="font-regular">{explanation}</p>
+                  <TextareaPreview
+                    content={explanation}
+                    className="font-regular"
+                  />
                 </div>
               )}
 

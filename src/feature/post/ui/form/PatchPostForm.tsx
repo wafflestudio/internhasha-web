@@ -82,9 +82,6 @@ export const PatchPostForm = ({
     employmentEndDate,
   } = inputStates;
 
-  console.log(detail);
-  console.log(formStates.detail);
-
   const handleSubmit = () => {
     setIsSubmit(true);
     if (

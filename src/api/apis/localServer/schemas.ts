@@ -262,7 +262,6 @@ export type CreateAndUpdatePostRequest = Omit<
 >;
 
 export type CreateCoffeeChatRequest = {
-  phoneNumber: string;
   content: string;
 };
 

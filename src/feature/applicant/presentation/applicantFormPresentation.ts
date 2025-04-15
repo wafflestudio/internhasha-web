@@ -2,6 +2,7 @@ import type { Input, InputForForm, ListInput } from '@/entities/input';
 import type { Link } from '@/entities/link';
 import type { ApplicantInputPresentation } from '@/feature/applicant/presentation/applicantInputPresentation';
 import { convertEmptyStringToUndefined } from '@/lib/responseConverter';
+import { escapeToNormalText, normalTextToEscape } from '@/util/escapeEncoder';
 
 type InitialFormState = {
   enrollYear?: number;
@@ -71,7 +72,10 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
         departmentList !== undefined ? departmentList.slice(1) : undefined,
       positions: initialState?.positions,
       slogan: initialState?.slogan,
-      explanation: initialState?.explanation,
+      explanation:
+        initialState?.explanation !== undefined
+          ? normalTextToEscape(initialState.explanation)
+          : undefined,
       stacks: initialState?.stacks,
       imagePreview: initialState?.imagePreview,
       cvPreview: initialState?.cvPreview,
@@ -155,7 +159,9 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
         },
         explanation: {
           isError: explanation.isError,
-          value: convertEmptyStringToUndefined(explanation.value),
+          value: convertEmptyStringToUndefined(
+            escapeToNormalText(explanation.value),
+          ),
         },
         stacks: {
           isError: stacks.isError,

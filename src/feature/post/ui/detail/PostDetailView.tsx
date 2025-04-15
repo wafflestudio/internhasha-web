@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import MDEditor from '@uiw/react-md-editor';
 import { useState } from 'react';
 
 import { DownloadButtonWithPresignedUrl } from '@/components/button/DownloadButtonWithPresignedUrl';
@@ -10,6 +9,7 @@ import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModa
 import { SignInForCoffeeChatModal } from '@/components/modal/SignInForCoffeChatModal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { MarkdownPreview } from '@/components/ui/MarkdownPreview';
 import { SeperatorLine } from '@/components/ui/separator';
 import { ICON_SRC } from '@/entities/asset';
 import { SkeletonPostDetailView } from '@/feature/post/ui/detail/SkeletonPostDetailView';
@@ -18,7 +18,6 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { UserContext } from '@/shared/context/UserContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { normalTextToEscape } from '@/util/escapeEncoder';
 import {
   formatDomainToLabel,
   formatIsoToDate,
@@ -318,13 +317,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               <span className="text-lg font-semibold text-grey-800">
                 상세 소개
               </span>
-              <div
-                data-color-mode="light"
-                className="flex rounded-md border p-4"
-              >
-                <MDEditor.Markdown
-                  source={normalTextToEscape(company.detail)}
-                />
+              <div className="flex rounded-md border">
+                <MarkdownPreview content={company.detail} />
               </div>
             </section>
 
@@ -358,8 +352,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             명
           </span>
         </div>
-        <div data-color-mode="light" className="flex rounded-md border p-4">
-          <MDEditor.Markdown source={normalTextToEscape(position.detail)} />
+        <div className="flex rounded-md border">
+          <MarkdownPreview content={position.detail} />
         </div>
       </section>
 
