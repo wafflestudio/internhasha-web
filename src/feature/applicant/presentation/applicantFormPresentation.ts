@@ -58,7 +58,7 @@ type ApplicantFormPresentation = {
 
 export const applicantFormPresentation: ApplicantFormPresentation = {
   useValidator: ({ initialState, applicantInputPresentation }) => {
-    const encodeEnrollYear = (year: number) => {
+    const shortenedToCompleteYear = (year: number) => {
       if (year < 50) {
         return 2000 + year;
       } else {
@@ -66,8 +66,8 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
       }
     };
 
-    const decodeErollYear = (year: number) => {
-      if (year > 200) {
+    const completeToShortenedYear = (year: number) => {
+      if (year > 2000) {
         return year - 2000;
       } else {
         return year - 1900;
@@ -79,7 +79,7 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
     const initialStateForInput = {
       enrollYear:
         initialState?.enrollYear !== undefined
-          ? String(decodeErollYear(initialState.enrollYear))
+          ? String(completeToShortenedYear(initialState.enrollYear))
           : undefined,
       majorDepartment:
         departmentList !== undefined ? departmentList[0] : undefined,
@@ -144,7 +144,7 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
             enrollYear.value.trim().length === 0 ||
             isNaN(Number(enrollYear.value)) ||
             Number(enrollYear.value) < 0,
-          value: encodeEnrollYear(Number(enrollYear.value)),
+          value: shortenedToCompleteYear(Number(enrollYear.value)),
         },
         department: {
           isError:
