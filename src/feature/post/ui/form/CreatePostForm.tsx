@@ -106,7 +106,15 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
 
   return (
     <>
-      <FormContainer id="CreatePostForm" handleSubmit={handleSubmit}>
+      <FormContainer
+        id="CreatePostForm"
+        handleSubmit={handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault(); // 엔터키 기본 동작 방지
+          }
+        }}
+      >
         <StringField
           label="모집 직무 이름"
           input={title}
@@ -209,6 +217,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
         )}
         <div className="mt-[46px] flex gap-2">
           <Button
+            type="button"
             variant="secondary"
             onClick={(e) => {
               e.preventDefault();

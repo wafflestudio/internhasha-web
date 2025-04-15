@@ -71,6 +71,7 @@ export const DepartmentsField = ({
               }}
             />
             <Button
+              type="button"
               variant="outline"
               disabled={isPending}
               onClick={(e) => {
@@ -87,6 +88,7 @@ export const DepartmentsField = ({
           </div>
         ))}
         <Button
+          type="button"
           variant="secondary"
           disabled={isPending}
           onClick={(e) => {

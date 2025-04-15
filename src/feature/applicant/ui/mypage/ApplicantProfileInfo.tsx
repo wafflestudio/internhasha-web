@@ -65,7 +65,7 @@ export const ApplicantProfileInfo = ({
           <ThumbnailWithPresignedUrl s3Key={imageKey} type="USER_THUMBNAIL" />
         ) : (
           <img
-            src={ICON_SRC.FAVICON.BLUE}
+            src={ICON_SRC.FAVICON.BLUE_LARGE}
             className="h-[80px] w-[80px] rounded-lg"
           />
         )}

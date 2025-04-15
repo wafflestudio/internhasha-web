@@ -112,6 +112,7 @@ export const ExternalLinkField = ({
         ))}
       </div>
       <Button
+        type="button"
         variant="secondary"
         disabled={isPending}
         onClick={(e) => {

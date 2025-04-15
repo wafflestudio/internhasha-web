@@ -58,6 +58,7 @@ export const LocationField = ({
           }}
         />
         <Button
+          type="button"
           onClick={(e) => {
             e.preventDefault();
             handleClickButton();

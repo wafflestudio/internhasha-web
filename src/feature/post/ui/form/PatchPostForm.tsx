@@ -230,6 +230,7 @@ export const PatchPostForm = ({
         )}
         <div className="mt-[46px] flex gap-2">
           <Button
+            type="button"
             variant="secondary"
             onClick={(e) => {
               e.preventDefault();

@@ -83,7 +83,7 @@ export const CreateCompanyProfileForm = ({
     tags,
   } = inputStates;
 
-  const { toMain } = useRouteNavigation();
+  const { toBack } = useRouteNavigation();
 
   const handleClickCancelButton = () => {
     setIsCancel(true);
@@ -172,7 +172,15 @@ export const CreateCompanyProfileForm = ({
 
   return (
     <>
-      <FormContainer handleSubmit={handleSubmit} className="gap-10">
+      <FormContainer
+        handleSubmit={handleSubmit}
+        className="gap-10"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault(); // 엔터키 기본 동작 방지
+          }
+        }}
+      >
         <StringSelectField<Domain>
           label="회사 업종"
           input={domain}
@@ -303,6 +311,7 @@ export const CreateCompanyProfileForm = ({
         )}
         <div className="flex gap-2">
           <Button
+            type="button"
             variant="secondary"
             onClick={(e) => {
               e.preventDefault();
@@ -328,7 +337,7 @@ export const CreateCompanyProfileForm = ({
       {isCancel && (
         <CancelCheckModal
           onClose={() => {
-            toMain({});
+            toBack();
           }}
           onCancel={closeCancelModal}
         />

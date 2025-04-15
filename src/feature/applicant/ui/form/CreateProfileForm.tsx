@@ -90,7 +90,7 @@ export const CreateProfileForm = ({
     links,
   } = inputStates;
 
-  const { toMain } = useRouteNavigation();
+  const { toBack } = useRouteNavigation();
 
   const handleClickCancelButton = () => {
     setIsCancel(true);
@@ -118,7 +118,7 @@ export const CreateProfileForm = ({
     setData: cvPreview.onChange,
   });
   const { isPending: isInitialPortfolioPreviewPending } = useDownloadFile({
-    s3Key: 'static/private/PORTFOLIO/c685842238_20250327/Week - 4.pdf',
+    s3Key: initialState?.portfolioKey,
     fileType: 'PORTFOLIO',
     fileName: '인턴하샤_포트폴리오',
     setData: portfolioPreview.onChange,
@@ -172,7 +172,15 @@ export const CreateProfileForm = ({
 
   return (
     <>
-      <FormContainer handleSubmit={handleSubmit} className="gap-10">
+      <FormContainer
+        handleSubmit={handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault(); // 엔터키 기본 동작 방지
+          }
+        }}
+        className="gap-10"
+      >
         <div className="flex flex-col gap-[10px]">
           <h3 className="text-22 font-semibold">필수 작성 항목</h3>
           <p className="text-12 font-regular text-grey-600">
@@ -305,6 +313,7 @@ export const CreateProfileForm = ({
         )}
         <div className="flex gap-2">
           <Button
+            type="button"
             variant="secondary"
             onClick={(e) => {
               e.preventDefault();
@@ -330,7 +339,7 @@ export const CreateProfileForm = ({
       {isCancel && (
         <CancelCheckModal
           onClose={() => {
-            toMain({});
+            toBack();
           }}
           onCancel={closeCancelModal}
         />

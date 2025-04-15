@@ -30,6 +30,7 @@ export const ICON_SRC = {
   LOCATION: '/svg/location.svg',
   FAVICON: {
     BLUE: '/img/favicon_blue.png',
+    BLUE_LARGE: '/img/favicon_blue_large.png',
   },
   INFO: '/svg/info.svg',
   EYE: {
