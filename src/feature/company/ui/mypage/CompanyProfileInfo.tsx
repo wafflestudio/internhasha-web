@@ -11,6 +11,7 @@ import { SkeletonCompanyProfile } from '@/feature/company/ui/mypage/SkeletonComp
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
+import { normalTextToEscape } from '@/util/escapeEncoder';
 import { formatDomainToLabel } from '@/util/format';
 
 export const CompanyProfileInfo = ({
@@ -142,7 +143,10 @@ export const CompanyProfileInfo = ({
         <div className="flex flex-col gap-3">
           <p className="text-16 font-bold text-grey-800">상세 소개</p>
           <div data-color-mode="light" className="font-regular text-grey-800">
-            <MDEditor.Markdown source={detail} style={{ fontSize: '14px' }} />
+            <MDEditor.Markdown
+              source={normalTextToEscape(detail)}
+              style={{ fontSize: '14px' }}
+            />
           </div>
         </div>
         {vcName !== undefined && vcRecommendation !== undefined && (

@@ -83,6 +83,9 @@ export const CreateCompanyProfileForm = ({
     tags,
   } = inputStates;
 
+  console.log(detail);
+  console.log(formStates.detail);
+
   const { toMain } = useRouteNavigation();
 
   const handleClickCancelButton = () => {

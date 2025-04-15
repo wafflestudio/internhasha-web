@@ -18,6 +18,7 @@ import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { UserContext } from '@/shared/context/UserContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
+import { normalTextToEscape } from '@/util/escapeEncoder';
 import {
   formatDomainToLabel,
   formatIsoToDate,
@@ -321,7 +322,9 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                 data-color-mode="light"
                 className="flex rounded-md border p-4"
               >
-                <MDEditor.Markdown source={company.detail} />
+                <MDEditor.Markdown
+                  source={normalTextToEscape(company.detail)}
+                />
               </div>
             </section>
 
@@ -356,7 +359,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           </span>
         </div>
         <div data-color-mode="light" className="flex rounded-md border p-4">
-          <MDEditor.Markdown source={position.detail} />
+          <MDEditor.Markdown source={normalTextToEscape(position.detail)} />
         </div>
       </section>
 

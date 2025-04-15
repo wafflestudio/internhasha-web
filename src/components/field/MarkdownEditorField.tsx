@@ -39,7 +39,7 @@ export const MarkdownEditorField = ({
           }}
           value={input.value}
           onChange={(value) => {
-            input.onChange(value ?? '');
+            input.onChange(value !== undefined ? value : '');
           }}
         />
         <div className="mt-1 flex flex-col gap-1">

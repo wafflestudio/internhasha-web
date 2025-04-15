@@ -2,6 +2,7 @@ import type { Input, InputForForm, SelectInput } from '@/entities/input';
 import type { JobMajorCategory, JobMinorCategory } from '@/entities/post';
 import { JOB_CATEGORY_MAP } from '@/entities/post';
 import type { PostInputPresentation } from '@/feature/post/presentation/postInputPresentation';
+import { escapeToNormalText, normalTextToEscape } from '@/util/escapeEncoder';
 
 type InitialState = {
   title?: string;
@@ -70,7 +71,10 @@ export const postFormPresentation: PostFormPresentation = {
         initialState?.salary !== undefined
           ? String(initialState.salary)
           : undefined,
-      detail: initialState?.detail,
+      detail:
+        initialState?.detail !== undefined
+          ? normalTextToEscape(initialState.detail)
+          : undefined,
       employmentEndDate: initialState?.employmentEndDateTime,
     };
 
@@ -134,7 +138,7 @@ export const postFormPresentation: PostFormPresentation = {
         },
         detail: {
           isError: detail.isError || detail.value.length === 0,
-          value: detail.value,
+          value: escapeToNormalText(detail.value),
         },
         employmentEndDateTime: {
           isError:
