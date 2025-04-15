@@ -34,19 +34,6 @@ export type PostFilter = {
   order?: 0 | 1;
 };
 
-export type PositionDTO = {
-  id: string;
-  isActive: boolean;
-  positionTitle: string;
-  positionType: string;
-  headCount: number;
-  salary?: number | null;
-  detail: string;
-  employmentEndDate: string | null;
-  createdAt: string;
-  updatedAt: string;
-};
-
 export type CreatePostRequest = {
   positionTitle: string;
   positionType: JobMinorCategory;
