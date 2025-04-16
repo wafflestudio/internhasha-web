@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { TagStatus } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ICON_SRC } from '@/entities/asset';
-import { NoCoffeeChat } from '@/feature/coffeeChat/ui/mypage/common/NoCoffeeChat';
+import { ApplicantNoCoffeeChat } from '@/feature/coffeeChat/ui/mypage/applicant/ApplicantNoCoffeeChat';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -22,7 +22,7 @@ export const ApplicantCoffeeChatListView = () => {
     coffeeChatListData?.type === 'success' &&
     coffeeChatListData.data.coffeeChatList.length === 0
   ) {
-    return <NoCoffeeChat />;
+    return <ApplicantNoCoffeeChat />;
   }
 
   return (
