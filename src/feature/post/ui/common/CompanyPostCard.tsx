@@ -16,7 +16,7 @@ export const CompanyPostCard = ({
     id,
     positionTitle,
     employmentEndDate,
-    detail100,
+    detailSummary,
     createdAt,
     coffeeChatCount,
     isActive,
@@ -44,7 +44,7 @@ export const CompanyPostCard = ({
       </div>
 
       <section className="flex flex-col gap-4 px-[22px] py-[18px]">
-        <div className="min-h-[62px] w-full text-grey-700">{detail100}</div>
+        <div className="min-h-[62px] w-full text-grey-700">{detailSummary}</div>
 
         {/* 신청된 커피챗 개수 및 작성 날짜 */}
         <div className="flex w-full py-1">

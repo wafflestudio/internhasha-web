@@ -1,10 +1,5 @@
 export type CoffeeChatStatus = 'WAITING' | 'ACCEPTED' | 'CANCELED' | 'REJECTED';
 
-export type CoffeeChatRequest = {
-  phoneNumber: string;
-  content: string;
-};
-
 type CoffeeChatStatusMapEntry = {
   status: CoffeeChatStatus;
   variant: 'pending' | 'accepted' | 'canceled' | 'rejected';

@@ -6,7 +6,6 @@ import { HashtagField } from '@/components/field/HashtagField';
 import { ImageField } from '@/components/field/ImageField';
 import { MultiStringField } from '@/components/field/MultiStringField';
 import { PdfField } from '@/components/field/PdfField';
-import { StringField } from '@/components/field/StringField';
 import { StringFieldWithUnit } from '@/components/field/StringFieldWithLabel';
 import { TextareaField } from '@/components/field/TextareaField';
 import { FormContainer } from '@/components/form/FormContainer';
@@ -246,7 +245,7 @@ export const CreateProfileForm = ({
           inputErrorMessage="기존 태그와 중복되지 않는 30자 이하의 기술 스택을 작성해주세요."
           errorMessage="하나의 기술 스택은 30자 이하, 총 10개까지 작성 가능합니다."
         />
-        <StringField
+        <TextareaField
           label="한 줄 소개"
           input={slogan}
           isPending={isPending}
@@ -255,6 +254,7 @@ export const CreateProfileForm = ({
           maxLength={MAX_SLOGAN_LENGTH}
           placeholder="한 줄 소개를 입력해주세요."
           errorMessage={`한 줄 소개는 ${MAX_SLOGAN_LENGTH}자 이내로 작성해주세요.`}
+          minLine={1}
         />
         <TextareaField
           label="자기소개"

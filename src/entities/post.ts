@@ -1,6 +1,5 @@
 import type { AuthorBriefDTO } from '@/entities/author';
 import type { Domain } from '@/entities/company';
-import type { Link } from '@/entities/link';
 
 export type JobMajorCategory =
   | 'DEVELOPMENT'
@@ -35,45 +34,6 @@ export type PostFilter = {
   order?: 0 | 1;
 };
 
-type CompanyDTO = {
-  id: string;
-  companyName: string;
-  companyEstablishedYear: number;
-  domain: Domain;
-  headcount: number;
-  location: string;
-  slogan: string;
-  detail: string;
-  profileImageKey: string;
-  companyInfoPDFKey?: string;
-  landingPageLink?: string;
-  links?: Link[];
-  tags?: { tag: string }[];
-  vcName?: string;
-  vcRecommendation?: string;
-};
-
-export type PositionDTO = {
-  id: string;
-  isActive: boolean;
-  positionTitle: string;
-  positionType: string;
-  headCount: number;
-  salary?: number | null;
-  detail: string;
-  employmentEndDate: string | null;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type PostResponse = {
-  id: string;
-  author: AuthorBriefDTO;
-  company: CompanyDTO;
-  position: PositionDTO;
-  isBookmarked: boolean;
-};
-
 export type CreatePostRequest = {
   positionTitle: string;
   positionType: JobMinorCategory;
@@ -94,7 +54,8 @@ export type BriefPost = {
   positionTitle: string;
   isActive: boolean;
   domain: string;
-  detail100: string;
+  detailSummary: string;
+  slogan: string;
   positionType: string;
   isBookmarked: boolean;
   createdAt: string;

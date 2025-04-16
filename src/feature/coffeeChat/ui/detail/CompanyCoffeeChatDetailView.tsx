@@ -60,7 +60,7 @@ export const CoffeeChatDetailView = ({
           <ApplicantInfoForCoffeeChat applicant={coffeeChatDetail.applicant} />
           <div className="flex flex-col gap-[20px]">
             <h3 className="text-22 font-bold">커피챗 신청 내용</h3>
-            <p className="font-regular text-gray-700">
+            <p className="whitespace-pre-wrap font-regular text-gray-700">
               {coffeeChatDetail.content}
             </p>
           </div>

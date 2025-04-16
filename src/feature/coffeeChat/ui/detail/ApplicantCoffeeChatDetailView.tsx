@@ -84,7 +84,7 @@ export const CoffeeChatDetailView = ({
           {/* Content Section */}
           <div className="flex flex-col gap-[80px]">
             <div className="space-y-5 py-6">
-              <p className="text-sm text-gray-700">
+              <p className="whitespace-pre-wrap text-sm text-gray-700">
                 {coffeeChatDetail.content}
               </p>
             </div>

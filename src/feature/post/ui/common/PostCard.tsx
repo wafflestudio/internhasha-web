@@ -51,7 +51,7 @@ export const PostCard = ({
     employmentEndDate,
     positionTitle,
     domain,
-    detail100,
+    slogan,
     isBookmarked,
     tags,
     isActive,
@@ -101,7 +101,7 @@ export const PostCard = ({
           </div>
         </div>
 
-        <div className="min-h-[62px] w-full text-grey-700">{detail100}</div>
+        <div className="min-h-[62px] w-full text-grey-700">{slogan}</div>
 
         {/* 회사 위치 및 태그 */}
         <div className="flex w-full justify-between gap-3 py-1">

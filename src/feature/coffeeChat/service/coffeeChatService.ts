@@ -7,7 +7,6 @@ import type {
   CoffeeChatListResponse,
   CoffeeChatStatus,
 } from '@/api/apis/localServer/schemas';
-import type { CoffeeChatRequest } from '@/entities/coffeeChat';
 import type { ServiceResponse } from '@/entities/response';
 
 export type CoffeeChatService = {
@@ -37,11 +36,11 @@ export type CoffeeChatService = {
   }) => ServiceResponse<CoffeeChatCount>;
   createCoffeeChat: ({
     token,
-    coffeeChatContents,
+    content,
     postId,
   }: {
     token: string;
-    coffeeChatContents: CoffeeChatRequest;
+    content: string;
     postId: string;
   }) => ServiceResponse<CoffeeChatApplicant>;
   updateCoffeeChatStatus: ({
@@ -145,14 +144,14 @@ export const implCoffeeChatService = ({
   },
   createCoffeeChat: async ({
     token,
-    coffeeChatContents,
+    content,
     postId,
   }: {
     token: string;
-    coffeeChatContents: CoffeeChatRequest;
+    content: string;
     postId: string;
   }) => {
-    const body = coffeeChatContents;
+    const body = { content };
     const params = { postId };
 
     const { status, data } = await apis['POST /coffeeChat/:postId']({

@@ -10,7 +10,7 @@ export const NoCompanyProfile = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 gap-8 rounded-lg bg-white px-[44px] py-[48px] text-grey-900">
+    <div className="flex flex-col items-center gap-8 rounded-lg bg-white px-[44px] py-[48px] text-grey-900">
       <div className="flex items-center gap-1">
         <div className="w-[220px]">
           <img src={ICON_SRC.SKELETON} className="object-fit" />

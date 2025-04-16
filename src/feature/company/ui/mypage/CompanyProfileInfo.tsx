@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import MDEditor from '@uiw/react-md-editor';
 
 import { DownloadButtonWithPresignedUrl } from '@/components/button/DownloadButtonWithPresignedUrl';
 import { LinkButton, SmallLinkButton } from '@/components/button/LinkButton';
 import { ThumbnailWithPresignedUrl } from '@/components/thumbnail/ThumbnailWithPresignedUrl';
 import { Badge } from '@/components/ui/badge';
+import { MarkdownPreview } from '@/components/ui/markdown-preview';
 import { ICON_SRC } from '@/entities/asset';
 import { NoCompanyProfile } from '@/feature/company/ui/mypage/NoCompanyProfile';
 import { SkeletonCompanyProfile } from '@/feature/company/ui/mypage/SkeletonCompanyProfile';
@@ -141,9 +141,7 @@ export const CompanyProfileInfo = ({
         )}
         <div className="flex flex-col gap-3">
           <p className="text-16 font-bold text-grey-800">상세 소개</p>
-          <div data-color-mode="light" className="font-regular text-grey-800">
-            <MDEditor.Markdown source={detail} style={{ fontSize: '14px' }} />
-          </div>
+          <MarkdownPreview content={detail} />
         </div>
         {vcName !== undefined && vcRecommendation !== undefined && (
           <div className="flex flex-col gap-3">
