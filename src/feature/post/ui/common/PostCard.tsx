@@ -101,7 +101,7 @@ export const PostCard = ({
           </div>
         </div>
 
-        <div className="w-full flex-1 text-13 font-regular leading-[1.5] text-grey-700">
+        <div className="line-clamp-3 w-full flex-1 truncate text-wrap text-13 font-regular leading-[1.5] text-grey-700">
           {slogan}
         </div>
 
