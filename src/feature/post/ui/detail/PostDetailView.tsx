@@ -233,7 +233,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               <span className="w-[80px] text-grey-700">근무 위치</span>
               <div className="flex items-center gap-2">
                 <img src={ICON_SRC.LOCATION} />
-                <span>{company.location}</span>
+                <span>{company.location.replace('|', ' ')}</span>
               </div>
             </div>
           </section>

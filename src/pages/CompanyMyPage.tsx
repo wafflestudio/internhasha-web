@@ -33,7 +33,7 @@ export const CompanyMyPage = () => {
     <div className="min-h-screen bg-grey-50">
       <GlobalNavigationBar />
       {/* 메인 컨텐츠 */}
-      <div className="w-max-[698px] mx-auto flex flex-col gap-10 px-6 py-[30px]">
+      <div className="mx-auto flex max-w-[698px] flex-col gap-10 px-6 py-[30px]">
         <h1 className="text-2xl font-bold text-grey-900">마이페이지</h1>
         <Tabs
           value={
