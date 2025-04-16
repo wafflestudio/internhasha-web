@@ -4,7 +4,7 @@ import { TagStatus } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ICON_SRC } from '@/entities/asset';
-import { NoCoffeeChat } from '@/feature/coffeeChat/ui/mypage/common/NoCoffeeChat';
+import { CompanyNoCoffeeChat } from '@/feature/coffeeChat/ui/mypage/company/CompanyNoCoffeeChat';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -39,7 +39,7 @@ export const CompanyCoffeeChatListView = ({
     coffeeChatListData !== undefined &&
     coffeeChatListData.data.coffeeChatList.length === 0
   ) {
-    return <NoCoffeeChat />;
+    return <CompanyNoCoffeeChat />;
   }
 
   return (
