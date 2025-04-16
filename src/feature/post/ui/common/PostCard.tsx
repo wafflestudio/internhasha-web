@@ -106,8 +106,8 @@ export const PostCard = ({
         </div>
 
         {/* 회사 위치 및 태그 */}
-        <div className="flex w-full flex-wrap items-center justify-between gap-3 overflow-hidden py-1">
-          <div className="flex items-center gap-2">
+        <div className="flex w-full items-center justify-between gap-3 py-1">
+          <div className="flex h-[34px] flex-wrap items-center gap-2 overflow-hidden">
             <Badge variant="secondary">
               <img src={ICON_SRC.LOCATION} />{' '}
               {location.split(' ').slice(0, 2).join(' ')}
