@@ -59,28 +59,28 @@ export const PostCard = ({
 
   return (
     <div
-      className="cursor-pointer rounded-lg bg-white transition-shadow hover:shadow-md"
+      className="flex h-[270px] cursor-pointer flex-col rounded-lg bg-white transition-shadow hover:shadow-md"
       onClick={() => {
         onDetailClick(id);
       }}
     >
       {/* 직군 & 마감일 */}
       <div className="relative flex h-[50px] items-center justify-between rounded-t-lg bg-grey-200 px-[22px]">
-        <div className="flex items-center gap-2">
-          <img src={ICON_SRC.PERSON} className="h-6 w-6" />
-          <span className="text-15 font-semibold text-grey-900">
+        <div className="flex max-w-[80%] items-center gap-2">
+          <img src={ICON_SRC.PERSON} className="h-6 w-6 flex-shrink-0" />
+          <span className="truncate text-15 font-semibold text-grey-900">
             {positionTitle}
           </span>
         </div>
 
-        <span className="text-grey-400">
+        <span className="flex-shrink-0 text-grey-400">
           {formatEmploymentState({ isActive, employmentEndDate })}
         </span>
         {/* 삼각형 */}
-        <div className="absolute bottom-[-10px] right-6 h-0 w-0 border-l-[10px] border-r-[10px] border-t-[10px] border-l-transparent border-r-transparent border-t-grey-200 text-lg"></div>
+        <div className="absolute bottom-[-9px] right-6 h-0 w-0 border-l-[10px] border-r-[10px] border-t-[10px] border-l-transparent border-r-transparent border-t-grey-200 text-lg"></div>
       </div>
 
-      <section className="flex flex-col gap-4 px-[22px] py-[18px]">
+      <section className="flex flex-1 flex-col gap-4 px-[22px] py-[18px]">
         {/* 회사 정보 */}
         <div className="flex items-center gap-[14px]">
           {/* 회사 이미지 */}
@@ -95,17 +95,19 @@ export const PostCard = ({
             <h3 className="text-18 font-semibold text-grey-900">
               {companyName}
             </h3>
-            <span className="text-12 text-grey-800">
+            <span className="text-12 font-regular text-grey-800">
               {formatDomainToLabel(domain)}
             </span>
           </div>
         </div>
 
-        <div className="min-h-[62px] w-full text-grey-700">{slogan}</div>
+        <div className="line-clamp-3 w-full flex-1 truncate text-wrap text-13 font-regular leading-[1.5] text-grey-700">
+          {slogan}
+        </div>
 
         {/* 회사 위치 및 태그 */}
-        <div className="flex w-full justify-between gap-3 py-1">
-          <div className="flex items-center gap-2">
+        <div className="flex w-full items-center justify-between gap-3 py-1">
+          <div className="flex h-[34px] flex-wrap items-center gap-2 overflow-hidden">
             <Badge variant="secondary">
               <img src={ICON_SRC.LOCATION} />{' '}
               {location.split(' ').slice(0, 2).join(' ')}
