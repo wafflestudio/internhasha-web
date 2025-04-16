@@ -8,7 +8,7 @@ import {
 import { cn } from '@/lib/utils';
 
 const badgeClassName = cva(
-  'inline-flex items-center rounded-md px-2 py-1.5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  'inline-flex items-center rounded-md px-2 py-1.5 text-13 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {

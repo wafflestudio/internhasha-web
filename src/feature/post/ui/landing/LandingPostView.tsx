@@ -63,7 +63,7 @@ export const LandingPostView = ({
       {' '}
       {/* 게시글 리스트 */}
       <main>
-        <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
           <PostCardView />
         </div>
       </main>
