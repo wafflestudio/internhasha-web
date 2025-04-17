@@ -13,6 +13,8 @@ import { MarkdownPreview } from '@/components/ui/markdown-preview';
 import { SeperatorLine } from '@/components/ui/separator';
 import { ICON_SRC } from '@/entities/asset';
 import { SkeletonPostDetailView } from '@/feature/post/ui/detail/SkeletonPostDetailView';
+import { WriteCVModal } from '@/feature/post/ui/modal/WriteCVModal';
+import { WriteProfileModal } from '@/feature/post/ui/modal/WriteProfileModal';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -401,8 +403,12 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           }}
         />
       )}
-      {showModal === 'NEED_PROFILE'}
-      {showModal === 'NEED_CV'}
+      {showModal === 'NEED_PROFILE' && (
+        <WriteProfileModal onClose={closeModal} />
+      )}
+      {showModal === 'NEED_CV' && (
+        <WriteCVModal onClose={closeModal} postId={postId} />
+      )}
     </div>
   );
 };
