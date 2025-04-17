@@ -30,11 +30,17 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   const { token } = useGuardContext(TokenContext);
   const { role, id: userId } = useGuardContext(UserContext);
   const { coffeeChatStatus } = useGetCoffeeChatStatus({ postId });
+  const { applicantProfileResponse } = useGetApplicantProfile();
 
   const { toMain, toCreateCoffeeChat, toCreatePost } = useRouteNavigation();
 
   const [showModal, setShowModal] = useState<
-    'COFFEE_CHAT' | 'BOOKMARK' | 'NONE' | 'CLOSE_POST'
+    | 'COFFEE_CHAT'
+    | 'BOOKMARK'
+    | 'NONE'
+    | 'CLOSE_POST'
+    | 'NEED_PROFILE'
+    | 'NEED_CV'
   >('NONE');
   const closeModal = () => {
     setShowModal('NONE');
@@ -47,6 +53,22 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
 
   const isPending =
     isAddBookmarkPending || isDeleteBookmarkPending || isClosePostPending;
+
+  if (
+    postDetailData === undefined ||
+    (role === 'APPLICANT' && applicantProfileResponse === undefined)
+  ) {
+    return <SkeletonPostDetailView />;
+  }
+
+  if (
+    postDetailData.type === 'error' ||
+    (role === 'APPLICANT' &&
+      applicantProfileResponse?.type === 'error' &&
+      applicantProfileResponse.code !== 'APPLICANT_002')
+  ) {
+    return <div>정보를 불러오는 중 문제가 발생했습니다. 새로고침해주세요.</div>;
+  }
 
   const handleClickAddBookmark = ({ id }: { id: string }) => {
     if (token === null) {
@@ -69,20 +91,28 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
       setShowModal('COFFEE_CHAT');
       return;
     }
+    if (role === 'APPLICANT') {
+      if (
+        applicantProfileResponse?.type === 'error' &&
+        applicantProfileResponse.code === 'APPLICANT_002'
+      ) {
+        setShowModal('NEED_PROFILE');
+        return;
+      }
+      if (
+        applicantProfileResponse?.type === 'success' &&
+        applicantProfileResponse.data.cvKey === undefined
+      ) {
+        setShowModal('NEED_CV');
+        return;
+      }
+    }
     toCreateCoffeeChat({ postId: id });
   };
 
   const handleClickClosePost = () => {
     setShowModal('CLOSE_POST');
   };
-
-  if (postDetailData === undefined) {
-    return <SkeletonPostDetailView />;
-  }
-
-  if (postDetailData.type === 'error') {
-    return <div>정보를 불러오는 중 문제가 발생했습니다. 새로고침해주세요.</div>;
-  }
 
   const { author, company, position, isBookmarked } = postDetailData.data;
 
@@ -371,6 +401,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           }}
         />
       )}
+      {showModal === 'NEED_PROFILE'}
+      {showModal === 'NEED_CV'}
     </div>
   );
 };
@@ -472,7 +504,9 @@ const useGetCoffeeChatStatus = ({ postId }: { postId: string }) => {
       token,
     ] as const,
     queryFn: async ({ queryKey: [, , pid, t] }) => {
-      if (t == null) return { isSubmitted: false };
+      if (t === null) {
+        return { isSubmitted: false };
+      }
 
       const response = await coffeeChatService.getCoffeeChatStatus({
         token: t,
@@ -485,7 +519,6 @@ const useGetCoffeeChatStatus = ({ postId }: { postId: string }) => {
 
       return response.data;
     },
-    enabled: !(token == null),
   });
 
   return { coffeeChatStatus: coffeeChatStatusResponse };
@@ -523,4 +556,29 @@ const useClosePost = () => {
     closePost,
     isPending,
   };
+};
+
+const useGetApplicantProfile = () => {
+  const { token } = useGuardContext(TokenContext);
+  const { role } = useGuardContext(UserContext);
+  const { applicantService } = useGuardContext(ServiceContext);
+
+  const { data: applicantProfileResponse } = useQuery({
+    queryKey: ['ApplicantService', 'getProfile', token, role] as const,
+    queryFn: async ({ queryKey: [, , t] }) => {
+      if (t === null) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+      if (role !== 'APPLICANT') {
+        throw new Error('지원자가 아닙니다.');
+      }
+
+      return applicantService.getProfile({
+        token: t,
+      });
+    },
+    enabled: token !== null && role === 'APPLICANT',
+  });
+
+  return { applicantProfileResponse };
 };
