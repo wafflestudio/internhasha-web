@@ -115,6 +115,12 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
       initialState: initialStateForInput,
     });
 
+    const filteredMinors = minorDepartment.value.filter(
+      (item) => item.trim().length !== 0,
+    );
+    const filteredPositions = positions.value.filter(
+      (item) => item.trim().length !== 0,
+    );
     const filteredLinks = links.value.filter(
       (item) =>
         item.link.trim().length !== 0 && item.description.trim().length !== 0,
@@ -151,11 +157,11 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
             majorDepartment.isError ||
             majorDepartment.value.trim().length === 0 ||
             minorDepartment.isError,
-          value: [majorDepartment.value, ...minorDepartment.value].join(','),
+          value: [majorDepartment.value, ...filteredMinors].join(','),
         },
         positions: {
           isError: positions.isError,
-          value: positions.value.length !== 0 ? positions.value : undefined,
+          value: filteredPositions.length !== 0 ? filteredPositions : undefined,
         },
         slogan: {
           isError: slogan.isError,

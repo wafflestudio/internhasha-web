@@ -78,7 +78,7 @@ export const ApplicantProfileInfo = ({
         </div>
       </section>
 
-      {slogan != null && (
+      {slogan !== undefined && (
         <section>
           <p>{slogan}</p>
         </section>

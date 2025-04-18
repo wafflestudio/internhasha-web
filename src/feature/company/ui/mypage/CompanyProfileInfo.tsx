@@ -111,7 +111,7 @@ export const CompanyProfileInfo = ({
             )}
           </div>
         )}
-        {links !== undefined && (
+        {links !== undefined && links.length !== 0 && (
           <div className="flex flex-col gap-3">
             <p className="text-16 font-bold text-grey-800">외부 링크</p>
             <div className="flex flex-col gap-[10px]">
@@ -127,7 +127,7 @@ export const CompanyProfileInfo = ({
             </div>
           </div>
         )}
-        {tags !== undefined && (
+        {tags !== undefined && tags.length !== 0 && (
           <div className="flex flex-col gap-3">
             <p className="text-16 font-bold text-grey-800">태그</p>
             <div className="flex gap-[6px]">
@@ -140,7 +140,7 @@ export const CompanyProfileInfo = ({
           </div>
         )}
         <div className="flex flex-col gap-3">
-          <p className="text-16 font-bold text-grey-800">상세 소개</p>
+          <p className="text-16 font-bold text-grey-800">회사 상세 소개</p>
           <MarkdownPreview content={detail} />
         </div>
         {vcName !== undefined && vcRecommendation !== undefined && (
