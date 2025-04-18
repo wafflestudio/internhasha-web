@@ -23,7 +23,7 @@ export const WriteCVModal = ({
     >
       <div className="flex flex-col gap-[14px] text-center">
         <h2 className="text-18 font-bold">
-          커피챗 이전에 CV를 작성하시겠어요?
+          커피챗 신청 이전에 CV 작성을 하시겠어요?
         </h2>
         <div className="flex flex-col items-center gap-1">
           <p>CV를 작성하면 채용 담당자에게 자신을</p>
