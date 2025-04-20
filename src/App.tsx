@@ -35,6 +35,7 @@ import { SignInPage } from '@/pages/SignInPage';
 import { SignUpCompletePage } from '@/pages/SignUpCompletePage';
 import { SignUpPage } from '@/pages/SignUpPage';
 import { AuthCompanySwitchRoute } from '@/shared/auth/AuthAdminSwitchRoute';
+import { CoffeeChatAvailableProtectedRoute } from '@/shared/auth/CoffeeChatAvailableProtectedRoute';
 import { ProtectedRoute } from '@/shared/auth/ProtectedRoute';
 import { ReissueRoute } from '@/shared/auth/ReissueRoute';
 import { EnvContext } from '@/shared/context/EnvContext';
@@ -81,10 +82,6 @@ const RouterProvider = () => {
         </Route>
         <Route element={<ProtectedRoute role="APPLICANT" />}>
           <Route
-            path={PATH.CREATE_COFFEE_CHAT}
-            element={<CreateCoffeeChatPage />}
-          />
-          <Route
             path={PATH.CREATE_PROFILE}
             element={<CreateApplicantProfilePage />}
           />
@@ -92,6 +89,12 @@ const RouterProvider = () => {
             path={PATH.PATCH_PROFILE}
             element={<PatchApplicantProfilePage />}
           />
+          <Route element={<CoffeeChatAvailableProtectedRoute />}>
+            <Route
+              path={PATH.CREATE_COFFEE_CHAT}
+              element={<CreateCoffeeChatPage />}
+            />
+          </Route>
         </Route>
         <Route element={<ProtectedRoute role="COMPANY" />}>
           <Route path={PATH.CREATE_POST} element={<CreatePostPage />} />
