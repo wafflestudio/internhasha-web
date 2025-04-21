@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { ModalFloatBackground } from '@/components/ui/layout';
+import { ModalSelectBackground } from '@/components/ui/layout';
 import { useDialog } from '@/shared/modal/hooks';
 
 export const CancelCoffeeChatCancelModal = ({
@@ -9,28 +9,28 @@ export const CancelCoffeeChatCancelModal = ({
   onClose(): void;
   onCancel(): void;
 }) => {
-  const { isVisible, handleClose: handleCancel } = useDialog({
-    onClose: onCancel,
+  const { isVisible, handleClose: handleClose } = useDialog({
+    onClose: onClose,
   });
   return (
-    <ModalFloatBackground
+    <ModalSelectBackground
       variant="transparent"
       isVisible={isVisible}
-      onOutSlideClick={handleCancel}
+      onOutSlideClick={handleClose}
     >
       <div className="flex flex-col gap-[14px] text-center">
-        <p className="text-[14px] font-semibold">
-          정말로 이 커피챗 신청을 취소하시겠어요?
+        <p className="text-14 font-semibold text-grey-900">
+          커피챗 신청을 취소하시겠어요?
         </p>
       </div>
       <div className="flex gap-2">
-        <Button variant="destructive" onClick={onCancel} className="flex-1">
-          예
-        </Button>
         <Button variant="secondary" onClick={onClose} className="flex-1">
-          아니오
+          뒤로 가기
+        </Button>
+        <Button variant="destructive" onClick={onCancel} className="flex-1">
+          신청 취소
         </Button>
       </div>
-    </ModalFloatBackground>
+    </ModalSelectBackground>
   );
 };

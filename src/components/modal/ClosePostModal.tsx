@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { ModalFloatBackground } from '@/components/ui/layout';
+import { ModalSelectBackground } from '@/components/ui/layout';
 import { useDialog } from '@/shared/modal/hooks';
 
 export const ClosePostModal = ({
@@ -14,7 +14,7 @@ export const ClosePostModal = ({
   });
 
   return (
-    <ModalFloatBackground
+    <ModalSelectBackground
       variant="transparent"
       isVisible={isVisible}
       onOutSlideClick={handleConfirm}
@@ -32,6 +32,6 @@ export const ClosePostModal = ({
           취소
         </Button>
       </div>
-    </ModalFloatBackground>
+    </ModalSelectBackground>
   );
 };
