@@ -45,7 +45,7 @@ export const CoffeeChatDetailView = ({
   const isWaiting = coffeeChatDetail.coffeeChatStatus === 'WAITING';
 
   return (
-    <div>
+    <>
       <div className="mx-auto flex w-full max-w-[700px] px-6 py-[30px]">
         <div className="flex w-full flex-col gap-[28px] rounded-lg bg-white px-[40px] py-[46px] text-grey-900">
           <div className="flex items-center justify-between">
@@ -102,6 +102,6 @@ export const CoffeeChatDetailView = ({
       {responseMessage !== '' && (
         <FormErrorResponse>{responseMessage}</FormErrorResponse>
       )}
-    </div>
+    </>
   );
 };
