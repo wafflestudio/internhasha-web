@@ -46,8 +46,8 @@ export const CoffeeChatDetailView = ({
 
   return (
     <div>
-      <div className="mx-auto flex w-full px-6 py-[30px] sm:w-screen-sm md:w-screen-md lg:w-screen-lg xl:max-w-screen-xl">
-        <div className="flex w-full flex-col gap-6 gap-[28px] rounded-lg bg-white px-[40px] py-[46px] text-grey-900">
+      <div className="mx-auto flex w-full max-w-[700px] px-6 py-[30px]">
+        <div className="flex w-full flex-col gap-[28px] rounded-lg bg-white px-[40px] py-[46px] text-grey-900">
           <div className="flex items-center justify-between">
             <h1 className="text-30 font-bold">커피챗 신청서</h1>
             <div className="flex items-center gap-2">
