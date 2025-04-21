@@ -58,7 +58,7 @@ export const MyPostList = ({
     <div className="order-2 flex w-full flex-1 flex-col gap-6 lg:order-none">
       {/* 회사 소개 카드 */}
       <div className="m-autogap-2 flex w-full flex-col md:flex-row">
-        <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
           {postsData.data.posts.map((item, idx) => (
             <CompanyPostCard
               key={`post-${idx}`}
