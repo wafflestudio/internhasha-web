@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { CoffeeChatButton } from '@/components/button/CoffeeChatButton';
 import { UpdateCoffeeChatStatusModal } from '@/components/modal/UpdateCoffeeChatStatusModal';
@@ -33,7 +34,7 @@ export const CompanyCoffeeChatButton = ({
     return null;
   }
   if (coffeeChatListData.type === 'error') {
-    alert('정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.');
+    toast.error('정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.');
     return null;
   }
   if (coffeeChatListData.data.coffeeChatList.length === 0) {
@@ -51,7 +52,7 @@ export const CompanyCoffeeChatButton = ({
   };
   const handleOpenModal = (status: 'ACCEPTED' | 'REJECTED') => {
     if (selectedChats.length === 0) {
-      alert('선택된 커피챗이 없습니다.');
+      toast.info('선택된 커피챗이 없습니다.');
       return;
     }
     setModalStatus(status);

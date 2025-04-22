@@ -11,6 +11,7 @@ import {
   implApi,
 } from '@/api';
 import { implExternalApi } from '@/api/client';
+import { Toaster } from '@/components/ui/sonner';
 import { implApplicantService } from '@/feature/applicant';
 import { implAuthService } from '@/feature/auth';
 import { implCoffeeChatService } from '@/feature/coffeeChat';
@@ -228,6 +229,7 @@ export const App = () => {
           <TokenContext.Provider value={{ token }}>
             <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID}>
               <RouterProvider />
+              <Toaster richColors />
             </GoogleOAuthProvider>
           </TokenContext.Provider>
         </UserContext.Provider>
