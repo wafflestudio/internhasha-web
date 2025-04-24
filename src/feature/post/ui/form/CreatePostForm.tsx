@@ -185,6 +185,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           isPending={isPending}
           isSubmit={isSubmit}
           isSubmitError={formStates.detail.isError}
+          placeholder="직무 설명, 근무 조건, 지원 조건, 지원 절차 등에 대해 구체적으로 작성해주세요."
           errorMessage={`공고 글은 0자 이상 ${CONTENT_MAX_LENGTH}자 이내로 작성해주세요.`}
           required={true}
         />

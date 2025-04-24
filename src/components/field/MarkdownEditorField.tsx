@@ -13,6 +13,7 @@ type MarkdownEditorFieldProps = {
   isPending: boolean;
   isSubmit: boolean;
   isSubmitError: boolean;
+  placeholder?: string;
   errorMessage: string;
   maxLength: number;
   infoMessage?: string;
@@ -25,6 +26,7 @@ export const MarkdownEditorField = ({
   isPending,
   isSubmit,
   isSubmitError,
+  placeholder,
   errorMessage,
   infoMessage,
   required,
@@ -36,6 +38,7 @@ export const MarkdownEditorField = ({
         <MDEditor
           textareaProps={{
             disabled: isPending,
+            placeholder,
           }}
           value={input.value}
           onChange={(value) => {
