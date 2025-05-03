@@ -26,12 +26,12 @@ export const ApplicantCoffeeChatListView = () => {
   }
 
   return (
-    <div className="flex w-full flex-col gap-3 text-grey-900">
+    <div className="flex w-full flex-col gap-3 overflow-x-auto text-grey-900">
       {coffeeChatListData !== undefined ? (
         coffeeChatListData.data.coffeeChatList.map((coffeeChat) => (
           <div
             key={coffeeChat.id}
-            className="relative flex h-[50px] cursor-pointer items-center justify-between rounded-xl bg-white px-6 duration-300 hover:shadow-md"
+            className="relative flex h-[50px] min-w-80 cursor-pointer items-center justify-between rounded-xl bg-white px-6 duration-300 hover:shadow-md"
             onClick={() => {
               toCoffeeChatDetail({ coffeeChatId: coffeeChat.id });
             }}
