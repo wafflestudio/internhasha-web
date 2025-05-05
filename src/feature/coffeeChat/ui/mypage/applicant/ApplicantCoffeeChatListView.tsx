@@ -26,12 +26,12 @@ export const ApplicantCoffeeChatListView = () => {
   }
 
   return (
-    <div className="flex w-full flex-col gap-3 overflow-x-auto text-grey-900">
+    <div className="flex w-full flex-col gap-3 text-grey-900">
       {coffeeChatListData !== undefined ? (
         coffeeChatListData.data.coffeeChatList.map((coffeeChat) => (
           <div
             key={coffeeChat.id}
-            className="relative flex h-[50px] min-w-80 cursor-pointer items-center justify-between rounded-xl bg-white px-6 duration-300 hover:shadow-md"
+            className="relative flex flex-row items-center justify-between rounded-xl bg-white px-6 py-4 duration-300 hover:shadow-md max-xs:flex-col max-xs:items-start max-xs:gap-0 max-xs:px-4 max-xs:py-3"
             onClick={() => {
               toCoffeeChatDetail({ coffeeChatId: coffeeChat.id });
             }}
@@ -41,7 +41,7 @@ export const ApplicantCoffeeChatListView = () => {
                 <img src={ICON_SRC.BADGES} />
               </div>
             )}
-            <div className="flex items-center gap-[10px]">
+            <div className="flex items-center gap-[10px] max-xs:justify-start">
               <div className="h-[30px] w-[30px] rounded-md">
                 {coffeeChat.company.imageKey !== undefined ? (
                   <img
@@ -59,7 +59,7 @@ export const ApplicantCoffeeChatListView = () => {
                 {coffeeChat.company.name}
               </span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 max-xs:w-full max-xs:justify-end">
               <span className="text-sm text-grey-300">
                 {getShortenedDate(coffeeChat.createdAt)}
               </span>
