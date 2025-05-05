@@ -36,7 +36,7 @@ function Badge({ className, variant, ...props }: BadgeProps) {
 }
 
 const tagStatusClassName = cva(
-  'text inline-flex items-center rounded-sm border-transparent px-2 py-1.5 text-13 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  'text inline-flex items-center whitespace-nowrap rounded-sm border-transparent px-2 py-1.5 text-13 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
