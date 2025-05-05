@@ -17,6 +17,7 @@ type CompanyCoffeeChatListViewProps = {
   setSelectedChats: React.Dispatch<React.SetStateAction<string[]>>;
   isSelectMode: boolean;
 };
+
 export const CompanyCoffeeChatListView = ({
   selectedChats,
   setSelectedChats,

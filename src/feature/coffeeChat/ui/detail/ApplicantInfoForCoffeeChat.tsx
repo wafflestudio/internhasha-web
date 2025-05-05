@@ -69,7 +69,14 @@ export const ApplicantInfoForCoffeeChat = ({
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <span className="text-26 font-bold">{name}</span>
-            <span className="text-grey-500">{email}</span>
+
+            {email !== undefined ? (
+              <span className="text-grey-500">email</span>
+            ) : (
+              <span className="text-13 text-grey-500">
+                커피챗을 성사시키면 연락처를 확인할 수 있습니다.
+              </span>
+            )}
           </div>
           <span className="font-regular">{`${formattedDepartment} ${formattedEnrollYear}학번`}</span>
         </div>
