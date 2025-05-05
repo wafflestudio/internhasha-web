@@ -9,7 +9,7 @@ export const CancelCoffeeChatCancelModal = ({
   onClose(): void;
   onCancel(): void;
 }) => {
-  const { isVisible, handleClose: handleClose } = useDialog({
+  const { isVisible, handleClose } = useDialog({
     onClose: onClose,
   });
   return (
