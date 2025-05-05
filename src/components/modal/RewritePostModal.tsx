@@ -7,11 +7,13 @@ export const RewritePostModal = ({ postId }: { postId: string | null }) => {
 
   return (
     <ModalFloatBackground variant="transparent">
-      <div className="flex flex-col gap-[14px] text-center">
-        <h2 className="text-xl font-bold">공고 작성이 완료되었어요!</h2>
-        <p>해당 회사에 대한 다른 직군 공고를 계속 작성하시겠습니까?</p>
+      <div className="flex flex-col gap-[14px] text-center text-grey-900">
+        <h2 className="text-18 font-bold">공고 작성이 완료되었어요!</h2>
+        <p className="text-16 font-medium">
+          다른 직군 공고를 계속 작성하시겠습니까?
+        </p>
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-2.5">
         <Button
           variant="secondary"
           onClick={() => {

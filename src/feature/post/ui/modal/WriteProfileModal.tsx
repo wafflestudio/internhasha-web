@@ -17,7 +17,9 @@ export const WriteProfileModal = ({ onClose }: { onClose: () => void }) => {
     >
       <div className="flex flex-col gap-[14px] text-center">
         <h2 className="text-18 font-bold">아직 프로필이 작성되지 않았어요!</h2>
-        <p>프로필을 작성해야 커피챗을 신청할 수 있어요.</p>
+        <p className="text-16 font-medium">
+          프로필을 작성해야 커피챗을 신청할 수 있어요.
+        </p>
       </div>
       <div className="flex gap-2">
         <Button variant="secondary" onClick={handleCancel} className="flex-1">
