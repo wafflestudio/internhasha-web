@@ -24,7 +24,7 @@ export const ClosePostModal = ({
           공고를 정말 마감하시겠어요?
         </p>
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-col gap-2 sm:flex-row">
         <Button variant="secondary" onClick={onConfirm} className="flex-1">
           공고 마감
         </Button>

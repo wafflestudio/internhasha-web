@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { WithdrawModal } from '@/components/modal/WithdrawModal';
 import { Button } from '@/components/ui/button';
-import { WithdrawModal } from '@/feature/applicant/ui/modal/WithdrawModal';
 import { ApplicantProfileInfo } from '@/feature/applicant/ui/mypage/ApplicantProfileInfo';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';

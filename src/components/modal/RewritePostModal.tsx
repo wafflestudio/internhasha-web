@@ -13,7 +13,7 @@ export const RewritePostModal = ({ postId }: { postId: string | null }) => {
           다른 직군 공고를 계속 작성하시겠습니까?
         </p>
       </div>
-      <div className="flex gap-2.5">
+      <div className="flex flex-col-reverse gap-2.5 sm:flex-row">
         <Button
           variant="secondary"
           onClick={() => {

@@ -13,7 +13,7 @@ export const SignUpModal = ({ onClose }: { onClose(): void }) => {
           회원가입 페이지로 이동하시겠습니까?
         </p>
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-col-reverse gap-2 sm:flex-row">
         <Button variant="secondary" onClick={onClose} className="flex-1">
           닫기
         </Button>
