@@ -15,6 +15,7 @@ type DropdownOption =
   | 'PLANNER'
   | 'DESIGN'
   | 'MARKETING'
+  | 'HUMANRESOURCE'
   | 'NONE';
 
 const jobCategoryList: {
@@ -25,7 +26,7 @@ const jobCategoryList: {
   {
     label: '개발',
     type: 'DEVELOPMENT',
-    jobs: ['FRONT', 'APP', 'BACKEND', 'DATA', 'OTHERS'],
+    jobs: ['FRONT', 'APP', 'BACKEND', 'DATA', 'AI', 'GAME', 'OTHERS'],
   },
   {
     label: '기획',
@@ -41,6 +42,11 @@ const jobCategoryList: {
     label: '마케팅',
     type: 'MARKETING',
     jobs: ['MARKETING'],
+  },
+  {
+    label: '인사/HR',
+    type: 'HUMANRESOURCE',
+    jobs: ['HUMANRESOURCE'],
   },
 ];
 

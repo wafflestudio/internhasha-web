@@ -5,13 +5,15 @@ export type JobMajorCategory =
   | 'DEVELOPMENT'
   | 'DESIGN'
   | 'PLANNER'
-  | 'MARKETING';
+  | 'MARKETING'
+  | 'HUMANRESOURCE';
 
 type JobMinorCategoryMap = {
-  DEVELOPMENT: 'FRONT' | 'APP' | 'BACKEND' | 'DATA' | 'OTHERS';
+  DEVELOPMENT: 'FRONT' | 'APP' | 'BACKEND' | 'DATA' | 'AI' | 'GAME' | 'OTHERS';
   DESIGNER: 'DESIGN';
   PLANNER: 'PLANNER';
   MARKETING: 'MARKETING';
+  HUMANRESOURCE: 'HUMANRESOURCE';
 };
 
 export type JobMinorCategory = JobMinorCategoryMap[keyof JobMinorCategoryMap];
@@ -21,6 +23,7 @@ export const JOB_CATEGORY_MAP: Record<JobMajorCategory, JobMinorCategory[]> = {
   DESIGN: ['DESIGN'],
   PLANNER: ['PLANNER'],
   MARKETING: ['MARKETING'],
+  HUMANRESOURCE: ['HUMANRESOURCE'],
 };
 
 export const JOB_MAJOR_CATEGORIES = Object.keys(JOB_CATEGORY_MAP);

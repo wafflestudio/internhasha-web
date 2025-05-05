@@ -25,6 +25,8 @@ export const formatMajorJobToLabel = (input: string) => {
       return '디자인';
     case 'MARKETING':
       return '마케팅';
+    case 'HUMANRESOURCE':
+      return '인사/HR';
     default:
       return '';
   }
@@ -40,6 +42,10 @@ export const formatMinorJobToLabel = (input: string) => {
       return '앱 개발';
     case 'DATA':
       return '데이터 분석';
+    case 'GAME':
+      return '게임';
+    case 'AI':
+      return 'AI';
     case 'OTHERS':
       return '기타';
     case 'PLANNER':
@@ -48,6 +54,8 @@ export const formatMinorJobToLabel = (input: string) => {
       return '디자인';
     case 'MARKETING':
       return '마케팅';
+    case 'HUMANRESOURCE':
+      return '인사/HR';
     default:
       return '';
   }

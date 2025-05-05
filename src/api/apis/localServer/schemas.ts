@@ -28,11 +28,14 @@ type JobCategory =
   | 'PLANNER'
   | 'FRONT'
   | 'APP'
+  | 'DATA'
+  | 'GAME'
   | 'BACKEND'
+  | 'AI'
   | 'OTHERS'
   | 'DESIGN'
-  | 'DATA'
-  | 'MARKETING';
+  | 'MARKETING'
+  | 'HUMANRESOURCE';
 
 type Link = {
   link: string;
