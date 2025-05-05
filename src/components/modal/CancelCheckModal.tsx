@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { ModalFloatBackground } from '@/components/ui/layout';
+import { ModalSelectBackground } from '@/components/ui/layout';
 import { useDialog } from '@/shared/modal/hooks';
 
 export const CancelCheckModal = ({
@@ -13,13 +13,15 @@ export const CancelCheckModal = ({
     onClose: onCancel,
   });
   return (
-    <ModalFloatBackground
+    <ModalSelectBackground
       variant="transparent"
       isVisible={isVisible}
       onOutSlideClick={handleCancel}
     >
       <div className="flex flex-col gap-[14px] text-center">
-        <p className="text-xl font-bold">작성을 취소하시겠어요?</p>
+        <p className="text-14 font-semibold text-grey-900">
+          작성을 취소하시겠어요?
+        </p>
       </div>
       <div className="flex gap-2">
         <Button variant="secondary" onClick={handleCancel} className="flex-1">
@@ -29,6 +31,6 @@ export const CancelCheckModal = ({
           취소
         </Button>
       </div>
-    </ModalFloatBackground>
+    </ModalSelectBackground>
   );
 };

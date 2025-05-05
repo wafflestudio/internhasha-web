@@ -8,7 +8,7 @@ export const SignUpPage = () => {
   return (
     <ModalBackgroundWithHeader className="py-[50px]">
       <div className="flex flex-col gap-[46px]">
-        <h2 className="text-center text-2xl font-bold">회원가입</h2>
+        <h2 className="text-center text-22 font-bold">회원가입</h2>
         <LocalSignUpForm />
         <div className="text-center">
           <p className="text-sm text-grey-300">

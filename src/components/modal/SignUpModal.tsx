@@ -7,9 +7,11 @@ export const SignUpModal = ({ onClose }: { onClose(): void }) => {
 
   return (
     <ModalFloatBackground variant="transparent">
-      <div className="flex flex-col gap-[14px] text-center">
-        <h2 className="text-xl font-bold">아직 회원가입되지 않았습니다!</h2>
-        <p>회원가입 페이지로 이동하시겠습니까?</p>
+      <div className="flex flex-col gap-[14px] text-center text-grey-900">
+        <h2 className="text-18 font-bold">아직 회원가입되지 않았습니다!</h2>
+        <p className="text-16 font-medium">
+          회원가입 페이지로 이동하시겠습니까?
+        </p>
       </div>
       <div className="flex gap-2">
         <Button variant="secondary" onClick={onClose} className="flex-1">
