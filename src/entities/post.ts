@@ -19,7 +19,7 @@ type JobMinorCategoryMap = {
 export type JobMinorCategory = JobMinorCategoryMap[keyof JobMinorCategoryMap];
 
 export const JOB_CATEGORY_MAP: Record<JobMajorCategory, JobMinorCategory[]> = {
-  DEVELOPMENT: ['FRONT', 'APP', 'BACKEND', 'DATA', 'OTHERS'],
+  DEVELOPMENT: ['FRONT', 'APP', 'BACKEND', 'DATA', 'AI', 'GAME', 'OTHERS'],
   DESIGN: ['DESIGN'],
   PLANNER: ['PLANNER'],
   MARKETING: ['MARKETING'],

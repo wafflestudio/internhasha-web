@@ -43,7 +43,7 @@ export const formatMinorJobToLabel = (input: string) => {
     case 'DATA':
       return '데이터 분석';
     case 'GAME':
-      return '게임';
+      return '게임 개발';
     case 'AI':
       return 'AI';
     case 'OTHERS':
