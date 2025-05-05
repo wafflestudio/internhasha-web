@@ -4,6 +4,7 @@ import type { CoffeeChatCompany } from '@/api/apis/localServer/schemas';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { TagStatus } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { ICON_SRC } from '@/entities/asset';
 import { ApplicantInfoForCoffeeChat } from '@/feature/coffeeChat/ui/detail/ApplicantInfoForCoffeeChat';
 import { SkeletonCoffeeChatDetailView } from '@/feature/coffeeChat/ui/detail/SkeletonCoffeeChatDetailView';
 import {
@@ -48,6 +49,15 @@ export const CoffeeChatDetailView = ({
     <>
       <div className="mx-auto flex w-full max-w-[700px] px-6 py-[30px]">
         <div className="flex w-full flex-col gap-[28px] rounded-lg bg-white px-[40px] py-[46px] text-grey-900">
+          {coffeeChatDetail.coffeeChatStatus === 'ACCEPTED' && (
+            <div className="flex gap-2 bg-grey-50 p-4 text-13 font-light">
+              <img src={ICON_SRC.INFO} className="mt-0.5 h-4 w-4" />
+              <span>
+                커피챗이 성사되었습니다. 제시된 이메일을 통해 컨택을
+                진행해주세요.
+              </span>
+            </div>
+          )}
           <div className="flex items-center justify-between">
             <h1 className="text-30 font-bold">커피챗 신청서</h1>
             <div className="flex items-center gap-2">
