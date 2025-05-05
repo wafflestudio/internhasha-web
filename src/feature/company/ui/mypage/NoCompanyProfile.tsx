@@ -13,7 +13,7 @@ export const NoCompanyProfile = () => {
     <div className="flex flex-col items-center gap-8 rounded-lg bg-white px-[44px] py-[48px] text-grey-900">
       <div className="flex items-center gap-1">
         <div className="w-[220px]">
-          <img src={ICON_SRC.SKELETON} className="object-fit" />
+          <img src={ICON_SRC.SKELETON} className="object-cover" />
         </div>
         <div className="flex w-[289px] flex-col gap-[10px] text-center">
           <h2 className="text-22 font-bold">아직 작성된 회사 정보가 없어요!</h2>
