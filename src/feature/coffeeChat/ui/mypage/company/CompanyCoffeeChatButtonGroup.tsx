@@ -14,7 +14,7 @@ export const CompanyCoffeeChatButtonGroup = ({
   disabled,
 }: CompanyCoffeeChatBtnGroupProps) => {
   return (
-    <div className="flex justify-end gap-1.5">
+    <div className="flex flex-wrap justify-end gap-1.5">
       <CoffeeChatButton
         variant="accept"
         onClick={() => {
