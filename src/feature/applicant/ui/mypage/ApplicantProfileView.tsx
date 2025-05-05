@@ -28,7 +28,7 @@ export const ApplicantProfileView = ({
       <div className="flex w-full flex-col items-center">
         <div className="flex w-full flex-col gap-12 rounded-lg bg-white px-[24px] py-[48px] text-grey-900">
           <ApplicantProfileInfo setIsExistProfile={setIsExistProfile} />
-          <div className="flex w-full gap-2">
+          <div className="flex w-full flex-col gap-2 sm:flex-row">
             <Button variant="outline" className="flex-1" onClick={openModal}>
               회원 탈퇴
             </Button>
