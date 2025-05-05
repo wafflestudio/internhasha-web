@@ -188,7 +188,7 @@ type CoffeeChatUserInfo = {
 
 // Params
 export type PostPathParams = {
-  positions?: JobCategory[];
+  roles?: JobCategory[];
   isActive?: boolean;
   domains?: Domain[];
   page?: number;

@@ -31,7 +31,7 @@ export const JOB_MAJOR_CATEGORIES = Object.keys(JOB_CATEGORY_MAP);
 export type Series = 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
 
 export type PostFilter = {
-  positions?: JobMinorCategory[];
+  roles?: JobMinorCategory[];
   isActive?: boolean;
   domains?: Domain[];
   order?: 0 | 1;

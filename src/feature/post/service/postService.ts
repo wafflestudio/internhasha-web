@@ -5,14 +5,14 @@ import type { ServiceResponse } from '@/entities/response';
 
 export type PostService = {
   getPosts({
-    positions,
+    roles,
     isActive,
     page,
     order,
     domains,
     token,
   }: {
-    positions?: JobMinorCategory[];
+    roles?: JobMinorCategory[];
     isActive?: boolean;
     page?: number;
     order?: 0 | 1;
@@ -77,9 +77,9 @@ export type PostService = {
 };
 
 export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
-  getPosts: async ({ positions, isActive, page, order, domains, token }) => {
+  getPosts: async ({ roles, isActive, page, order, domains, token }) => {
     const params = {
-      positions,
+      roles,
       isActive,
       page,
       order,
