@@ -29,7 +29,7 @@ export const UpdateCoffeeChatStatusModal = ({
           {status === 'ACCEPTED' ? '성사시키' : '거절하'}시겠습니까?
         </p>
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-col-reverse gap-2 sm:flex-row">
         <Button variant="secondary" onClick={onClose} className="flex-1">
           뒤로 가기
         </Button>

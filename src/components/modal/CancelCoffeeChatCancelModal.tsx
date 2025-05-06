@@ -23,7 +23,7 @@ export const CancelCoffeeChatCancelModal = ({
           커피챗 신청을 취소하시겠어요?
         </p>
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-col gap-2 sm:flex-row">
         <Button variant="secondary" onClick={onClose} className="flex-1">
           뒤로 가기
         </Button>

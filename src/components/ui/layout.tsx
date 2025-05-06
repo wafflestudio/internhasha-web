@@ -63,7 +63,7 @@ export const ModalSelectBackground = ({
 }: ModalProps) => {
   return (
     <div
-      className={cn(backgroundClassName({ variant }))}
+      className={cn(backgroundClassName({ variant }), 'p-4')}
       onClick={onOutSlideClick}
     >
       <div

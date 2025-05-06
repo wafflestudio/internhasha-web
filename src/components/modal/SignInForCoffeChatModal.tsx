@@ -17,7 +17,7 @@ export const SignInForCoffeeChatModal = ({ onClose }: { onClose(): void }) => {
         <p>커피챗을 신청하려면</p>
         <p>로그인이 필요합니다.</p>
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-col-reverse gap-2 sm:flex-row">
         <Button variant="secondary" onClick={handleClose} className="flex-1">
           닫기
         </Button>
