@@ -28,11 +28,14 @@ type JobCategory =
   | 'PLANNER'
   | 'FRONT'
   | 'APP'
+  | 'DATA'
+  | 'GAME'
   | 'BACKEND'
+  | 'AI'
   | 'OTHERS'
   | 'DESIGN'
-  | 'DATA'
-  | 'MARKETING';
+  | 'MARKETING'
+  | 'HUMANRESOURCE';
 
 type Link = {
   link: string;
@@ -185,7 +188,7 @@ type CoffeeChatUserInfo = {
 
 // Params
 export type PostPathParams = {
-  positions?: JobCategory[];
+  roles?: JobCategory[];
   isActive?: boolean;
   domains?: Domain[];
   page?: number;

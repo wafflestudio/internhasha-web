@@ -19,7 +19,7 @@ export const LandingPageView = ({
     queryParams !== null
       ? queryParams
       : {
-          positions: undefined,
+          roles: undefined,
           isActive: undefined,
           domains: undefined,
           order: undefined,
@@ -27,7 +27,7 @@ export const LandingPageView = ({
   );
 
   const handleRolesChange = (updatedRoles: JobMinorCategory[]) => {
-    setFilterElements((prev) => ({ ...prev, positions: updatedRoles }));
+    setFilterElements((prev) => ({ ...prev, roles: updatedRoles }));
   };
 
   return (
@@ -35,7 +35,7 @@ export const LandingPageView = ({
       {/* RolesFilter */}
       <div className="order-1 hidden md:order-none md:mt-[50px] md:block md:flex-col">
         <RolesFilter
-          roles={postFilter.positions}
+          roles={postFilter.roles}
           onChangeRoles={handleRolesChange}
         />
       </div>
@@ -43,7 +43,7 @@ export const LandingPageView = ({
       {/* NarrowRolesFilter */}
       <div className="order-1 block w-full md:order-none md:hidden">
         <NarrowRolesFilter
-          roles={postFilter.positions}
+          roles={postFilter.roles}
           onChangeRoles={handleRolesChange}
         />
       </div>
