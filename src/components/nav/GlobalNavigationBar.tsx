@@ -1,8 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
+import { CancelButton } from '@/components/button/CancelButton';
 import { Button } from '@/components/ui/button';
 import { ICON_SRC } from '@/entities/asset';
 import { CoffeeChatNumberBadge } from '@/feature/coffeeChat';
+import { cn } from '@/lib/utils';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -12,6 +15,7 @@ export const GlobalNavigationBar = () => {
   const { token } = useGuardContext(TokenContext);
   const { logout, isPending } = useLogout();
   const { toSignUp, toSignInSelect, toMyPage, toMain } = useRouteNavigation();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleClickLogoutButton = () => {
     logout();
@@ -32,7 +36,7 @@ export const GlobalNavigationBar = () => {
           </div>
         </h1>
 
-        <div className="flex items-center gap-5">
+        <div className="hidden items-center gap-5 xs:flex">
           {/* TODO: 검색기능*/}
           {/* <Button variant="ghost">
             <img src={ICON_SRC.GNB.SEARCH} />
@@ -77,6 +81,89 @@ export const GlobalNavigationBar = () => {
               </Button>
             </>
           )}
+        </div>
+        <div className="flex xs:hidden">
+          <Button
+            variant="ghost"
+            onClick={() => {
+              setMenuOpen((prev) => !prev);
+            }}
+          >
+            <img src={ICON_SRC.GNB.HAMBURGER} />
+          </Button>
+          {menuOpen && (
+            <div
+              className="fixed inset-0 z-40 bg-grey-400 bg-opacity-30 xs:hidden"
+              onClick={() => {
+                setMenuOpen(false);
+              }}
+            />
+          )}
+
+          <div
+            className={cn(
+              'fixed right-0 top-0 z-50 h-full transform bg-grey-50 shadow-xl transition-transform duration-300 ease-in-out xs:hidden',
+              menuOpen ? 'translate-x-0' : 'translate-x-full',
+            )}
+          >
+            <div className="flex justify-start px-2 py-4">
+              <CancelButton
+                onClick={() => {
+                  setMenuOpen(false);
+                }}
+                className=""
+              />
+            </div>
+            <div className="flex flex-col space-y-6 px-6">
+              {token == null ? (
+                <>
+                  <Button
+                    onClick={() => {
+                      toSignUp({});
+                    }}
+                    variant="ghost"
+                    className="flex items-center justify-between"
+                  >
+                    회원가입
+                  </Button>
+                  <Button
+                    onClick={toSignInSelect}
+                    variant="ghost"
+                    className="flex items-center justify-between"
+                  >
+                    로그인
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    onClick={() => {
+                      toMyPage({});
+                    }}
+                    disabled={isPending}
+                    variant="ghost"
+                    className="flex justify-between"
+                  >
+                    마이페이지
+                    <CoffeeChatNumberBadge
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toMyPage({ query: { tab: 'COFFEE_CHAT' } });
+                      }}
+                    />
+                  </Button>
+                  <Button
+                    onClick={handleClickLogoutButton}
+                    disabled={isPending}
+                    variant="ghost"
+                    className="flex items-center justify-between"
+                  >
+                    로그아웃
+                  </Button>
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </header>
