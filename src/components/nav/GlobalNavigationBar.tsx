@@ -28,7 +28,6 @@ export const GlobalNavigationBar = () => {
           className="hover:text-blue-normal cursor-pointer text-xl font-bold text-gray-800 transition-colors duration-150"
         >
           <div className="flex gap-2">
-            <img src={ICON_SRC.GNB.ICON} />
             <img src={ICON_SRC.GNB.LETTER} />
           </div>
         </h1>
