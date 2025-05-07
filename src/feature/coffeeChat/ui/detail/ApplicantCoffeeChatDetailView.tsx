@@ -12,7 +12,7 @@ import {
   useUpdateCoffeeChatStatus,
 } from '@/feature/coffeeChat/ui/detail/useCoffeeChatDetailHooks';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { getFormatDate } from '@/util/postFormatFunctions';
+import { getFormatDate } from '@/util/date';
 
 export const CoffeeChatDetailView = ({
   coffeeChatId,

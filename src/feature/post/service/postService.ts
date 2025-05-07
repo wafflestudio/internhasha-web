@@ -1,6 +1,7 @@
 import type { Apis, LocalServerDTO } from '@/api';
 import type { Domain } from '@/entities/company';
-import type { CreatePostRequest, JobMinorCategory } from '@/entities/post';
+import type { JobMinorCategory } from '@/entities/post';
+import type { CreatePostRequest } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 
 export type PostService = {
@@ -115,7 +116,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     const body = { ...postContents, companyId };
     const { status, data } = await apis['POST /post/position']({
       token: token,
-      body: body,
+      body,
     });
 
     if (status === 200) {
@@ -131,7 +132,7 @@ export const implPostService = ({ apis }: { apis: Apis }): PostService => ({
     const body = { ...postContents, companyId };
     const { status, data } = await apis['PUT /post/position/:positionId']({
       token: token,
-      body: body,
+      body,
       params: params,
     });
 

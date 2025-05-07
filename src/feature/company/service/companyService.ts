@@ -2,8 +2,7 @@ import type { Apis } from '@/api';
 import type { LocalServerDTO } from '@/api';
 import type { Domain } from '@/entities/company';
 import type { Link } from '@/entities/link';
-import type { Paginator } from '@/entities/paginator';
-import type { BriefPost, JobMinorCategory } from '@/entities/post';
+import type { JobMinorCategory } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 
 export type CompanyService = {
@@ -17,11 +16,7 @@ export type CompanyService = {
     roles?: JobMinorCategory[];
     status?: 0 | 1 | 2;
     token: string;
-  }): ServiceResponse<{
-    posts: BriefPost[];
-    paginator: Paginator;
-  }>;
-  getMyCompanys({ token }: { token: string }): ServiceResponse<BriefPost[]>;
+  }): ServiceResponse<LocalServerDTO.PostsResponse>;
   getMyInfo({
     token,
   }: {
@@ -73,17 +68,6 @@ export const implCompanyService = ({
       params,
       token,
     });
-
-    if (status === 200) {
-      return {
-        type: 'success',
-        data,
-      };
-    }
-    return { type: 'error', code: data.code, message: data.message };
-  },
-  getMyCompanys: async ({ token }) => {
-    const { status, data } = await apis['GET /post/company/me']({ token });
 
     if (status === 200) {
       return {
