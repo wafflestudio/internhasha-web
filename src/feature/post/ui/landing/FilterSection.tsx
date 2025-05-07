@@ -104,6 +104,7 @@ export const FilterSection = ({
     if (isValidDomainValue(input)) {
       if (domainSelect === undefined) {
         setDomainSelect([input]);
+
         return;
       }
 
@@ -124,47 +125,56 @@ export const FilterSection = ({
     };
 
     if (isValidOrderValue(inputToNumber)) {
-      onChangeFilters({
+      const newFilter = {
         ...postFilter,
         order: inputToNumber,
-      });
+      };
+      onChangeFilters(newFilter);
     }
   };
 
   const handleClickApplyRecruitingFilter = () => {
-    onChangeFilters({
+    const newFilter = {
       ...postFilter,
       isActive: recruitingSelect,
-    });
+    };
+    onChangeFilters(newFilter);
   };
 
   const handleClickApplyDomainFilter = () => {
-    onChangeFilters({
+    const newFilter = {
       ...postFilter,
       domains: domainSelect,
-    });
+    };
+    onChangeFilters(newFilter);
   };
 
   const handleClickResetRecruitButton = () => {
-    setRecruitingSelect(undefined);
-    onChangeFilters({
+    const newFilter = {
       ...postFilter,
       isActive: undefined,
-    });
+    };
+    setRecruitingSelect(undefined);
+    onChangeFilters(newFilter);
   };
 
   const handleClickResetDomainButton = () => {
-    setDomainSelect(undefined);
-    onChangeFilters({
+    const newFilter = {
       ...postFilter,
       domains: undefined,
-    });
+    };
+    setDomainSelect(undefined);
+    onChangeFilters(newFilter);
   };
 
   const handleClickAllResetButton = () => {
     setRecruitingSelect(undefined);
     setDomainSelect(undefined);
-    onChangeFilters({});
+    onChangeFilters({
+      domains: undefined,
+      isActive: undefined,
+      order: undefined,
+    });
   };
 
   return (

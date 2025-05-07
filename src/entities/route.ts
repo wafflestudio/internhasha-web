@@ -1,18 +1,9 @@
+import type { Domain } from '@/entities/company';
 import type { Link } from '@/entities/link';
 import type { JobMinorCategory, Series } from '@/entities/post';
 
 export type MyPageRouteQuery = {
   tab: 'POST' | 'COFFEE_CHAT' | 'BOOKMARK' | 'PROFILE';
-};
-
-export type PostFilterRouteQuery = {
-  page?: number;
-  roles?: JobMinorCategory[];
-  investmentMax?: number;
-  investmentMin?: number;
-  employing?: 0 | 1;
-  series?: Series[];
-  order?: 0 | 1;
 };
 
 export type VerifyMailRouteQuery = {
@@ -62,4 +53,12 @@ export type ProfileRouteQuery = {
   cvPreview?: { file: File; url: string } | null;
   portfolioPreview?: { file: File; url: string } | null;
   links?: Link[];
+};
+
+export type PostQuery = {
+  roles?: JobMinorCategory[];
+  isActive?: boolean;
+  domains?: Domain[];
+  page?: number;
+  order?: 0 | 1;
 };

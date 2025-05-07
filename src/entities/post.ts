@@ -35,6 +35,7 @@ export type PostFilter = {
   isActive?: boolean;
   domains?: Domain[];
   order?: 0 | 1;
+  page?: number;
 };
 
 export type CreatePostRequest = {

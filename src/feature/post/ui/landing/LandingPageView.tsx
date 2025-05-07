@@ -1,33 +1,43 @@
-import { useState } from 'react';
-
 import type { JobMinorCategory, PostFilter } from '@/entities/post';
-import type { PostFilterRouteQuery } from '@/entities/route';
 import { FilterSection } from '@/feature/post/ui/landing/FilterSection';
 import { LandingPostView } from '@/feature/post/ui/landing/LandingPostView';
 import { NarrowRolesFilter } from '@/feature/post/ui/landing/RolesFilter';
 import { RolesFilter } from '@/feature/post/ui/landing/RolesFilter';
-import { useRouteQueryParams } from '@/shared/route/useRouteParams';
 
 export const LandingPageView = ({
+  postFilter,
+  setPostFilter,
   setShowSignInModal,
+  handleQueryChange,
 }: {
+  postFilter: PostFilter;
+  setPostFilter: (
+    input: PostFilter | ((prev: PostFilter) => PostFilter),
+  ) => void;
   setShowSignInModal(input: boolean): void;
+  handleQueryChange: ({ query }: { query: PostFilter }) => void;
 }) => {
-  // TODO: queryParams를 전역으로 올려서 어떤 페이지에서 뒤로가기를 수행하더라도 필터링과 페이지네이션이 유지되도록 수정
-  const queryParams = useRouteQueryParams() as PostFilterRouteQuery | null;
-  const [postFilter, setFilterElements] = useState<PostFilter>(
-    queryParams !== null
-      ? queryParams
-      : {
-          roles: undefined,
-          isActive: undefined,
-          domains: undefined,
-          order: undefined,
-        },
-  );
-
   const handleRolesChange = (updatedRoles: JobMinorCategory[]) => {
-    setFilterElements((prev) => ({ ...prev, roles: updatedRoles }));
+    setPostFilter((prev) => ({
+      ...prev,
+      roles: updatedRoles,
+      page: undefined,
+    }));
+    handleQueryChange({
+      query: { ...postFilter, roles: updatedRoles, page: undefined },
+    });
+  };
+  const handleFilterChange = (
+    updatedFilters: Omit<PostFilter, 'page' | 'roles'>,
+  ) => {
+    setPostFilter((prev) => ({ ...prev, ...updatedFilters, page: undefined }));
+    handleQueryChange({
+      query: { ...postFilter, ...updatedFilters, page: undefined },
+    });
+  };
+  const handlePageChange = (page: number) => {
+    setPostFilter((prev) => ({ ...prev, page }));
+    handleQueryChange({ query: { ...postFilter, page } });
   };
 
   return (
@@ -35,7 +45,7 @@ export const LandingPageView = ({
       {/* RolesFilter */}
       <div className="order-1 hidden md:order-none md:mt-[50px] md:block md:flex-col">
         <RolesFilter
-          roles={postFilter.roles}
+          postFilter={postFilter}
           onChangeRoles={handleRolesChange}
         />
       </div>
@@ -43,7 +53,7 @@ export const LandingPageView = ({
       {/* NarrowRolesFilter */}
       <div className="order-1 block w-full md:order-none md:hidden">
         <NarrowRolesFilter
-          roles={postFilter.roles}
+          postFilter={postFilter}
           onChangeRoles={handleRolesChange}
         />
       </div>
@@ -55,11 +65,12 @@ export const LandingPageView = ({
         <div className="flex items-center justify-between py-6">
           <FilterSection
             postFilter={postFilter}
-            onChangeFilters={setFilterElements}
+            onChangeFilters={handleFilterChange}
           />
         </div>
         <LandingPostView
           postFilter={postFilter}
+          handlePageChange={handlePageChange}
           setShowSignInModal={setShowSignInModal}
         />
       </div>

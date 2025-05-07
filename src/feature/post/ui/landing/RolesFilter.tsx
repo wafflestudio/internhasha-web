@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { ICON_SRC } from '@/entities/asset';
-import type { JobMinorCategory } from '@/entities/post';
+import type { JobMinorCategory, PostFilter } from '@/entities/post';
 import { formatMinorJobToLabel } from '@/util/format';
 
 type RolesFilterProps = {
-  roles: JobMinorCategory[] | undefined;
+  postFilter: PostFilter;
   onChangeRoles: (roles: JobMinorCategory[]) => void;
 };
 
@@ -51,9 +51,10 @@ const jobCategoryList: {
 ];
 
 export const RolesFilter = ({
-  roles = [],
+  postFilter,
   onChangeRoles,
 }: RolesFilterProps) => {
+  const roles = postFilter.roles !== undefined ? postFilter.roles : [];
   const [activeCategory, setActiveCategory] = useState<DropdownOption>('NONE');
   const isAllSelected = (category: DropdownOption) => {
     const selectedCategory = jobCategoryList.find(
@@ -170,9 +171,10 @@ export const RolesFilter = ({
 };
 
 export const NarrowRolesFilter = ({
-  roles = [],
+  postFilter,
   onChangeRoles,
 }: RolesFilterProps) => {
+  const roles = postFilter.roles !== undefined ? postFilter.roles : [];
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
   const isAllSelected = (category: DropdownOption) => {
     const selectedCategory = jobCategoryList.find(

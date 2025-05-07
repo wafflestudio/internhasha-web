@@ -1,11 +1,14 @@
-import type { MyPageRouteQuery, PostFilterRouteQuery } from '@/entities/route';
+import type { MyPageRouteQuery, PostQuery } from '@/entities/route';
 
 export const routeFormatPresentation = {
   formatRoutes: () => {
     const createRouteParams = ({
       query,
     }: {
-      query?: Record<string, string | number | undefined | (string | number)[]>;
+      query?: Record<
+        string,
+        string | number | boolean | undefined | (string | number)[]
+      >;
     }) => {
       if (query === undefined) {
         return '';
@@ -28,7 +31,7 @@ export const routeFormatPresentation = {
     };
 
     return {
-      INDEX: ({ query }: { query?: PostFilterRouteQuery }) =>
+      INDEX: ({ query }: { query?: PostQuery }) =>
         `/${createRouteParams({ query })}`,
       POST_DETAIL: ({ postId }: { postId: string }) => `/post/${postId}`,
       CREATE_COFFEE_CHAT: ({ postId }: { postId: string }) =>

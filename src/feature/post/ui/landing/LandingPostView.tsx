@@ -14,9 +14,11 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 export const LandingPostView = ({
   postFilter,
   setShowSignInModal,
+  handlePageChange,
 }: {
   postFilter: PostFilter;
   setShowSignInModal: (input: boolean) => void;
+  handlePageChange: (page: number) => void;
 }) => {
   const { toPost } = useRouteNavigation();
   const [currentPage, setCurrentPage] = useState(0);
@@ -77,6 +79,7 @@ export const LandingPostView = ({
             currentGroup={currentGroup}
             onChangePage={(page) => {
               setCurrentPage(page);
+              handlePageChange(page);
             }}
             onChangeGroup={(group) => {
               setCurrentGroup(group);

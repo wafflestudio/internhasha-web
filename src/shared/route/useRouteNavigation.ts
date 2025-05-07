@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import type {
   CompanyRouteQuery,
   MyPageRouteQuery,
-  PostFilterRouteQuery,
+  PostQuery,
   PostRouteQuery,
   PreviousSignUpFormRouteQuery,
   ProfileRouteQuery,
@@ -36,7 +36,7 @@ export const useRouteNavigation = () => {
   } = routeFormatPresentation.formatRoutes();
 
   return {
-    toMain: ({ query }: { query?: PostFilterRouteQuery }) => {
+    toMain: ({ query }: { query?: PostQuery }) => {
       void navigate(INDEX({ query }));
     },
     toPost: ({ postId }: { postId: string }) => {
