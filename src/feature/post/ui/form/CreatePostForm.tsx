@@ -165,7 +165,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
         <SalaryField
           label="월급"
           input={salary}
-          unit="원"
+          unit="만원"
           isDisabled={disableSalary}
           onCheckboxClick={() => {
             setDisableSalary(!disableSalary);

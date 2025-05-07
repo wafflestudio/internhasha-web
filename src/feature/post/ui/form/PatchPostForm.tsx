@@ -178,7 +178,7 @@ export const PatchPostForm = ({
         <SalaryField
           label="월급"
           input={salary}
-          unit="원"
+          unit="만원"
           isDisabled={disableSalary}
           onCheckboxClick={() => {
             setDisableSalary(!disableSalary);
