@@ -122,7 +122,7 @@ export const useDownloadFile = ({
   s3Key?: string;
   fileType: FileType;
   fileName: string;
-  setData(input: { file: File; url: string } | null): void;
+  setData?: (input: { file: File; url: string } | null) => void;
 }) => {
   const { fileService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
@@ -170,7 +170,7 @@ export const useDownloadFile = ({
 const useDownloadFileByPresignedUrl = ({
   setData,
 }: {
-  setData(input: { file: File; url: string } | null): void;
+  setData?: (input: { file: File; url: string } | null) => void;
 }) => {
   const { fileService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
@@ -190,7 +190,9 @@ const useDownloadFileByPresignedUrl = ({
     },
     onSuccess: (response) => {
       if (response.type === 'success') {
-        setData(response.data);
+        if (setData !== undefined) {
+          setData(response.data);
+        }
       }
     },
   });

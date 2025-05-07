@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { useState } from 'react';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import type { FileType } from '@/entities/file';
@@ -16,15 +15,10 @@ export const DownloadButtonWithPresignedUrl = ({
   fileName: string;
   children: ReactNode;
 }) => {
-  const [_, setData] = useState<{
-    file: File;
-    url: string;
-  } | null>(null);
   const { dataPreview } = useDownloadFile({
     s3Key,
     fileType: type,
     fileName,
-    setData,
   });
 
   if (dataPreview === undefined) {
@@ -41,7 +35,6 @@ export const DownloadButtonWithPresignedUrl = ({
     <a
       href={dataPreview.data.url}
       download={fileName}
-      // target="_blank"
       className="flex w-fit items-center gap-1 rounded-sm bg-grey-50 px-[10px] py-[6px]"
       rel="noreferrer"
     >
