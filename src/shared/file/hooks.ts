@@ -79,40 +79,6 @@ export const useUploadFile = ({
   return { uploadFile };
 };
 
-export const useGetDownloadPresignedUrl = ({
-  s3Key,
-  type,
-}: {
-  s3Key: string;
-  type: FileType;
-}) => {
-  const { fileService } = useGuardContext(ServiceContext);
-  const { token } = useGuardContext(TokenContext);
-
-  const { data: downloadPresignedUrl } = useQuery({
-    queryKey: [
-      'fileService',
-      'getDownloadPresignedUrl',
-      s3Key,
-      token,
-      type,
-    ] as const,
-    queryFn: ({ queryKey: [, , key, t, fileType] }) => {
-      if (t === null) {
-        throw new Error('토큰이 존재하지 않습니다.');
-      }
-      return fileService.getDownloadPresignedUrl({
-        token: t,
-        s3Key: key,
-        fileType,
-      });
-    },
-    enabled: token !== null,
-  });
-
-  return { downloadPresignedUrl };
-};
-
 export const useDownloadFile = ({
   s3Key,
   fileType,
