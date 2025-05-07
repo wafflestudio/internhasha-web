@@ -1,7 +1,7 @@
 import { ICON_SRC } from '@/entities/asset';
 import type { BriefPost } from '@/entities/post';
+import { formatEmploymentState } from '@/feature/post/presentation/postFormatPresentation';
 import { formatIsoToDate } from '@/util/format';
-import { formatEmploymentState } from '@/util/postFormatFunctions';
 
 type CompanyPostCardProps = {
   post: BriefPost;
@@ -19,7 +19,6 @@ export const CompanyPostCard = ({
     detailSummary,
     createdAt,
     coffeeChatCount,
-    isActive,
   } = post;
 
   return (
@@ -37,7 +36,7 @@ export const CompanyPostCard = ({
         </div>
 
         <span className="text-grey-400">
-          {formatEmploymentState({ isActive, employmentEndDate })}
+          {formatEmploymentState({ date: employmentEndDate })}
         </span>
         {/* 삼각형 */}
         <div className="absolute bottom-[-10px] right-6 h-0 w-0 border-l-[10px] border-r-[10px] border-t-[10px] border-l-transparent border-r-transparent border-t-grey-200 text-lg"></div>

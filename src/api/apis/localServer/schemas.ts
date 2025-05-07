@@ -73,7 +73,6 @@ type CompanyDTO = {
 
 type PositionDTO = {
   id: string;
-  isActive: boolean;
   positionTitle: string;
   positionType: string;
   headCount: number;
@@ -100,7 +99,6 @@ export type PostBriefDTO = {
   location: string;
   employmentEndDate: string | null;
   positionTitle: string;
-  isActive: boolean;
   domain: string;
   detailSummary: string;
   slogan: string;
@@ -262,7 +260,7 @@ export type ChangePasswordRequest = {
 
 export type CreateAndUpdatePostRequest = Omit<
   PostDTO,
-  'id' | 'createdAt' | 'updatedAt' | 'isActive' | 'isBookmarked'
+  'id' | 'createdAt' | 'updatedAt' | 'isBookmarked'
 >;
 
 export type CreateCoffeeChatRequest = {
@@ -291,7 +289,6 @@ export type CreatePositionRequest = {
   headCount: number;
   salary?: number;
   employmentEndDate?: string;
-  isActive: boolean;
   companyId: string;
 };
 

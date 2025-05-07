@@ -10,7 +10,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
-import { getShortenedDate } from '@/util/postFormatFunctions';
+import { getShortenedDate } from '@/util/date';
 
 type CompanyCoffeeChatListViewProps = {
   selectedChats: string[];

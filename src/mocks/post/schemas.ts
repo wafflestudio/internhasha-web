@@ -45,7 +45,6 @@ type PostDTO = {
   employmentEndDate?: string;
   createdAt: string;
   updatedAt: string;
-  isActive: boolean;
   category: JobCategory;
   detail: string;
   headcount: number;

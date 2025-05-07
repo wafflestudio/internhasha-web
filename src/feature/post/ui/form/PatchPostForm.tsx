@@ -111,7 +111,6 @@ export const PatchPostForm = ({
         headCount: formStates.headcount.value,
         salary: finalSalary,
         detail: formStates.detail.value,
-        isActive: true,
       },
       postId: body.id,
     });

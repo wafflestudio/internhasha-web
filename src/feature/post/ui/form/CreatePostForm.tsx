@@ -91,7 +91,6 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
         headCount: formStates.headcount.value,
         salary: finalSalary,
         detail: formStates.detail.value,
-        isActive: true,
       },
     });
   };

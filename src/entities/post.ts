@@ -38,16 +38,6 @@ export type PostFilter = {
   page?: number;
 };
 
-export type CreatePostRequest = {
-  positionTitle: string;
-  positionType: JobMinorCategory;
-  detail: string;
-  headCount: number;
-  salary?: number;
-  employmentEndDate?: string;
-  isActive: boolean;
-};
-
 export type BriefPost = {
   id: string;
   author: AuthorBriefDTO;
@@ -56,7 +46,6 @@ export type BriefPost = {
   location: string;
   employmentEndDate: string | null;
   positionTitle: string;
-  isActive: boolean;
   domain: string;
   detailSummary: string;
   slogan: string;
@@ -66,4 +55,13 @@ export type BriefPost = {
   updatedAt: string;
   tags: { tag: string }[];
   coffeeChatCount: number;
+};
+
+export type CreatePostRequest = {
+  positionTitle: string;
+  positionType: JobMinorCategory;
+  detail: string;
+  headCount: number;
+  salary?: number;
+  employmentEndDate?: string;
 };

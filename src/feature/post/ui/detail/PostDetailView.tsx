@@ -12,6 +12,10 @@ import { Button } from '@/components/ui/button';
 import { MarkdownPreview } from '@/components/ui/markdown-preview';
 import { SeperatorLine } from '@/components/ui/separator';
 import { ICON_SRC } from '@/entities/asset';
+import {
+  checkPostActive,
+  formatEmploymentState,
+} from '@/feature/post/presentation/postFormatPresentation';
 import { SkeletonPostDetailView } from '@/feature/post/ui/detail/SkeletonPostDetailView';
 import { WriteCVModal } from '@/feature/post/ui/modal/WriteCVModal';
 import { WriteProfileModal } from '@/feature/post/ui/modal/WriteProfileModal';
@@ -25,7 +29,6 @@ import {
   formatIsoToDate,
   formatMinorJobToLabel,
 } from '@/util/format';
-import { formatEmploymentState } from '@/util/postFormatFunctions';
 
 export const PostDetailView = ({ postId }: { postId: string }) => {
   const { postDetailData } = useGetPostDetail({ postId: postId });
@@ -117,6 +120,9 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   };
 
   const { author, company, position, isBookmarked } = postDetailData.data;
+  const isEmploymentActive = checkPostActive({
+    date: position.employmentEndDate,
+  });
 
   return (
     <div className="mx-auto mb-[30px] flex max-w-screen-md flex-col gap-[56px] p-6 text-grey-900">
@@ -174,8 +180,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               </span>
               <Badge variant="primary">
                 {formatEmploymentState({
-                  isActive: position.isActive,
-                  employmentEndDate: position.employmentEndDate,
+                  date: position.employmentEndDate,
                 })}
               </Badge>
             </div>
@@ -212,7 +217,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                     },
                   });
                 }}
-                disabled={!position.isActive}
+                disabled={!isEmploymentActive}
                 className="flex-1"
               >
                 공고 수정하기
@@ -224,9 +229,9 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                 onClick={() => {
                   handleClickClosePost();
                 }}
-                disabled={!position.isActive}
+                disabled={!isEmploymentActive}
               >
-                {position.isActive ? '공고 마감하기' : '마감됨'}
+                {isEmploymentActive ? '공고 마감하기' : '마감됨'}
               </Button>
             )}
             <Button

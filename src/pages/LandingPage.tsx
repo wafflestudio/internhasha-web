@@ -19,6 +19,7 @@ export const LandingPage = () => {
           isActive: undefined,
           domains: undefined,
           order: undefined,
+          page: undefined,
         },
   );
 
