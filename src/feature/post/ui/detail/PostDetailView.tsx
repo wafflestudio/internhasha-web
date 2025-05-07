@@ -290,7 +290,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                 company.companyInfoPDFKey.trim().length !== 0 && (
                   <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
                     <span className="text-lg font-semibold text-grey-800">
-                      IR Deck 자료
+                      회사 소개 자료
                     </span>
 
                     <DownloadButtonWithPresignedUrl

@@ -43,7 +43,7 @@ export const SkeletonPostDetailView = () => {
               ))}
             </div>
           </div>
-          {/* 회사 홈페이지 / IR Deck 자료 */}
+          {/* 회사 홈페이지 / 회사소개 자료 */}
           <section className="flex gap-4 xs:gap-10">
             {[1, 2].map((_, index) => (
               <div
