@@ -65,7 +65,7 @@ export const CoffeeChatDetailView = ({
             <div className="flex w-full items-center justify-between">
               <h3 className="text-30 font-bold">커피챗 신청서</h3>
               <div className="flex items-center gap-2">
-                <span className="text=grey-600 font-regular">
+                <span className="font-regular text-grey-600">
                   {getFormatDate(createdAt)}
                 </span>
                 <TagStatus coffeeChatStatus={coffeeChatStatus} />
