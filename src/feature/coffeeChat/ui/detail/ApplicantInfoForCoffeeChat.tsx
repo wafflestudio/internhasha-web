@@ -136,7 +136,11 @@ export const ApplicantInfoForCoffeeChat = ({
                   <span className="text-16 font-bold text-grey-800">
                     이력서
                   </span>
-                  <DownloadButtonWithPresignedUrl s3Key={cvKey} type="CV">
+                  <DownloadButtonWithPresignedUrl
+                    s3Key={cvKey}
+                    type="CV"
+                    fileName={`${name}_이력서.pdf`}
+                  >
                     <img src={ICON_SRC.DOWNLOAD} className="h-5 w-5" />
                     PDF 다운로드
                   </DownloadButtonWithPresignedUrl>
@@ -150,6 +154,7 @@ export const ApplicantInfoForCoffeeChat = ({
                   <DownloadButtonWithPresignedUrl
                     s3Key={portfolioKey}
                     type="PORTFOLIO"
+                    fileName={`${name}_포트폴리오.pdf`}
                   >
                     <img src={ICON_SRC.DOWNLOAD} className="h-5 w-5" />
                     PDF 다운로드

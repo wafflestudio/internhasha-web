@@ -1,25 +1,37 @@
 import type { ReactNode } from 'react';
+import { useState } from 'react';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import type { FileType } from '@/entities/file';
-import { useGetDownloadPresignedUrl } from '@/shared/file/hooks';
+import { useDownloadFile } from '@/shared/file/hooks';
 
 export const DownloadButtonWithPresignedUrl = ({
   s3Key,
   type,
+  fileName,
   children,
 }: {
   s3Key: string;
   type: FileType;
+  fileName: string;
   children: ReactNode;
 }) => {
-  const { downloadPresignedUrl } = useGetDownloadPresignedUrl({ s3Key, type });
+  const [_, setData] = useState<{
+    file: File;
+    url: string;
+  } | null>(null);
+  const { dataPreview } = useDownloadFile({
+    s3Key,
+    fileType: type,
+    fileName,
+    setData,
+  });
 
-  if (downloadPresignedUrl === undefined) {
+  if (dataPreview === undefined) {
     return <SkeletonDownloadButtonWithPresignedUrl />;
   }
 
-  if (downloadPresignedUrl.type === 'error') {
+  if (dataPreview.type === 'error') {
     return (
       <span>에러로 인해 다운로드에 실패하였습니다. 새로고침해주세요.</span>
     );
@@ -27,9 +39,9 @@ export const DownloadButtonWithPresignedUrl = ({
 
   return (
     <a
-      href={downloadPresignedUrl.data.url}
-      target="_blank"
-      download={true}
+      href={dataPreview.data.url}
+      download={fileName}
+      // target="_blank"
       className="flex w-fit items-center gap-1 rounded-sm bg-grey-50 px-[10px] py-[6px]"
       rel="noreferrer"
     >

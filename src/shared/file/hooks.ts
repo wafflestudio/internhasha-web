@@ -126,7 +126,9 @@ export const useDownloadFile = ({
 }) => {
   const { fileService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
-  const { getDownloadByPresignedUrl } = useGetInitialFiles({ setData });
+  const { getDownloadByPresignedUrl } = useDownloadFileByPresignedUrl({
+    setData,
+  });
 
   const { data: dataPreview, isPending } = useQuery({
     queryKey: [
@@ -165,7 +167,7 @@ export const useDownloadFile = ({
   };
 };
 
-const useGetInitialFiles = ({
+const useDownloadFileByPresignedUrl = ({
   setData,
 }: {
   setData(input: { file: File; url: string } | null): void;

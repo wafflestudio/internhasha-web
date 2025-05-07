@@ -296,6 +296,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                     <DownloadButtonWithPresignedUrl
                       s3Key={company.companyInfoPDFKey}
                       type="IR_DECK"
+                      fileName={`${company.companyName}_소개자료.pdf`}
                     >
                       <img src={ICON_SRC.DOWNLOAD} />
                       <span className="font-semibold text-grey-600">
