@@ -6,15 +6,20 @@ import { cn } from '@/lib/utils';
 
 const Tabs = TabsPrimitive.Root;
 
-const tabsListClassName = cva('font-14-regular flex text-grey-900', {
+const tabsListClassName = cva('flex text-14 font-regular text-grey-900', {
   variants: {
     variant: {
-      default: 'gap-8',
+      default: '',
       button: 'flex gap-[8px] rounded-[10px] bg-grey-50 p-[6px]',
+    },
+    size: {
+      default: 'gap-8',
+      small: 'gap-4',
     },
   },
   defaultVariants: {
     variant: 'default',
+    size: 'default',
   },
 });
 
@@ -22,13 +27,20 @@ const tabsTriggerClassName = cva('inline-flex items-center justify-center', {
   variants: {
     variant: {
       default:
-        'data-[state=active]:underline-2 text-18 font-semibold hover:text-grey-700 disabled:opacity-50 data-[state=active]:text-grey-900 data-[state=active]:underline data-[state=active]:decoration-grey-900 data-[state=active]:decoration-2 data-[state=active]:underline-offset-8 data-[state=active]:hover:text-grey-700',
+        'text-18 font-semibold hover:text-grey-700 disabled:opacity-50 data-[state=active]:text-grey-900 data-[state=active]:underline data-[state=active]:decoration-grey-900 data-[state=active]:hover:text-grey-700',
       button:
-        'h-[42px] flex-1 whitespace-nowrap rounded-[8px] text-grey-300 ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-grey-900',
+        'h-[42px] flex-1 whitespace-nowrap rounded-[8px] text-14 font-semibold text-grey-300 ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-grey-900',
+    },
+    size: {
+      default:
+        'data-[state=active]:decoration-2 data-[state=active]:underline-offset-8',
+      small:
+        'text-14 data-[state=active]:decoration-1 data-[state=active]:underline-offset-2',
     },
   },
   defaultVariants: {
     variant: 'default',
+    size: 'default',
   },
 });
 
@@ -39,10 +51,10 @@ interface TabsListProps
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   TabsListProps
->(({ className, variant, ...props }, ref) => (
+>(({ className, size, variant, ...props }, ref) => (
   <TabsPrimitive.List
     ref={ref}
-    className={cn(tabsListClassName({ variant, className }))}
+    className={cn(tabsListClassName({ size, variant, className }))}
     {...props}
   />
 ));
@@ -55,10 +67,10 @@ interface TabsTriggerProps
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   TabsTriggerProps
->(({ className, variant, ...props }, ref) => (
+>(({ className, size, variant, ...props }, ref) => (
   <TabsPrimitive.Trigger
     ref={ref}
-    className={cn(tabsTriggerClassName({ variant, className }))}
+    className={cn(tabsTriggerClassName({ size, variant, className }))}
     {...props}
   />
 ));

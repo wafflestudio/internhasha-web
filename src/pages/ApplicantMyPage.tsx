@@ -23,50 +23,111 @@ export const ApplicantMyPage = () => {
     toMyPage({ query: { tab: tab as MyPageTab } });
   };
 
+  const WideTabBar = () => {
+    return (
+      <Tabs
+        value={queryParams !== null ? queryParams.tab : 'COFFEE_CHAT'}
+        onValueChange={handleTabChange}
+        className="hidden w-full sm:block"
+      >
+        <div className="flex flex-col gap-[30px]">
+          <TabsList className="flex gap-[30px]">
+            <TabsTrigger value="COFFEE_CHAT" className="gap-1">
+              신청한 커피챗
+              <CoffeeChatNumberBadge />
+            </TabsTrigger>
+            <TabsTrigger value="BOOKMARK">관심 공고</TabsTrigger>
+            <TabsTrigger value="PROFILE">내 정보</TabsTrigger>
+            <TabsContent value="PROFILE" className="ml-auto">
+              {isExistProfile && (
+                <Button
+                  onClick={toPatchProfile}
+                  className="font-medium"
+                  size="sm"
+                >
+                  <img src={ICON_SRC.EDIT.WHITE} />
+                  프로필 수정
+                </Button>
+              )}
+            </TabsContent>
+          </TabsList>
+
+          <TabsContent value="COFFEE_CHAT">
+            <ApplicantCoffeeChatListView />
+          </TabsContent>
+          <TabsContent value="BOOKMARK">
+            <BookmarkListView />
+          </TabsContent>
+          <TabsContent value="PROFILE">
+            <ApplicantProfileView setIsExistProfile={setIsExistProfile} />
+          </TabsContent>
+        </div>
+      </Tabs>
+    );
+  };
+
+  const NarrowTabBar = () => {
+    return (
+      <Tabs
+        value={queryParams !== null ? queryParams.tab : 'COFFEE_CHAT'}
+        onValueChange={handleTabChange}
+        className="block w-full sm:hidden"
+      >
+        <div className="flex flex-col gap-6">
+          <TabsList size="small">
+            <TabsTrigger value="COFFEE_CHAT" size="small">
+              <div className="flex flex-col items-center gap-1">
+                <span>신청한 커피챗</span>
+                <CoffeeChatNumberBadge />
+              </div>
+            </TabsTrigger>
+            <TabsTrigger value="BOOKMARK" size="small">
+              관심 공고
+            </TabsTrigger>
+            <TabsTrigger value="PROFILE" size="small">
+              내 정보
+            </TabsTrigger>
+          </TabsList>
+
+          {queryParams?.tab === 'PROFILE' && isExistProfile && (
+            <div className="flex justify-end">
+              <Button
+                onClick={toPatchProfile}
+                className="w-full text-xs font-medium sm:w-fit"
+                size="sm"
+              >
+                <img
+                  src={ICON_SRC.EDIT.WHITE}
+                  alt="Edit"
+                  className="mr-1 h-4 w-4"
+                />
+                프로필 수정
+              </Button>
+            </div>
+          )}
+
+          <TabsContent value="COFFEE_CHAT">
+            <ApplicantCoffeeChatListView />
+          </TabsContent>
+          <TabsContent value="BOOKMARK">
+            <BookmarkListView />
+          </TabsContent>
+          <TabsContent value="PROFILE">
+            <ApplicantProfileView setIsExistProfile={setIsExistProfile} />
+          </TabsContent>
+        </div>
+      </Tabs>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-grey-50">
       <GlobalNavigationBar />
       {/* 메인 컨텐츠 */}
       <div className="mx-auto flex max-w-[698px] flex-col gap-10 px-6 py-[30px]">
         <h1 className="text-2xl font-bold text-grey-900">마이페이지</h1>
-        <Tabs
-          value={queryParams !== null ? queryParams.tab : 'COFFEE_CHAT'}
-          onValueChange={handleTabChange}
-          className="w-full"
-        >
-          <div className="flex flex-col gap-[30px]">
-            <TabsList className="flex gap-[30px]">
-              <TabsTrigger value="COFFEE_CHAT" className="gap-1">
-                신청한 커피챗
-                <CoffeeChatNumberBadge />
-              </TabsTrigger>
-              <TabsTrigger value="BOOKMARK">관심 공고</TabsTrigger>
-              <TabsTrigger value="PROFILE">내 정보</TabsTrigger>
-              <TabsContent value="PROFILE" className="ml-auto">
-                {isExistProfile && (
-                  <Button
-                    onClick={toPatchProfile}
-                    className="font-medium"
-                    size="sm"
-                  >
-                    <img src={ICON_SRC.EDIT.WHITE} />
-                    프로필 수정
-                  </Button>
-                )}
-              </TabsContent>
-            </TabsList>
-
-            <TabsContent value="COFFEE_CHAT">
-              <ApplicantCoffeeChatListView />
-            </TabsContent>
-            <TabsContent value="BOOKMARK">
-              <BookmarkListView />
-            </TabsContent>
-            <TabsContent value="PROFILE">
-              <ApplicantProfileView setIsExistProfile={setIsExistProfile} />
-            </TabsContent>
-          </div>
-        </Tabs>
+        <WideTabBar />
+        <NarrowTabBar />
       </div>
     </div>
   );

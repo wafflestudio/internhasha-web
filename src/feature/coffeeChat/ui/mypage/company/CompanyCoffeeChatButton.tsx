@@ -97,6 +97,7 @@ export const CompanyCoffeeChatButton = ({
               (coffeeChat) => coffeeChat.coffeeChatStatus === 'WAITING',
             ).length === 0
           }
+          className="h-8 w-full justify-center sm:h-auto sm:w-fit"
         >
           선택 하기
         </CoffeeChatButton>
