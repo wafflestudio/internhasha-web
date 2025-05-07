@@ -387,12 +387,22 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
       {/* 상세 공고 글 */}
       <section className="flex w-full flex-col gap-[30px] md:max-w-[580px]">
         <span className="text-2xl font-bold">상세 공고 글</span>
-        <div className="flex items-center gap-2 rounded-lg bg-grey-50 px-[22px] py-4">
-          <img src={ICON_SRC.PERSON} />
-          <span>
-            {formatMinorJobToLabel(position.positionType)} {position.headCount}
-            명
-          </span>
+        <div className="flex flex-col gap-4 rounded-lg bg-grey-50 px-[34px] py-[24px]">
+          <div className="flex items-center gap-2">
+            <img src={ICON_SRC.PERSON} />
+            <span>
+              {formatMinorJobToLabel(position.positionType)}{' '}
+              {position.headCount}명
+            </span>
+          </div>
+          <div className="flex flex-1 gap-4">
+            <span className="text-grey-700">월급</span>
+            {position.salary == null ? (
+              <span>추후 협의</span>
+            ) : (
+              <span>{position.salary} 만원</span>
+            )}
+          </div>
         </div>
         <div className="flex rounded-md border">
           <MarkdownPreview content={position.detail} />
