@@ -212,12 +212,11 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                     body: {
                       id: postId,
                       positionTitle: position.positionTitle,
-                      employmentEndDateTime:
-                        position.employmentEndDate ?? undefined,
+                      employmentEndDateTime: position.employmentEndDate,
                       jobMinorCategory: position.positionType,
                       detail: position.detail,
                       headcount: position.headCount,
-                      salary: position.salary ?? undefined,
+                      salary: position.salary,
                     },
                   });
                 }}

@@ -35,11 +35,11 @@ export type CompanyRouteQuery = {
 export type PostRouteQuery = {
   id: string;
   positionTitle: string;
-  employmentEndDateTime?: string;
+  employmentEndDateTime: string | null;
   jobMinorCategory: string;
   detail: string;
   headcount: number;
-  salary?: number;
+  salary: number | null;
 };
 
 export type ProfileRouteQuery = {
