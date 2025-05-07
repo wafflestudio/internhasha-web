@@ -4,12 +4,13 @@ import { CancelCoffeeChatCancelModal } from '@/components/modal/CancelCoffeeChat
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { TagStatus } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { SeperatorLine } from '@/components/ui/separator';
+import { ICON_SRC } from '@/entities/asset';
 import { SkeletonCoffeeChatDetailView } from '@/feature/coffeeChat/ui/detail/SkeletonCoffeeChatDetailView';
 import {
   useGetCoffeeChatDetail,
   useUpdateCoffeeChatStatus,
 } from '@/feature/coffeeChat/ui/detail/useCoffeeChatDetailHooks';
-import type { CoffeeChatApplicant } from '@/mocks/coffeeChat/schemas';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { getFormatDate } from '@/util/postFormatFunctions';
 
@@ -42,59 +43,64 @@ export const CoffeeChatDetailView = ({
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
   }
-  const coffeeChatDetail = coffeeChatDetailData.data as CoffeeChatApplicant;
+
+  const { createdAt, coffeeChatStatus, company, content, title } =
+    coffeeChatDetailData.data;
   return (
     <>
-      <div className="flex w-full bg-gray-50 py-10">
-        {/* Left Section */}
-        <div className="mx-auto w-11/12 space-y-6 rounded-lg bg-white p-8 xs:w-3/5">
-          <div>
-            <span className="content-center text-center text-3xl font-bold text-black">
-              커피챗 신청서
-            </span>
-          </div>
-          <div className="flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row">
-            {/* Profile Section */}
-            <div className="flex items-center gap-4">
-              <div className="h-[40px] w-[40px] overflow-hidden">
-                {coffeeChatDetail.company.imageKey !== '' ? (
-                  <img
-                    src={`/${coffeeChatDetail.company.imageKey as string}`}
-                    alt="프로필 이미지"
-                    className="h-[40px] w-[40px] border border-gray-200 object-cover"
-                  />
-                ) : (
-                  <div className="h-[40px] w-[40px] border border-gray-200 object-cover"></div>
-                )}
-              </div>
-              <div>
-                <p className="align-center text-lg font-semibold text-gray-900">
-                  {coffeeChatDetail.company.name}
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-[8px]">
-              <span className="my-auto text-lg font-semibold text-gray-400">
-                {getFormatDate(coffeeChatDetail.createdAt)}
+      <div className="mx-auto flex max-w-[700px] text-grey-900">
+        <div className="mt-10 flex w-full flex-col gap-[30px] rounded-lg bg-white px-[40px] py-[46px] text-grey-900">
+          {/* 커피챗 성사 시 부연설명 */}
+          {coffeeChatStatus === 'ACCEPTED' && (
+            <div className="flex gap-2 bg-grey-50 p-4 text-13 font-light">
+              <img src={ICON_SRC.INFO} className="mt-0.5 h-4 w-4" />
+              <span>
+                커피챗이 성사되었습니다. 회사에서 메일이 올 예정이니 잠시만
+                기다려주세요.
               </span>
-              <TagStatus coffeeChatStatus={coffeeChatDetail.coffeeChatStatus} />
             </div>
+          )}
+          {/* 회사 정보 */}
+          <div className="flex flex-col gap-[14px]">
+            <div className="flex w-full items-center justify-between">
+              <h3 className="text-30 font-bold">커피챗 신청서</h3>
+              <div className="flex items-center gap-2">
+                <span className="font-regular text-grey-600">
+                  {getFormatDate(createdAt)}
+                </span>
+                <TagStatus coffeeChatStatus={coffeeChatStatus} />
+              </div>
+            </div>
+            <div className="flex gap-3">
+              {company.imageKey !== undefined ? (
+                <img
+                  src={`/${company.imageKey}`}
+                  className="h-10 w-10 rounded-sm object-cover"
+                />
+              ) : (
+                <div className="h-10 w-10 rounded-sm bg-grey-300"></div>
+              )}
+              <div className="flex items-center gap-2">
+                <span className="text-18 font-semibold">{company.name}</span>
+                <span>•</span>
+                <span>{title}</span>
+              </div>
+            </div>
+            <SeperatorLine />
           </div>
 
-          {/* Content Section */}
-          <div className="flex flex-col gap-[80px]">
-            <div className="space-y-5 py-6">
-              <p className="whitespace-pre-wrap text-sm text-gray-700">
-                {coffeeChatDetail.content}
-              </p>
-            </div>
-            <div className="flex gap-[8px]">
+          <div className="flex flex-col gap-20">
+            {/* 커피챗 작성 내역 */}
+            <p className="whitespace-pre-wrap font-regular">{content}</p>
+
+            {/* 버튼 목록 */}
+            <div className="flex gap-2.5">
               <Button
                 variant="secondary"
                 onClick={() => {
                   toMyPage({ query: { tab: 'COFFEE_CHAT' } });
                 }}
-                className="mt-20 w-full"
+                className="w-full"
                 disabled={isPending}
               >
                 목록으로
@@ -104,12 +110,10 @@ export const CoffeeChatDetailView = ({
                 onClick={() => {
                   setIsCancel(true);
                 }}
-                className="mt-20 w-full"
-                disabled={
-                  isPending || coffeeChatDetail.coffeeChatStatus !== 'WAITING'
-                }
+                className="w-full"
+                disabled={isPending || coffeeChatStatus !== 'WAITING'}
               >
-                취소하기
+                신청 취소
               </Button>
             </div>
           </div>
