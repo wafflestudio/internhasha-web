@@ -18,10 +18,7 @@ type FilterSectionProps = {
   onChangeFilters: (postFilter: PostFilter) => void;
 };
 
-const RECRUITING_FILTER_VALUE = [
-  { value: true, label: '모집 중' },
-  { value: false, label: '모집 완료' },
-];
+const RECRUITING_FILTER_VALUE = [{ value: true, label: '모집 중' }];
 
 const VALID_RECRUITING_OPTION_VALUE = RECRUITING_FILTER_VALUE.map(
   (item) => item.label,
