@@ -15,6 +15,7 @@ export const ICON_SRC = {
     LETTER: '/svg/logo_letter.svg',
     ICON: '/svg/logo_icon.svg',
     SEARCH: '/svg/search.svg',
+    HAMBURGER: '/svg/hamburger-menu.svg',
   },
   CALENDAR: '/svg/calendar_today.svg',
   CAMERA: '/svg/photo_camera.svg',

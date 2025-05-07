@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { ICON_SRC } from '@/entities/asset';
 import { formatEmploymentState } from '@/feature/post/presentation/postFormatPresentation';
 import { BookmarkListSkeleteon } from '@/feature/post/ui/mypage/applicant/BookmarkListSkeleton';
+import { NoBookMarkedPosts } from '@/feature/post/ui/mypage/applicant/NoBookmarkedPosts';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -25,6 +26,10 @@ export const BookmarkListView = () => {
     return (
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
+  }
+
+  if (bookmarkListData.data.posts.length === 0) {
+    return <NoBookMarkedPosts />;
   }
 
   return (
