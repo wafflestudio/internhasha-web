@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ICON_SRC } from '@/entities/asset';
+import { NoBookMarkedPosts } from '@/feature/post/ui/mypage/applicant/NoBookmarkedPosts';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -17,6 +18,9 @@ export const BookmarkListView = () => {
     return (
       <div>정보를 불러오는 중 문제가 발생하였습니다. 새로고침해주세요.</div>
     );
+  }
+  if (bookmarkListData?.data.posts.length === 0) {
+    return <NoBookMarkedPosts />;
   }
 
   // const { posts: bookmarkList } = bookmarkListData.data;
