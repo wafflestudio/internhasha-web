@@ -47,6 +47,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
     | 'NEED_PROFILE'
     | 'NEED_CV'
   >('NONE');
+  const [modalMessage, setModalMessage] = useState('');
   const closeModal = () => {
     setShowModal('NONE');
   };
@@ -54,7 +55,10 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   const { addBookmark, isPending: isAddBookmarkPending } = useAddBookmark();
   const { deleteBookmark, isPending: isDeleteBookmarkPending } =
     useDeleteBookmark();
-  const { closePost, isPending: isClosePostPending } = useClosePost();
+  const { closePost, isPending: isClosePostPending } = useClosePost({
+    closeModal,
+    setModalMessage,
+  });
 
   const isPending =
     isAddBookmarkPending || isDeleteBookmarkPending || isClosePostPending;
@@ -406,6 +410,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           onConfirm={() => {
             closePost({ postId });
           }}
+          modalMessage={modalMessage}
         />
       )}
       {showModal === 'NEED_PROFILE' && (
@@ -535,7 +540,15 @@ const useGetCoffeeChatStatus = ({ postId }: { postId: string }) => {
   return { coffeeChatStatus: coffeeChatStatusResponse };
 };
 
-const useClosePost = () => {
+import { createErrorMessage } from '@/entities/errors';
+
+const useClosePost = ({
+  closeModal,
+  setModalMessage,
+}: {
+  closeModal: () => void;
+  setModalMessage: (input: string) => void;
+}) => {
   const { token } = useGuardContext(TokenContext);
   const { postService } = useGuardContext(ServiceContext);
 
@@ -551,15 +564,16 @@ const useClosePost = () => {
     onSuccess: async (response) => {
       if (response.type === 'success') {
         await queryClient.invalidateQueries({ queryKey: ['postService'] });
+        closeModal();
         return;
       } else {
-        // TODO: 공고 마감 실패 시 하단에 토스트 띄우기
-        return;
+        setModalMessage(createErrorMessage(response.code));
       }
     },
     onError: () => {
-      // TODO: 공고 마감 실패 시 하단에 토스트 띄우기
-      return;
+      setModalMessage(
+        '공고 마감에 실패하였습니다. 잠시 후에 다시 시도해주세요.',
+      );
     },
   });
 

@@ -1,3 +1,4 @@
+import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
 import { ModalSelectBackground } from '@/components/ui/layout';
 import { useDialog } from '@/shared/modal/hooks';
@@ -5,12 +6,14 @@ import { useDialog } from '@/shared/modal/hooks';
 export const ClosePostModal = ({
   onClose,
   onConfirm,
+  modalMessage,
 }: {
   onClose(): void;
   onConfirm(): void;
+  modalMessage: string;
 }) => {
   const { isVisible, handleClose: handleConfirm } = useDialog({
-    onClose: onClose,
+    onClose,
   });
 
   return (
@@ -25,13 +28,16 @@ export const ClosePostModal = ({
         </p>
       </div>
       <div className="flex flex-col gap-2 sm:flex-row">
-        <Button variant="secondary" onClick={onConfirm} className="flex-1">
+        <Button variant="destructive" onClick={onConfirm} className="flex-1">
           공고 마감
         </Button>
-        <Button variant="destructive" onClick={onClose} className="flex-1">
+        <Button variant="secondary" onClick={onClose} className="flex-1">
           취소
         </Button>
       </div>
+      {modalMessage.trim().length !== 0 && (
+        <FormErrorResponse>{modalMessage}</FormErrorResponse>
+      )}
     </ModalSelectBackground>
   );
 };
