@@ -43,7 +43,7 @@ export const StringField = ({
       />
       <div className="flex flex-col gap-1">
         {maxLength !== undefined ? (
-          <div className="flex w-full justify-between">
+          <div className="flex w-full flex-col justify-between sm:flex-row">
             <FormInfoResponse>{infoMessage}</FormInfoResponse>
             <span
               className={`text-sm ${input.value.length > maxLength ? 'text-red-300' : 'text-grey-500'}`}

@@ -90,13 +90,13 @@ export const LandingPostView = ({
 
 const useGetPosts = ({
   page = 0,
-  positions,
+  roles,
   domains,
   isActive,
   order,
 }: {
   page?: number;
-  positions?: JobMinorCategory[];
+  roles?: JobMinorCategory[];
   domains?: Domain[];
   isActive?: boolean;
   order?: 0 | 1;
@@ -109,7 +109,7 @@ const useGetPosts = ({
       'postService',
       'getPosts',
       page,
-      positions,
+      roles,
       isActive,
       order,
       domains,
@@ -117,7 +117,7 @@ const useGetPosts = ({
     queryFn: async () => {
       return postService.getPosts({
         page,
-        positions,
+        roles,
         isActive,
         token,
         order,

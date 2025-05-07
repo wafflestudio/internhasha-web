@@ -71,17 +71,17 @@ export const CompanyCoffeeChatListView = ({
             )}
             <div
               key={coffeeChat.id}
-              className="relative flex h-[50px] flex-1 cursor-pointer items-center justify-between rounded-xl bg-white px-4 px-6 duration-300 hover:shadow-md"
+              className="relative ml-2 flex flex-1 cursor-pointer items-center justify-between rounded-xl bg-white px-6 py-4 duration-300 hover:shadow-md max-xs:flex-col max-xs:items-start max-xs:gap-0 max-xs:px-4 max-xs:py-3"
               onClick={() => {
                 toCoffeeChatDetail({ coffeeChatId: coffeeChat.id });
               }}
             >
               {coffeeChat.coffeeChatStatus === 'WAITING' && !isSelectMode && (
-                <div className="absolute left-[-5px] top-[20px]">
+                <div className="absolute left-[-5px] top-[25px] max-xs:top-[35px]">
                   <img src={ICON_SRC.BADGES} />
                 </div>
               )}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 max-xs:justify-start">
                 <span className="truncate text-14 font-regular text-grey-900">
                   {coffeeChat.applicant.name}
                 </span>
@@ -89,7 +89,7 @@ export const CompanyCoffeeChatListView = ({
                   {coffeeChat.positionType}
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-13 font-regular">
+              <div className="flex items-center gap-2 text-13 font-regular max-xs:w-full max-xs:justify-end">
                 <span className="text-grey-400">
                   {getShortenedDate(coffeeChat.createdAt)}
                 </span>

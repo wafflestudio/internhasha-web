@@ -5,22 +5,25 @@ export type JobMajorCategory =
   | 'DEVELOPMENT'
   | 'DESIGN'
   | 'PLANNER'
-  | 'MARKETING';
+  | 'MARKETING'
+  | 'HUMANRESOURCE';
 
 type JobMinorCategoryMap = {
-  DEVELOPMENT: 'FRONT' | 'APP' | 'BACKEND' | 'DATA' | 'OTHERS';
+  DEVELOPMENT: 'FRONT' | 'APP' | 'BACKEND' | 'DATA' | 'AI' | 'GAME' | 'OTHERS';
   DESIGNER: 'DESIGN';
   PLANNER: 'PLANNER';
   MARKETING: 'MARKETING';
+  HUMANRESOURCE: 'HUMANRESOURCE';
 };
 
 export type JobMinorCategory = JobMinorCategoryMap[keyof JobMinorCategoryMap];
 
 export const JOB_CATEGORY_MAP: Record<JobMajorCategory, JobMinorCategory[]> = {
-  DEVELOPMENT: ['FRONT', 'APP', 'BACKEND', 'DATA', 'OTHERS'],
+  DEVELOPMENT: ['FRONT', 'APP', 'BACKEND', 'DATA', 'AI', 'GAME', 'OTHERS'],
   DESIGN: ['DESIGN'],
   PLANNER: ['PLANNER'],
   MARKETING: ['MARKETING'],
+  HUMANRESOURCE: ['HUMANRESOURCE'],
 };
 
 export const JOB_MAJOR_CATEGORIES = Object.keys(JOB_CATEGORY_MAP);
@@ -28,7 +31,7 @@ export const JOB_MAJOR_CATEGORIES = Object.keys(JOB_CATEGORY_MAP);
 export type Series = 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
 
 export type PostFilter = {
-  positions?: JobMinorCategory[];
+  roles?: JobMinorCategory[];
   isActive?: boolean;
   domains?: Domain[];
   order?: 0 | 1;

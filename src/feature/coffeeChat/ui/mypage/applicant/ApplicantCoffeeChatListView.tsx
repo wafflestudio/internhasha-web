@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { TagStatus } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
 import { ICON_SRC } from '@/entities/asset';
+import { ApplicantCoffeeChatListSkeleton } from '@/feature/coffeeChat/ui/mypage/applicant/ApplicantCoffeeChatListSkeleton';
 import { ApplicantNoCoffeeChat } from '@/feature/coffeeChat/ui/mypage/applicant/ApplicantNoCoffeeChat';
 import { CoffeeChatInfo } from '@/feature/coffeeChat/ui/mypage/common/CoffeeChatInfo';
 import { useGuardContext } from '@/shared/context/hooks';
@@ -36,7 +36,7 @@ export const ApplicantCoffeeChatListView = () => {
           coffeeChatListData.data.coffeeChatList.map((coffeeChat) => (
             <div
               key={coffeeChat.id}
-              className="relative flex h-[50px] cursor-pointer items-center justify-between rounded-xl bg-white px-6 duration-300 hover:shadow-md"
+              className="relative flex flex-row items-center justify-between rounded-xl bg-white px-6 py-4 duration-300 hover:shadow-md max-xs:flex-col max-xs:items-start max-xs:gap-0 max-xs:px-4 max-xs:py-3"
               onClick={() => {
                 toCoffeeChatDetail({ coffeeChatId: coffeeChat.id });
               }}
@@ -46,7 +46,7 @@ export const ApplicantCoffeeChatListView = () => {
                   <img src={ICON_SRC.BADGES} />
                 </div>
               )}
-              <div className="flex items-center gap-[10px]">
+              <div className="flex items-center gap-[10px] max-xs:justify-start">
                 <div className="h-[30px] w-[30px] rounded-md">
                   {coffeeChat.company.imageKey !== undefined ? (
                     <img
@@ -64,7 +64,7 @@ export const ApplicantCoffeeChatListView = () => {
                   {coffeeChat.company.name}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 max-xs:w-full max-xs:justify-end">
                 <span className="text-sm text-grey-300">
                   {getShortenedDate(coffeeChat.createdAt)}
                 </span>
@@ -89,17 +89,7 @@ export const ApplicantCoffeeChatListView = () => {
             </div>
           ))
         ) : (
-          <>
-            {Array.from({ length: 12 }).map((_, idx) => (
-              <div
-                key={`loading-${idx}`}
-                className="flex h-[50px] cursor-pointer items-center justify-between rounded-md bg-white px-[24px]"
-              >
-                <Skeleton className="h-[18px] w-[350px]" />
-                <Skeleton className="h-6 w-[80px]" />
-              </div>
-            ))}
-          </>
+          <ApplicantCoffeeChatListSkeleton />
         )}
       </div>
     </div>

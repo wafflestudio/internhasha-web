@@ -60,7 +60,7 @@ export const ApplicantProfileInfo = ({
 
   return (
     <div className="flex flex-col gap-[28px]">
-      <section className="flex gap-[16px]">
+      <section className="flex flex-col gap-[16px] sm:flex-row">
         {imageKey !== undefined ? (
           <ThumbnailWithPresignedUrl s3Key={imageKey} type="USER_THUMBNAIL" />
         ) : (
@@ -70,7 +70,7 @@ export const ApplicantProfileInfo = ({
           />
         )}
         <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center">
             <span className="text-26 font-bold">{name}</span>
             <span className="text-grey-500">{email}</span>
           </div>
@@ -99,7 +99,9 @@ export const ApplicantProfileInfo = ({
                   <span className="text-16 font-bold text-grey-800">
                     희망 직무
                   </span>
-                  <p className="font-regular">{positions.join(' ∙ ')}</p>
+                  <p className="whitespace-pre-wrap font-regular">
+                    {positions.join(' ∙ ')}
+                  </p>
                 </div>
               )}
 
@@ -108,7 +110,7 @@ export const ApplicantProfileInfo = ({
                   <span className="text-16 font-bold text-grey-800">
                     기술 스택
                   </span>
-                  <div className="flex gap-[6px]">
+                  <div className="flex flex-wrap gap-[6px]">
                     {stacks.map((stack) => (
                       <Badge variant="outline" key={`stack-${stack}`}>
                         {stack}

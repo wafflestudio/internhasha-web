@@ -39,7 +39,40 @@ export const ModalFloatBackground = ({
       onClick={onOutSlideClick}
     >
       <div
-        className={`flex w-full max-w-sm flex-col gap-[60px] rounded-2xl bg-white p-6 pt-[40px] text-center shadow-lg ${isVisible === undefined || isVisible ? 'animate-popup' : 'animate-popout'}`}
+        className={cn(
+          'flex w-full max-w-[408px] flex-col gap-[40px] rounded-2xl bg-white p-6 pt-[40px] text-center shadow-lg',
+          isVisible === undefined || isVisible
+            ? 'animate-popup'
+            : 'animate-popout',
+        )}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+
+export const ModalSelectBackground = ({
+  children,
+  variant,
+  isVisible,
+  onOutSlideClick,
+}: ModalProps) => {
+  return (
+    <div
+      className={cn(backgroundClassName({ variant }), 'p-4')}
+      onClick={onOutSlideClick}
+    >
+      <div
+        className={cn(
+          'flex w-full max-w-sm flex-col gap-[42px] rounded-2xl bg-white p-3.5 pt-[42px] text-center',
+          isVisible === undefined || isVisible
+            ? 'animate-popup'
+            : 'animate-popout',
+        )}
         onClick={(e) => {
           e.stopPropagation();
         }}

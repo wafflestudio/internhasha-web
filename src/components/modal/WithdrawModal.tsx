@@ -1,37 +1,36 @@
 import { Button } from '@/components/ui/button';
 import { ModalFloatBackground } from '@/components/ui/layout';
 import { useDialog } from '@/shared/modal/hooks';
-import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
-export const WriteProfileModal = ({ onClose }: { onClose: () => void }) => {
+export const WithdrawModal = ({
+  onClose,
+  onAction,
+}: {
+  onClose(): void;
+  onAction(): void;
+}) => {
   const { isVisible, handleClose: handleCancel } = useDialog({
     onClose,
   });
-  const { toCreateProfile } = useRouteNavigation();
-
   return (
     <ModalFloatBackground
       variant="transparent"
       isVisible={isVisible}
       onOutSlideClick={handleCancel}
+      className="text-grey-900"
     >
       <div className="flex flex-col gap-[14px] text-center">
-        <h2 className="text-18 font-bold">아직 프로필이 작성되지 않았어요!</h2>
+        <p className="text-18 font-bold">정말 탈퇴하시겠어요?</p>
         <p className="text-16 font-medium">
-          프로필을 작성해야 커피챗을 신청할 수 있어요.
+          탈퇴 시에는 가입했던 정보가 모두 삭제됩니다.
         </p>
       </div>
       <div className="flex gap-2">
         <Button variant="secondary" onClick={handleCancel} className="flex-1">
           뒤로가기
         </Button>
-        <Button
-          onClick={() => {
-            toCreateProfile({});
-          }}
-          className="flex-1"
-        >
-          프로필 작성하기
+        <Button variant="destructive" onClick={onAction} className="flex-1">
+          탈퇴하기
         </Button>
       </div>
     </ModalFloatBackground>

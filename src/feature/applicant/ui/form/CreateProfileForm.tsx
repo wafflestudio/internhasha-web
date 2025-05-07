@@ -311,7 +311,7 @@ export const CreateProfileForm = ({
         {responseMessage !== '' && (
           <FormErrorResponse>{responseMessage}</FormErrorResponse>
         )}
-        <div className="flex gap-2">
+        <div className="flex flex-col-reverse gap-2 sm:flex-row">
           <Button
             type="button"
             variant="secondary"

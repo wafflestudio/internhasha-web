@@ -13,7 +13,7 @@ export const NoCreatedPosts = ({ companyId }: { companyId: string }) => {
     <div className="flex flex-col items-center gap-6 gap-8 rounded-lg bg-white px-[44px] py-[48px] text-grey-900">
       <div className="flex items-center gap-1">
         <div className="w-[220px]">
-          <img src={ICON_SRC.SKELETON} className="object-fit" />
+          <img src={ICON_SRC.SKELETON} className="object-cover" />
         </div>
         <div className="flex w-[289px] flex-col gap-[10px] text-center">
           <h2 className="text-22 font-bold">아직 작성된 공고가 없어요!</h2>

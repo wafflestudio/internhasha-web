@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { ModalFloatBackground } from '@/components/ui/layout';
+import { ModalSelectBackground } from '@/components/ui/layout';
 import { useDialog } from '@/shared/modal/hooks';
 
 export const UpdateCoffeeChatStatusModal = ({
@@ -18,18 +18,18 @@ export const UpdateCoffeeChatStatusModal = ({
   });
 
   return (
-    <ModalFloatBackground
+    <ModalSelectBackground
       variant="transparent"
       isVisible={isVisible}
       onOutSlideClick={handleConfirm}
     >
-      <div className="flex flex-col pt-4 text-center">
-        <p className="text-14 font-regular text-grey-900">
+      <div className="flex flex-col text-center">
+        <p className="text-14 font-semibold text-grey-900">
           총 {selectedCount}개의 커피챗을{' '}
           {status === 'ACCEPTED' ? '성사시키' : '거절하'}시겠습니까?
         </p>
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-col-reverse gap-2 sm:flex-row">
         <Button variant="secondary" onClick={onClose} className="flex-1">
           뒤로 가기
         </Button>
@@ -37,6 +37,6 @@ export const UpdateCoffeeChatStatusModal = ({
           모두 {status === 'ACCEPTED' ? '성사하기' : '거절하기'}
         </Button>
       </div>
-    </ModalFloatBackground>
+    </ModalSelectBackground>
   );
 };
