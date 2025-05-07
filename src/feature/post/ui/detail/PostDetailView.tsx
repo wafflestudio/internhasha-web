@@ -34,7 +34,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   const { coffeeChatStatus } = useGetCoffeeChatStatus({ postId });
   const { applicantProfileResponse } = useGetApplicantProfile();
 
-  const { toMain, toCreateCoffeeChat, toCreatePost } = useRouteNavigation();
+  const { toBack, toCreateCoffeeChat, toCreatePost } = useRouteNavigation();
 
   const [showModal, setShowModal] = useState<
     | 'COFFEE_CHAT'
@@ -232,7 +232,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             <Button
               variant="outline"
               onClick={() => {
-                toMain({});
+                toBack();
               }}
             >
               목록으로
