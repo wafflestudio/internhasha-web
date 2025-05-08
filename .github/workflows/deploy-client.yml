@@ -37,4 +37,4 @@ jobs:
           AWS_REGION: ap-northeast-2
         run: |
           aws s3 sync ./dist s3://intern-hasha-client --delete
-          aws cloudfront create-invalidation --distribution-id ENNREX04O38RJ --paths "/*"
+          aws cloudfront create-invalidation --distribution-id E33POIFOFDK1OR --paths "/*"
