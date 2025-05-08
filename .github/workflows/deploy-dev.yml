@@ -39,5 +39,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ap-northeast-2
         run: |
-          aws s3 sync ./dist s3://intern-hasha-dev-client --delete
+          aws s3 sync ./dist s3://internhasha-dev --delete
           aws cloudfront create-invalidation --distribution-id E2A4HQWWKCBT4O --paths "/*"
