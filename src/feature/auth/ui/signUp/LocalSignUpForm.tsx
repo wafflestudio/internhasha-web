@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { TermsAgreementField } from '@/components/field/TermsAgreeField';
 import { FormContainer } from '@/components/form/FormContainer';
 import { LabelContainer } from '@/components/label/LabelContainer';
+import { InfoTermModal } from '@/components/modal/InformationTerm';
+import { ServiceTermModal } from '@/components/modal/ServiceTerm';
 import { ProgressBar } from '@/components/progressBar/ProgressBar';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
@@ -27,6 +29,9 @@ export const LocalSignUpForm = () => {
 
   const [isUsernameFocused, setIsUsernameFocused] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
+  const [showModal, setShowModal] = useState<
+    'SERVICE_TERM' | 'INFO_TERM' | 'NONE'
+  >('NONE');
 
   const signUpDisable =
     username.isError || password.isError || passwordConfirm.isError;
@@ -94,7 +99,10 @@ export const LocalSignUpForm = () => {
             placeholder="비밀번호를 한번 더 입력해주세요."
             formError="비밀번호가 일치하지 않습니다."
           />
-          <TermsAgreementField agreements={agreements} />
+          <TermsAgreementField
+            agreements={agreements}
+            setShowModal={setShowModal}
+          />
         </div>
         <div>
           {responseMessage !== '' && (
@@ -105,6 +113,20 @@ export const LocalSignUpForm = () => {
           다음
         </Button>
       </FormContainer>
+      {showModal === 'INFO_TERM' && (
+        <InfoTermModal
+          onClose={() => {
+            setShowModal('NONE');
+          }}
+        />
+      )}
+      {showModal === 'SERVICE_TERM' && (
+        <ServiceTermModal
+          onClose={() => {
+            setShowModal('NONE');
+          }}
+        />
+      )}
     </>
   );
 };

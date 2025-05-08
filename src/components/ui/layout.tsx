@@ -78,6 +78,7 @@ export const ModalSelectBackground = ({
   children,
   variant,
   isVisible,
+  className,
   onOutSlideClick,
 }: ModalProps) => {
   return (
@@ -91,6 +92,7 @@ export const ModalSelectBackground = ({
           isVisible === undefined || isVisible
             ? 'animate-popup'
             : 'animate-popout',
+          className,
         )}
         onClick={(e) => {
           e.stopPropagation();

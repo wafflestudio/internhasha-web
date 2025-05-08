@@ -5,8 +5,10 @@ import type { Input } from '@/entities/input';
 
 export const TermsAgreementField = ({
   agreements,
+  setShowModal,
 }: {
   agreements: Input<Agreement[]>;
+  setShowModal: (input: 'SERVICE_TERM' | 'INFO_TERM' | 'NONE') => void;
 }) => {
   const isAllChecked = agreements.value.every((item) => item.checked);
 
@@ -23,6 +25,19 @@ export const TermsAgreementField = ({
 
   const handleAllCheck = (checked: boolean) => {
     agreements.onChange(agreements.value.map((item) => ({ ...item, checked })));
+  };
+
+  const navigateTerms = (input: string) => {
+    switch (input) {
+      case 'terms-service':
+        setShowModal('SERVICE_TERM');
+        return;
+      case 'terms-info':
+        setShowModal('INFO_TERM');
+        return;
+      default:
+        setShowModal('NONE');
+    }
   };
 
   return (
@@ -65,6 +80,9 @@ export const TermsAgreementField = ({
             <button
               type="button"
               className="text-sm text-blue-500 hover:underline"
+              onClick={() => {
+                navigateTerms(agreement.id);
+              }}
             >
               약관 보기
             </button>
