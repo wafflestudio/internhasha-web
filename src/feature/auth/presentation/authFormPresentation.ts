@@ -1,3 +1,4 @@
+import type { Agreement } from '@/entities/agreements';
 import type {
   Input,
   InputForForm,
@@ -49,6 +50,7 @@ type AuthFormPresentation = {
       newPasswordConfirm: Input<string>;
       code: Input<string>;
       emailVerifySuccessCode: Input<string>;
+      agreements: Input<Agreement[]>;
     };
     formStates: {
       snuMail: InputForForm<string>;
@@ -58,6 +60,7 @@ type AuthFormPresentation = {
       newPassword: Input<string>;
       code: InputForForm<string>;
       emailVerifySuccessCode: InputForForm<string>;
+      agreements: InputForForm<Agreement[]>;
     };
   };
 };
@@ -85,6 +88,7 @@ export const authFormPresentation: AuthFormPresentation = {
       newPasswordConfirm,
       code,
       emailVerifySuccessCode,
+      agreements,
     } = authInputPresentation.useValidator({
       initialState: initialStateForInput,
     });
@@ -100,6 +104,7 @@ export const authFormPresentation: AuthFormPresentation = {
         newPasswordConfirm,
         code,
         emailVerifySuccessCode,
+        agreements,
       },
       formStates: {
         snuMail: {
@@ -117,6 +122,12 @@ export const authFormPresentation: AuthFormPresentation = {
         emailVerifySuccessCode: {
           ...emailVerifySuccessCode,
           isError: emailVerifySuccessCode.value.length === 0,
+        },
+        agreements: {
+          ...agreements,
+          isError: agreements.value
+            .filter((agreement) => agreement.required)
+            .some((agreement) => !agreement.checked),
         },
       },
     };
