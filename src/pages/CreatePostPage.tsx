@@ -1,4 +1,4 @@
-import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
+import { PageLayout } from '@/components/ui/layout';
 import type { PostRouteQuery } from '@/entities/route';
 import { CreatePostForm, PatchPostForm } from '@/feature/post';
 import { PATH } from '@/shared/route/constants';
@@ -17,8 +17,7 @@ export const CreatePostPage = () => {
   }
 
   return (
-    <div className="min-h-screen">
-      <GlobalNavigationBar />
+    <PageLayout className="bg-white">
       <div className="mx-auto my-[30px] flex w-[280px] flex-col justify-center gap-[50px] sm:w-[700px]">
         {body !== undefined ? (
           <>
@@ -32,6 +31,6 @@ export const CreatePostPage = () => {
           </>
         )}
       </div>
-    </div>
+    </PageLayout>
   );
 };

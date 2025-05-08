@@ -2,6 +2,7 @@ import type { VariantProps } from 'class-variance-authority';
 import { cva } from 'class-variance-authority';
 import type { ReactNode } from 'react';
 
+import { Footer } from '@/components/footer/Footer';
 import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
 import { cn } from '@/lib/utils';
 
@@ -26,6 +27,24 @@ export interface ModalProps
   isVisible?: boolean;
   onOutSlideClick?: () => void;
 }
+
+export const PageLayout = ({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) => {
+  return (
+    <>
+      <div className={cn('min-h-screen bg-grey-50', className)}>
+        <GlobalNavigationBar />
+        {children}
+      </div>
+      <Footer />
+    </>
+  );
+};
 
 export const ModalFloatBackground = ({
   children,

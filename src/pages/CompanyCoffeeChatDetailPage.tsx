@@ -1,4 +1,4 @@
-import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
+import { PageLayout } from '@/components/ui/layout';
 import { CompanyCoffeeChatDetailView } from '@/feature/coffeeChat';
 import { PATH } from '@/shared/route/constants';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
@@ -12,9 +12,8 @@ export const CompanyCoffeeChatDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-grey-50">
-      <GlobalNavigationBar />
+    <PageLayout>
       <CompanyCoffeeChatDetailView coffeeChatId={coffeeChatId} />
-    </div>
+    </PageLayout>
   );
 };
