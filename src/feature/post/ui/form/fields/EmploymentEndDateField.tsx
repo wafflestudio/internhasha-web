@@ -41,8 +41,9 @@ export const EmploymentEndDateField = ({
   return (
     <LabelContainer label={label} required={required}>
       <div className="relative">
+        {/* 넓은 화면에서의 캘린더 */}
         <div
-          className={`absolute bottom-0 left-0 mt-2 w-[340px] overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-300 ${
+          className={`absolute bottom-0 left-0 mt-2 hidden overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-300 backdrop:w-[340px] sm:block ${
             showFilter === 'CALENDAR'
               ? 'scale-100 opacity-100'
               : 'pointer-events-none opacity-0'
@@ -67,6 +68,36 @@ export const EmploymentEndDateField = ({
               );
               onClick();
             }}
+          />
+        </div>
+        {/* 모바일 화면에서의 캘린더 */}
+        <div
+          className={`absolute bottom-0 left-0 mt-2 block w-full overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-300 backdrop:max-w-[340px] sm:hidden ${
+            showFilter === 'CALENDAR'
+              ? 'scale-100 opacity-100'
+              : 'pointer-events-none opacity-0'
+          }`}
+        >
+          <Calendar
+            mode="single"
+            disabled={isPending}
+            selected={new Date(input.value)}
+            onSelect={(value: Date | undefined) => {
+              input.onChange(
+                value !== undefined
+                  ? new Date(value)
+                      .toLocaleDateString('ko-KR', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                      })
+                      .replace(/\. /g, '-')
+                      .replace('.', '')
+                  : '',
+              );
+              onClick();
+            }}
+            variant="small"
           />
         </div>
       </div>

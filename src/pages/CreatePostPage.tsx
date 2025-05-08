@@ -19,7 +19,7 @@ export const CreatePostPage = () => {
   return (
     <div className="min-h-screen">
       <GlobalNavigationBar />
-      <div className="mx-auto my-[30px] flex w-[280px] flex-col justify-center gap-[50px] sm:w-[700px]">
+      <div className="mx-auto my-[30px] flex w-full flex-col justify-center gap-[50px] px-4 sm:w-screen-sm">
         {body !== undefined ? (
           <>
             <h2 className="text-30 font-bold text-grey-900">인턴 공고 수정</h2>
