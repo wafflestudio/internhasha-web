@@ -41,7 +41,7 @@ type CreateApplicantProfileRequest = {
   explanation?: string;
   stacks?: string[];
   imageKey?: string;
-  cvKey?: string;
+  cvKey: string;
   portfolioKey?: string;
   links?: Link[];
 };
@@ -145,6 +145,10 @@ export const CreateProfileForm = ({
       return;
     }
 
+    if (cvPreview.value === null) {
+      return;
+    }
+
     handleCreateApplicantProfile({
       applicantInfo: {
         enrollYear: formStates.enrollYear.value,
@@ -157,7 +161,7 @@ export const CreateProfileForm = ({
       },
       imagePreview:
         imagePreview.value !== null ? imagePreview.value.file : null,
-      cvPreview: cvPreview.value !== null ? cvPreview.value.file : null,
+      cvPreview: cvPreview.value.file,
       portfolioPreview:
         portfolioPreview.value !== null ? portfolioPreview.value.file : null,
     })
@@ -209,6 +213,15 @@ export const CreateProfileForm = ({
           minorPlaceholder="다전공 학과명을 입력해주세요. (예시: 컴퓨터공학부, 경제학부 등)"
           errorMessage="희망 직무는 10개 이하로 중복되지 않게 입력해주세요."
           inputErrorMessage="중복되지 않는 100자 이내의 직무명을 작성해주세요."
+          required={true}
+        />
+        <PdfField
+          label="이력서 (CV)"
+          input={cvPreview}
+          isPending={isPending}
+          isSubmit={isSubmit}
+          isSubmitError={formStates.cvPreview.isError}
+          errorMessage="5MB 이하의 PDF 파일을 올려주세요."
           required={true}
         />
 
@@ -276,14 +289,6 @@ export const CreateProfileForm = ({
           isSubmitError={imagePreview.isError}
           errorMessage="1MB 이하의 이미지 파일을 올려주세요."
           infoMessage="회사 썸네일 이미지는 정사각형 비율(1:1)로 보여져요."
-        />
-        <PdfField
-          label="이력서 (CV)"
-          input={cvPreview}
-          isPending={isPending}
-          isSubmit={isSubmit}
-          isSubmitError={cvPreview.isError}
-          errorMessage="5MB 이하의 PDF 파일을 올려주세요."
         />
         <PdfField
           label="포트폴리오 (디자이너용)"
@@ -399,7 +404,7 @@ const useCreateApplicantProfileWithUploads = ({
       'imageKey' | 'cvKey' | 'portfolioKey'
     >;
     imagePreview: File | null;
-    cvPreview: File | null;
+    cvPreview: File;
     portfolioPreview: File | null;
   }) => {
     try {
@@ -416,12 +421,10 @@ const useCreateApplicantProfileWithUploads = ({
               fileType: 'USER_THUMBNAIL',
             })
           : Promise.resolve(null),
-        cvPreview !== null
-          ? getPresignedUrl({
-              fileName: cvPreview.name,
-              fileType: 'CV',
-            })
-          : Promise.resolve(null),
+        getPresignedUrl({
+          fileName: cvPreview.name,
+          fileType: 'CV',
+        }),
         portfolioPreview !== null
           ? getPresignedUrl({
               fileName: portfolioPreview.name,
@@ -432,7 +435,7 @@ const useCreateApplicantProfileWithUploads = ({
 
       if (
         applicantThumbnailPresignedUrlResponse?.type === 'error' ||
-        cvPresignedUrlResponse?.type === 'error' ||
+        cvPresignedUrlResponse.type === 'error' ||
         portfolioPresignedUrlResponse?.type === 'error'
       ) {
         setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
@@ -450,12 +453,10 @@ const useCreateApplicantProfileWithUploads = ({
               file: imagePreview !== null ? imagePreview : undefined,
             })
           : null,
-        cvPresignedUrlResponse !== null
-          ? uploadFile({
-              presignedUrl: cvPresignedUrlResponse.data.url,
-              file: cvPreview !== null ? cvPreview : undefined,
-            })
-          : null,
+        uploadFile({
+          presignedUrl: cvPresignedUrlResponse.data.url,
+          file: cvPreview,
+        }),
         portfolioPresignedUrlResponse !== null
           ? uploadFile({
               presignedUrl: portfolioPresignedUrlResponse.data.url,
@@ -466,7 +467,7 @@ const useCreateApplicantProfileWithUploads = ({
 
       if (
         applicantThumbnailUploadResponse?.type === 'error' ||
-        cvUploadResponse?.type === 'error' ||
+        cvUploadResponse.type === 'error' ||
         portfolioUploadResponse?.type === 'error'
       ) {
         setResponseMessage('업로드 과정에서 오류가 발생했습니다.');
@@ -480,10 +481,7 @@ const useCreateApplicantProfileWithUploads = ({
             applicantThumbnailPresignedUrlResponse !== null
               ? applicantThumbnailPresignedUrlResponse.data.s3Key
               : undefined,
-          cvKey:
-            cvPresignedUrlResponse !== null
-              ? cvPresignedUrlResponse.data.s3Key
-              : undefined,
+          cvKey: cvPresignedUrlResponse.data.s3Key,
           portfolioKey:
             portfolioPresignedUrlResponse !== null
               ? portfolioPresignedUrlResponse.data.s3Key

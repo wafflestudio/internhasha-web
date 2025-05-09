@@ -138,7 +138,7 @@ export type Applicant = {
   explanation?: string;
   stacks?: string[];
   imageKey?: string;
-  cvKey?: string;
+  cvKey: string;
   portfolioKey?: string;
   links?: Link[];
 };
@@ -300,7 +300,7 @@ export type PutApplicantRequest = {
   explanation?: string;
   stacks?: string[];
   imageKey?: string;
-  cvKey?: string;
+  cvKey: string;
   portfolioKey?: string;
   links?: Link[];
 };

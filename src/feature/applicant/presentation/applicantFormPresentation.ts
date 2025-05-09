@@ -180,7 +180,10 @@ export const applicantFormPresentation: ApplicantFormPresentation = {
           value: filteredLinks.length !== 0 ? filteredLinks : undefined,
         },
         imagePreview,
-        cvPreview,
+        cvPreview: {
+          isError: cvPreview.isError || cvPreview.value === null,
+          value: cvPreview.value,
+        },
         portfolioPreview,
       },
     };

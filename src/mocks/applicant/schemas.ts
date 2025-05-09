@@ -14,7 +14,7 @@ export type Applicant = {
   explanation?: string;
   stacks?: string[];
   imageKey?: string;
-  cvKey?: string;
+  cvKey: string;
   portfolioKey?: string;
   links?: Link[];
 };
