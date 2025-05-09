@@ -29,7 +29,7 @@ export const PasswordField = ({
             password.onChange(e.target.value);
           }}
           placeholder={placeholder}
-          className="relative"
+          className="relative pr-10"
         />
         <button
           onClick={(e) => {

@@ -54,12 +54,12 @@ export const ModalFloatBackground = ({
 }: ModalProps) => {
   return (
     <div
-      className={cn(backgroundClassName({ variant }))}
+      className={cn(backgroundClassName({ variant }), 'p-9 xs:p-0')}
       onClick={onOutSlideClick}
     >
       <div
         className={cn(
-          'flex w-full max-w-[408px] flex-col gap-[40px] rounded-2xl bg-white p-6 pt-[40px] text-center shadow-lg',
+          'flex w-full flex-col gap-[40px] rounded-2xl bg-white p-6 pt-[40px] text-center shadow-lg xs:max-w-[408px]',
           isVisible === undefined || isVisible
             ? 'animate-popup'
             : 'animate-popout',
@@ -83,12 +83,12 @@ export const ModalSelectBackground = ({
 }: ModalProps) => {
   return (
     <div
-      className={cn(backgroundClassName({ variant }), 'p-4')}
+      className={cn(backgroundClassName({ variant }), 'p-9 xs:p-4')}
       onClick={onOutSlideClick}
     >
       <div
         className={cn(
-          'flex w-full max-w-sm flex-col gap-[42px] rounded-2xl bg-white p-3.5 pt-[42px] text-center',
+          'flex w-full flex-col gap-[42px] rounded-2xl bg-white p-3.5 pt-[42px] text-center xs:max-w-sm',
           isVisible === undefined || isVisible
             ? 'animate-popup'
             : 'animate-popout',
@@ -116,11 +116,11 @@ export const ModalBackgroundWithHeader = ({
       <GlobalNavigationBar />
       <div
         className={cn(
-          'flex flex-1 flex-col items-center justify-center bg-grey-50',
+          'flex flex-1 flex-col items-center justify-center bg-grey-50 px-9 xs:px-0',
           className,
         )}
       >
-        <div className="flex w-full max-w-md flex-col gap-5 rounded-2xl bg-white px-[34px] pb-[30px] pt-10 shadow-md">
+        <div className="flex w-full flex-col gap-5 rounded-2xl bg-white px-5 pb-[30px] pt-10 shadow-md xs:max-w-md xs:px-[34px]">
           {children}
         </div>
       </div>
