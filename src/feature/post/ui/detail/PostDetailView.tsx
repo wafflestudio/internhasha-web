@@ -7,6 +7,7 @@ import { LinkButton } from '@/components/button/LinkButton';
 import { ClosePostModal } from '@/components/modal/ClosePostModal';
 import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal';
 import { SignInForCoffeeChatModal } from '@/components/modal/SignInForCoffeChatModal';
+import { WriteProfileModal } from '@/components/modal/WriteProfileModal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { MarkdownPreview } from '@/components/ui/markdown-preview';
@@ -17,7 +18,6 @@ import {
   formatEmploymentState,
 } from '@/feature/post/presentation/postFormatPresentation';
 import { SkeletonPostDetailView } from '@/feature/post/ui/detail/SkeletonPostDetailView';
-import { WriteProfileModal } from '@/feature/post/ui/modal/WriteProfileModal';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
