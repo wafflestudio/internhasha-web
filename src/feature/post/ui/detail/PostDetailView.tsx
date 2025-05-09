@@ -17,7 +17,6 @@ import {
   formatEmploymentState,
 } from '@/feature/post/presentation/postFormatPresentation';
 import { SkeletonPostDetailView } from '@/feature/post/ui/detail/SkeletonPostDetailView';
-import { WriteCVModal } from '@/feature/post/ui/modal/WriteCVModal';
 import { WriteProfileModal } from '@/feature/post/ui/modal/WriteProfileModal';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -40,12 +39,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
   const { toBack, toCreateCoffeeChat, toCreatePost } = useRouteNavigation();
 
   const [showModal, setShowModal] = useState<
-    | 'COFFEE_CHAT'
-    | 'BOOKMARK'
-    | 'NONE'
-    | 'CLOSE_POST'
-    | 'NEED_PROFILE'
-    | 'NEED_CV'
+    'COFFEE_CHAT' | 'BOOKMARK' | 'NONE' | 'CLOSE_POST' | 'NEED_PROFILE'
   >('NONE');
   const [modalMessage, setModalMessage] = useState('');
   const closeModal = () => {
@@ -106,13 +100,6 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
         applicantProfileResponse.code === 'APPLICANT_002'
       ) {
         setShowModal('NEED_PROFILE');
-        return;
-      }
-      if (
-        applicantProfileResponse?.type === 'success' &&
-        applicantProfileResponse.data.cvKey === undefined
-      ) {
-        setShowModal('NEED_CV');
         return;
       }
     }
@@ -425,9 +412,6 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
       )}
       {showModal === 'NEED_PROFILE' && (
         <WriteProfileModal onClose={closeModal} />
-      )}
-      {showModal === 'NEED_CV' && (
-        <WriteCVModal onClose={closeModal} postId={postId} />
       )}
     </div>
   );

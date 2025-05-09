@@ -87,7 +87,6 @@ export const ApplicantProfileInfo = ({
       {((positions !== undefined && positions.length !== 0) ||
         (stacks !== undefined && stacks.length !== 0) ||
         explanation !== undefined ||
-        cvKey !== undefined ||
         portfolioKey !== undefined) && (
         <>
           <SeperatorLine />
@@ -129,21 +128,18 @@ export const ApplicantProfileInfo = ({
                 </div>
               )}
 
-              {cvKey !== undefined && (
-                <div className="flex flex-col gap-2">
-                  <span className="text-16 font-bold text-grey-800">
-                    이력서
-                  </span>
-                  <DownloadButtonWithPresignedUrl
-                    s3Key={cvKey}
-                    type="CV"
-                    fileName={`${name}_이력서.pdf`}
-                  >
-                    <img src={ICON_SRC.DOWNLOAD} className="h-5 w-5" />
-                    PDF 다운로드
-                  </DownloadButtonWithPresignedUrl>
-                </div>
-              )}
+              <div className="flex flex-col gap-2">
+                <span className="text-16 font-bold text-grey-800">이력서</span>
+                <DownloadButtonWithPresignedUrl
+                  s3Key={cvKey}
+                  type="CV"
+                  fileName={`${name}_이력서.pdf`}
+                >
+                  <img src={ICON_SRC.DOWNLOAD} className="h-5 w-5" />
+                  PDF 다운로드
+                </DownloadButtonWithPresignedUrl>
+              </div>
+
               {portfolioKey !== undefined && (
                 <div className="flex flex-col gap-2">
                   <span className="text-16 font-bold text-grey-800">
