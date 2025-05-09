@@ -188,20 +188,18 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               </Badge>
             </div>
           </div>
-          <div className="flex flex-row flex-wrap gap-3 md:flex-col">
+          <div className="flex flex-col flex-wrap gap-3 xs:flex-row md:flex-col">
             {role !== 'COMPANY' && (
-              <div className="flex flex-col gap-3">
-                <Button
-                  onClick={() => {
-                    handleClickApplyCoffeeChat({ id: postId });
-                  }}
-                  disabled={coffeeChatStatus?.isSubmitted}
-                >
-                  {(coffeeChatStatus?.isSubmitted ?? false)
-                    ? '커피챗 신청완료'
-                    : '커피챗 신청하기'}
-                </Button>
-              </div>
+              <Button
+                onClick={() => {
+                  handleClickApplyCoffeeChat({ id: postId });
+                }}
+                disabled={coffeeChatStatus?.isSubmitted}
+              >
+                {(coffeeChatStatus?.isSubmitted ?? false)
+                  ? '커피챗 신청완료'
+                  : '커피챗 신청하기'}
+              </Button>
             )}
             {author.id === userId && (
               <Button

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
+import { Information } from '@/components/information/Information';
 import { CancelCoffeeChatCancelModal } from '@/components/modal/CancelCoffeeChatCancelModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { TagStatus } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { SeperatorLine } from '@/components/ui/separator';
-import { ICON_SRC } from '@/entities/asset';
 import { SkeletonCoffeeChatDetailView } from '@/feature/coffeeChat/ui/detail/SkeletonCoffeeChatDetailView';
 import {
   useGetCoffeeChatDetail,
@@ -52,13 +52,12 @@ export const CoffeeChatDetailView = ({
         <div className="mt-10 flex w-full flex-col gap-[30px] rounded-lg bg-white px-[40px] py-[46px] text-grey-900">
           {/* 커피챗 성사 시 부연설명 */}
           {coffeeChatStatus === 'ACCEPTED' && (
-            <div className="flex gap-2 bg-grey-50 p-4 text-13 font-light">
-              <img src={ICON_SRC.INFO} className="mt-0.5 h-4 w-4" />
+            <Information>
               <span>
                 커피챗이 성사되었습니다. 회사에서 메일이 올 예정이니 잠시만
                 기다려주세요.
               </span>
-            </div>
+            </Information>
           )}
           {/* 회사 정보 */}
           <div className="flex flex-col gap-[14px]">

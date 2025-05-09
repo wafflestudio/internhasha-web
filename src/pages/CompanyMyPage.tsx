@@ -120,7 +120,7 @@ export const CompanyMyPage = () => {
         className="block w-full sm:hidden"
       >
         <div className="flex flex-col gap-[30px]">
-          <TabsList className="align flex" size="small">
+          <TabsList className="align flex gap-3" size="small">
             <TabsTrigger value="COFFEE_CHAT" className="gap-1" size="small">
               <div className="flex flex-col gap-1">
                 <span>나에게 신청된</span>

@@ -41,11 +41,9 @@ export const PatchPostForm = ({
     'NONE',
   );
   const [responseMessage, setResponseMessage] = useState('');
-  const [disableSalary, setDisableSalary] = useState(
-    body.salary === null ? true : false,
-  );
+  const [disableSalary, setDisableSalary] = useState(body.salary === null);
   const [disableEmploymentEndDate, setDisableEmploymentEndDate] = useState(
-    body.employmentEndDateTime === null ? true : false,
+    body.employmentEndDateTime === null,
   );
   const { toMain } = useRouteNavigation();
 

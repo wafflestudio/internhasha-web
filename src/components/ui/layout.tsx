@@ -116,7 +116,7 @@ export const ModalBackgroundWithHeader = ({
       <GlobalNavigationBar />
       <div
         className={cn(
-          'flex flex-1 flex-col items-center justify-center bg-grey-50 px-9 xs:px-0',
+          'flex flex-1 flex-col items-center justify-center bg-grey-50 px-3 xs:px-0',
           className,
         )}
       >

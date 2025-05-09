@@ -60,8 +60,11 @@ export const TermsAgreementField = ({
 
       <div className="flex flex-col gap-3 pl-1">
         {agreements.value.map((agreement) => (
-          <div key={agreement.id} className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
+          <div
+            key={agreement.id}
+            className="flex flex-col items-end justify-between gap-2 sm:flex-row sm:items-center"
+          >
+            <div className="flex w-full items-center space-x-2 sm:w-fit">
               <Checkbox
                 id={agreement.id}
                 checked={agreement.checked}

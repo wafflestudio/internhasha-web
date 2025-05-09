@@ -1,5 +1,5 @@
+import { Information } from '@/components/information/Information';
 import { ModalBackgroundWithHeader } from '@/components/ui/layout';
-import { ICON_SRC } from '@/entities/asset';
 import { LocalSignUpForm } from '@/feature/auth';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
@@ -10,12 +10,11 @@ export const SignUpPage = () => {
     <ModalBackgroundWithHeader className="py-[50px]">
       <div className="flex flex-col gap-[46px]">
         <h2 className="text-center text-22 font-bold">회원가입</h2>
-        <div className="flex gap-2 bg-grey-50 p-4 text-13 font-light">
-          <img src={ICON_SRC.INFO} className="mt-0.5 h-4 w-4" />
+        <Information>
           <span>
             학생 회원가입 페이지입니다. 회사 계정은 인턴하샤에서 발급해드립니다.
           </span>
-        </div>
+        </Information>
         <LocalSignUpForm />
         <div className="text-center">
           <p className="text-sm text-grey-300">

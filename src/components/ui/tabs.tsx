@@ -10,11 +10,11 @@ const tabsListClassName = cva('flex text-14 font-regular text-grey-900', {
   variants: {
     variant: {
       default: '',
-      button: 'flex gap-[8px] rounded-[10px] bg-grey-50 p-[6px]',
+      button: 'flex gap-2 rounded-[10px] bg-grey-50 p-1.5',
     },
     size: {
       default: 'gap-8',
-      small: 'gap-4',
+      small: 'gap-1 sm:gap-4',
     },
   },
   defaultVariants: {

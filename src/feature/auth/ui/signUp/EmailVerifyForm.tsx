@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 
 import { FormContainer } from '@/components/form/FormContainer';
+import { Information } from '@/components/information/Information';
 import { LabelContainer } from '@/components/label/LabelContainer';
 import { ProgressBar } from '@/components/progressBar/ProgressBar';
 import {
@@ -56,7 +57,8 @@ export const EmailVerifyForm = () => {
     isPending: isPendingLocalSignUp,
   } = useLocalSignUp({ setShowModal });
 
-  const sendCodeDisable = snuMailPrefix.isError;
+  const sendCodeDisable =
+    snuMailPrefix.isError || (sendSuccess && !isCodeExpired);
   const verifyEmailDisable =
     snuMailPrefix.isError || !sendSuccess || code.isError || verifySuccess;
   const signUpDisable =
@@ -106,6 +108,11 @@ export const EmailVerifyForm = () => {
     <>
       <FormContainer id="EmailVerifyForm" handleSubmit={onSubmit}>
         <ProgressBar totalProgress={2} present={2} />
+        <Information>
+          <span>
+            인증 코드 메일이 전송되지 않은 경우, 스팸메일함을 확인해주세요.
+          </span>
+        </Information>
         <LabelContainer label="이메일" id="email">
           <div className="flex flex-col gap-2 xs:flex-row xs:items-center">
             <div className="relative flex w-full items-center gap-1">
@@ -154,7 +161,7 @@ export const EmailVerifyForm = () => {
                   disabled={isPending}
                 />
                 {timeLeft !== null && !verifySuccess && (
-                  <div className="absolute left-[275px] top-[9px] xs:left-[210px]">
+                  <div className="absolute right-4 top-[11px] xs:left-[210px]">
                     <FormErrorResponse>
                       {formatNumberToTime({ time: timeLeft })}
                     </FormErrorResponse>
