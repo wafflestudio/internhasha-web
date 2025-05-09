@@ -19,12 +19,12 @@ export const CoffeeChatNumberBadge = ({
     return null;
   }
   return (
-    <button
-      className="float-end ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-red text-11 font-medium text-white no-underline data-[state=active]:no-underline"
+    <span
+      className="float-end flex h-4 w-4 items-center justify-center rounded-full bg-red text-11 font-medium text-white no-underline data-[state=active]:no-underline"
       onClick={onClick}
     >
       {coffeeChatCountData.data.num >= 10 ? '9+' : coffeeChatCountData.data.num}
-    </button>
+    </span>
   );
 };
 const useGetCoffeeChatCount = () => {
