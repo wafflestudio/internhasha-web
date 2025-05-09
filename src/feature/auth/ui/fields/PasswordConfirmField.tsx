@@ -38,6 +38,7 @@ export const PasswordConfirmField = ({
             password.onChange(e.target.value);
           }}
           placeholder={placeholder}
+          className="pr-10"
         />
         <button
           onClick={(e) => {

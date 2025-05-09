@@ -68,7 +68,7 @@ export const PasswordFieldWithDetailedError = ({
             setIsPasswordFocused(true);
           }}
           placeholder={placeholder}
-          className="relative"
+          className="relative pr-10"
         />
         <button
           onClick={(e) => {

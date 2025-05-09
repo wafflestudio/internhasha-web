@@ -59,7 +59,7 @@ export const ModalFloatBackground = ({
     >
       <div
         className={cn(
-          'flex w-full max-w-[408px] flex-col gap-[40px] rounded-2xl bg-white p-6 pt-[40px] text-center shadow-lg',
+          'flex w-full max-w-64 flex-col gap-[40px] rounded-2xl bg-white p-6 pt-[40px] text-center shadow-lg xs:max-w-[408px]',
           isVisible === undefined || isVisible
             ? 'animate-popup'
             : 'animate-popout',
@@ -88,7 +88,7 @@ export const ModalSelectBackground = ({
     >
       <div
         className={cn(
-          'flex w-full max-w-sm flex-col gap-[42px] rounded-2xl bg-white p-3.5 pt-[42px] text-center',
+          'flex w-full max-w-64 flex-col gap-[42px] rounded-2xl bg-white p-3.5 pt-[42px] text-center xs:max-w-sm',
           isVisible === undefined || isVisible
             ? 'animate-popup'
             : 'animate-popout',
@@ -120,7 +120,7 @@ export const ModalBackgroundWithHeader = ({
           className,
         )}
       >
-        <div className="flex w-full max-w-md flex-col gap-5 rounded-2xl bg-white px-[34px] pb-[30px] pt-10 shadow-md">
+        <div className="flex w-full max-w-64 flex-col gap-5 rounded-2xl bg-white px-[34px] pb-[30px] pt-10 shadow-md xs:max-w-md">
           {children}
         </div>
       </div>

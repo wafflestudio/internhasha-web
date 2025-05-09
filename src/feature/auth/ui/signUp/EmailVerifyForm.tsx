@@ -107,7 +107,7 @@ export const EmailVerifyForm = () => {
       <FormContainer id="EmailVerifyForm" handleSubmit={onSubmit}>
         <ProgressBar totalProgress={2} present={2} />
         <LabelContainer label="이메일" id="email">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col gap-2 xs:flex-row xs:items-center">
             <div className="relative flex w-full items-center gap-1">
               <Input
                 id="email"
@@ -154,7 +154,7 @@ export const EmailVerifyForm = () => {
                   disabled={isPending}
                 />
                 {timeLeft !== null && !verifySuccess && (
-                  <div className="absolute left-[210px] top-[9px]">
+                  <div className="absolute left-[150px] top-[45px] xs:left-[210px] xs:top-[9px]">
                     <FormErrorResponse>
                       {formatNumberToTime({ time: timeLeft })}
                     </FormErrorResponse>
@@ -201,7 +201,7 @@ export const EmailVerifyForm = () => {
             </a>
           </p>
         )}
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 xs:flex-row">
           <Button
             type="button"
             variant="outline"
