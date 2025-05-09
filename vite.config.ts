@@ -9,12 +9,12 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://www.survey-josha.site',
+        target: 'https://dev-internhasha.wafflestudio.com',
         changeOrigin: true,
         secure: false,
       },
       '/static': {
-        target: 'https://www.survey-josha.site',
+        target: 'https://dev-internhasha.wafflestudio.com',
         changeOrigin: true,
         secure: false,
       },
