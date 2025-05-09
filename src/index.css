@@ -62,22 +62,13 @@
   }
 }
 
-.wmde-markdown {
+.toastui-editor-defaultUI,
+.ProseMirror,
+.toastui-editor-contents {
   font-family:
     'Pretendard',
     -apple-system,
     BlinkMacSystemFont,
     sans-serif !important;
-}
-
-.w-md-editor {
-  --md-editor-font-family:
-    'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif !important;
-}
-
-.wmde-markdown ol {
-  list-style: auto !important;
-}
-.wmde-markdown ul {
-  list-style: disc !important;
+  @apply text-14 text-grey-900 !important;
 }
