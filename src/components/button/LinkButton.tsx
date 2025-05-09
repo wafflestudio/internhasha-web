@@ -39,7 +39,7 @@ export const SmallLinkButton = ({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        'flex h-[28px] w-fit items-center justify-center rounded-sm bg-grey-50',
+        'flex h-[28px] w-fit items-center justify-center rounded-sm bg-grey-50 p-1',
         children !== undefined ? 'gap-1' : '',
       )}
     >
