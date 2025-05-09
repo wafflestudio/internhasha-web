@@ -143,7 +143,7 @@ export const EmailVerifyForm = () => {
         {sendSuccess && (
           <>
             <LabelContainer label="인증 코드" id="code">
-              <div className="relative flex gap-2">
+              <div className="relative flex flex-col gap-2 xs:flex-row">
                 <Input
                   id="code"
                   value={code.value}
@@ -154,7 +154,7 @@ export const EmailVerifyForm = () => {
                   disabled={isPending}
                 />
                 {timeLeft !== null && !verifySuccess && (
-                  <div className="absolute left-[150px] top-[45px] xs:left-[210px] xs:top-[9px]">
+                  <div className="absolute left-[275px] top-[9px] xs:left-[210px]">
                     <FormErrorResponse>
                       {formatNumberToTime({ time: timeLeft })}
                     </FormErrorResponse>

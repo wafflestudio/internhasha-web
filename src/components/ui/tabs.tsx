@@ -13,7 +13,7 @@ const tabsListClassName = cva('flex text-14 font-regular text-grey-900', {
       button: 'flex gap-[8px] rounded-[10px] bg-grey-50 p-[6px]',
     },
     size: {
-      default: 'gap-8',
+      default: 'gap-1 xs:gap-8',
       small: 'gap-4',
     },
   },
