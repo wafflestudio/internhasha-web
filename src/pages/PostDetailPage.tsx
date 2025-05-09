@@ -1,4 +1,4 @@
-import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
+import { PageLayout } from '@/components/ui/layout';
 import { PostDetailView } from '@/feature/post';
 import { PATH } from '@/shared/route/constants';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
@@ -12,9 +12,8 @@ export const PostDetailPage = () => {
   }
 
   return (
-    <div>
-      <GlobalNavigationBar />
+    <PageLayout className="bg-white">
       <PostDetailView postId={postId} />
-    </div>
+    </PageLayout>
   );
 };

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal';
-import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
+import { PageLayout } from '@/components/ui/layout';
 import type { PostFilter } from '@/entities/post';
 import type { PostQuery } from '@/entities/route';
 import { LandingPageView } from '@/feature/post';
@@ -34,17 +34,14 @@ export const LandingPage = () => {
   };
 
   return (
-    <>
-      <div className="min-h-screen bg-grey-50">
-        <GlobalNavigationBar />
-        <LandingPageView
-          postFilter={postFilter}
-          setPostFilter={setPostFilter}
-          setShowSignInModal={setShowSignInModal}
-          handleQueryChange={handleQueryChange}
-        />
-      </div>
+    <PageLayout>
+      <LandingPageView
+        postFilter={postFilter}
+        setPostFilter={setPostFilter}
+        setShowSignInModal={setShowSignInModal}
+        handleQueryChange={handleQueryChange}
+      />
       {showSignInModal && <SignInForBookmarkModal onClose={closeSignInModal} />}
-    </>
+    </PageLayout>
   );
 };

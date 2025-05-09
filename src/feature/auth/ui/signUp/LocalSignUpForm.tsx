@@ -1,7 +1,10 @@
 import { useState } from 'react';
 
+import { TermsAgreementField } from '@/components/field/TermsAgreeField';
 import { FormContainer } from '@/components/form/FormContainer';
 import { LabelContainer } from '@/components/label/LabelContainer';
+import { InfoTermModal } from '@/components/modal/InformationTermModal';
+import { ServiceTermModal } from '@/components/modal/ServiceTermModal';
 import { ProgressBar } from '@/components/progressBar/ProgressBar';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { Button } from '@/components/ui/button';
@@ -22,27 +25,30 @@ export const LocalSignUpForm = () => {
     authInputPresentation,
     initialState: body !== null ? body : undefined,
   });
-  const { password, passwordConfirm, username } = inputStates;
+  const { password, passwordConfirm, username, agreements } = inputStates;
 
   const [isUsernameFocused, setIsUsernameFocused] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
+  const [showModal, setShowModal] = useState<
+    'SERVICE_TERM' | 'INFO_TERM' | 'NONE'
+  >('NONE');
 
   const signUpDisable =
     username.isError || password.isError || passwordConfirm.isError;
 
   const onSubmit = () => {
-    if (username.isError) {
+    if (formStates.username.isError) {
       setResponseMessage(
         '실명은 한글명 2~6자 이내, 영문명 2~20자 이내로 구성되어야 합니다.',
       );
       return;
     }
-    if (password.isError) {
+    if (formStates.password.isError) {
       setResponseMessage('비밀번호가 유효하지 않습니다.');
       return;
     }
-    if (passwordConfirm.isError) {
-      setResponseMessage('비밀번호가 일치하지 않습니다');
+    if (formStates.agreements.isError) {
+      setResponseMessage('필수 약관에 동의하여야 합니다.');
       return;
     }
 
@@ -93,6 +99,10 @@ export const LocalSignUpForm = () => {
             placeholder="비밀번호를 한번 더 입력해주세요."
             formError="비밀번호가 일치하지 않습니다."
           />
+          <TermsAgreementField
+            agreements={agreements}
+            setShowModal={setShowModal}
+          />
         </div>
         <div>
           {responseMessage !== '' && (
@@ -103,6 +113,20 @@ export const LocalSignUpForm = () => {
           다음
         </Button>
       </FormContainer>
+      {showModal === 'INFO_TERM' && (
+        <InfoTermModal
+          onClose={() => {
+            setShowModal('NONE');
+          }}
+        />
+      )}
+      {showModal === 'SERVICE_TERM' && (
+        <ServiceTermModal
+          onClose={() => {
+            setShowModal('NONE');
+          }}
+        />
+      )}
     </>
   );
 };

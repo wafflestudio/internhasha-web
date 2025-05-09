@@ -1,4 +1,4 @@
-import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
+import { PageLayout } from '@/components/ui/layout';
 import { CreateCoffeeChatForm } from '@/feature/coffeeChat';
 import { PATH } from '@/shared/route/constants';
 import { RouteNavigator } from '@/shared/route/RouteNavigator';
@@ -12,12 +12,11 @@ export const CreateCoffeeChatPage = () => {
   }
 
   return (
-    <div className="min-h-screen">
-      <GlobalNavigationBar />
+    <PageLayout className="bg-white">
       <div className="mx-auto my-[30px] flex w-full flex-col justify-center gap-[50px] px-6 sm:w-screen-sm">
         <h2 className="text-2xl font-bold text-grey-900">커피챗 신청서 작성</h2>
         <CreateCoffeeChatForm postId={postId} />
       </div>
-    </div>
+    </PageLayout>
   );
 };

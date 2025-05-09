@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { GlobalNavigationBar } from '@/components/nav/GlobalNavigationBar';
 import { Button } from '@/components/ui/button';
+import { PageLayout } from '@/components/ui/layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ICON_SRC } from '@/entities/asset';
 import type { MyPageRouteQuery } from '@/entities/route';
@@ -121,14 +121,12 @@ export const ApplicantMyPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-grey-50">
-      <GlobalNavigationBar />
-      {/* 메인 컨텐츠 */}
-      <div className="mx-auto flex max-w-[698px] flex-col gap-10 px-6 py-[30px]">
+    <PageLayout>
+      <div className="mx-auto flex w-full max-w-[698px] flex-col gap-10 px-6 py-[30px]">
         <h1 className="text-2xl font-bold text-grey-900">마이페이지</h1>
         <WideTabBar />
         <NarrowTabBar />
       </div>
-    </div>
+    </PageLayout>
   );
 };

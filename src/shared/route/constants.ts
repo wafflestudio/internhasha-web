@@ -15,4 +15,6 @@ export const PATH = {
   CREATE_POST: '/post/create/:companyId',
   CREATE_PROFILE: '/profile/create',
   PATCH_PROFILE: '/profile/patch',
+  SERVICE_TERM: '/terms/service',
+  INFORMATION_TERM: '/terms/info',
 };
