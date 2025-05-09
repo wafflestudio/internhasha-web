@@ -5,6 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import {
   Popover,
+  PopoverClose,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
@@ -235,9 +236,14 @@ export const FilterSection = ({
                   >
                     초기화
                   </Button>
-                  <Button size="sm" onClick={handleClickApplyRecruitingFilter}>
-                    적용
-                  </Button>
+                  <PopoverClose asChild>
+                    <Button
+                      size="sm"
+                      onClick={handleClickApplyRecruitingFilter}
+                    >
+                      적용
+                    </Button>
+                  </PopoverClose>
                 </div>
               </div>
             </PopoverContent>
@@ -313,9 +319,11 @@ export const FilterSection = ({
                   >
                     초기화
                   </Button>
-                  <Button size="sm" onClick={handleClickApplyDomainFilter}>
-                    적용
-                  </Button>
+                  <PopoverClose asChild>
+                    <Button size="sm" onClick={handleClickApplyDomainFilter}>
+                      적용
+                    </Button>
+                  </PopoverClose>
                 </div>
               </div>
             </PopoverContent>
