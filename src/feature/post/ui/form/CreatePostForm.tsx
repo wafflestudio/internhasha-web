@@ -155,7 +155,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
               isPending={isPending}
               isSubmit={isSubmit}
               isSubmitError={formStates.headcount.isError}
-              errorMessage={'모집 인원은 0 또는 양의 정수여야 합니다.'}
+              errorMessage={'0 또는 9,999 이하의 정수여야 합니다.'}
               infoMessage="0명일 경우 '0'을 작성해주세요."
               placeholder="모집 인원 수"
               required={true}
