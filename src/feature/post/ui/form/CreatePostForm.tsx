@@ -173,7 +173,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           isPending={isPending}
           isSubmit={isSubmit}
           isSubmitError={!disableSalary && formStates.salary.isError}
-          errorMessage="월급은 0 또는 양의 정수여야 합니다."
+          errorMessage="0 또는 2,000 이하의 자연수를 입력해주세요."
           placeholder="월급 액수"
           required={true}
         />
