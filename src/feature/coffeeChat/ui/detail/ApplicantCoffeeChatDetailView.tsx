@@ -21,7 +21,7 @@ export const CoffeeChatDetailView = ({
 }) => {
   const { coffeeChatDetailData } = useGetCoffeeChatDetail({ coffeeChatId });
   const [responseMessage, setResponseMessage] = useState('');
-  const { toMyPage, toPost } = useRouteNavigation();
+  const { toBack, toPost } = useRouteNavigation();
   const [isCancel, setIsCancel] = useState(false);
   const { updateCoffeeChatStatus, isPending } = useUpdateCoffeeChatStatus({
     setResponseMessage,
@@ -103,7 +103,7 @@ export const CoffeeChatDetailView = ({
               <Button
                 variant="secondary"
                 onClick={() => {
-                  toMyPage({ query: { tab: 'COFFEE_CHAT' } });
+                  toBack();
                 }}
                 className="w-full"
                 disabled={isPending}
