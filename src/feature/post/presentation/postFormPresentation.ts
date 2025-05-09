@@ -129,7 +129,10 @@ export const postFormPresentation: PostFormPresentation = {
           value: Number(headcount.value),
         },
         salary: {
-          isError: salary.isError || Number(salary.value) < 0,
+          isError:
+            salary.isError ||
+            Number(salary.value) < 0 ||
+            Number(salary.value) > 2000,
           value: Number(salary.value),
         },
         detail: {

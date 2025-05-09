@@ -12,7 +12,7 @@ export const ClosePostModal = ({
   onConfirm(): void;
   modalMessage: string;
 }) => {
-  const { isVisible, handleClose: handleConfirm } = useDialog({
+  const { isVisible, handleClose } = useDialog({
     onClose,
   });
 
@@ -20,7 +20,7 @@ export const ClosePostModal = ({
     <ModalSelectBackground
       variant="transparent"
       isVisible={isVisible}
-      onOutSlideClick={handleConfirm}
+      onOutSlideClick={handleClose}
     >
       <div className="flex flex-col pt-4 text-center">
         <p className="text-14 font-semibold text-grey-900">
@@ -31,7 +31,7 @@ export const ClosePostModal = ({
         <Button variant="destructive" onClick={onConfirm} className="flex-1">
           공고 마감
         </Button>
-        <Button variant="secondary" onClick={onClose} className="flex-1">
+        <Button variant="secondary" onClick={handleClose} className="flex-1">
           취소
         </Button>
       </div>

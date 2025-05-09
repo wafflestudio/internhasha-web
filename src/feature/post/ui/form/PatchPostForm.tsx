@@ -41,9 +41,12 @@ export const PatchPostForm = ({
     'NONE',
   );
   const [responseMessage, setResponseMessage] = useState('');
-  const [disableSalary, setDisableSalary] = useState(false);
-  const [disableEmploymentEndDate, setDisableEmploymentEndDate] =
-    useState(false);
+  const [disableSalary, setDisableSalary] = useState(
+    body.salary === null ? true : false,
+  );
+  const [disableEmploymentEndDate, setDisableEmploymentEndDate] = useState(
+    body.employmentEndDateTime === null ? true : false,
+  );
   const { toMain } = useRouteNavigation();
 
   const onSuccessSubmit = ({ id }: { id: string }) => {
@@ -62,7 +65,7 @@ export const PatchPostForm = ({
       title: body.positionTitle,
       job: body.jobMinorCategory as JobMinorCategory,
       headcount: body.headcount,
-      salary: body.salary,
+      salary: body.salary === null ? undefined : body.salary,
       detail: body.detail,
       employmentEndDateTime:
         initialEmploymentEndDate !== undefined
@@ -178,7 +181,7 @@ export const PatchPostForm = ({
         <SalaryField
           label="월급"
           input={salary}
-          unit="원"
+          unit="만원"
           isDisabled={disableSalary}
           onCheckboxClick={() => {
             setDisableSalary(!disableSalary);
@@ -186,7 +189,7 @@ export const PatchPostForm = ({
           isPending={isPending}
           isSubmit={isSubmit}
           isSubmitError={!disableSalary && formStates.salary.isError}
-          errorMessage="월급은 0 또는 양의 정수여야 합니다."
+          errorMessage="0 또는 2,000 이하의 자연수를 입력해주세요."
           placeholder="월급 액수"
           required={true}
         />

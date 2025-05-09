@@ -52,7 +52,7 @@ export const SalaryField = ({
             input.onChange(e.target.value);
           }}
         />
-        <span className="text-grey-500">{unit}</span>
+        <span className="whitespace-nowrap text-grey-500">{unit}</span>
       </div>
       <div className="flex flex-col gap-1">
         <CheckboxWithLabel

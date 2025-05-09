@@ -76,7 +76,7 @@ type PositionDTO = {
   positionTitle: string;
   positionType: string;
   headCount: number;
-  salary?: number | null;
+  salary: number | null;
   detail: string;
   employmentEndDate: string | null;
   createdAt: string;
