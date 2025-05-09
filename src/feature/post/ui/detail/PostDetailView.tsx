@@ -128,7 +128,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             />
             <span className="text-lg font-semibold">{company.companyName}</span>
           </div>
-          <div className="flex w-full justify-between">
+          <div className="flex w-full items-center justify-between">
             <span className="text-4xl font-bold">{position.positionTitle}</span>
             {role !== 'COMPANY' && (
               <div className="content-center">
