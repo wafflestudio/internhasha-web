@@ -44,7 +44,9 @@ export const BookmarkListView = () => {
         >
           <div className="flex flex-1 items-center gap-4">
             <img src={ICON_SRC.BOOKMARK.SELECTED} />
-            <span className="truncate font-semibold">{post.positionTitle}</span>
+            <span className="max-w-[200px] truncate font-semibold">
+              {post.positionTitle}
+            </span>
           </div>
 
           <div className="flex items-center gap-4">

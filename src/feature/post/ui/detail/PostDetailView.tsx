@@ -134,6 +134,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               <div className="content-center">
                 {isBookmarked ? (
                   <button
+                    className="h-[48px] w-[48px]"
                     disabled={isPending}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -144,6 +145,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                   </button>
                 ) : (
                   <button
+                    className="h-[48px] w-[48px]"
                     disabled={isPending}
                     onClick={(e) => {
                       e.stopPropagation();
