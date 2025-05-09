@@ -4,7 +4,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 const coffeeChatBtnClassName = cva(
-  'inline-flex cursor-pointer items-center rounded-lg border border-transparent px-[10px] py-[6px] text-14 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed',
+  'inline-flex cursor-pointer items-center whitespace-nowrap rounded-lg border border-transparent px-[10px] py-[6px] text-14 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed',
   {
     variants: {
       variant: {

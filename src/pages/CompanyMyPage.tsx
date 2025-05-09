@@ -41,7 +41,7 @@ export const CompanyMyPage = () => {
         className="hidden w-full sm:block"
       >
         <div className="flex flex-col gap-[30px]">
-          <TabsList className="align flex gap-[30px]">
+          <TabsList className="gap-[30px]">
             <TabsTrigger value="COFFEE_CHAT" className="gap-1">
               나에게 신청된 커피챗
               <CoffeeChatNumberBadge />

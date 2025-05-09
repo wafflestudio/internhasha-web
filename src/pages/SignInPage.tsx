@@ -20,7 +20,7 @@ export const SignInPage = () => {
       <div className="flex flex-col gap-[32px]">
         <h2 className="text-center text-22 font-bold">로그인</h2>
         <Tabs defaultValue="APPLICANT" className="flex flex-col gap-[30px]">
-          <TabsList variant="button">
+          <TabsList variant="button" size="small">
             <TabsTrigger
               value="APPLICANT"
               variant="button"
