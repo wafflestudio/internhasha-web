@@ -135,7 +135,7 @@ export const PatchPostForm = ({
           isSubmit={isSubmit}
           isSubmitError={formStates.title.isError}
           placeholder="모집 직무 이름을 구체적으로 작성해주세요. (e.g. React 프론트엔드 개발자)"
-          errorMessage="공고명은 500자 이내로 작성해주세요."
+          errorMessage="공고명을 작성해주세요."
           required={true}
         />
         <div className="flex w-full flex-col gap-2 md:flex-row">
@@ -169,7 +169,7 @@ export const PatchPostForm = ({
               isPending={isPending}
               isSubmit={isSubmit}
               isSubmitError={formStates.headcount.isError}
-              errorMessage={'모집 인원은 0 또는 양의 정수여야 합니다.'}
+              errorMessage={'0 또는 9,999 이하의 정수여야 합니다.'}
               infoMessage="0명일 경우 '0'을 작성해주세요."
               placeholder="모집 인원 수"
               required={true}
