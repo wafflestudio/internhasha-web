@@ -178,9 +178,8 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
             <span>채용 마감일</span>
             <div className="flex items-center gap-4">
               <span>
-                {position.employmentEndDate !== null
-                  ? formatIsoToDate(position.employmentEndDate)
-                  : '상시 채용'}
+                {position.employmentEndDate !== null &&
+                  formatIsoToDate(position.employmentEndDate)}
               </span>
               <Badge variant="primary">
                 {formatEmploymentState({
@@ -189,7 +188,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               </Badge>
             </div>
           </div>
-          <div className="flex flex-row gap-3 md:flex-col">
+          <div className="flex flex-row flex-wrap gap-3 md:flex-col">
             {role !== 'COMPANY' && (
               <div className="flex flex-col gap-3">
                 <Button
@@ -367,13 +366,13 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
               company.vcRecommendation !== undefined && (
                 <section className="flex flex-col gap-3">
                   <span className="text-lg font-semibold text-grey-800">
-                    VC 추천 이유
+                    추천 VC
                   </span>
                   <p
                     data-color-mode="light"
                     className="flex rounded-md border p-4"
                   >
-                    {company.vcRecommendation}
+                    {company.vcName}
                   </p>
                 </section>
               )}
