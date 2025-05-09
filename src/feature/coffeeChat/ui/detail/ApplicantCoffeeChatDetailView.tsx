@@ -21,7 +21,7 @@ export const CoffeeChatDetailView = ({
 }) => {
   const { coffeeChatDetailData } = useGetCoffeeChatDetail({ coffeeChatId });
   const [responseMessage, setResponseMessage] = useState('');
-  const { toMyPage } = useRouteNavigation();
+  const { toMyPage, toPost } = useRouteNavigation();
   const [isCancel, setIsCancel] = useState(false);
   const { updateCoffeeChatStatus, isPending } = useUpdateCoffeeChatStatus({
     setResponseMessage,
@@ -44,7 +44,7 @@ export const CoffeeChatDetailView = ({
     );
   }
 
-  const { createdAt, coffeeChatStatus, company, content, title } =
+  const { createdAt, coffeeChatStatus, company, content, title, postId } =
     coffeeChatDetailData.data;
   return (
     <>
@@ -71,7 +71,12 @@ export const CoffeeChatDetailView = ({
                 <TagStatus coffeeChatStatus={coffeeChatStatus} />
               </div>
             </div>
-            <div className="flex gap-3">
+            <button
+              className="flex gap-3"
+              onClick={() => {
+                toPost({ postId });
+              }}
+            >
               {company.imageKey !== undefined ? (
                 <img
                   src={`/${company.imageKey}`}
@@ -85,7 +90,7 @@ export const CoffeeChatDetailView = ({
                 <span>•</span>
                 <span>{title}</span>
               </div>
-            </div>
+            </button>
             <SeperatorLine />
           </div>
 
