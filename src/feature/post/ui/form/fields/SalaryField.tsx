@@ -38,7 +38,7 @@ export const SalaryField = ({
 }: SalaryFieldProps) => {
   return (
     <LabelContainer label={label} required={required}>
-      <div className="flex items-center gap-2 md:w-[249px]">
+      <div className="flex w-full items-center gap-2 md:w-[249px]">
         <Input
           id="salary"
           value={

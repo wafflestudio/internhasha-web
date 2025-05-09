@@ -104,6 +104,7 @@ export const CompanyProfileInfo = ({
                 <DownloadButtonWithPresignedUrl
                   s3Key={companyInfoPDFKey}
                   type="IR_DECK"
+                  fileName={`${companyName}_소개자료.pdf`}
                 >
                   <img src={ICON_SRC.DOWNLOAD} className="h-5 w-5" />
                   PDF 다운로드
