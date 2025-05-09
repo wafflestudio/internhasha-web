@@ -39,6 +39,7 @@ export const EmploymentEndDateField = ({
   infoMessage,
   required,
 }: EmploymentEndDateField) => {
+  console.log(showFilter);
   return (
     <LabelContainer label={label} required={required}>
       <div className="relative">
@@ -75,7 +76,7 @@ export const EmploymentEndDateField = ({
         {/* 모바일 화면에서의 캘린더 */}
         <div
           className={cn(
-            'absolute bottom-0 left-0 mt-2 block w-full overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-300 backdrop:max-w-[340px] sm:hidden',
+            'absolute bottom-0 left-0 mt-2 block overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-300 backdrop:max-w-[250px] sm:hidden',
             showFilter === 'CALENDAR'
               ? 'scale-100 opacity-100'
               : 'pointer-events-none opacity-0',
@@ -106,6 +107,7 @@ export const EmploymentEndDateField = ({
       </div>
       <Button
         onClick={(e) => {
+          e.stopPropagation();
           e.preventDefault();
           onClick();
         }}

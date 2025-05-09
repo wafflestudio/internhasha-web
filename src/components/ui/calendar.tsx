@@ -30,7 +30,7 @@ function Calendar({
       showOutsideDays={showOutsideDays}
       className={cn(
         'inline-flex justify-center rounded-md shadow-md',
-        variant === 'small' ? 'w-full p-2' : 'w-[340px] p-[22px]',
+        variant === 'small' ? 'w-full p-4' : 'w-[340px] p-[22px]',
         className,
       )}
       classNames={{
