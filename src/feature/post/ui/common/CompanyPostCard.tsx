@@ -23,23 +23,25 @@ export const CompanyPostCard = ({
 
   return (
     <div
-      className="cursor-pointer rounded-lg bg-white transition-shadow hover:shadow-md"
+      className="flex cursor-pointer flex-col rounded-lg bg-white transition-shadow hover:shadow-md"
       onClick={() => {
         onDetailClick(id);
       }}
     >
       {/* 직군 & 마감일 */}
       <div className="relative flex h-[50px] items-center justify-between rounded-t-lg bg-grey-200 px-[22px]">
-        <div className="flex items-center gap-2">
-          <img src={ICON_SRC.PERSON} className="h-6 w-6" />
-          <span className="text-grey-900">{positionTitle}</span>
+        <div className="flex max-w-[80%] items-center gap-2">
+          <img src={ICON_SRC.PERSON} className="h-6 w-6 flex-shrink-0" />
+          <span className="truncate text-15 font-semibold text-grey-900">
+            {positionTitle}
+          </span>
         </div>
 
-        <span className="text-grey-400">
+        <span className="flex-shrink-0 text-grey-400">
           {formatEmploymentState({ date: employmentEndDate })}
         </span>
         {/* 삼각형 */}
-        <div className="absolute bottom-[-10px] right-6 h-0 w-0 border-l-[10px] border-r-[10px] border-t-[10px] border-l-transparent border-r-transparent border-t-grey-200 text-lg"></div>
+        <div className="absolute bottom-[-9px] right-6 h-0 w-0 border-l-[10px] border-r-[10px] border-t-[10px] border-l-transparent border-r-transparent border-t-grey-200 text-lg"></div>
       </div>
 
       <section className="flex flex-col gap-4 px-[22px] py-[18px]">

@@ -74,7 +74,7 @@ export const ApplicantMyPage = () => {
         className="block w-full sm:hidden"
       >
         <div className="flex flex-col gap-6">
-          <TabsList size="small">
+          <TabsList size="small" className="gap-3">
             <TabsTrigger value="COFFEE_CHAT" size="small">
               <div className="flex flex-col items-center gap-1">
                 <span>신청한 커피챗</span>
