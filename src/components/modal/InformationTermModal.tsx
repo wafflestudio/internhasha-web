@@ -14,7 +14,7 @@ export const InfoTermModal = ({ onClose }: { onClose: () => void }) => {
       variant="transparent"
       isVisible={isVisible}
       onOutSlideClick={handleClose}
-      className="max-h-screen w-full max-w-[800px] overflow-y-scroll rounded-none text-left"
+      className="max-h-screen w-full overflow-y-scroll rounded-none text-left xs:max-w-full sm:max-w-[800px]"
     >
       <div className="flex flex-col pt-4">
         <MarkdownPreview content={INFO_TERM_CONTENT} />
