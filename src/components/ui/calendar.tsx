@@ -5,12 +5,15 @@ import { DayPicker } from 'react-day-picker';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-type CalendarProps = React.ComponentProps<typeof DayPicker>;
+type CalendarProps = React.ComponentProps<typeof DayPicker> & {
+  variant?: 'default' | 'small';
+};
 
 function Calendar({
   className,
   classNames,
   showOutsideDays = true,
+  variant = 'default',
   ...props
 }: CalendarProps) {
   return (
@@ -26,7 +29,8 @@ function Calendar({
       }}
       showOutsideDays={showOutsideDays}
       className={cn(
-        'inline-flex w-[340px] justify-center rounded-md p-[22px] shadow-md',
+        'inline-flex justify-center rounded-md shadow-md',
+        variant === 'small' ? 'w-full p-2' : 'w-[340px] p-[22px]',
         className,
       )}
       classNames={{
@@ -43,15 +47,24 @@ function Calendar({
         nav_button_next: 'absolute right-2',
         table: 'w-full border-collapse space-y-1',
         head_row: 'flex justify-center',
-        head_cell: 'text-grey-300 rounded-md w-10 font-normal text-xs',
-        row: 'flex justify-center w-full mt-4',
+        head_cell: cn(
+          'text-grey-300 rounded-md font-normal text-xs',
+          variant === 'small' ? 'w-full text-xs' : 'w-10',
+        ),
+        row: cn(
+          'flex justify-center w-full',
+          variant === 'small' ? 'mt-1' : 'mt-4',
+        ),
         cell: cn(
           'relative p-0 text-grey-900 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-blue-50 [&:has([aria-selected].day-outside)]:bg-grey-300 [&:has([aria-selected].day-range-end)]:rounded-r-md',
           props.mode === 'range'
             ? '[&:has(>.day-range-end)]:rounded-r-full [&:has(>.day-range-start)]:rounded-l-full first:[&:has([aria-selected])]:rounded-l-full last:[&:has([aria-selected])]:rounded-r-full'
             : '[&:has([aria-selected])]:rounded-full',
         ),
-        day: 'rounded-full h-9 w-10 p-0 font-normal hover:bg-blue-50',
+        day: cn(
+          'rounded-full p-0 font-normal hover:bg-blue-50',
+          variant === 'small' ? 'h-8 w-8 text-xs' : 'h-9 w-10',
+        ),
         day_range_start: 'day-range-start',
         day_range_end: 'day-range-end',
         day_selected:

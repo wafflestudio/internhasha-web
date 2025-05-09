@@ -125,7 +125,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           required={true}
         />
         <div className="flex w-full flex-col gap-2 md:flex-row">
-          <div className="flex-1">
+          <div className="md:flex-2 flex-auto">
             <JobCategoryField
               label="직무 유형"
               input={{
@@ -147,7 +147,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
               required={true}
             />
           </div>
-          <div className="flex-2">
+          <div className="flex-auto md:flex-1">
             <HeadcountField
               label="모집 인원"
               input={headcount}

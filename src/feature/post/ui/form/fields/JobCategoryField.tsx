@@ -62,7 +62,7 @@ export const JobCategoryField = ({
       </Button>
       <section className="relative">
         <div
-          className={`absolute left-0 top-0 z-50 flex w-[364px] gap-2 overflow-hidden rounded-lg bg-white p-3 pl-1 shadow-lg transition-all duration-300 ${
+          className={`absolute left-0 top-0 z-50 flex w-full max-w-[364px] gap-2 overflow-hidden rounded-lg bg-white p-3 pl-1 shadow-lg transition-all duration-300 ${
             showFilter === 'CATEGORY' && !isPending
               ? 'scale-100 opacity-100'
               : 'pointer-events-none opacity-0'
