@@ -53,17 +53,20 @@ export const CreateCoffeeChatForm = ({ postId }: { postId: string }) => {
 
   return (
     <>
-      <FormContainer handleSubmit={handleSubmit}>
+      <FormContainer
+        handleSubmit={handleSubmit}
+        className="flex flex-col gap-6 xs:gap-[80px]"
+      >
         <TextareaField
-          label="내용"
+          label="커피챗 신청 내용"
           input={content}
           isPending={isPending}
           isSubmit={isSubmit}
           isSubmitError={content.isError}
           maxLength={CONTENTS_MAX_LENGTH}
-          placeholder="간단한 자기소개, 커피챗 신청 사유, 가능한 시간대를 작성해주세요"
+          placeholder="간단한 자기소개, 커피챗을 신청하게 된 계기, 궁금한 점, 만남이 가능한 시간대 등을 작성해보세요."
           errorMessage={`내용은 ${CONTENTS_MAX_LENGTH}자 이내로 작성해주세요.`}
-          minLine={7}
+          minLine={15}
         />
 
         {responseMessage !== '' && (

@@ -12,9 +12,9 @@ export const CreateCoffeeChatPage = () => {
   }
 
   return (
-    <PageLayout className="bg-white">
-      <div className="mx-auto my-[30px] flex w-full flex-col justify-center gap-[50px] px-6 sm:w-screen-sm">
-        <h2 className="text-2xl font-bold text-grey-900">커피챗 신청서 작성</h2>
+    <PageLayout className="flex flex-col items-center bg-white">
+      <div className="m-[30px] flex w-full flex-col gap-7 px-16 xs:gap-[50px] sm:max-w-[700px]">
+        <h2 className="text-30 font-bold text-grey-900">커피챗 신청서 작성</h2>
         <CreateCoffeeChatForm postId={postId} />
       </div>
     </PageLayout>

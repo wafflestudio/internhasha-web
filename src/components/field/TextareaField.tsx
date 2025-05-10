@@ -69,7 +69,7 @@ export const TextareaField = ({
         <div className="flex w-full flex-col items-end justify-start sm:flex-row sm:justify-between">
           <FormInfoResponse>{infoMessage}</FormInfoResponse>
           <span
-            className={`text-sm ${input.value.length > maxLength ? 'text-red-300' : 'text-grey-500'}`}
+            className={`text-13 ${input.value.length > maxLength ? 'text-red-300' : 'font-normal text-grey-500'}`}
           >
             {input.value.length}/{maxLength}
           </span>
