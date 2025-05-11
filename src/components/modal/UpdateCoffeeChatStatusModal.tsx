@@ -11,7 +11,7 @@ export const UpdateCoffeeChatStatusModal = ({
   onClose(): void;
   onConfirm(): void;
   status: 'ACCEPTED' | 'REJECTED';
-  selectedCount: number;
+  selectedCount?: number;
 }) => {
   const { isVisible, handleClose: handleConfirm } = useDialog({
     onClose: onConfirm,
@@ -25,8 +25,17 @@ export const UpdateCoffeeChatStatusModal = ({
     >
       <div className="flex flex-col text-center">
         <p className="text-14 font-semibold text-grey-900">
-          총 {selectedCount}개의 커피챗을{' '}
-          {status === 'ACCEPTED' ? '성사시키' : '거절하'}시겠습니까?
+          {selectedCount !== undefined && selectedCount > 0 ? (
+            <>
+              총 {selectedCount}개의 커피챗을{' '}
+              {status === 'ACCEPTED' ? '성사시키' : '거절하'}시겠습니까?
+            </>
+          ) : (
+            <>
+              커피챗을 {status === 'ACCEPTED' ? '성사시키' : '거절하'}
+              시겠습니까?
+            </>
+          )}
         </p>
       </div>
       <div className="flex flex-col-reverse gap-2 sm:flex-row">
@@ -34,7 +43,11 @@ export const UpdateCoffeeChatStatusModal = ({
           뒤로 가기
         </Button>
         <Button onClick={onConfirm} className="flex-1">
-          모두 {status === 'ACCEPTED' ? '성사하기' : '거절하기'}
+          {selectedCount !== undefined && selectedCount > 0 ? (
+            <> 모두 {status === 'ACCEPTED' ? '성사하기' : '거절하기'}</>
+          ) : (
+            <>{status === 'ACCEPTED' ? '성사하기' : '거절하기'}</>
+          )}
         </Button>
       </div>
     </ModalSelectBackground>

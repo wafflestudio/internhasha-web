@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import type { CoffeeChatCompany } from '@/api/apis/localServer/schemas';
 import { Information } from '@/components/information/Information';
+import { UpdateCoffeeChatStatusModal } from '@/components/modal/UpdateCoffeeChatStatusModal';
 import { FormErrorResponse } from '@/components/response/formResponse';
 import { TagStatus } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -26,11 +27,20 @@ export const CoffeeChatDetailView = ({
     setResponseMessage,
   });
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalStatus, setModalStatus] = useState<'ACCEPTED' | 'REJECTED'>(
+    'ACCEPTED',
+  );
+  const handleOpenModal = (status: 'ACCEPTED' | 'REJECTED') => {
+    setModalStatus(status);
+    setIsModalOpen(true);
+  };
   const handleStatusChange = (status: 'ACCEPTED' | 'REJECTED') => {
     updateCoffeeChatStatus({
       coffeeChatList: [coffeeChatId],
       coffeeChatStatus: status,
     });
+    setIsModalOpen(false);
   };
 
   if (coffeeChatDetailData === undefined) {
@@ -87,7 +97,7 @@ export const CoffeeChatDetailView = ({
             <Button
               variant="default"
               onClick={() => {
-                handleStatusChange('ACCEPTED');
+                handleOpenModal('ACCEPTED');
               }}
               className="flex-1"
               disabled={isPending || !isWaiting}
@@ -97,7 +107,7 @@ export const CoffeeChatDetailView = ({
             <Button
               variant="destructive"
               onClick={() => {
-                handleStatusChange('REJECTED');
+                handleOpenModal('REJECTED');
               }}
               className="flex-1"
               disabled={isPending || !isWaiting}
@@ -107,6 +117,17 @@ export const CoffeeChatDetailView = ({
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <UpdateCoffeeChatStatusModal
+          onClose={() => {
+            setIsModalOpen(false);
+          }}
+          onConfirm={() => {
+            handleStatusChange(modalStatus);
+          }}
+          status={modalStatus}
+        />
+      )}
 
       {responseMessage !== '' && (
         <FormErrorResponse>{responseMessage}</FormErrorResponse>
