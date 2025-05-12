@@ -1,7 +1,7 @@
 import '@toast-ui/editor/dist/toastui-editor.css';
 
 import { Editor, Viewer } from '@toast-ui/react-editor';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { LabelContainer } from '@/components/label/LabelContainer';
 import {
@@ -36,6 +36,7 @@ export const MarkdownEditorField = ({
   maxLength,
 }: MarkdownEditorFieldProps) => {
   const editorRef = useRef<Editor>(null);
+  const [isFocus, setIsFocus] = useState(false);
 
   const handleChange = () => {
     if (editorRef.current !== null) {
@@ -48,11 +49,11 @@ export const MarkdownEditorField = ({
   useEffect(() => {
     if (editorRef.current !== null) {
       const editorInstance = editorRef.current.getInstance();
-      if (input.value.length === 0) {
+      if (isFocus && input.value.length === 0) {
         editorInstance.setMarkdown('');
       }
     }
-  }, [input]);
+  }, [input, isFocus]);
 
   const toolbarItems = [
     ['heading', 'bold', 'italic', 'strike'],
@@ -74,6 +75,14 @@ export const MarkdownEditorField = ({
         usageStatistics={false}
         useCommandShortcut={true}
         onChange={handleChange}
+        events={{
+          focus: () => {
+            setIsFocus(true);
+          },
+          blur: () => {
+            setIsFocus(false);
+          },
+        }}
         autofocus={false}
         hideModeSwitch={true}
         ref={editorRef}
