@@ -39,7 +39,6 @@ export const EmploymentEndDateField = ({
   infoMessage,
   required,
 }: EmploymentEndDateField) => {
-  console.log(showFilter);
   return (
     <LabelContainer label={label} required={required}>
       <div className="relative">

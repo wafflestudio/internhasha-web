@@ -68,10 +68,6 @@ export const EmailVerifyForm = () => {
     emailVerifySuccessCode.isError ||
     !verifySuccess;
 
-  console.log(
-    `1 ${snuMailPrefix.isError ? 'error' : 'pass'} 2 ${code.isError ? 'error' : 'pass'} 3 ${emailVerifySuccessCode.isError ? 'error' : 'pass'} 4 ${!verifySuccess ? 'error' : 'pass'} 5 ${isCodeExpired ? 'error' : 'pass'}`,
-  );
-
   const isPending = isPendingSend || isPendingVerify || isPendingLocalSignUp;
 
   if (body === null) {
@@ -87,7 +83,6 @@ export const EmailVerifyForm = () => {
   };
 
   const handleClickVerifyEmailButton = () => {
-    console.log(verifyEmailDisable);
     if (verifyEmailDisable) return;
     emailVerify({
       snuMail: formStates.snuMail.value,
@@ -96,7 +91,6 @@ export const EmailVerifyForm = () => {
   };
 
   const onSubmit = () => {
-    console.log(signUpDisable);
     if (signUpDisable) return;
     localSignUp({
       email: formStates.snuMail.value,
