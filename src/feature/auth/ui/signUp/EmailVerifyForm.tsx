@@ -28,6 +28,7 @@ export const EmailVerifyForm = () => {
   const body = useRouteLocation() as VerifyMailRouteQuery | null;
 
   const { toSignUp } = useRouteNavigation();
+  const [verifySuccess, setVerifySuccess] = useState(false);
   const [showSendCodeError, setShowSendCodeError] = useState(false);
   const [showModal, setShowModal] = useState<'NONE' | 'REDIRECT'>('NONE');
   const { inputStates, formStates } = authFormPresentation.useValidator({
@@ -45,17 +46,17 @@ export const EmailVerifyForm = () => {
   } = useSendCode();
   const {
     emailVerify,
-    verifySuccess,
     responseMessage: emailResponseMessage,
     isPending: isPendingVerify,
   } = useEmailVerify({
+    setVerifySuccess,
     setEmailVerifySuccessCode: emailVerifySuccessCode.onChange,
   });
   const {
     localSignUp,
     responseMessage: localSignUpResponseMessage,
     isPending: isPendingLocalSignUp,
-  } = useLocalSignUp({ setShowModal });
+  } = useLocalSignUp({ setShowModal, setVerifySuccess });
 
   const sendCodeDisable =
     snuMailPrefix.isError || (sendSuccess && !isCodeExpired);
@@ -65,8 +66,11 @@ export const EmailVerifyForm = () => {
     snuMailPrefix.isError ||
     code.isError ||
     emailVerifySuccessCode.isError ||
-    !verifySuccess ||
-    isCodeExpired;
+    !verifySuccess;
+
+  console.log(
+    `1 ${snuMailPrefix.isError ? 'error' : 'pass'} 2 ${code.isError ? 'error' : 'pass'} 3 ${emailVerifySuccessCode.isError ? 'error' : 'pass'} 4 ${!verifySuccess ? 'error' : 'pass'} 5 ${isCodeExpired ? 'error' : 'pass'}`,
+  );
 
   const isPending = isPendingSend || isPendingVerify || isPendingLocalSignUp;
 
@@ -83,6 +87,7 @@ export const EmailVerifyForm = () => {
   };
 
   const handleClickVerifyEmailButton = () => {
+    console.log(verifyEmailDisable);
     if (verifyEmailDisable) return;
     emailVerify({
       snuMail: formStates.snuMail.value,
@@ -91,6 +96,7 @@ export const EmailVerifyForm = () => {
   };
 
   const onSubmit = () => {
+    console.log(signUpDisable);
     if (signUpDisable) return;
     localSignUp({
       email: formStates.snuMail.value,
@@ -161,7 +167,7 @@ export const EmailVerifyForm = () => {
                   disabled={isPending}
                 />
                 {timeLeft !== null && !verifySuccess && (
-                  <div className="absolute right-4 top-[11px] xs:left-[210px]">
+                  <div className="absolute right-4 top-[11px] w-fit xs:left-[210px]">
                     <FormErrorResponse>
                       {formatNumberToTime({ time: timeLeft })}
                     </FormErrorResponse>
@@ -305,13 +311,14 @@ const useSendCode = () => {
 };
 
 const useEmailVerify = ({
+  setVerifySuccess,
   setEmailVerifySuccessCode,
 }: {
+  setVerifySuccess(input: boolean): void;
   setEmailVerifySuccessCode(input: string): void;
 }) => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
-  const [verifySuccess, setVerifySuccess] = useState(false);
 
   const { mutate: emailVerify, isPending } = useMutation({
     mutationFn: ({ snuMail, code }: { snuMail: string; code: string }) => {
@@ -337,13 +344,15 @@ const useEmailVerify = ({
     },
   });
 
-  return { emailVerify, verifySuccess, responseMessage, isPending };
+  return { emailVerify, responseMessage, isPending };
 };
 
 const useLocalSignUp = ({
   setShowModal,
+  setVerifySuccess,
 }: {
   setShowModal(input: 'NONE' | 'REDIRECT'): void;
+  setVerifySuccess(input: boolean): void;
 }) => {
   const { authService } = useGuardContext(ServiceContext);
   const [responseMessage, setResponseMessage] = useState('');
@@ -375,6 +384,9 @@ const useLocalSignUp = ({
         if (response.code === 'USER_001' || response.code === 'USER_002') {
           setShowModal('REDIRECT');
           return;
+        }
+        if (response.code === 'USER_007') {
+          setVerifySuccess(false);
         }
         setResponseMessage(createErrorMessage(response.code));
       }
