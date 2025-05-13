@@ -1,4 +1,5 @@
 import { getExternalServerApis, getLocalServerApis } from '@/api/apis';
+import { decodeHtmlStrings } from '@/api/apis/utils/decodeHtml';
 import type {
   ErrorResponse,
   ExternalCallParams,
@@ -39,7 +40,7 @@ export const implApi = ({ externalCall }: ImplApiProps) => {
       credentials: 'include',
     });
 
-    return response as R;
+    return decodeHtmlStrings(response) as R;
   };
 
   const callWithToken = <R extends ResponseNecessary>(
