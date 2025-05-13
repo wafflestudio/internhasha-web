@@ -50,7 +50,7 @@ export const PasswordFieldWithDetailedError = ({
       value: password.detailedError.specialCharError,
     },
     {
-      message: '연속된 문자열이나 숫자가 없어야 함',
+      message: '3자리 이상 반복 및 연속된 문자열이나 숫자가 없어야 함',
       value: password.detailedError.patternError,
     },
   ];

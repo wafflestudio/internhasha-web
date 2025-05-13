@@ -54,7 +54,7 @@ const PASSWORD_DETAIL_REGEX = {
   SPECIAL_CHAR_REGEX: /[@#$!^*]/,
   LENGTH_REGEX: /^.{8,64}$/,
   INVALID_PATTERN_REGEX:
-    /(012|123|234|345|456|567|678|789|890|abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz)/i,
+    /(012|123|234|345|456|567|678|789|890|abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz)|([a-zA-Z0-9])\2{2,}/i,
 };
 const CODE_REGEX = /^\d{6}$/;
 const USERNAME_REGEX = /^([가-힣]{2,6}|[A-Za-z]{2,20})$/;
