@@ -25,8 +25,7 @@ export type PostInputPresentation = {
     employmentEndDate: Input<string>;
   };
 };
-
-const TITLE_MAX_LENGTH = 500;
+const TITLE_MAX_LENGTH = 100;
 export const CONTENT_MAX_LENGTH = 10000;
 const HEADCOUNT_REGEX = /^\s*$|^[0-9]+$/;
 const SALARY_REGEX = /^[0-9]+$/;

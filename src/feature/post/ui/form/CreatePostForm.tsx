@@ -121,7 +121,7 @@ export const CreatePostForm = ({ companyId }: { companyId: string }) => {
           isSubmit={isSubmit}
           isSubmitError={formStates.title.isError}
           placeholder="모집 직무 이름을 구체적으로 작성해주세요. (e.g. React 프론트엔드 개발자)"
-          errorMessage="공고명은 500자 이내로 작성해주세요."
+          errorMessage="공고명은 100자 이내로 작성해주세요."
           required={true}
         />
         <div className="flex w-full flex-col gap-2 md:flex-row">
