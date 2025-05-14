@@ -25,7 +25,7 @@ export type PostInputPresentation = {
     employmentEndDate: Input<string>;
   };
 };
-
+const TITLE_MAX_LENGTH = 100;
 export const CONTENT_MAX_LENGTH = 10000;
 const HEADCOUNT_REGEX = /^\s*$|^[0-9]+$/;
 const SALARY_REGEX = /^[0-9]+$/;
@@ -84,7 +84,7 @@ export const postInputPresentation: PostInputPresentation = {
 
     return {
       title: {
-        isError: title.length === 0,
+        isError: title.length > TITLE_MAX_LENGTH || title.length === 0,
         value: title,
         onChange: setTitle,
       },
