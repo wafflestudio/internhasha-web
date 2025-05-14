@@ -110,8 +110,8 @@ export const PostCard = ({
             </div>
           </div>
 
-          <div className="flex flex-shrink-0 flex-col items-end xs:hidden md:flex">
-            {formatMinorJobToLabel(post.positionType)}
+          <div className="flex flex-shrink-0 flex-col items-end xs:hidden md:block md:flex-row">
+            {formatMinorJobToLabel(post.positionType)}{' '}
             <span>{post.headCount}명</span>
           </div>
         </div>
