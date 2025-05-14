@@ -50,6 +50,7 @@ export type BriefPost = {
   detailSummary: string;
   slogan: string;
   positionType: string;
+  headCount: number;
   isBookmarked: boolean;
   createdAt: string;
   updatedAt: string;
