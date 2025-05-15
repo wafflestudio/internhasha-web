@@ -65,7 +65,7 @@ export const PostCard = ({
     >
       {/* 직군 & 마감일 */}
       <div className="relative flex h-[50px] items-center justify-between rounded-t-lg bg-grey-200 px-[22px]">
-        <div className="flex max-w-[60%] items-center gap-2">
+        <div className="flex max-w-[60%] items-center gap-2 md:max-w-[80%]">
           <img src={ICON_SRC.PERSON} className="h-6 w-6 flex-shrink-0" />
           <span className="truncate text-15 font-semibold text-grey-900">
             {positionTitle}
@@ -106,11 +106,16 @@ export const PostCard = ({
               </h3>
               <span className="text-12 font-regular text-grey-800">
                 {formatDomainToLabel(domain)}
+                <span className="xs:hidden">
+                  {' '}
+                  / {formatMinorJobToLabel(post.positionType)} {post.headCount}
+                  명
+                </span>
               </span>
             </div>
           </div>
 
-          <div className="flex flex-shrink-0 flex-col items-end xs:hidden md:block md:flex-row">
+          <div className="hidden flex-shrink-0 md:block">
             {formatMinorJobToLabel(post.positionType)}{' '}
             <span>{post.headCount}명</span>
           </div>
