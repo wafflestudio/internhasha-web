@@ -30,6 +30,13 @@ export const LandingPostView = ({
   });
 
   const PAGES_PER_GROUP = 5;
+  const pageParams = {
+    page: currentPage,
+    roles: postFilter.roles,
+    domains: postFilter.domains,
+    isActive: postFilter.isActive,
+    order: postFilter.order,
+  };
 
   const PostCardView = () => {
     if (postsData === undefined) {
@@ -54,6 +61,7 @@ export const LandingPostView = ({
               toPost({ postId });
             }}
             setShowSignInModal={setShowSignInModal}
+            pageParams={pageParams}
           />
         ))}
       </>
