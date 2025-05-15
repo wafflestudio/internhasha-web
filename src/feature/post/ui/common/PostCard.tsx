@@ -8,7 +8,7 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
 import { UserContext } from '@/shared/context/UserContext';
-import { formatDomainToLabel } from '@/util/format';
+import { formatDomainToLabel, formatMinorJobToLabel } from '@/util/format';
 
 type PostCardProps = {
   post: BriefPost;
@@ -65,41 +65,61 @@ export const PostCard = ({
     >
       {/* 직군 & 마감일 */}
       <div className="relative flex h-[50px] items-center justify-between rounded-t-lg bg-grey-200 px-[22px]">
-        <div className="flex max-w-[80%] items-center gap-2">
+        <div className="flex max-w-[60%] items-center gap-2 md:max-w-[80%]">
           <img src={ICON_SRC.PERSON} className="h-6 w-6 flex-shrink-0" />
           <span className="truncate text-15 font-semibold text-grey-900">
             {positionTitle}
           </span>
         </div>
+        <div className="flex flex-row items-center">
+          <div className="hidden xs:block md:hidden">
+            <div className="flex items-center">
+              {formatMinorJobToLabel(post.positionType)} {post.headCount}명
+              <hr className="mx-4 h-4 w-[1px] bg-grey-300" />
+            </div>
+          </div>
 
-        <span className="flex-shrink-0 text-grey-400">
-          {formatEmploymentState({ date: employmentEndDate })}
-        </span>
+          <span className="flex-shrink-0 text-grey-400">
+            {formatEmploymentState({ date: employmentEndDate })}
+          </span>
+        </div>
+
         {/* 삼각형 */}
         <div className="absolute bottom-[-9px] right-6 h-0 w-0 border-l-[10px] border-r-[10px] border-t-[10px] border-l-transparent border-r-transparent border-t-grey-200 text-lg"></div>
       </div>
 
       <section className="flex flex-1 flex-col gap-4 px-[22px] py-[18px]">
         {/* 회사 정보 */}
-        <div className="flex items-center gap-[14px]">
-          {/* 회사 이미지 */}
-          <div className="h-[40px] w-[40px] overflow-hidden rounded-lg bg-grey-200">
-            <img
-              src={`/${profileImageKey}`}
-              alt={companyName}
-              className="h-full w-full object-cover"
-            />
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-[14px]">
+            {/* 회사 이미지 */}
+            <div className="h-[40px] w-[40px] overflow-hidden rounded-lg bg-grey-200">
+              <img
+                src={`/${profileImageKey}`}
+                alt={companyName}
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <h3 className="text-18 font-semibold text-grey-900">
+                {companyName}
+              </h3>
+              <span className="text-12 font-regular text-grey-800">
+                {formatDomainToLabel(domain)}
+                <span className="xs:hidden">
+                  {' '}
+                  / {formatMinorJobToLabel(post.positionType)} {post.headCount}
+                  명
+                </span>
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col gap-1">
-            <h3 className="text-18 font-semibold text-grey-900">
-              {companyName}
-            </h3>
-            <span className="text-12 font-regular text-grey-800">
-              {formatDomainToLabel(domain)}
-            </span>
+
+          <div className="hidden flex-shrink-0 md:block">
+            {formatMinorJobToLabel(post.positionType)}{' '}
+            <span>{post.headCount}명</span>
           </div>
         </div>
-
         <div className="line-clamp-3 w-full flex-1 truncate text-wrap text-13 font-regular leading-[1.5] text-grey-700">
           {slogan}
         </div>
