@@ -270,6 +270,7 @@ export const CreateProfileForm = ({
           maxLength={MAX_SLOGAN_LENGTH}
           placeholder="한 줄 소개를 입력해주세요."
           errorMessage={`한 줄 소개는 ${MAX_SLOGAN_LENGTH}자 이내로 작성해주세요.`}
+          infoMessage="나를 소개하는 한마디를 입력해주세요."
           minLine={1}
         />
         <TextareaField
@@ -281,7 +282,6 @@ export const CreateProfileForm = ({
           maxLength={MAX_EXPLANATION_LENGTH}
           placeholder="자신에 대한 상세 소개를 작성해주세요.\n\n[예시 작성 문항]\n- 전공 및 지원 분야에 대한 관심\n- 참여한 프로젝트등의 관련 경험\n- 성격적 강점\n- 팀 협업 경험\n"
           errorMessage={`상세 소개는 ${MAX_EXPLANATION_LENGTH}자 이내로 작성해주세요.`}
-          infoMessage="나를 소개하는 한 마디를 입력해주세요."
           minLine={7}
         />
         <ImageField
@@ -291,10 +291,10 @@ export const CreateProfileForm = ({
           isSubmit={isSubmit}
           isSubmitError={imagePreview.isError}
           errorMessage="1MB 이하의 이미지 파일을 올려주세요."
-          infoMessage="회사 썸네일 이미지는 정사각형 비율(1:1)로 보여져요."
+          infoMessage="프로필 이미지는 정사각형 비율(1:1)로 보여져요."
         />
         <PdfField
-          label="포트폴리오 (디자이너용)"
+          label="포트폴리오"
           input={portfolioPreview}
           isPending={isPending}
           isSubmit={isSubmit}
