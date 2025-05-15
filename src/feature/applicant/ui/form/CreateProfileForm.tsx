@@ -214,8 +214,8 @@ export const CreateProfileForm = ({
           isSubmitError={formStates.department.isError}
           majorPlaceholder="주전공 학과명을 입력해주세요. (예시: 컴퓨터공학부, 경제학부 등)"
           minorPlaceholder="다전공 학과명을 입력해주세요. (예시: 컴퓨터공학부, 경제학부 등)"
-          errorMessage="희망 직무는 10개 이하로 중복되지 않게 입력해주세요."
-          inputErrorMessage="중복되지 않는 100자 이내의 직무명을 작성해주세요."
+          errorMessage="주전공은 필수 작성이며, 다전공은 총 6개 이하로 중복되지 않게 입력해주세요."
+          inputErrorMessage="주전공은 필수 작성이며, 다전공은 총 6개 이하로 중복되지 않게 입력해주세요."
           required={true}
         />
         <PdfField
