@@ -141,7 +141,7 @@ export const companyFormPresentation: CompanyFormPresentation = {
           isError:
             headcount.value.trim().length === 0 ||
             isNaN(Number(headcount.value)) ||
-            Number(headcount.value) < 0,
+            Number(headcount.value) < 1,
           value: Number(headcount.value),
         },
         location: {

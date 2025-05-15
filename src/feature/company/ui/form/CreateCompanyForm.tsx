@@ -131,6 +131,9 @@ export const CreateCompanyProfileForm = ({
       formStates.links.isError ||
       formStates.tags.isError
     ) {
+      setResponseMessage(
+        '작성 내용 중 유효하지 않은 값이 존재합니다. 다시 확인해주세요.',
+      );
       return;
     }
 
