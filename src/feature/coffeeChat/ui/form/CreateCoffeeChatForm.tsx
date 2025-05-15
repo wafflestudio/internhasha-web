@@ -35,6 +35,9 @@ export const CreateCoffeeChatForm = ({ postId }: { postId: string }) => {
   const handleSubmit = () => {
     setIsSubmit(true);
     if (content.isError) {
+      setResponseMessage(
+        '작성 내용 중 유효하지 않은 값이 존재합니다. 다시 확인해주세요.',
+      );
       return;
     }
 
