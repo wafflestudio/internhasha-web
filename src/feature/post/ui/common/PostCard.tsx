@@ -233,12 +233,9 @@ const useAddBookmark = (pageParams: PostFilter) => {
       );
       return { previousPosts };
     },
-    onSuccess: async (response) => {
-      if (response.type === 'success') {
-        await queryClient.invalidateQueries();
-        return;
-      } else {
-        toast.error('북마크 삭제에 실패했습니다.');
+    onSuccess: (response) => {
+      if (response.type !== 'success') {
+        toast.error('북마크 추가에 실패했습니다.');
       }
     },
     onError: (_error, _variables, context) => {
@@ -246,7 +243,7 @@ const useAddBookmark = (pageParams: PostFilter) => {
         ['postService', 'getPosts', page, roles, isActive, order, domains],
         context?.previousPosts,
       );
-      toast.error('북마크 삭제에 실패했습니다.');
+      toast.error('북마크 추가에 실패했습니다.');
     },
     onSettled: async () => {
       await queryClient.invalidateQueries({ queryKey: ['postService'] });
@@ -310,11 +307,8 @@ const useDeleteBookmark = (pageParams: PostFilter) => {
       );
       return { previousPosts };
     },
-    onSuccess: async (response) => {
-      if (response.type === 'success') {
-        await queryClient.invalidateQueries({ queryKey: ['postService'] });
-        return;
-      } else {
+    onSuccess: (response) => {
+      if (response.type !== 'success') {
         toast.error('북마크 삭제에 실패했습니다.');
       }
     },
