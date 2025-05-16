@@ -1,6 +1,9 @@
 import { Bug, Mail } from 'lucide-react';
 
 export const Footer = () => {
+  const MAIL_ADDRESSS = 'internhasha.official@gmail.com';
+  const BUG_REPORT_LINK = 'https://forms.gle/uwUU6Ccbwpbki5yt9';
+
   return (
     <footer className="w-full border-t border-grey-200 bg-grey-100 p-6 text-grey-900">
       <div className="flex flex-col justify-between gap-4">
@@ -15,10 +18,10 @@ export const Footer = () => {
               <span>Contact:</span>
             </div>
             <a
-              href="mailto:internhasha.official@gmail.com"
+              href={`mailto:${MAIL_ADDRESSS}`}
               className="hover:text-blue-800 hover:underline"
             >
-              internhasha.official@gmail.com
+              {MAIL_ADDRESSS}
             </a>
           </div>
 
@@ -28,10 +31,12 @@ export const Footer = () => {
               <span>버그 제보:</span>
             </div>
             <a
-              href="mailto:internhasha.official@gmail.com"
+              href={BUG_REPORT_LINK}
+              target="_blank"
               className="hover:text-blue-800 hover:underline"
+              rel="noreferrer"
             >
-              internhasha.official@gmail.com
+              버그 리포트로 이동
             </a>
           </div>
         </div>
