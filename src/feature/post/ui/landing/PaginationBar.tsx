@@ -35,7 +35,6 @@ export const PaginationBar = ({
   const isPrevGroupDisabled = currentGroup === 0;
   const isNextGroupDisabled = startPage + pagesPerGroup >= totalPages;
 
-  console.log(isPrevGroupDisabled);
   const handlePrevGroup = () => {
     if (!isPrevGroupDisabled) {
       onChangeGroup(currentGroup - 1);
