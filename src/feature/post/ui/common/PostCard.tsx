@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import type { PostsResponse } from '@/api/apis/localServer/schemas';
 import { Badge } from '@/components/ui/badge';
 import { ICON_SRC } from '@/entities/asset';
 import type { BriefPost, PostFilter } from '@/entities/post';
+import type { PostsResponse } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 import { formatEmploymentState } from '@/feature/post/presentation/postFormatPresentation';
 import { useGuardContext } from '@/shared/context/hooks';

@@ -15,13 +15,13 @@ import { MarkdownPreview } from '@/components/ui/markdown-preview';
 import { SeperatorLine } from '@/components/ui/separator';
 import { ICON_SRC } from '@/entities/asset';
 import { createErrorMessage } from '@/entities/errors';
+import type { PostDetailDTO } from '@/entities/post';
 import type { ServiceResponse } from '@/entities/response';
 import {
   checkPostActive,
   formatEmploymentState,
 } from '@/feature/post/presentation/postFormatPresentation';
 import { SkeletonPostDetailView } from '@/feature/post/ui/detail/SkeletonPostDetailView';
-import type { PostDetailResponse } from '@/mocks/post/schemas';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { TokenContext } from '@/shared/context/TokenContext';
@@ -454,7 +454,7 @@ const useAddBookmark = () => {
         queryKey: ['postService', 'getPostDetail', postId, token],
       });
       const previousPostDetailData = await queryClient.getQueryData<
-        ServiceResponse<PostDetailResponse>
+        ServiceResponse<PostDetailDTO>
       >(['postService', 'getPostDetail', postId, token]);
       queryClient.setQueryData(
         ['postService', 'getPostDetail', postId, token],
@@ -519,7 +519,7 @@ const useDeleteBookmark = () => {
         queryKey: ['postService', 'getPostDetail', postId, token],
       });
       const previousPostDetailData = await queryClient.getQueryData<
-        ServiceResponse<PostDetailResponse>
+        ServiceResponse<PostDetailDTO>
       >(['postService', 'getPostDetail', postId, token]);
       queryClient.setQueryData(
         ['postService', 'getPostDetail', postId, token],
