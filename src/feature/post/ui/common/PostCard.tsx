@@ -17,21 +17,22 @@ type PostCardProps = {
   post: BriefPost;
   onDetailClick(postId: string): void;
   setShowSignInModal(input: boolean): void;
-  pageParams: PostFilter;
+  postFilter: PostFilter;
 };
 
 export const PostCard = ({
   post,
   onDetailClick,
   setShowSignInModal,
-  pageParams,
+  postFilter,
 }: PostCardProps) => {
   const { token } = useGuardContext(TokenContext);
   const { role } = useGuardContext(UserContext);
-  const { addBookmark, isPending: isAddBookmarkPending } =
-    useAddBookmark(pageParams);
+  const { addBookmark, isPending: isAddBookmarkPending } = useAddBookmark({
+    postFilter,
+  });
   const { deleteBookmark, isPending: isDeleteBookmarkPending } =
-    useDeleteBookmark(pageParams);
+    useDeleteBookmark({ postFilter });
 
   const onClickAddBookmark = ({ postId }: { postId: string }) => {
     if (token === null) {
@@ -182,12 +183,12 @@ export const PostCard = ({
   );
 };
 
-const useAddBookmark = (pageParams: PostFilter) => {
+const useAddBookmark = ({ postFilter }: { postFilter: PostFilter }) => {
   const { postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
 
   const queryClient = useQueryClient();
-  const { page, roles, isActive, order, domains } = pageParams;
+  const { page, roles, isActive, order, domains } = postFilter;
 
   const { mutate: addBookmark, isPending } = useMutation({
     mutationFn: ({ postId }: { postId: string }) => {
@@ -256,12 +257,12 @@ const useAddBookmark = (pageParams: PostFilter) => {
   };
 };
 
-const useDeleteBookmark = (pageParams: PostFilter) => {
+const useDeleteBookmark = ({ postFilter }: { postFilter: PostFilter }) => {
   const { postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
 
   const queryClient = useQueryClient();
-  const { page, roles, isActive, order, domains } = pageParams;
+  const { page, roles, isActive, order, domains } = postFilter;
 
   const { mutate: deleteBookmark, isPending } = useMutation({
     mutationFn: ({ postId }: { postId: string }) => {
