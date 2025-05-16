@@ -4,18 +4,46 @@ type AuthorBriefDTO = {
   profileImageLink?: string;
 };
 
-type JobCategory =
-  | 'PLANNER'
-  | 'FRONT'
-  | 'APP'
-  | 'DATA'
-  | 'GAME'
-  | 'BACKEND'
-  | 'AI'
-  | 'OTHERS'
-  | 'DESIGN'
-  | 'MARKETING'
-  | 'HUMANRESOURCE';
+type Domain =
+  | 'FINTECH'
+  | 'HEALTHTECH'
+  | 'EDUCATION'
+  | 'ECOMMERCE'
+  | 'FOODTECH'
+  | 'MOBILITY'
+  | 'CONTENTS'
+  | 'B2B'
+  | 'OTHERS';
+
+type CompanyDTO = {
+  id: string;
+  companyName: string;
+  companyEstablishedYear: number;
+  domain: Domain;
+  headcount: number;
+  location: string;
+  slogan: string;
+  detail: string;
+  profileImageKey: string;
+  companyInfoPDFKey?: string;
+  landingPageLink?: string;
+  links?: Link[];
+  tags?: { tag: string }[];
+  vcName?: string;
+  vcRecommendation?: string;
+};
+
+type PositionDTO = {
+  id: string;
+  positionTitle: string;
+  positionType: string;
+  headCount: number;
+  salary: number | null;
+  detail: string;
+  employmentEndDate: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
 
 type Link = {
   link: string;
@@ -25,43 +53,30 @@ type Link = {
 type PostDTO = {
   id: string;
   author: AuthorBriefDTO;
-
-  // 회사 정보
-  companyName: string;
-  explanation: string;
-  email: string;
-  slogan: string;
-  investAmount?: number;
-  investCompany: string[];
-  series: 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
-  irDeckLink?: string;
-  landingPageLink?: string;
-  imageLink?: string;
-  links?: Link[];
-  tags?: string[];
-
-  // post 정보
-  title: string;
-  employmentEndDate?: string;
-  createdAt: string;
-  updatedAt: string;
-  category: JobCategory;
-  detail: string;
-  headcount: number;
+  company: CompanyDTO;
+  position: PositionDTO;
   isBookmarked: boolean;
 };
 
-export type PostBriefDTO = Omit<
-  PostDTO,
-  | 'explanation'
-  | 'irDeckLink'
-  | 'landingPageLink'
-  | 'links'
-  | 'tags'
-  | 'createdAt'
-  | 'updatedAt'
-  | 'detail'
->;
+export type PostBriefDTO = {
+  id: string;
+  author: AuthorBriefDTO;
+  companyName: string;
+  profileImageKey: string;
+  location: string;
+  employmentEndDate: string | null;
+  positionTitle: string;
+  domain: string;
+  detailSummary: string;
+  slogan: string;
+  positionType: string;
+  headCount: number;
+  isBookmarked: boolean;
+  createdAt: string;
+  updatedAt: string;
+  tags: { tag: string }[];
+  coffeeChatCount: number;
+};
 
 export type PostsResponse = {
   posts: PostBriefDTO[];
