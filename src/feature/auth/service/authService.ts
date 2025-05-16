@@ -24,6 +24,7 @@ export type AuthService = {
   }): ServiceResponse<LocalServerDTO.UserWithTokenResponse>;
   logout({ token }: { token: string }): ServiceResponse<void>;
   reissueAccessToken(): ServiceResponse<LocalServerDTO.TokenResponse>;
+  checkMailDuplicate({ email }: { email: string }): ServiceResponse<void>;
   sendEmailCode({ snuMail }: { snuMail: string }): ServiceResponse<void>;
   verifyCode({
     snuMail,
@@ -91,6 +92,20 @@ export const implAuthService = ({
       roleStateRepository.setRole({ role: data.user.userRole });
       roleStateRepository.setId({ id: data.user.id });
 
+      return {
+        type: 'success',
+        data,
+      };
+    }
+    return { type: 'error', code: data.code, message: data.message };
+  },
+  checkMailDuplicate: async ({ email }) => {
+    const body = { email };
+    const { status, data } = await apis['POST /auth/mail']({
+      body,
+    });
+
+    if (status === 200) {
       return {
         type: 'success',
         data,

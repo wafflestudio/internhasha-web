@@ -45,6 +45,14 @@ export const EmailVerifyForm = () => {
     isPending: isPendingSend,
   } = useSendCode();
   const {
+    checkMailDuplicate,
+    responseMessage: mailDuplicationResponseMessage,
+    isPending: isPendingCheckMailDuplicate,
+  } = useCheckMailDuplicate({
+    setShowModal,
+    onSuccess: sendCode,
+  });
+  const {
     emailVerify,
     responseMessage: emailResponseMessage,
     isPending: isPendingVerify,
@@ -68,7 +76,11 @@ export const EmailVerifyForm = () => {
     emailVerifySuccessCode.isError ||
     !verifySuccess;
 
-  const isPending = isPendingSend || isPendingVerify || isPendingLocalSignUp;
+  const isPending =
+    isPendingSend ||
+    isPendingVerify ||
+    isPendingLocalSignUp ||
+    isPendingCheckMailDuplicate;
 
   if (body === null) {
     return <RouteNavigator link={PATH.SIGN_IN} />;
@@ -79,7 +91,7 @@ export const EmailVerifyForm = () => {
       setShowSendCodeError(true);
       return;
     }
-    sendCode({ snuMail: formStates.snuMail.value });
+    checkMailDuplicate({ email: formStates.snuMail.value });
   };
 
   const handleClickVerifyEmailButton = () => {
@@ -142,6 +154,12 @@ export const EmailVerifyForm = () => {
               </Button>
             )}
           </div>
+          {mailDuplicationResponseMessage.length !== 0 && (
+            <FormErrorResponse>
+              메일 중복 인증에 실패하였습니다. 인증 코드 받기를 다시
+              시도해주세요.
+            </FormErrorResponse>
+          )}
           {showSendCodeError && snuMailPrefix.isError && (
             <div>유효하지 않은 스누메일입니다.</div>
           )}
@@ -233,6 +251,45 @@ export const EmailVerifyForm = () => {
       {showModal === 'REDIRECT' && <RedirectSignInModal />}
     </>
   );
+};
+
+const useCheckMailDuplicate = ({
+  setShowModal,
+  onSuccess,
+}: {
+  setShowModal(input: 'NONE' | 'REDIRECT'): void;
+  onSuccess({ snuMail }: { snuMail: string }): void;
+}) => {
+  const { authService } = useGuardContext(ServiceContext);
+  const [responseMessage, setResponseMessage] = useState('');
+
+  const { mutate: checkMailDuplicate, isPending } = useMutation({
+    mutationFn: ({ email }: { email: string }) => {
+      return authService.checkMailDuplicate({
+        email,
+      });
+    },
+    onSuccess: (response, variables) => {
+      if (response.type === 'success') {
+        onSuccess({ snuMail: variables.email });
+        return;
+      }
+      if (response.code === 'USER_001') {
+        setShowModal('REDIRECT');
+        return;
+      }
+      setResponseMessage(
+        '메일 중복 확인에 실패했습니다. 잠시 후에 다시 실행해주세요.',
+      );
+    },
+    onError: () => {
+      setResponseMessage(
+        '메일 중복 확인에 실패했습니다. 잠시 후에 다시 실행해주세요.',
+      );
+    },
+  });
+
+  return { checkMailDuplicate, responseMessage, isPending };
 };
 
 const useSendCode = () => {
