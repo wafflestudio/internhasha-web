@@ -44,7 +44,7 @@ const VALID_DOMAIN_FILTER_VALUE = DOMAIN_FILTER_VALUE.map((item) => item.value);
 type VALID_DOMAIN_FILTER_TYPE = Domain[] | undefined;
 
 const ORDER_FILTER_VALUE = [
-  { value: 0, label: '최신순' },
+  { value: 0, label: '공고등록순' },
   { value: 1, label: '마감임박순' },
 ];
 
