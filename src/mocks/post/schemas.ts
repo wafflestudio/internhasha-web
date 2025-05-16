@@ -4,64 +4,25 @@ type AuthorBriefDTO = {
   profileImageLink?: string;
 };
 
-type JobCategory =
-  | 'PLANNER'
-  | 'FRONT'
-  | 'APP'
-  | 'DATA'
-  | 'GAME'
-  | 'BACKEND'
-  | 'AI'
-  | 'OTHERS'
-  | 'DESIGN'
-  | 'MARKETING'
-  | 'HUMANRESOURCE';
-
-type Link = {
-  link: string;
-  description: string;
-};
-
-type PostDTO = {
+export type PostBriefDTO = {
   id: string;
   author: AuthorBriefDTO;
-
-  // 회사 정보
   companyName: string;
-  explanation: string;
-  email: string;
+  profileImageKey: string;
+  location: string;
+  employmentEndDate: string | null;
+  positionTitle: string;
+  domain: string;
+  detailSummary: string;
   slogan: string;
-  investAmount?: number;
-  investCompany: string[];
-  series: 'SEED' | 'PRE_A' | 'A' | 'B' | 'C' | 'D';
-  irDeckLink?: string;
-  landingPageLink?: string;
-  imageLink?: string;
-  links?: Link[];
-  tags?: string[];
-
-  // post 정보
-  title: string;
-  employmentEndDate?: string;
+  positionType: string;
+  headCount: number;
+  isBookmarked: boolean;
   createdAt: string;
   updatedAt: string;
-  category: JobCategory;
-  detail: string;
-  headcount: number;
-  isBookmarked: boolean;
+  tags: { tag: string }[];
+  coffeeChatCount: number;
 };
-
-export type PostBriefDTO = Omit<
-  PostDTO,
-  | 'explanation'
-  | 'irDeckLink'
-  | 'landingPageLink'
-  | 'links'
-  | 'tags'
-  | 'createdAt'
-  | 'updatedAt'
-  | 'detail'
->;
 
 export type PostsResponse = {
   posts: PostBriefDTO[];
@@ -69,5 +30,3 @@ export type PostsResponse = {
     lastPage: number;
   };
 };
-
-export type PostDetailResponse = PostDTO;

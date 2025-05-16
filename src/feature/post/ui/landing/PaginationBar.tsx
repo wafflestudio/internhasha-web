@@ -32,12 +32,17 @@ export const PaginationBar = ({
     (_, i) => startPage + i,
   );
 
+  const isPrevGroupDisabled = currentGroup === 0;
+  const isNextGroupDisabled = startPage + pagesPerGroup >= totalPages;
+
   const handlePrevGroup = () => {
-    onChangeGroup(Math.max(currentGroup - 1, 0));
+    if (!isPrevGroupDisabled) {
+      onChangeGroup(currentGroup - 1);
+    }
   };
 
   const handleNextGroup = () => {
-    if (startPage + pagesPerGroup < totalPages) {
+    if (!isNextGroupDisabled) {
       onChangeGroup(currentGroup + 1);
     }
   };
@@ -48,7 +53,12 @@ export const PaginationBar = ({
         <PaginationItem>
           <PaginationPrevious
             onClick={handlePrevGroup}
-            isActive={currentGroup !== 0}
+            className={
+              isPrevGroupDisabled
+                ? 'pointer-events-none opacity-50'
+                : 'cursor-pointer'
+            }
+            aria-disabled={isPrevGroupDisabled}
           />
         </PaginationItem>
         {pageNumbers.map((page, idx) => (
@@ -66,7 +76,12 @@ export const PaginationBar = ({
         <PaginationItem>
           <PaginationNext
             onClick={handleNextGroup}
-            isActive={startPage + pagesPerGroup < totalPages}
+            className={
+              isNextGroupDisabled
+                ? 'pointer-events-none opacity-50'
+                : 'cursor-pointer'
+            }
+            aria-disabled={isNextGroupDisabled}
           />
         </PaginationItem>
       </PaginationContent>

@@ -1,12 +1,10 @@
 import { HttpResponse, type HttpResponseResolver } from 'msw';
 
-import { getPagedPosts, mockPost1, mockPost2 } from '@/mocks/post/data';
-import type { PostDetailResponse, PostsResponse } from '@/mocks/post/schemas';
+import { getPagedPosts } from '@/mocks/post/data';
+import type { PostsResponse } from '@/mocks/post/schemas';
 
 type PostsResolver = {
   posts: HttpResponseResolver<never, never, PostsResponse>;
-  postDetail1: HttpResponseResolver<never, never, PostDetailResponse>;
-  postDetail2: HttpResponseResolver<never, never, PostDetailResponse>;
 };
 
 export const postsResolver: PostsResolver = {
@@ -16,11 +14,5 @@ export const postsResolver: PostsResolver = {
 
     const response = getPagedPosts(page);
     return HttpResponse.json(response, { status: 200 });
-  },
-  postDetail1: () => {
-    return HttpResponse.json(mockPost1, { status: 200 });
-  },
-  postDetail2: () => {
-    return HttpResponse.json(mockPost2, { status: 200 });
   },
 };

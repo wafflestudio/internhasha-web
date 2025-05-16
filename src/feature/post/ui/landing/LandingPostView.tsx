@@ -21,11 +21,9 @@ export const LandingPostView = ({
   handlePageChange: (page: number) => void;
 }) => {
   const { toPost } = useRouteNavigation();
-  const [currentPage, setCurrentPage] = useState(0);
   const [currentGroup, setCurrentGroup] = useState(0);
 
   const { postsData } = useGetPosts({
-    page: currentPage,
     ...postFilter,
   });
 
@@ -76,10 +74,9 @@ export const LandingPostView = ({
           <PaginationBar
             totalPages={postsData.data.paginator.lastPage}
             pagesPerGroup={PAGES_PER_GROUP}
-            currentPage={currentPage}
+            currentPage={postFilter.page !== undefined ? postFilter.page : 0}
             currentGroup={currentGroup}
             onChangePage={(page) => {
-              setCurrentPage(page);
               handlePageChange(page);
             }}
             onChangeGroup={(group) => {
