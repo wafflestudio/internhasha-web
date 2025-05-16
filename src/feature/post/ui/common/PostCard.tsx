@@ -1,8 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
+import type { PostsResponse } from '@/api/apis/localServer/schemas';
 import { Badge } from '@/components/ui/badge';
 import { ICON_SRC } from '@/entities/asset';
-import type { BriefPost } from '@/entities/post';
+import type { BriefPost, PostFilter } from '@/entities/post';
+import type { ServiceResponse } from '@/entities/response';
 import { formatEmploymentState } from '@/feature/post/presentation/postFormatPresentation';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
@@ -14,18 +17,22 @@ type PostCardProps = {
   post: BriefPost;
   onDetailClick(postId: string): void;
   setShowSignInModal(input: boolean): void;
+  postFilter: PostFilter;
 };
 
 export const PostCard = ({
   post,
   onDetailClick,
   setShowSignInModal,
+  postFilter,
 }: PostCardProps) => {
   const { token } = useGuardContext(TokenContext);
   const { role } = useGuardContext(UserContext);
-  const { addBookmark, isPending: isAddBookmarkPending } = useAddBookmark();
+  const { addBookmark, isPending: isAddBookmarkPending } = useAddBookmark({
+    postFilter,
+  });
   const { deleteBookmark, isPending: isDeleteBookmarkPending } =
-    useDeleteBookmark();
+    useDeleteBookmark({ postFilter });
 
   const onClickAddBookmark = ({ postId }: { postId: string }) => {
     if (token === null) {
@@ -176,11 +183,12 @@ export const PostCard = ({
   );
 };
 
-const useAddBookmark = () => {
+const useAddBookmark = ({ postFilter }: { postFilter: PostFilter }) => {
   const { postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
 
   const queryClient = useQueryClient();
+  const { page, roles, isActive, order, domains } = postFilter;
 
   const { mutate: addBookmark, isPending } = useMutation({
     mutationFn: ({ postId }: { postId: string }) => {
@@ -189,18 +197,57 @@ const useAddBookmark = () => {
       }
       return postService.addBookmark({ token, postId });
     },
-    onSuccess: async (response) => {
-      if (response.type === 'success') {
-        await queryClient.invalidateQueries();
-        return;
-      } else {
-        // TODO: 북마크 생성 실패 시 하단에 토스트 띄우기
-        return;
+    onMutate: async ({ postId }) => {
+      await queryClient.cancelQueries({
+        queryKey: [
+          'postService',
+          'getPosts',
+          page,
+          roles,
+          isActive,
+          order,
+          domains,
+        ],
+      });
+      const previousPosts = await queryClient.getQueryData<
+        ServiceResponse<PostsResponse>
+      >(['postService', 'getPosts', page, roles, isActive, order, domains]);
+      queryClient.setQueryData(
+        ['postService', 'getPosts', page, roles, isActive, order, domains],
+        () => {
+          if (previousPosts === undefined || previousPosts.type === 'error') {
+            return previousPosts;
+          }
+          return {
+            ...previousPosts,
+            data: {
+              ...previousPosts.data,
+              posts: previousPosts.data.posts.map((post) => {
+                if (post.id === postId) {
+                  return { ...post, isBookmarked: true };
+                }
+                return post;
+              }),
+            },
+          };
+        },
+      );
+      return { previousPosts };
+    },
+    onSuccess: (response) => {
+      if (response.type !== 'success') {
+        toast.error('북마크 추가에 실패했습니다.');
       }
     },
-    onError: () => {
-      // TODO: 북마크 생성 실패 시 하단에 토스트 띄우기
-      return;
+    onError: (_error, _variables, context) => {
+      queryClient.setQueryData(
+        ['postService', 'getPosts', page, roles, isActive, order, domains],
+        context?.previousPosts,
+      );
+      toast.error('북마크 추가에 실패했습니다.');
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['postService'] });
     },
   });
 
@@ -210,11 +257,12 @@ const useAddBookmark = () => {
   };
 };
 
-const useDeleteBookmark = () => {
+const useDeleteBookmark = ({ postFilter }: { postFilter: PostFilter }) => {
   const { postService } = useGuardContext(ServiceContext);
   const { token } = useGuardContext(TokenContext);
 
   const queryClient = useQueryClient();
+  const { page, roles, isActive, order, domains } = postFilter;
 
   const { mutate: deleteBookmark, isPending } = useMutation({
     mutationFn: ({ postId }: { postId: string }) => {
@@ -223,18 +271,57 @@ const useDeleteBookmark = () => {
       }
       return postService.deleteBookmark({ token, postId });
     },
-    onSuccess: async (response) => {
-      if (response.type === 'success') {
-        await queryClient.invalidateQueries({ queryKey: ['postService'] });
-        return;
-      } else {
-        // TODO: 북마크 생성 실패 시 하단에 토스트 띄우기
-        return;
+    onMutate: async ({ postId }) => {
+      await queryClient.cancelQueries({
+        queryKey: [
+          'postService',
+          'getPosts',
+          page,
+          roles,
+          isActive,
+          order,
+          domains,
+        ],
+      });
+      const previousPosts = await queryClient.getQueryData<
+        ServiceResponse<PostsResponse>
+      >(['postService', 'getPosts', page, roles, isActive, order, domains]);
+      queryClient.setQueryData(
+        ['postService', 'getPosts', page, roles, isActive, order, domains],
+        () => {
+          if (previousPosts === undefined || previousPosts.type === 'error') {
+            return previousPosts;
+          }
+          return {
+            ...previousPosts,
+            data: {
+              ...previousPosts.data,
+              posts: previousPosts.data.posts.map((post) => {
+                if (post.id === postId) {
+                  return { ...post, isBookmarked: false };
+                }
+                return post;
+              }),
+            },
+          };
+        },
+      );
+      return { previousPosts };
+    },
+    onSuccess: (response) => {
+      if (response.type !== 'success') {
+        toast.error('북마크 삭제에 실패했습니다.');
       }
     },
-    onError: () => {
-      // TODO: 북마크 생성 실패 시 하단에 토스트 띄우기
-      return;
+    onError: (_error, _variables, context) => {
+      queryClient.setQueryData(
+        ['postService', 'getPosts', page, roles, isActive, order, domains],
+        context?.previousPosts,
+      );
+      toast.error('북마크 삭제에 실패했습니다.');
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['postService'] });
     },
   });
 

@@ -54,6 +54,7 @@ export const LandingPostView = ({
               toPost({ postId });
             }}
             setShowSignInModal={setShowSignInModal}
+            postFilter={{ ...postFilter, page: currentPage }}
           />
         ))}
       </>
