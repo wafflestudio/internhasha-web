@@ -114,7 +114,7 @@ const useGetPosts = ({
       isActive,
       order,
       domains,
-    ] as const,
+    ],
     queryFn: async () => {
       return postService.getPosts({
         page,
