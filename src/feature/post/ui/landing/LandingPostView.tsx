@@ -52,7 +52,7 @@ export const LandingPostView = ({
               toPost({ postId });
             }}
             setShowSignInModal={setShowSignInModal}
-            postFilter={{ ...postFilter, page: currentPage }}
+            postFilter={postFilter}
           />
         ))}
       </>
@@ -114,7 +114,7 @@ const useGetPosts = ({
       isActive,
       order,
       domains,
-    ],
+    ] as const,
     queryFn: async () => {
       return postService.getPosts({
         page,
