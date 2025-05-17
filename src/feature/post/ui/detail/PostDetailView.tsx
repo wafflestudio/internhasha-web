@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 
 import { DownloadButtonWithPresignedUrl } from '@/components/button/DownloadButtonWithPresignedUrl';
 import { LinkButton } from '@/components/button/LinkButton';
+import { LinkCopyButton } from '@/components/button/LinkCopyButton';
 import { ClosePostModal } from '@/components/modal/ClosePostModal';
 import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal';
 import { SignInForCoffeeChatModal } from '@/components/modal/SignInForCoffeChatModal';
@@ -182,16 +183,22 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           </div>
           <div className="flex flex-col flex-wrap gap-3 xs:flex-row md:flex-col">
             {role !== 'COMPANY' && (
-              <Button
-                onClick={() => {
-                  handleClickApplyCoffeeChat({ id: postId });
-                }}
-                disabled={coffeeChatStatus?.isSubmitted}
-              >
-                {(coffeeChatStatus?.isSubmitted ?? false)
-                  ? '커피챗 신청완료'
-                  : '커피챗 신청하기'}
-              </Button>
+              <>
+                <LinkCopyButton
+                  companyName={company.companyName}
+                  title={position.positionTitle}
+                />
+                <Button
+                  onClick={() => {
+                    handleClickApplyCoffeeChat({ id: postId });
+                  }}
+                  disabled={coffeeChatStatus?.isSubmitted}
+                >
+                  {(coffeeChatStatus?.isSubmitted ?? false)
+                    ? '커피챗 신청완료'
+                    : '커피챗 신청하기'}
+                </Button>
+              </>
             )}
             {author.id === userId && (
               <Button
