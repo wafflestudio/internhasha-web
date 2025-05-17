@@ -312,7 +312,10 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                 <div className="flex flex-col gap-1.5">
                   {company.links.map((linkWithDescription, index) => {
                     return (
-                      <div key={index} className="flex items-center gap-[10px]">
+                      <div
+                        key={index}
+                        className="flex flex-col items-start gap-[10px] sm:flex-row sm:items-center"
+                      >
                         <span className="text-grey-800">
                           {linkWithDescription.description}
                         </span>
