@@ -135,7 +135,7 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
           <div className="flex w-full items-center justify-between">
             <span className="text-4xl font-bold">{position.positionTitle}</span>
             {role !== 'COMPANY' && (
-              <div className="flex content-center">
+              <div className="content-center">
                 {isBookmarked ? (
                   <button
                     className="h-[48px] w-[48px]"
