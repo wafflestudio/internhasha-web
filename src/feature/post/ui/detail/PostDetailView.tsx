@@ -246,7 +246,30 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
 
         {/* 회사 소개 */}
         <div className="flex w-full flex-col gap-4 md:max-w-[580px]">
-          <p className="text-xl font-semibold">회사 소개</p>
+          {/* 상세 공고 글 */}
+          <section className="flex w-full flex-col gap-[30px] md:max-w-[580px]">
+            <div className="flex flex-col gap-4 rounded-lg bg-grey-50 px-[34px] py-[24px]">
+              <div className="flex items-center gap-2">
+                <img src={ICON_SRC.PERSON} />
+                <span>
+                  {formatMinorJobToLabel(position.positionType)}{' '}
+                  {position.headCount}명
+                </span>
+              </div>
+              <div className="flex flex-1 gap-4">
+                <span className="text-grey-700">월급</span>
+                {position.salary == null ? (
+                  <span>추후 협의</span>
+                ) : (
+                  <span>{position.salary} 만원</span>
+                )}
+              </div>
+            </div>
+          </section>
+
+          <SeperatorLine className="md:max-w-[580px]" />
+
+          <p className="text-2xl font-semibold">회사 소개</p>
           {/* 회사 설명 카드 */}
           <section className="flex flex-col gap-4 rounded-lg bg-grey-50 px-[34px] py-[24px]">
             <div className="flex flex-col gap-4 md:flex-row md:gap-[68px]">
@@ -376,36 +399,16 @@ export const PostDetailView = ({ postId }: { postId: string }) => {
                   </p>
                 </section>
               )}
+
+            <SeperatorLine className="md:max-w-[580px]" />
+
+            <span className="text-2xl font-bold">상세 공고 글</span>
+            <div className="flex rounded-md border">
+              <MarkdownPreview content={position.detail} />
+            </div>
           </div>
         </div>
       </div>
-
-      <SeperatorLine className="md:max-w-[580px]" />
-
-      {/* 상세 공고 글 */}
-      <section className="flex w-full flex-col gap-[30px] md:max-w-[580px]">
-        <span className="text-2xl font-bold">상세 공고 글</span>
-        <div className="flex flex-col gap-4 rounded-lg bg-grey-50 px-[34px] py-[24px]">
-          <div className="flex items-center gap-2">
-            <img src={ICON_SRC.PERSON} />
-            <span>
-              {formatMinorJobToLabel(position.positionType)}{' '}
-              {position.headCount}명
-            </span>
-          </div>
-          <div className="flex flex-1 gap-4">
-            <span className="text-grey-700">월급</span>
-            {position.salary == null ? (
-              <span>추후 협의</span>
-            ) : (
-              <span>{position.salary} 만원</span>
-            )}
-          </div>
-        </div>
-        <div className="flex rounded-md border">
-          <MarkdownPreview content={position.detail} />
-        </div>
-      </section>
 
       {showModal === 'BOOKMARK' && (
         <SignInForBookmarkModal onClose={closeModal} />
