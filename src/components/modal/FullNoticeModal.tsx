@@ -7,7 +7,8 @@ import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useDialog } from '@/shared/modal/hooks';
 
-export const SuggestInfoModal = ({ onClose }: { onClose: () => void }) => {
+// 전체 공지용 모달
+export const FullNoticeModal = ({ onClose }: { onClose: () => void }) => {
   const { isVisible, handleClose } = useDialog({
     onClose: () => {
       if (dontShowAgain) {

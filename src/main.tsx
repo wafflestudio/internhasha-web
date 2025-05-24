@@ -12,6 +12,7 @@ if (root === null) throw new Error('Root element not found');
 const ENV = {
   APP_ENV: import.meta.env.MODE as 'prod' | 'dev' | 'mock',
   GOOGLE_CLIENT_ID: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+  SHOW_MODAL_SEASON: import.meta.env.VITE_SHOW_MODAL_SEASON === 'true',
 };
 
 async function enableMocking() {

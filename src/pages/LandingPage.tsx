@@ -1,11 +1,12 @@
 import { useState } from 'react';
 
+import { FullNoticeModal } from '@/components/modal/FullNoticeModal';
 import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal';
-import { SuggestInfoModal } from '@/components/modal/SuggestInfoModal';
 import { PageLayout } from '@/components/ui/layout';
 import type { PostFilter } from '@/entities/post';
 import type { PostQuery } from '@/entities/route';
 import { LandingPageView } from '@/feature/post';
+import { EnvContext } from '@/shared/context/EnvContext';
 import { useGuardContext } from '@/shared/context/hooks';
 import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
@@ -28,6 +29,7 @@ export const LandingPage = () => {
         }
       : null;
   const { storageService } = useGuardContext(ServiceContext);
+  const { SHOW_MODAL_SEASON } = useGuardContext(EnvContext);
   const { toMain } = useRouteNavigation();
   const [postFilter, setPostFilter] = useState<PostFilter>(
     queryParams !== null
@@ -47,8 +49,11 @@ export const LandingPage = () => {
 
   const [showModal, setShowModal] = useState<
     'SIGN_IN_FOR_BOOKMARK' | 'SUGGEST' | 'NONE'
-  >(storageService.checkModalClosed() ? 'NONE' : 'SUGGEST');
-
+  >(
+    SHOW_MODAL_SEASON && !storageService.checkModalClosed()
+      ? 'SUGGEST'
+      : 'NONE',
+  );
   const closeModal = () => {
     setShowModal('NONE');
   };
@@ -66,7 +71,7 @@ export const LandingPage = () => {
       {showModal === 'SIGN_IN_FOR_BOOKMARK' && (
         <SignInForBookmarkModal onClose={closeModal} />
       )}
-      {showModal === 'SUGGEST' && <SuggestInfoModal onClose={closeModal} />}
+      {showModal === 'SUGGEST' && <FullNoticeModal onClose={closeModal} />}
     </PageLayout>
   );
 };

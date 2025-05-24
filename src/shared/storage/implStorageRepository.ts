@@ -1,6 +1,6 @@
 import type { StorageRepository } from '@/shared/storage/implStorageService';
 const storageKey = {
-  closeSuggestInfoModalKey: 'internhasha-close-suggest-info-modal',
+  closeFullNoticeModalKey: 'internhasha-close-full-notice-modal',
 };
 
 const createStorageAccessor = (storage: Storage) => ({
@@ -18,11 +18,11 @@ const local = createStorageAccessor(localStorage);
 export const implStorageRepository = (): StorageRepository => {
   return {
     getIsCloseModal: () => {
-      const value = local.get(storageKey.closeSuggestInfoModalKey);
+      const value = local.get(storageKey.closeFullNoticeModalKey);
       return value === 'true';
     },
     saveIsCloseModal: (input) => {
-      local.set(storageKey.closeSuggestInfoModalKey, JSON.stringify(input));
+      local.set(storageKey.closeFullNoticeModalKey, JSON.stringify(input));
     },
   };
 };
