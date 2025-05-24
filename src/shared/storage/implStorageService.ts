@@ -1,10 +1,11 @@
 export type StorageRepository = {
-  getIsCloseModal: () => boolean;
-  saveIsCloseModal: (input: boolean) => void;
+  removeCloseModalTime: () => void;
+  getCloseModalTime: () => Date | null;
+  saveCloseModalTime: () => void;
 };
 
 export type StorageService = {
-  checkModalClosed: () => boolean;
+  checkModalClosed: ({ envDate }: { envDate: Date }) => boolean;
   setModalClosed: () => void;
 };
 
@@ -13,11 +14,19 @@ export const implStorageService = ({
 }: {
   storageRepository: StorageRepository;
 }): StorageService => ({
-  // 입력한 비밀번호가 유효한지 확인
-  checkModalClosed: () => {
-    return storageRepository.getIsCloseModal();
+  checkModalClosed: ({ envDate }) => {
+    const storedDate = storageRepository.getCloseModalTime();
+
+    if (storedDate === null) {
+      return false;
+    }
+    if (storedDate < envDate) {
+      storageRepository.removeCloseModalTime();
+      return false;
+    }
+    return true;
   },
   setModalClosed: () => {
-    storageRepository.saveIsCloseModal(true);
+    storageRepository.saveCloseModalTime();
   },
 });

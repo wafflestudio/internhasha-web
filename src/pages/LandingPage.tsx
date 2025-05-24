@@ -29,7 +29,7 @@ export const LandingPage = () => {
         }
       : null;
   const { storageService } = useGuardContext(ServiceContext);
-  const { SHOW_MODAL_SEASON } = useGuardContext(EnvContext);
+  const { SHOW_MODAL, SHOW_MODAL_SEASON } = useGuardContext(EnvContext);
   const { toMain } = useRouteNavigation();
   const [postFilter, setPostFilter] = useState<PostFilter>(
     queryParams !== null
@@ -46,11 +46,13 @@ export const LandingPage = () => {
   const handleQueryChange = ({ query }: { query: PostFilter }) => {
     toMain({ query });
   };
-
+  
   const [showModal, setShowModal] = useState<
     'SIGN_IN_FOR_BOOKMARK' | 'SUGGEST' | 'NONE'
   >(
-    SHOW_MODAL_SEASON && !storageService.checkModalClosed()
+    SHOW_MODAL &&
+      SHOW_MODAL_SEASON !== null &&
+      !storageService.checkModalClosed({ envDate: SHOW_MODAL_SEASON })
       ? 'SUGGEST'
       : 'NONE',
   );

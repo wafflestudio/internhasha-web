@@ -19,11 +19,6 @@ export const FullNoticeModal = ({ onClose }: { onClose: () => void }) => {
   });
   const { storageService } = useGuardContext(ServiceContext);
   const [dontShowAgain, setDontShowAgain] = useState(false);
-  const canSkip = storageService.checkModalClosed();
-
-  if (canSkip) {
-    return null;
-  }
 
   return (
     <ModalSelectBackground
