@@ -46,7 +46,7 @@ export const LandingPage = () => {
   const handleQueryChange = ({ query }: { query: PostFilter }) => {
     toMain({ query });
   };
-  
+
   const [showModal, setShowModal] = useState<
     'SIGN_IN_FOR_BOOKMARK' | 'SUGGEST' | 'NONE'
   >(
