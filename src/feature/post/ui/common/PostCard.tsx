@@ -16,14 +16,14 @@ import { formatDomainToLabel, formatMinorJobToLabel } from '@/util/format';
 type PostCardProps = {
   post: BriefPost;
   onDetailClick(postId: string): void;
-  setShowSignInModal(input: boolean): void;
+  showSignInModal: () => void;
   postFilter: PostFilter;
 };
 
 export const PostCard = ({
   post,
   onDetailClick,
-  setShowSignInModal,
+  showSignInModal,
   postFilter,
 }: PostCardProps) => {
   const { token } = useGuardContext(TokenContext);
@@ -36,14 +36,14 @@ export const PostCard = ({
 
   const onClickAddBookmark = ({ postId }: { postId: string }) => {
     if (token === null) {
-      setShowSignInModal(true);
+      showSignInModal();
       return;
     }
     addBookmark({ postId });
   };
   const onClickDeleteBookmark = ({ postId }: { postId: string }) => {
     if (token === null) {
-      setShowSignInModal(true);
+      showSignInModal();
       return;
     }
     deleteBookmark({ postId });

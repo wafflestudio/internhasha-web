@@ -47,6 +47,8 @@ import { UserContext } from '@/shared/context/UserContext';
 import { implFileService } from '@/shared/file/fileService';
 import { implRoleStateRepository } from '@/shared/role/state';
 import { PATH } from '@/shared/route/constants';
+import { implStorageRepository } from '@/shared/storage/implStorageRepository';
+import { implStorageService } from '@/shared/storage/implStorageService';
 import { implTokenStateRepository } from '@/shared/token/state';
 
 const RouterProvider = () => {
@@ -127,6 +129,7 @@ export const App = () => {
   const ENV = useGuardContext(EnvContext);
   const tokenStateRepository = implTokenStateRepository({ setToken });
   const roleStateRepository = implRoleStateRepository({ setRole, setId });
+  const storageRepository = implStorageRepository();
 
   const localServerCall = async (content: ExternalCallParams) => {
     const response = await fetch(`/api/${content.path}`, {
@@ -220,6 +223,7 @@ export const App = () => {
     fileService: implFileService({ apis, externalApis }),
     applicantService: implApplicantService({ apis }),
     companyService: implCompanyService({ apis }),
+    storageService: implStorageService({ storageRepository }),
   };
 
   return (
