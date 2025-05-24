@@ -13,11 +13,11 @@ import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 
 export const LandingPostView = ({
   postFilter,
-  setShowSignInModal,
+  showSignInModal,
   handlePageChange,
 }: {
   postFilter: PostFilter;
-  setShowSignInModal: (input: boolean) => void;
+  showSignInModal: () => void;
   handlePageChange: (page: number) => void;
 }) => {
   const { toPost } = useRouteNavigation();
@@ -51,7 +51,7 @@ export const LandingPostView = ({
             onDetailClick={(postId) => {
               toPost({ postId });
             }}
-            setShowSignInModal={setShowSignInModal}
+            showSignInModal={showSignInModal}
             postFilter={postFilter}
           />
         ))}

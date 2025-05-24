@@ -1,10 +1,13 @@
 import { useState } from 'react';
 
 import { SignInForBookmarkModal } from '@/components/modal/SignInForBookmarkModal';
+import { SuggestInfoModal } from '@/components/modal/SuggestInfoModal';
 import { PageLayout } from '@/components/ui/layout';
 import type { PostFilter } from '@/entities/post';
 import type { PostQuery } from '@/entities/route';
 import { LandingPageView } from '@/feature/post';
+import { useGuardContext } from '@/shared/context/hooks';
+import { ServiceContext } from '@/shared/context/ServiceContext';
 import { useRouteNavigation } from '@/shared/route/useRouteNavigation';
 import { useRouteQueryParams } from '@/shared/route/useRouteParams';
 
@@ -24,6 +27,7 @@ export const LandingPage = () => {
               : undefined,
         }
       : null;
+  const { storageService } = useGuardContext(ServiceContext);
   const { toMain } = useRouteNavigation();
   const [postFilter, setPostFilter] = useState<PostFilter>(
     queryParams !== null
@@ -41,10 +45,12 @@ export const LandingPage = () => {
     toMain({ query });
   };
 
-  const [showSignInModal, setShowSignInModal] = useState(false);
+  const [showModal, setShowModal] = useState<
+    'SIGN_IN_FOR_BOOKMARK' | 'SUGGEST' | 'NONE'
+  >(storageService.checkModalClosed() ? 'NONE' : 'SUGGEST');
 
-  const closeSignInModal = () => {
-    setShowSignInModal(false);
+  const closeModal = () => {
+    setShowModal('NONE');
   };
 
   return (
@@ -52,10 +58,15 @@ export const LandingPage = () => {
       <LandingPageView
         postFilter={postFilter}
         setPostFilter={setPostFilter}
-        setShowSignInModal={setShowSignInModal}
+        showSignInModal={() => {
+          setShowModal('SIGN_IN_FOR_BOOKMARK');
+        }}
         handleQueryChange={handleQueryChange}
       />
-      {showSignInModal && <SignInForBookmarkModal onClose={closeSignInModal} />}
+      {showModal === 'SIGN_IN_FOR_BOOKMARK' && (
+        <SignInForBookmarkModal onClose={closeModal} />
+      )}
+      {showModal === 'SUGGEST' && <SuggestInfoModal onClose={closeModal} />}
     </PageLayout>
   );
 };

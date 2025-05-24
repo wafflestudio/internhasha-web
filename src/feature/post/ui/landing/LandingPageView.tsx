@@ -7,14 +7,14 @@ import { RolesFilter } from '@/feature/post/ui/landing/RolesFilter';
 export const LandingPageView = ({
   postFilter,
   setPostFilter,
-  setShowSignInModal,
+  showSignInModal,
   handleQueryChange,
 }: {
   postFilter: PostFilter;
   setPostFilter: (
     input: PostFilter | ((prev: PostFilter) => PostFilter),
   ) => void;
-  setShowSignInModal(input: boolean): void;
+  showSignInModal(): void;
   handleQueryChange: ({ query }: { query: PostFilter }) => void;
 }) => {
   const handleRolesChange = (updatedRoles: JobMinorCategory[]) => {
@@ -71,7 +71,7 @@ export const LandingPageView = ({
         <LandingPostView
           postFilter={postFilter}
           handlePageChange={handlePageChange}
-          setShowSignInModal={setShowSignInModal}
+          showSignInModal={showSignInModal}
         />
       </div>
     </div>
